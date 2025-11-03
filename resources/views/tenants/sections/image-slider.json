@@ -1,0 +1,97 @@
+{
+    "type": "image_slider",
+    "name": "Image Slider",
+    "order": 4,
+    "category": "Body Sections",
+    "fields": [
+        {
+            "key": "image_size",
+            "label": "Image Size",
+            "type": "radio",
+            "options": ["full", "container"],
+            "default": "container"
+        },
+        {
+            "key": "view_mode",
+            "label": "View Mode",
+            "type": "radio",
+            "options": ["mobile", "desktop", "both"],
+            "default": "both"
+        },
+        {
+            "key": "slide_button",
+            "label": "Slide Button",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "auto"
+        },
+        {
+            "key": "sliding_time",
+            "label": "Sliding Time (ms)",
+            "type": "input",
+            "value": "3000"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "default": "0"
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "default": "0"
+        },
+        {
+            "key": "image_1",
+            "label": "Image 1",
+            "type": "image"
+        },
+        {
+            "key": "image_2",
+            "label": "Image 2",
+            "type": "image"
+        },
+        {
+            "key": "image_3",
+            "label": "Image 3",
+            "type": "image"
+        },
+        {
+            "key": "image_4",
+            "label": "Image 4",
+            "type": "image"
+        },
+        {
+            "key": "image_5",
+            "label": "Image 5",
+            "type": "image"
+        },
+        {
+            "key": "image_6",
+            "label": "Image 6",
+            "type": "image"
+        },
+        {
+            "key": "image_7",
+            "label": "Image 7",
+            "type": "image"
+        },
+        {
+            "key": "image_8",
+            "label": "Image 8",
+            "type": "image"
+        },
+        {
+            "key": "image_9",
+            "label": "Image 9",
+            "type": "image"
+        },
+        {
+            "key": "image_10",
+            "label": "Image 10",
+            "type": "image"
+        }
+    ]
+}

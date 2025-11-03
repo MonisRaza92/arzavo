@@ -1,0 +1,150 @@
+{
+    "type": "footer",
+    "name": "Footer Advanced",
+    "category": "Footer Sections",
+    "order": 1,
+    "fields": [
+        {
+            "key": "footer_layout",
+            "label": "Footer Layout",
+            "type": "select",
+            "options": ["4-column", "3-column", "2-column", "single-column"],
+            "default": "4-column"
+        },
+        {
+            "key": "show_logo",
+            "label": "Show Logo",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "company_description",
+            "label": "Company Description",
+            "type": "textarea",
+            "default": "We are a leading digital agency providing innovative solutions to help businesses grow and succeed in the digital world."
+        },
+        {
+            "key": "show_social_links",
+            "label": "Show Social Links",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "footer_links",
+            "label": "Footer Link Sections",
+            "type": "array",
+            "value": [
+                {
+                    "title": "Company",
+                    "links": [
+                        {"text": "About Us", "url": "/about"},
+                        {"text": "Our Team", "url": "/team"},
+                        {"text": "Careers", "url": "/careers"},
+                        {"text": "Contact", "url": "/contact"}
+                    ]
+                },
+                {
+                    "title": "Services",
+                    "links": [
+                        {"text": "Web Development", "url": "/services/web"},
+                        {"text": "Mobile Apps", "url": "/services/mobile"},
+                        {"text": "Digital Marketing", "url": "/services/marketing"},
+                        {"text": "Consulting", "url": "/services/consulting"}
+                    ]
+                },
+                {
+                    "title": "Resources",
+                    "links": [
+                        {"text": "Blog", "url": "/blog"},
+                        {"text": "Case Studies", "url": "/case-studies"},
+                        {"text": "Documentation", "url": "/docs"},
+                        {"text": "Support", "url": "/support"}
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "show_newsletter",
+            "label": "Show Newsletter Signup",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "newsletter_title",
+            "label": "Newsletter Title",
+            "type": "text",
+            "default": "Stay Updated"
+        },
+        {
+            "key": "newsletter_description",
+            "label": "Newsletter Description",
+            "type": "text",
+            "default": "Subscribe to our newsletter for the latest updates and insights."
+        },
+        {
+            "key": "show_contact_info",
+            "label": "Show Contact Information",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "contact_email",
+            "label": "Contact Email",
+            "type": "text",
+            "default": "info@company.com"
+        },
+        {
+            "key": "contact_phone",
+            "label": "Contact Phone",
+            "type": "text",
+            "default": "+1 (555) 123-4567"
+        },
+        {
+            "key": "contact_address",
+            "label": "Contact Address",
+            "type": "textarea",
+            "default": "123 Business Street, Suite 100, City, State 12345"
+        },
+        {
+            "key": "background_color",
+            "label": "Background Color",
+            "type": "color",
+            "default": "#1f2937"
+        },
+        {
+            "key": "text_color",
+            "label": "Text Color",
+            "type": "color",
+            "default": "#d1d5db"
+        },
+        {
+            "key": "heading_color",
+            "label": "Heading Color",
+            "type": "color",
+            "default": "#ffffff"
+        },
+        {
+            "key": "accent_color",
+            "label": "Accent Color",
+            "type": "color",
+            "default": "#3b82f6"
+        },
+        {
+            "key": "copyright_text",
+            "label": "Copyright Text",
+            "type": "text",
+            "default": "© 2024 Company Name. All rights reserved."
+        },
+        {
+            "key": "show_bottom_border",
+            "label": "Show Bottom Border",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        }
+    ]
+}

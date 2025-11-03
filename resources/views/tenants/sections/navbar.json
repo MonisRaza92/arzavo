@@ -1,0 +1,142 @@
+{
+    "type": "navbar",
+    "name": "Navbar",
+    "order": 2,
+    "category": "Header Sections",
+    "categoryOrder": 1,
+    "fields": [
+        {
+            "key": "navbar_behavior",
+            "label": "Navbar Behavior",
+            "type": "radio",
+            "options": ["sticky", "scroll-up"],
+            "default": "sticky"
+        },
+        {
+            "key": "navbar_height",
+            "label": "Navbar Height",
+            "type": "select",
+            "default": "standard",
+            "options": ["compact", "standard", "spacious"]
+        },
+        {
+            "key": "logo_size",
+            "label": "Logo Size",
+            "type": "range",
+            "default": 40,
+            "min": 20,
+            "max": 300,
+            "step": 1
+        },
+        {
+            "key": "links_position",
+            "label": "Links Position",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "right"
+        },
+        {
+            "key": "links_spacing",
+            "label": "Links Spacing",
+            "type": "radio",
+            "default": "normal",
+            "options": ["narrow", "normal", "wide"]
+        },
+        {
+            "key": "font_size",
+            "label": "Font Size",
+            "type": "radio",
+            "options": ["small", "medium", "large"],
+            "default": "medium"
+        },
+        {
+            "key": "font_weight",
+            "label": "Font Weight",
+            "type": "radio",
+            "options": ["normal", "medium", "bold"],
+            "default": "medium"
+        },
+        {
+            "key": "text_transform",
+            "label": "Text Transform",
+            "type": "radio",
+            "options": ["capitalize", "uppercase"],
+            "default": "capitalize"
+        },
+        {
+            "key": "icon_style",
+            "label": "Icon Style",
+            "type": "radio",
+            "options": ["regular", "solid"],
+            "default": "regular"
+        },
+        {
+            "key": "admission_form_icon",
+            "label": "Admission Form Icon",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "help_icon",
+            "label": "Help Icon",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "help_icon_link",
+            "label": "Help Icon Link",
+            "type": "text",
+            "placeholder": "Ex : WhatsApp Link"
+        },
+        {
+            "key": "navbar_background",
+            "label": "Background",
+            "type": "color"
+        },
+        {
+            "key": "text_color",
+            "label": "Text Color",
+            "type": "color"
+        },
+        {
+            "key": "hover_color",
+            "label": "Hover Color",
+            "type": "color"
+        },
+        {
+            "key": "navlinks",
+            "label": "Navigation Links",
+            "type": "array",
+            "value": ["home", "about", "contact"]
+        },
+        {
+            "key": "mobile_menu",
+            "label": "Mobile Menu",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "logo_position",
+            "label": "Logo Position (Mobile)",
+            "type": "radio",
+            "options": ["left", "center"],
+            "default": "left"
+        },
+        {
+            "key": "navlinks_mobile",
+            "label": "Navigation Links (Mobile)",
+            "type": "array",
+            "value": ["home", "about", "contact"]
+        },
+        {
+            "key": "social_icons",
+            "label": "Social Icons (Mobile)",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        }
+    ]
+}

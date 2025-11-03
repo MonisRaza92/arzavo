@@ -1,0 +1,37 @@
+{
+    "type": "about",
+    "name": "About Section",
+    "preview": "/images/sections/hero-preview.jpg",
+    "order": 8,
+    "category": "Body Sections",
+    "fields": [
+        {
+            "key": "heading",
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Welcome to Our Website"
+        },
+        {
+            "key": "subheading",
+            "type": "textarea",
+            "id": "subheading",
+            "label": "Subheading",
+            "default": "We help you grow your business."
+        },
+        {
+            "key": "background_image",
+            "type": "image",
+            "id": "background_image",
+            "label": "Background Image",
+            "default": ""
+        },
+        {
+            "key": "text_color",
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#111111"
+        }
+    ]
+}

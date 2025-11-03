@@ -1,0 +1,118 @@
+{
+    "type": "featured-card",
+    "name": "Featured Card",
+    "category": "Body Sections",
+    "order": 7,
+    "fields": [
+        {
+            "label": "Card Background",
+            "key": "card_bg",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "label": "Card Border",
+            "key": "card_border",
+            "type": "text",
+            "default": "1px solid #e0e0e0"
+        },
+        {
+            "label": "Card Border Radius",
+            "key": "card_radius",
+            "type": "radio",
+            "default": "default",
+            "options":["default", "Sharp"]
+        },
+        {
+            "label": "Padding",
+            "key": "card_padding",
+            "type": "text",
+            "default": "24px"
+        },
+        {
+            "label": "Margin",
+            "key": "card_margin",
+            "type": "text",
+            "default": "20px 0"
+        },
+        {
+            "label": "Image Position",
+            "key": "image_position",
+            "type": "select",
+            "options": ["left", "right"],
+            "default": "left"
+        },
+        {
+            "label": "Featured Image",
+            "key": "image",
+            "type": "image"
+        },
+        {
+            "label": "Heading",
+            "key": "title",
+            "type": "text",
+            "default": "Your Feature Title"
+        },
+        {
+            "label": "Heading Color",
+            "key": "title_color",
+            "type": "color"
+        },
+        {
+            "label": "Heading Size",
+            "key": "title_size",
+            "type": "text",
+            "default": "28px"
+        },
+        {
+            "label": "Paragraph",
+            "key": "text",
+            "type": "textarea",
+            "default": "Enter your description here..."
+        },
+        {
+            "label": "Paragraph Color",
+            "key": "text_color",
+            "type": "color"
+        },
+        {
+            "label": "Paragraph Size",
+            "key": "text_size",
+            "type": "text",
+            "default": "16px"
+        },
+        {
+            "label": "Button Text",
+            "key": "btn_text",
+            "type": "text",
+            "default": "Learn More"
+        },
+        {
+            "label": "Button Link",
+            "key": "btn_link",
+            "type": "text"
+        },
+        {
+            "label": "Button Background",
+            "key": "btn_bg",
+            "type": "color"
+        },
+        {
+            "label": "Button Color",
+            "key": "btn_color",
+            "type": "color"
+        },
+        {
+            "label": "Button Padding",
+            "key": "btn_padding",
+            "type": "text",
+            "default": "10px 20px"
+        },
+        {
+            "label": "Button Radius",
+            "key": "btn_radius",
+            "type": "text",
+            "default": "6px"
+        }
+    ]
+}

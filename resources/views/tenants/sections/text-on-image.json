@@ -1,0 +1,196 @@
+{
+    "type": "text_on_image",
+    "name": "Text On Image",
+    "order": 5,
+    "category": "Body Sections",
+    "fields": [
+        {
+            "key": "section_height",
+            "label": "Section Height",
+            "type": "radio",
+            "options": ["80vh", "90vh", "100vh"],
+            "default": "90vh"
+        },
+        {
+            "key": "section_margin",
+            "label": "Section Gap (Top & Bottom)",
+            "type": "range",
+            "default": "0"
+        },
+        {
+            "key": "desktop_image",
+            "label": "Desktop Image",
+            "type": "image"
+        },
+        {
+            "key": "mobile_image",
+            "label": "Mobile Image",
+            "type": "image"
+        },
+        {
+            "key": "text_position_vertical",
+            "label": "Text Position (Vertical)",
+            "type": "radio",
+            "options": ["start", "center", "end"],
+            "default": "end"
+        },
+        {
+            "key": "text_alignment",
+            "label": "Text Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "heading",
+            "label": "Heading",
+            "type": "text",
+            "default": "Your Institution’s Digital Identity, Simplified"
+        },
+        {
+            "key": "heading_color",
+            "label": "Heading Color",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "key": "heading_size",
+            "label": "Heading Size (px)",
+            "type": "text",
+            "default": "50"
+        },
+        {
+            "key": "heading_size_mobile",
+            "label": "Heading Size (Mobile)",
+            "type": "text",
+            "default": "35"
+        },
+        {
+            "key": "heading_padding_top",
+            "label": "Heading Padding Top",
+            "type": "range",
+            "default": "0"
+        },
+        {
+            "key": "heading_padding_bottom",
+            "label": "Heading Padding Bottom",
+            "type": "range",
+            "default": "0"
+        },
+        {
+            "key": "paragraph",
+            "label": "Paragraph",
+            "type": "text",
+            "default": "Launch a smart education website with branding controls, online admissions, and dynamic content — built for institutes of every size."
+        },
+        {
+            "key": "paragraph_color",
+            "label": "Paragraph Color",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "key": "paragraph_size",
+            "label": "Paragraph Size (px)",
+            "type": "text",
+            "default": ""
+        },
+        {
+            "key": "paragraph_padding_top",
+            "label": "Paragraph Padding Top",
+            "type": "range",
+            "default": "0"
+        },
+        {
+            "key": "paragraph_padding_bottom",
+            "label": "paragraph Padding Bottom",
+            "type": "range",
+            "default": "0"
+        },
+        {
+            "key": "text_color",
+            "label": "Text Color",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "key": "button1_text",
+            "label": "Button 1 Text",
+            "type": "text"
+        },
+        {
+            "key": "button1_link",
+            "label": "Button 1 Link",
+            "type": "text"
+        },
+        {
+            "key": "button2_text",
+            "label": "Button 2 Text",
+            "type": "text"
+        },
+        {
+            "key": "button2_link",
+            "label": "Button 2 Link",
+            "type": "text"
+        },
+        {
+            "key": "button_alignment",
+            "label": "Buttons Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "button_gap",
+            "label": "Buttons Gap (px)",
+            "type": "range",
+            "default": "10"
+        },
+        {
+            "key": "button_style",
+            "label": "Button Style",
+            "type": "radio",
+            "options": ["solid", "outline"],
+            "default": "solid"
+        },
+        {
+            "key": "button_color",
+            "label": "Button Color",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "key": "button_text_color",
+            "label": "Button Text Color",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "key": "button_radius",
+            "label": "Button Radius",
+            "type": "radio",
+            "options": ["none", "md", "lg", "full"],
+            "default": "none"
+        },
+        {
+            "key": "button_size",
+            "label": "Button Size",
+            "type": "radio",
+            "options": ["small", "medium", "large"],
+            "default": "medium"
+        },
+
+        {
+            "key": "overlay_color",
+            "label": "Background Overlay Color",
+            "type": "color",
+            "default": "#000000"
+        },
+        {
+            "key": "overlay_opacity",
+            "label": "Overlay Opacity (%)",
+            "type": "range",
+            "default": "20"
+        }
+    ]
+}

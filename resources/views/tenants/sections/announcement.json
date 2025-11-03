@@ -1,0 +1,103 @@
+{
+    "type": "announcement",
+    "name": "Announcement",
+    "order": 1,
+    "category": "Header Sections",
+    "categoryOrder": 1,
+    "fields": [
+        {
+            "key": "announcement1",
+            "label": "Announcement",
+            "type": "text",
+            "placeholder": "Enter first announcement",
+            "default": ""
+        },
+        {
+            "key": "announcement2",
+            "label": "Announcement",
+            "type": "text",
+            "placeholder": "Enter second announcement",
+            "default": ""
+        },
+        {
+            "key": "announcement3",
+            "label": "Announcement",
+            "type": "text",
+            "placeholder": "Enter third announcement",
+            "default": ""
+        },
+        {
+            "key": "padding",
+            "label": "Vertical Padding",
+            "type": "range",
+            "default": 6,
+            "min": 0,
+            "max": 20
+        },
+        {
+            "key": "background_color",
+            "label": "Background",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "key": "text_color",
+            "label": "Text Color",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "key": "font_size",
+            "label": "Font Size",
+            "type": "radio",
+            "options":["small", "medium", "large"],
+            "default": "small"
+        },
+        {
+            "key": "border_bottom",
+            "label": "Border Bottom",
+            "type": "radio",
+            "default": "enable",
+            "options": [
+                "enable",
+                "disable"
+            ]
+        },
+        {
+            "key": "font_family",
+            "label": "Font Family",
+            "type": "select",
+            "options": [
+                "sans-serif",
+                "serif",
+                "monospace",
+                "cursive",
+                "fantasy",
+                "system-ui"
+            ],
+            "default": "sans-serif"
+        },
+        {
+            "key": "font_weight",
+            "label": "Font Weight",
+            "type": "select",
+            "options": ["lighter", "normal", "bold", "bolder"],
+            "default": "normal"
+        },
+        {
+            "key": "text_transform",
+            "label": "Text Transform",
+            "type": "select",
+            "options": ["none", "uppercase", "lowercase", "capitalize"],
+            "default": "none"
+        },
+        {
+            "key": "slide_time",
+            "label": "Slide Time (ms)",
+            "type": "number",
+            "default": 5000,
+            "min": 1000,
+            "max": 60000
+        }
+    ]
+}

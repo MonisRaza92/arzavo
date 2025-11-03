@@ -1,0 +1,45 @@
+{
+    "type": "image_grid",
+    "name": "Images Grid",
+    "order": 5,
+    "category": "Body Sections",
+    "fields": [
+        {
+            "key": "section_padding",
+            "label": "Section Padding (Top & Bottom)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 20
+        },
+        {
+            "key": "image_1",
+            "label": "Landscape Image",
+            "type": "image"
+        },
+        {
+            "key": "image_2",
+            "label": "Small Image 1",
+            "type": "image"
+        },
+        {
+            "key": "image_3",
+            "label": "Small Image 2",
+            "type": "image"
+        },
+        {
+            "key": "image_border",
+            "label": "Image Border",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "disable"
+        },
+        {
+            "key": "image_border_radius",
+            "label": "Border Radius",
+            "type": "radio",
+            "options": ["none", "md", "full"],
+            "default": "none"
+        }
+    ]
+}

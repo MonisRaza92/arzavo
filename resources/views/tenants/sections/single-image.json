@@ -1,0 +1,57 @@
+{
+    "type": "single_image",
+    "name": "Single Image",
+    "order": 3,
+    "category": "Body Sections",
+    "fields": [
+        {
+            "key": "image_size",
+            "label": "Image Size",
+            "type": "radio",
+            "options": ["full", "container"],
+            "default": "full"
+        },
+        {
+            "key": "desktop_image",
+            "label": "Desktop Image",
+            "type": "image"
+        },
+        {
+            "key": "mobile_image",
+            "label": "Mobile Image",
+            "type": "image"
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "radio",
+            "options": ["none", "md", "lg", "full"],
+            "default": "none"
+        },
+        {
+            "key": "image_link",
+            "label": "Image Link (Optional)",
+            "type": "text",
+            "placeholder": "Enter Target Url"
+        },
+        {
+            "key": "link_open_page",
+            "label": "Link Open Page",
+            "type": "radio",
+            "options": ["same", "new"],
+            "default": "same"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "default": "0"
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "default": "0"
+        }
+    ]
+}

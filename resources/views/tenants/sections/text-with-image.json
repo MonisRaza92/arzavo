@@ -1,0 +1,140 @@
+{
+    "type": "text-with-image",
+    "name": "Text With Image",
+    "order": 6,
+    "category": "Body Sections",
+    "fields": [
+        {
+            "key": "image_position",
+            "label": "Image Position",
+            "type": "radio",
+            "options": ["left", "right"],
+            "default": "right"
+        },
+        {
+            "key": "padding",
+            "label": "Section Gap (Top & Bottom)",
+            "type": "range",
+            "default": "60",
+            "min": 10,
+            "max": 200
+        },
+        {
+            "key": "desktop_image",
+            "label": "Desktop Image",
+            "type": "image"
+        },
+        {
+            "key": "mobile_image",
+            "label": "Mobile Image",
+            "type": "image"
+        },
+        {
+            "key": "text_align",
+            "label": "Text Alignment (Desktop)",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "text_align_mobile",
+            "label": "Text Alignment (Mobile)",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "heading",
+            "label": "Heading",
+            "type": "text",
+            "default": "Your Institution’s Digital Identity, Simplified"
+        },
+        {
+            "key": "heading_color",
+            "label": "Heading Color",
+            "type": "color",
+            "default": "#"
+        },
+        {
+            "key": "heading_size",
+            "label": "Heading Size (px)",
+            "type": "text",
+            "default": "40"
+        },
+        {
+            "key": "heading_size_mobile",
+            "label": "Heading Size (Mobile)",
+            "type": "text",
+            "default": "34"
+        },
+        {
+            "key": "heading_line_height",
+            "label": "Heading Line Height",
+            "type": "text",
+            "default": "1.1"
+        },
+
+        {
+            "key": "paragraph",
+            "label": "Paragraph",
+            "type": "textarea",
+            "default": "Launch a smart education website with branding controls, online admissions, and dynamic content — built for institutes of every size."
+        },
+        {
+            "key": "paragraph_color",
+            "label": "Paragraph Color",
+            "type": "color",
+            "default": "#"
+        },
+        {
+            "key": "paragraph_size",
+            "label": "Paragraph Size (px)",
+            "type": "text",
+            "default": "18"
+        },
+        {
+            "key": "button1_text",
+            "label": "Button 1 Text",
+            "type": "text",
+            "default": "Get Started"
+        },
+        {
+            "key": "button1_link",
+            "label": "Button 1 Link",
+            "type": "text",
+            "default": "#"
+        },
+        {
+            "key": "button2_text",
+            "label": "Button 2 Text",
+            "type": "text",
+            "default": "Contact Sales"
+        },
+        {
+            "key": "button2_link",
+            "label": "Button 2 Link",
+            "type": "text",
+            "default": "#"
+        },
+        {
+            "key": "info_box_gap_top",
+            "label": "Info Box Gap Top (px)",
+            "type": "range",
+            "default": "24",
+            "min": 16,
+            "max": 100
+        },
+        {
+            "key": "info_box_bg_color",
+            "label": "Info Box Background Color",
+            "type": "color",
+            "default": ""
+        },
+        {
+            "key": "info_box_text_color",
+            "label": "Info Box Text Color",
+            "type": "color",
+            "default": ""
+        }
+    ]
+}
