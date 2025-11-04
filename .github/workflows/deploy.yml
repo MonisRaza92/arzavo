@@ -17,8 +17,13 @@ jobs:
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: 65002
           script: |
-            cd ~/domains/prakashjhaclasses.com/public_html
-            git fetch --all
-            git reset --hard origin/main
-            git pull origin main
-            php artisan optimize:clear
+           # Start SSH agent and add the private key so git pull works
+           eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519 || echo "No SSH key found"
+
+           cd ~/domains/prakashjhaclasses.com/public_html
+           git fetch --all
+           git reset --hard origin/main
+           git pull origin main
+           php artisan optimize:clear
+           composer install --no-dev --optimize-autoloader
+
