@@ -7,7 +7,7 @@
 @else
 @foreach($sections as $section)
 @php
-$viewPath = 'websites.sections.' . $section->type;
+$viewPath = 'tenants.sections.' . $section->type;
 @endphp
 @if(View::exists($viewPath))
 @include($viewPath, ['section' => $section])

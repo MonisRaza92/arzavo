@@ -4,21 +4,21 @@
         <button type="button" class="tab-btn w-1/2 font-semibold text-sm p-4" data-target="sections"><i class="fas fa-th"></i> SECTIONS</button>
     </div>
     <div class="tab-content active" id="basics" data-content="basics">
-        <form id="customize-form" action="{{ route('admin-update-customizes') }}" method="POST">
+        <form id="customize-form" action="{{ route('admin.customizes.store') }}" method="POST">
             @csrf
-            @include('admin.customizes.basics.logo-settings')
-            @include('admin.customizes.basics.colors-settings')
-            @include('admin.customizes.basics.typography-settings')
-            @include('admin.customizes.basics.border-shadow-settings')
-            @include('admin.customizes.basics.buttons-settings')
-            @include('admin.customizes.basics.layout-settings')
-            @include('admin.customizes.basics.ui-elements-settings')
-            @include('admin.customizes.basics.animations-settings')
-            @include('admin.customizes.basics.advanced-settings')
+            @include('admin.builder.basics.logo-settings')
+            @include('admin.builder.basics.colors-settings')
+            @include('admin.builder.basics.typography-settings')
+            @include('admin.builder.basics.border-shadow-settings')
+            @include('admin.builder.basics.buttons-settings')
+            @include('admin.builder.basics.layout-settings')
+            @include('admin.builder.basics.ui-elements-settings')
+            @include('admin.builder.basics.animations-settings')
+            @include('admin.builder.basics.advanced-settings')
         </form>
     </div>
     <div class="tab-content hidden" id="sections" data-content="sections">
-        @include('admin.customizes.sections.sections')
+        @include('admin.builder.sections.sections')
     </div>
 </div>
 <script>

@@ -7,7 +7,7 @@
             ['key' => 'invert_logo', 'label' => 'Invert Logo', 'icon' => 'fa-adjust', 'bg' => 'bg-primary'],
             ['key' => 'favicon', 'label' => 'Favicon', 'icon' => 'fa-star', 'bg' => 'bg-primary'],
             ] as $item)
-            @php $key = $item['key']; $hasImage = !empty($customizes[$key]); @endphp
+            @php $key = $item['key']; $hasImage = !empty($customizes[$key] ?? null); @endphp
 
             <div class="relative group border-primary border-rounded overflow-hidden">
                 <label for="{{ $key }}Input" class="cursor-pointer aspect-video">
@@ -22,7 +22,7 @@
                     <div id="{{ $key }}PreviewContainer" class="relative bg-secondary border-top cursor-pointer" onclick="openImageMenu('{{ $key }}Input')">
                         @if ($hasImage)
                         <img id="{{ $key }}Preview"
-                            src="{{ asset($customizes[$key]) }}"
+                            src="{{ asset($customizes[$key] ?? '') }}"
                             alt="{{ $item['label'] }}"
                             class="w-full object-contain p-4">
                         <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
@@ -36,7 +36,7 @@
                         @endif
                     </div>
 
-                    <input type="text" name="{{ $key }}" id="{{ $key }}Input" value="{{$customizes[$key]}}" class="hidden" onchange="submitCustomizesForm()">
+                    <input type="text" name="{{ $key }}" id="{{ $key }}Input" value="{{ $customizes[$key] ?? '' }}" class="hidden" onchange="submitCustomizesForm()">
                     <div class="absolute top-2.5 right-2">
                         <button type="button" class="text-tertiary" onclick="deleteImage('{{ $key }}')">
                             <i class="fa-solid text-md fa-trash"></i>
@@ -50,9 +50,12 @@
 </div>
 <script>
     function deleteImage(key) {
-        document.getElementById(key + 'Input').value = '';
+        const input = document.getElementById(key + 'Input');
+        if (input) input.value = '';
         const overlay = document.getElementById(key + 'Preview');
-        overlay.src = '{{ asset('images/ARZAQ-dark-logo.png')}}';
+        if (overlay) {
+            overlay.src = '{{ asset("images/arzavo-dark.png") }}';
+        }
         submitCustomizesForm();
     }
 </script>

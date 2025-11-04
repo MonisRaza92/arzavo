@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="p-4 sticky bottom-0 left-0 flex justify-end w-full">
-            <form id="image-upload-form" action="{{ route('admin-upload-image') }}" method="POST" enctype="multipart/form-data">
+            <form id="image-upload-form" action="{{ route('admin.images.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <label for="imageInput" class="bg-invert text-md text-invert py-2 px-3 border-rounded">Upload File <i class="fas fa-upload pl-2 border-left"></i></label>
                 <input type="file" name="image" accept="image/*" class="hidden" id="imageInput" onchange="submitImagesForm()">

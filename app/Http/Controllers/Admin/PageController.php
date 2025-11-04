@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PageController
 {
@@ -48,7 +49,7 @@ class PageController
                 'string',
                 'max:255',
                 'regex:/^[a-z0-9\-]+$/', // sirf lowercase letters, numbers, aur dash
-                'unique:pages,slug',
+                 Rule::unique('pages', 'slug')->ignore($page->id),
             ],
         ]);
 
@@ -66,6 +67,7 @@ class PageController
     public function destroy(Page $page)
     {
         $page->delete();
+        
         return back()->with('success', 'Page deleted successfully!');
     }
 }

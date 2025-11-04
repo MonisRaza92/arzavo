@@ -174,9 +174,9 @@
                 <i id="arrow-website" class="fas fa-angle-right absolute right-2 top-1/2 transform -translate-y-1/2 transition-all duration-300 ease-in-out"></i>
             </button>
             <ul id="websiteMenu" class="ml-4 pl-2 border-left overflow-hidden max-h-0 transition-all duration-300 ease-linear space-y-2">
-                <li><a href="{{ url('admin.builder.index') }}" class="block p-2 border-rounded {{ request()->is('admin/builder') ? 'active-li text-primary' : 'text-secondary' }}"><i class="fa-solid fa-pen-nib mr-1"></i> Page Builder</a></li>
-                <li><a href="{{ url('admin.pages.index') }}" class="block p-2 border-rounded {{ request()->is('admin/pages') ? 'active-li text-primary' : 'text-secondary' }}"><i class="fa-solid fa-window-restore mr-1"></i> Web Pages</a></li>
-                <li><a href="{{ url('admin-images') }}" class="block p-2 border-rounded {{ request()->is('admin/images') ? 'active-li text-primary' : 'text-secondary' }}"><i class="fa-solid fa-image mr-1"></i> Media Library</a></li>
+                <li><a href="{{ route('admin.builder.index') }}" class="block p-2 border-rounded {{ request()->is('admin/builder') ? 'active-li text-primary' : 'text-secondary' }}"><i class="fa-solid fa-pen-nib mr-1"></i> Page Builder</a></li>
+                <li><a href="{{ route('admin.pages.index') }}" class="block p-2 border-rounded {{ request()->is('admin/pages') ? 'active-li text-primary' : 'text-secondary' }}"><i class="fa-solid fa-window-restore mr-1"></i> Web Pages</a></li>
+                <li><a href="{{ route('admin.images.index') }}" class="block p-2 border-rounded {{ request()->is('admin/images') ? 'active-li text-primary' : 'text-secondary' }}"><i class="fa-solid fa-image mr-1"></i> Media Library</a></li>
             </ul>
         </li>
     </ul>

@@ -1,6 +1,6 @@
-<div class="editor-navbar flex w-full h-16 justify-between items-center py-2 bg-primary px-4 border-bottom fixed top-0 left-0 z-50">
+<div class="editor-navbar flex w-full h-16 justify-between items-center py-3 bg-primary px-4 border-bottom fixed top-0 left-0 z-50">
     <div class="editor-navbar-left flex items-center gap-4">
-        <a href="{{ route('admin') }}" class="text-2xl"><i class="fa-solid fa-right-from-bracket rotate-180"></i></a>
+        <a href="{{ route('admin.dashboard') }}" class="text-2xl"><i class="fa-solid fa-right-from-bracket rotate-180"></i></a>
         <h3 class="text-primary font-semibold text-xl hidden md:block">Horizon</h3>
         <div class="badge bg-green-100 hidden md:block px-2 py-1 text-xs rounded-full"><i class="fas fa-circle text-green-500"></i> Live</div>
     </div>

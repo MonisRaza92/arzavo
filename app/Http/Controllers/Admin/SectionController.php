@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\Section;
+use App\Models\Images;
 
 class SectionController
 {
@@ -15,7 +16,7 @@ class SectionController
 
         $sections = $page->sections()->orderBy('order')->get();
 
-        $availableSections = collect(glob(resource_path('views/sections/*.json')))
+        $availableSections = collect(glob(resource_path('views/tenants/sections/*.json')))
             ->map(function ($file) {
                 $data = json_decode(file_get_contents($file), true);
                 return [
@@ -31,6 +32,7 @@ class SectionController
 
 
         $pages = Page::all(); // For dropdown
+        $images = Images::all();
 
         return view('admin.builder.index', compact('page', 'sections', 'availableSections', 'pages'));
     }

@@ -62,7 +62,7 @@ $mobileLinks = [];
 
 @endphp
 <nav class="hidden md:block py-0 z-20 {{ $navBehavior === 'sticky' ? 'sticky top-0 left-0 border-bottom' : '' }} {{ $navBehavior === 'scroll-up' ? 'border-bottom' : '' }}" @if( $navTransparent==='disable' ) style="background-color: {{ $navBackground }};" @endif @if( $navTransparent==='enable' ) style="margin-top: -80px;" @endif>
-    <div class="container navbar flex justify-between items-center w-full {{ $navHeight === 'compact' ? 'py-1' : ($navHeight === 'standard' ? 'py-2' : 'py-4') }}">
+    <div class="container navbar flex justify-between items-center w-full {{ $navHeight === 'compact' ? 'py-2' : ($navHeight === 'standard' ? 'py-3' : 'py-4') }}">
         <div class="logo-links-icons w-full flex justify-between gap-8 items-center">
             <a href="{{ route('home') }}" class="w-fit shrink-0">
                 <img src="{{ asset($customizes['logo'] ?? 'images/ARZAQ-dark-logo.png') }}" alt="Logo" class="w-auto logo" style="height: {{ $logoSize }}px;">

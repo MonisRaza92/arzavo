@@ -1,5 +1,5 @@
 <div class="sections-tab pb-10">
-    @include('admin.customizes.sections.section-add')
+    @include('admin.builder.sections.section-add')
     <ul id="sectionList" class="sortable-section-list">
         @foreach($sections as $section)
         <li id="section-{{ $section->id }}" class="border-bottom cursor-pointer select-none" data-id="{{ $section->id }}">
@@ -24,7 +24,7 @@
                     </form>
                 </div>
             </div>
-            @include('admin.customizes.sections.section-edit')
+            @include('admin.builder.sections.section-edit')
         </li>
         @endforeach
 

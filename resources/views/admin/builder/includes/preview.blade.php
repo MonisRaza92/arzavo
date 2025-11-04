@@ -1,5 +1,5 @@
 <iframe
     id="livePreviewContent"
-    src="{{ route('page', ['slug' => $page->slug]) }}"
-    class="border-rounded w-full h-dvh border-primary scrollbar">
+    src="{{ route('tenant.page', ['slug' => $page->slug]) }}"
+    class="border-rounded w-full h-[calc(100dvh-6rem)] border-primary">
 </iframe>

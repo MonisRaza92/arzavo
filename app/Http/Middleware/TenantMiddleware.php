@@ -33,6 +33,10 @@ class TenantMiddleware
         URL::defaults([
             'tenant' => $tenant->subdomain
         ]);
+        URL::forceRootUrl($request->getSchemeAndHttpHost());
+
+        $request->route()->forgetParameter('tenant');
+
 
         // ✅ If user is logged in → authorization check
         if (Auth::check()) {

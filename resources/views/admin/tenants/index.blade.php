@@ -39,8 +39,10 @@
                 </div>
 
                 <!-- Subdomain -->
-                <div class="flex items-center gap-2 text-sm p-3 border-bottom">
-                    <i class="fa-solid fa-globe text-tertiary"></i>
+                <div class="flex items-center text-sm py-1 border-bottom">
+                    <div class="p-3 border-right mr-3">
+                        <i class="fa-solid fa-globe text-tertiary"></i>
+                    </div>
                     <div>
                         <strong class="text-secondary text-xs leading-none">Subdomain:</strong><br>
                         <a target="_blank"
@@ -52,8 +54,10 @@
                 </div>
 
                 <!-- Custom Domain -->
-                <div class="flex items-center gap-2 text-sm p-3 border-bottom">
-                    <i class="fa-solid fa-link text-tertiary"></i>
+                <div class="flex items-center text-sm py-1 border-bottom">
+                    <div class="p-3 border-right mr-3">
+                        <i class="fa-solid fa-link text-tertiary"></i>
+                    </div>
                     <div>
                         <strong class="text-secondary text-xs leading-none">Custom Domain:</strong><br>
 

@@ -1,5 +1,5 @@
 <div class="admin-navbar w-full fixed top-0 right-0 z-1000 flex items-center justify-between px-4 py-3 bg-primary border-bottom">
-    <a href="{{ route('home') }}">
+    <a href="{{ route('tenant.home') }}">
         <img id="logo" src="{{ asset($customizes['logo'] ?? 'images/logo/arzavo-dark.png') }}" alt="Logo" class="logo">
     </a>
     <div class="search-bar relative hidden md:block text-sm lg:w-1/2">

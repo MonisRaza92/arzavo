@@ -9,15 +9,14 @@ trait BelongsToTenant
     protected static function bootBelongsToTenant()
     {
         static::addGlobalScope('tenant', function (Builder $builder) {
-            if (session()->has('tenant_id')) {
-                $builder->where('tenant_id', session('tenant_id'));
+            if (app()->has('currentTenant')) {
+                $builder->where('tenant_id', app('currentTenant')->id);
             }
         });
 
-        // Automatically assign tenant_id on create
         static::creating(function ($model) {
-            if (session()->has('tenant_id')) {
-                $model->tenant_id = session('tenant_id');
+            if (app()->has('currentTenant')) {
+                $model->tenant_id = app('currentTenant')->id;
             }
         });
     }

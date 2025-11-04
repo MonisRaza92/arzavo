@@ -307,6 +307,7 @@ button{
 .scrollbar::-webkit-scrollbar {
     width: 0px;
     height: 0px;
+    display: none;
 }
 .scrollbar {
     scrollbar-width: none; /* Firefox */
