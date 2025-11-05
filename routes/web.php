@@ -7,8 +7,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Admin\TenantController;
+use App\Http\Controllers\Admin\DomainVerificationController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\StudentsController as AdminStudentsController;
 use App\Http\Controllers\Admin\ContentsController;
 use App\Http\Controllers\Admin\CourseController;
@@ -72,6 +72,7 @@ Route::domain(config('app.domain'))->prefix('admin')->middleware(['auth', 'role:
     //Admin Tenant Routes
     Route::resource('tenants', TenantController::class);
     Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
+    Route::get('/verify-domain/{tenant}', [DomainVerificationController::class, 'verify'])->name('domain.verify');
 });
 
 Route::domain('{tenant}.' . config('app.domain'))->prefix('admin')->middleware(['auth', 'role:admin', 'tenant'])->as('admin.')->group(function () {

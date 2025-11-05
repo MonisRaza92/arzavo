@@ -9,9 +9,10 @@ class Tenant extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'slug',
         'subdomain',
-        'domain',
+        'custom_domain',
+        'domain_verified',
+        'domain_verified_at',
         'is_active'
     ];
 

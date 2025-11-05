@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('subdomain')->unique()->nullable();
-            $table->string('domain')->unique()->nullable();
+            $table->string('custom_domain')->unique()->nullable();
+            $table->boolean('domain_verified')->default(false);
+            $table->timestamp('domain_verified_at')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
