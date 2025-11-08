@@ -14,7 +14,7 @@
         {{-- Alerts --}}
         <x-alert />
         {{-- Main content --}}
-        <main class="main-admin-content relative lg:ml-[260px]! px-4" style="padding-top: calc(var(--logo-size) + 46px);">
+        <main class="main-admin-content relative lg:ml-[260px]! p-4">
             @include('includes.breadcrumb')
             @yield('content')
         </main>

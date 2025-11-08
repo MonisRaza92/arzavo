@@ -13,41 +13,33 @@ class TenantMiddleware
     public function handle(Request $request, Closure $next)
     {
         $host = $request->getHost();
-        $domain = config('app.domain');
+        $baseDomain = config('app.domain', 'arzavo.test');
 
-        // 🔍 Find subdomain
-        $subdomain = str_replace("." . $domain, "", $host);
+        // Skip main platform domain
+        if ($host === $baseDomain || $host === "www.$baseDomain") {
+            return $next($request);
+        }
 
-        // ✅ Tenant Load Before Auth
-        $tenant = Tenant::where('subdomain', $subdomain)->first();
+        $tenant = Tenant::where('subdomain', $host)
+            ->orWhere(function ($query) use ($host) {
+                $query->where('custom_domain', $host)
+                    ->where('domain_verified', true);
+            })
+            ->first();
 
         if (!$tenant) {
-            abort(404, "Tenant not found");
+            abort(404, "Tenant not found for domain: $host");
         }
 
-        // ✅ Attach active tenant everywhere
+        // ✅ IMPORTANT: Tenant domain ke liye session configure karo
+        config([
+            'session.cookie' => 'tenant_session_' . md5($host),
+            'session.domain' => $host,
+        ]);
+
         app()->instance('currentTenant', $tenant);
         session(['tenant_id' => $tenant->id]);
-
-        // ✅ Add tenant in URL defaults for route()
-        URL::defaults([
-            'tenant' => $tenant->subdomain
-        ]);
         URL::forceRootUrl($request->getSchemeAndHttpHost());
-
-        $request->route()->forgetParameter('tenant');
-
-
-        // ✅ If user is logged in → authorization check
-        if (Auth::check()) {
-            if (!Auth::user()->tenants()->where('id', $tenant->id)->exists()) {
-                abort(403, "You are not authorized for this tenant");
-            }
-
-            if (!$tenant->is_active) {
-                abort(403, "School is inactive or suspended");
-            }
-        }
 
         return $next($request);
     }

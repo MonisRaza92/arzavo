@@ -7,20 +7,22 @@ use Illuminate\Support\Facades\Auth;
 
 class Authenticate
 {
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $guard = null)
     {
-        $domain = trim(config('app.domain'));
-        $host = trim($request->getHost());
+        $mainDomain = trim(config('app.domain'));
+        $currentDomain = trim($request->getHost());
 
-        $subdomain = str_replace("." . $domain, '', $host);
-
-        if (!Auth::check()) {
-
-            if ($subdomain !== $domain && $subdomain !== 'www' && $subdomain !== $host) {
-                return redirect()->route('tenant.login.form', ['tenant' => $subdomain]);
+        // ✅ FIX: GUARD SPECIFIC CHECK
+        if ($currentDomain === $mainDomain || $currentDomain === "www." . $mainDomain) {
+            // Main domain - web guard check
+            if (!Auth::guard('web')->check()) {
+                return redirect()->route('login.form');
             }
-
-            return redirect()->route('login.form');
+        } else {
+            // Tenant domain - tenant guard check  
+            if (!Auth::guard('tenant')->check()) {
+                return redirect('/account/login');
+            }
         }
 
         return $next($request);

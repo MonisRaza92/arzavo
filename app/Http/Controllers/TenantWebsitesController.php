@@ -14,7 +14,10 @@ class TenantWebsitesController extends Controller
 {
     public function index($slug = 'home') 
     {
-        $page = Page::where('slug', $slug)->firstOrFail();
+        $page = Page::where('slug', $slug)->first();
+        if (! $page) {
+            abort(404, 'Page not found');
+        }
 
         
         // Sirf active sections lao

@@ -1,4 +1,4 @@
-<div class="admin-navbar w-full fixed top-0 right-0 z-1000 flex items-center justify-between px-4 py-3 bg-primary border-bottom">
+<div class="admin-navbar w-full sticky top-0 right-0 z-1000 flex items-center justify-between px-4 py-3 bg-primary border-bottom">
     <a href="{{ route('tenant.home') }}">
         <img id="logo" src="{{ asset($customizes['logo'] ?? 'images/logo/arzavo-dark.png') }}" alt="Logo" class="logo">
     </a>
@@ -11,7 +11,7 @@
             <a href="{{ route('admin.tenants.index') }}" title="Manage Tenants" class="bg-invert text-invert logo aspect-square border-rounded flex items-center justify-center"><i class="fas fa-building-columns text-base"></i></a>
             <button title="Notifications" class="bg-invert hidden lg:block text-invert logo aspect-square border-rounded"><i class="fas fa-bell text-base"></i></button>
             <button class="flex items-center gap-2 btn uppercase font-bold border-rounded" onclick="document.getElementById('adminDropdown').classList.toggle('hidden');">
-                @if (Auth::user()->profile_picture) <img src="{{ asset(Auth::user()->profile_picture) }}" class="border-rounded logo aspect-square object-cover" alt="{{ Auth::user()->fname }}"> @else <h2 class="font-bold border-rounded text-xl flex justify-center items-center logo aspect-square bg-invert text-invert">{{ strtoupper(substr(Auth::user()->fname, 0, 1)) }}</h2> @endif
+                @if ($user->profile_picture) <img src="{{ asset($user->profile_picture) }}" class="border-rounded logo aspect-square object-cover" alt="{{ $user->fname }}"> @else <h2 class="font-bold border-rounded text-xl flex justify-center items-center logo aspect-square bg-invert text-invert">{{ strtoupper(substr($user->fname, 0, 1)) }}</h2> @endif
             </button>
             <div id="adminDropdown" class="absolute right-0 top-2 mt-2 w-48 p-2 rounded-md hidden z-10 bg-primary">
                 <form id="logout-form" method="POST" action="{{ route('tenant.logout') }}" class="hidden">

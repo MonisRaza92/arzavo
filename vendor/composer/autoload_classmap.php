@@ -10,7 +10,7 @@ return array(
     'App\\Http\\Controllers\\Admin\\ContentsController' => $baseDir . '/app/Http/Controllers/Admin/ContentsController.php',
     'App\\Http\\Controllers\\Admin\\CourseController' => $baseDir . '/app/Http/Controllers/Admin/CourseController.php',
     'App\\Http\\Controllers\\Admin\\CustomizesController' => $baseDir . '/app/Http/Controllers/Admin/CustomizesController.php',
-    'App\\Http\\Controllers\\Admin\\DomainVerificationController' => $baseDir . '/app/Http/Controllers/Admin/DomainVerificationController.php',
+    'App\\Http\\Controllers\\Admin\\DomainController' => $baseDir . '/app/Http/Controllers/Admin/DomainController.php',
     'App\\Http\\Controllers\\Admin\\FeePaymentsController' => $baseDir . '/app/Http/Controllers/Admin/FeePaymentsController.php',
     'App\\Http\\Controllers\\Admin\\FeePlansController' => $baseDir . '/app/Http/Controllers/Admin/FeePlansController.php',
     'App\\Http\\Controllers\\Admin\\ImagesController' => $baseDir . '/app/Http/Controllers/Admin/ImagesController.php',

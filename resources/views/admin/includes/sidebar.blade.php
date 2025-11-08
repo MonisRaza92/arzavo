@@ -1,5 +1,5 @@
 <div id="adminMobileMenu" class="admin-sidebar -translate-x-full lg:-translate-x-0 transition-all duration-300 ease-in-out w-[260px] h-full fixed top-0 left-0 overflow-y-auto p-4 pt-0 pb-10 z-9 scrollbar bg-primary border-right" style="margin-top: calc( var(--logo-size) + 14px);">
-    <div class="sticky top-0 pt-4 z-9 bg-primary">
+    <div class="sticky top-0 z-9 bg-primary pt-6">
         <div class="school-coaching-name relative mb-2">
             <label for="school_coaching" class="text-xs absolute left-2 -top-2 px-1 text-secondary bg-primary">School/Coaching</label>
             <select name="school_coaching" id="school_coaching" class="mt-2 block w-full border-rounded p-2 border-primary">

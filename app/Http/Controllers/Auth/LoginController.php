@@ -25,7 +25,7 @@ class LoginController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::guard('web')->attempt($credentials)) {
             // Authentication passed
             $user = Auth::user();
 
@@ -49,39 +49,9 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-
-            $host = request()->getHost();
-            $domain = config('app.domain');
-
-            // ✅ Extract Subdomain
-            $subdomain = $host === $domain ? null : str_replace("." . $domain, "", $host);
-
-            // ✅ Agar subdomain mil raha hai → Admin Dashboard
-            if ($subdomain) {
-
-                // Tenant exist check
-                $tenant = Auth::user()->tenants()
-                    ->where('subdomain', $subdomain)
-                    ->first();
-
-                // Agar subdomain linked hai admin se ✅
-                if ($tenant) {
-                    return redirect()->route('admin.dashboard')
-                        ->getTargetUrl();
-                }
-
-                // Agar admin ka tenant nahi → Index pe bhejo
-                return redirect()->route('admin.tenants.index')
-                    ->getTargetUrl();
-            }
-
-            // ✅ Agar subdomain nahi hai → Tenant List Page
-            return redirect()->route('admin.tenants.index')
-                ->getTargetUrl();
+        if (Auth::user()->role === 'admin') {
+            return route('admin.tenants.index');
         }
-
-
         if (Auth::user()->role === 'teacher') {
             return '/teacher';
         }
@@ -127,8 +97,9 @@ class LoginController extends Controller
             'status' => 'active', // Default status
         ]);
 
-        // Log the user in
-        Auth::login($user);
+        // Log the user in using the web guard and regenerate the session
+        Auth::guard('web')->login($user);
+        $request->session()->regenerate();
 
         // Redirect to the appropriate dashboard
         return redirect($this->redirectTo());
@@ -157,21 +128,10 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        // Save tenant before logout (because Auth::user() hide after logout)
-        $tenant = Auth::user()->tenant->subdomain ?? null;
-
-        Auth::logout();
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        $domain = config('app.domain');
-
-        if ($tenant) {
-            // If user belonged to tenant → redirect to tenant public home
-            return redirect()->away("http://{$tenant}.{$domain}");
-        }
-
-        // Global redirect
-        return redirect('/');
+        return redirect()->route('home');
     }
 }

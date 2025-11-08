@@ -23,12 +23,15 @@ class TenantController
             'user_id' => 'required',
             'name' => 'required|string|max:255',
             'subdomain' => 'required|string|unique:tenants,subdomain',
+            'custom_domain' => 'nullable|string|unique:tenants,custom_domain',
         ]);
 
         $tenant = Tenant::create([
             'user_id' => $request->user_id,
             'name' => $request->name,
-            'subdomain' => $request->subdomain,
+            'subdomain' => $request->subdomain . '.' . config('app.domain'),
+            'custom_domain' => $request->custom_domain ?? '',
+            'domain_verified' => false,
             'is_active' => true,
         ]);
         // ✅ Update Owner User Tenant ID

@@ -646,7 +646,7 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'App\\Http\\Controllers\\Admin\\ContentsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ContentsController.php',
         'App\\Http\\Controllers\\Admin\\CourseController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CourseController.php',
         'App\\Http\\Controllers\\Admin\\CustomizesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CustomizesController.php',
-        'App\\Http\\Controllers\\Admin\\DomainVerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/DomainVerificationController.php',
+        'App\\Http\\Controllers\\Admin\\DomainController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/DomainController.php',
         'App\\Http\\Controllers\\Admin\\FeePaymentsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/FeePaymentsController.php',
         'App\\Http\\Controllers\\Admin\\FeePlansController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/FeePlansController.php',
         'App\\Http\\Controllers\\Admin\\ImagesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ImagesController.php',

@@ -5,16 +5,20 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use App\Models\Tenant;
 
 class TenantLoginController
 {
     public function login()
     {
-        if (Auth::check()) {
+        // ✅ TENANT GUARD CHECK KARO
+        if (Auth::guard('tenant')->check()) {
             return redirect($this->redirectTo());
         }
         return view('auth.tenants.login');
     }
+
     public function loginHandle(Request $request)
     {
         // Validate the request data
@@ -22,21 +26,20 @@ class TenantLoginController
             'email' => 'required|string|email',
             'password' => 'required|string|min:8',
         ]);
+
         $credentials = $request->only('email', 'password');
+       
 
-        if (Auth::attempt($credentials)) {
+        // ✅ TENANT GUARD USE KARO
+        if (Auth::guard('tenant')->attempt($credentials)) {
             // Authentication passed
-            $user = Auth::user();
+            $user = Auth::guard('tenant')->user();
 
-            if ($user->status === 'suspended') {
-                Auth::logout();
-                $siteName = $settings['site_name'] ?? 'your tenant';
-                return redirect()->route('login-form')->withErrors([
-                    'email' => "Your account is suspended. Please contact {$siteName} support for help.",
-                ]);
+            // Add null check before updating
+            if ($user) {
+                $user->update(['last_login' => now()]);
             }
 
-            $user->update(['last_login' => now(), 'status' => 'active']);
             return redirect()->intended($this->redirectTo());
         }
 
@@ -48,54 +51,32 @@ class TenantLoginController
 
     public function redirectTo()
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        // ✅ TENANT GUARD SE USER GET KARO
+        $user = Auth::guard('tenant')->user();
 
-            $host = request()->getHost();
-            $domain = config('app.domain');
+        if (!$user) return url('/');
 
-            // ✅ Extract Subdomain
-            $subdomain = $host === $domain ? null : str_replace("." . $domain, "", $host);
-
-            // ✅ Agar subdomain mil raha hai → Admin Dashboard
-            if ($subdomain) {
-
-                // Tenant exist check
-                $tenant = Auth::user()->tenants()
-                    ->where('subdomain', $subdomain)
-                    ->first();
-
-                // Agar subdomain linked hai admin se ✅
-                if ($tenant) {
-                    return redirect()->route('admin.dashboard')
-                        ->getTargetUrl();
-                }
-
-                // Agar admin ka tenant nahi → Index pe bhejo
-                return redirect()->route('admin.tenants.index')
-                    ->getTargetUrl();
-            }
-
-            // ✅ Agar subdomain nahi hai → Tenant List Page
-            return redirect()->route('admin.tenants.index')
-                ->getTargetUrl();
+        switch ($user->role) {
+            case 'admin':
+                return url('/admin/dashboard');
+            case 'teacher':
+                return url('/teacher');
+            case 'student':
+                return url('/student');
+            default:
+                return url('/');
         }
-
-
-        if (Auth::user()->role === 'teacher') {
-            return '/teacher';
-        }
-        if (Auth::user()->role === 'student') {
-            return '/student';
-        }
-        return '/';
     }
+
     public function register()
     {
-        if (Auth::check()) {
+        // ✅ TENANT GUARD CHECK KARO
+        if (Auth::guard('tenant')->check()) {
             return redirect($this->redirectTo());
         }
         return view('auth.tenants.register');
     }
+
     public function registerHandle(Request $request)
     {
         // Validate the request data
@@ -104,15 +85,9 @@ class TenantLoginController
             'lname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'number' => 'required|string|max:15|unique:users',
-            'password' => 'required|string|min:8|',
+            'password' => 'required|string|min:8',
             'role' => 'string',
-
         ]);
-        $errors = [];
-        if (!empty($errors)) {
-            return back()->withErrors($errors)->withInput();
-        }
-
 
         // Create a new user
         $user = User::create([
@@ -126,12 +101,14 @@ class TenantLoginController
             'status' => 'active', // Default status
         ]);
 
-        // Log the user in
-        Auth::login($user);
+        // ✅ TENANT GUARD MEIN LOGIN KARO
+        Auth::guard('tenant')->login($user);
+        $request->session()->regenerate();
 
         // Redirect to the appropriate dashboard
         return redirect($this->redirectTo());
     }
+
     private function generateUniqueUsername($fname, $lname)
     {
         // Remove spaces and convert to lowercase
@@ -152,25 +129,13 @@ class TenantLoginController
         return $username;
     }
 
-
-
     public function logout(Request $request)
     {
-        // Save tenant before logout (because Auth::user() hide after logout)
-        $tenant = Auth::user()->tenant->subdomain ?? null;
-
-        Auth::logout();
+        // ✅ TENANT GUARD SE LOGOUT KARO
+        Auth::guard('tenant')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        $domain = config('app.domain');
-
-        if ($tenant) {
-            // If user belonged to tenant → redirect to tenant public home
-            return redirect()->away("http://{$tenant}.{$domain}");
-        }
-
-        // Global redirect
         return redirect('/');
     }
 }
