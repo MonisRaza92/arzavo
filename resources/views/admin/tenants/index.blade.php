@@ -46,7 +46,7 @@
                     <div>
                         <strong class="text-secondary text-xs leading-none">Subdomain:</strong><br>
                         <a target="_blank"
-                            href="http://{{$tenant->subdomain}}"
+                            href="https://{{$tenant->subdomain}}"
                             class="text-xs font-medium text-indigo-600 leading-none hover:underline">
                             {{ $tenant->subdomain }}
                         </a>
@@ -63,7 +63,7 @@
 
                         @if($tenant->domain)
                         <a target="_blank"
-                            href="http://{{$tenant->domain}}"
+                            href="https://{{$tenant->domain}}"
                             class="text-xs font-medium text-indigo-600 leading-none hover:underline">
                             {{ $tenant->domain }}
                         </a>
@@ -427,12 +427,27 @@
                             popup.classList.add("hidden");
                         });
 
-                        // Verify Domain (AJAX)
+                        // Verify Domain (AJAX) - Updated to pass domain as parameter
                         popupVerifyBtn.addEventListener("click", function() {
+                            const domain = customDomainInput.value.trim();
+
+                            if (!domain) {
+                                alert("⚠️ Please enter a domain before verifying.");
+                                return;
+                            }
+
                             verifyStatus.textContent = "⏳ Verifying domain...";
                             verifyStatus.classList.add("text-gray-500");
 
-                            fetch(`{{ route('admin.domain.verify', ':tenantId') }}`.replace(':tenantId', '{{ Auth::user()->id }}'))
+                            // Create form data to send the domain
+                            const formData = new FormData();
+                            formData.append('domain', domain);
+                            formData.append('_token', '{{ csrf_token() }}');
+
+                            fetch('{{ route("admin.domain.verify") }}', {
+                                    method: 'POST',
+                                    body: formData
+                                })
                                 .then(res => res.json())
                                 .then(data => {
                                     if (data.message.includes("✅")) {

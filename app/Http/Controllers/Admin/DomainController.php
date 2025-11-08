@@ -7,28 +7,36 @@ use Illuminate\Http\Request;
 
 class DomainController
 {
-    public function verify(Request $request, $tenantId)
+    public function verify(Request $request)
     {
-        $tenant = Tenant::findOrFail($tenantId);
+        $request->validate([
+            'domain' => 'required|string'
+        ]);
 
-        if (!$tenant->domain) {
-            return response()->json(['message' => 'No custom domain configured.'], 400);
-        }
+        $domain = $request->input('domain');
 
-        $records = dns_get_record($tenant->domain, DNS_CNAME);
+        // Clean the domain - remove protocol and www if present
+        $domain = str_replace(['http://', 'https://', 'www.'], '', $domain);
 
-        foreach ($records as $record) {
-            if (isset($record['target']) && str_contains($record['target'], 'verify.' . config('app.domain'))) {
-                $tenant->update([
-                    'domain_verified' => true,
-                    'domain_verified_at' => now(),
-                ]);
+        // Remove trailing slashes
+        $domain = rtrim($domain, '/');
 
-                return response()->json(['message' => '✅ Domain verified successfully.']);
+        try {
+            $records = dns_get_record($domain, DNS_CNAME);
+
+            foreach ($records as $record) {
+                if (isset($record['target']) && str_contains($record['target'], 'verify.' . config('app.domain'))) {
+                    // Store verification status in session since tenant doesn't exist yet
+                    session(['domain_verified' => true, 'verified_domain' => $domain]);
+
+                    return response()->json(['message' => '✅ Domain verified successfully.']);
+                }
             }
-        }
 
-        return response()->json(['message' => '❌ Verification failed. DNS record not found.']);
+            return response()->json(['message' => '❌ Verification failed. DNS record not found.'], 400);
+        } catch (\Exception $e) {
+            return response()->json(['message' => '❌ Error verifying domain: ' . $e->getMessage()], 500);
+        }
     }
 
     public function connect(Request $request, $tenantId)
