@@ -11,7 +11,7 @@ class DomainController
     {
         $tenant = Tenant::findOrFail($tenantId);
 
-        if (! $tenant->domain) {
+        if (!$tenant->domain) {
             return response()->json(['message' => 'No custom domain configured.'], 400);
         }
 

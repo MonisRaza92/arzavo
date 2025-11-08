@@ -119,7 +119,7 @@
                                                 </div>
                                                 <div>
                                                     <strong>Record 2 - Verification (CNAME Record):</strong><br>
-                                                    <code>Type: CNAME | Name: verify | Value: verify.arzavo.com | TTL: 3600</code>
+                                                    <code>Type: CNAME | Name: verify | Value: verify.{{config('app.domain')}} | TTL: 3600</code>
                                                 </div>
                                                 <div>
                                                     <strong>Record 3 - WWW Domain (A Record):</strong><br>
@@ -365,7 +365,7 @@
                                         </div>
                                         <div>
                                             <strong>Record 2 - Verification (CNAME Record):</strong><br>
-                                            <code>Type: CNAME | Name: verify | Value: verify.arzavo.com | TTL: 3600</code>
+                                            <code>Type: CNAME | Name: verify | Value: verify.{{config('app.domain')}} | TTL: 3600</code>
                                         </div>
                                         <div>
                                             <strong>Record 3 - WWW Domain (A Record):</strong><br>
