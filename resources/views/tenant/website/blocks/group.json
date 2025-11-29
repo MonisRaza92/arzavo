@@ -1,0 +1,142 @@
+{
+    "type": "group",
+    "name": "Group",
+    "icon": "fa-object-group",
+    "order": 5,
+    "category": "Basic",
+    "max_blocks": 5,
+    "allowed_blocks": ["heading", "text", "image", "button", "divider", "logo", "group", "icon"],
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "desktop_direction",
+            "label": "Desktop Direction",
+            "type": "radio",
+            "options": ["vertical", "horizontal"],
+            "default": "vertical"
+        },
+        {
+            "key": "mobile_direction",
+            "label": "Mobile Direction",
+            "type": "radio",
+            "options": ["vertical", "horizontal"],
+            "default": "vertical"
+        },
+        {
+            "key": "alignment",
+            "label": "Alignment",
+            "type": "radio",
+            "options": ["start", "center", "end"],
+            "default": "start"
+        },
+        {
+            "key": "position",
+            "label": "Position",
+            "type": "radio",
+            "options": ["start", "center", "end"],
+            "default": "start"
+        },
+        {
+            "key": "gap",
+            "label": "Gap",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "size",
+            "label": "Section Size",
+            "type": "radio",
+            "options": ["fit", "full", "custom"],
+            "default": "fit"
+        },
+        {
+            "key": "custom_size",
+            "label": "Custom Section Size",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100,
+            "help": "Set custom size in percentage if not auto"
+        },
+        {
+            "key": "height",
+            "label": "Height",
+            "type": "radio",
+            "options": ["fit", "full", "custom"],
+            "default": "fit"
+        },
+        {
+            "key": "custom_height",
+            "label": "Custom Height",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100,
+            "help": "Set custom height in view height if not auto"
+        },
+        {
+            "key": "border",
+            "label": "Border",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "disable"
+        },
+        {
+            "key": "custom_border_width",
+            "label": "Custom Border Width",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "disable"
+        },
+        {
+            "key": "custom_border_radius",
+            "label": "Custom Border Radius",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        }
+    ]
+}

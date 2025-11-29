@@ -1,0 +1,130 @@
+{
+    "type": "header",
+    "name": "Header: Navbar",
+    "icon": "fa-bars",
+    "order": 2,
+    "Page": ["global"],
+    "category": "Header",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "navbar_behavior",
+            "label": "Navbar Behavior",
+            "type": "radio",
+            "options": ["sticky", "scroll-up"],
+            "default": "sticky"
+        },
+        {
+            "key": "navbar_height",
+            "label": "Navbar Height",
+            "type": "select",
+            "options": ["compact", "standard", "spacious"],
+            "default": "standard"
+        },
+        {
+            "key": "logo_size",
+            "label": "Logo Size",
+            "type": "range",
+            "default": 35,
+            "min": 20,
+            "max": 70,
+            "step": 1
+        },
+        {
+            "key": "divider",
+            "label": "Divider Bottom",
+            "type": "radio",
+            "default": "enable",
+            "options": ["enable", "disable"]
+        },
+        {
+            "key": "links_position",
+            "label": "Links Position",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "links_spacing",
+            "label": "Links Spacing",
+            "type": "radio",
+            "default": "normal",
+            "options": ["narrow", "normal", "wide"]
+        },
+        {
+            "key": "font_size",
+            "label": "Font Size",
+            "type": "radio",
+            "options": ["small", "medium", "large"],
+            "default": "small"
+        },
+        {
+            "key": "font_weight",
+            "label": "Font Weight",
+            "type": "radio",
+            "options": ["normal", "medium", "bold"],
+            "default": "normal"
+        },
+        {
+            "key": "text_transform",
+            "label": "Text Transform",
+            "type": "radio",
+            "options": ["capitalize", "uppercase"],
+            "default": "capitalize"
+        },
+        {
+            "key": "icon_style",
+            "label": "Icon Style",
+            "type": "radio",
+            "options": ["regular", "solid"],
+            "default": "regular"
+        },
+        {
+            "key": "admission_form_icon",
+            "label": "Admission Form Icon",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "navlinks",
+            "label": "Navigation Links",
+            "type": "array",
+            "value": ["home", "about", "contact"]
+        },
+        {
+            "key": "mobile_menu",
+            "label": "Mobile Menu",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "logo_position",
+            "label": "Logo Position (Mobile)",
+            "type": "radio",
+            "options": ["left", "center"],
+            "default": "left"
+        },
+        {
+            "key": "navlinks_mobile",
+            "label": "Navigation Links (Mobile)",
+            "type": "array",
+            "value": ["home", "about", "contact"]
+        },
+        {
+            "key": "social_icons",
+            "label": "Social Icons (Mobile)",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        }
+    ]
+}

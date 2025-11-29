@@ -1,0 +1,40 @@
+{
+    "type": "announcement_bar",
+    "name": "Announcement Bar",
+    "icon": "fa-bullhorn",
+    "order": 1,
+    "category": "Header",
+    "page": "home",
+    "max_blocks": 1,
+    "allowed_blocks": ["announcement"],
+    "default_blocks": ["announcement"],
+    "fields": [
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "padding",
+            "label": "Vertical Spacing",
+            "type": "range",
+            "default": 1,
+            "min": 0,
+            "max": 4
+        },
+        {
+            "key": "divider",
+            "label": "Divider Bottom",
+            "type": "radio",
+            "default": "enable",
+            "options": ["enable", "disable"]
+        },
+        {
+            "key": "bar_hide_btn",
+            "label": "Bar Hide Button",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        }
+    ]
+}

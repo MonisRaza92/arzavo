@@ -1,0 +1,212 @@
+{
+    "type": "button",
+    "name": "Button",
+    "icon": "fa-arrow-pointer",
+    "order": 3,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "text",
+            "label": "Button Text",
+            "type": "text",
+            "default": "Click Here",
+            "placeholder": "Enter button text"
+        },
+        {
+            "key": "url",
+            "label": "Button URL",
+            "type": "link",
+            "default": "#",
+            "placeholder": "https://"
+        },
+        {
+            "key": "icon",
+            "label": "Button Icon",
+            "type": "select",
+            "options": [
+                "none",
+                "arrow-right",
+                "arrow-left",
+                "arrow-up",
+                "arrow-down",
+                "check",
+                "times",
+                "plus",
+                "minus",
+                "shopping-cart",
+                "heart",
+                "star",
+                "download",
+                "info-circle",
+                "external-link-alt",
+                "cursor-pointer",
+                "paper-plane",
+                "phone",
+                "envelope",
+                "search",
+                "user",
+                "cog",
+                "gift",
+                "lock",
+                "calendar",
+                "map-marker",
+                "camera",
+                "play",
+                "bell",
+                "cloud-download",
+                "thumbs-up",
+                "lightbulb",
+                "fire",
+                "rocket",
+                "music",
+                "coffee",
+                "leaf",
+                "smile",
+                "trophy",
+                "umbrella",
+                "wrench",
+                "bicycle"
+            ],
+            "default": "none"
+        },
+        {
+            "key": "icon_position",
+            "label": "Icon Position",
+            "type": "radio",
+            "options": ["left", "right"],
+            "default": "right"
+        },
+        {
+            "key": "icon_gap",
+            "label": "Icon Gap (px)",
+            "type": "range",
+            "default": 4,
+            "min": 0,
+            "max": 50,
+            "help": "Set gap between text and icon in px"
+        },
+        {
+            "key": "type",
+            "label": "Button Type",
+            "type": "select",
+            "options": ["primary", "secondary", "link"],
+            "default": "primary"
+        },
+        {
+            "key": "alignment",
+            "label": "Text Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "btn_new_tab",
+            "label": "Button Link",
+            "type": "switch",
+            "text": "Turn on to open link in new tab"
+        },
+        {
+            "key": "width_desktop",
+            "label": "Button Width (Desktop)",
+            "type": "select",
+            "options": ["fit", "full", "custom"],
+            "default": "fit"
+        },
+        {
+            "key": "custom_width_desktop",
+            "label": "Custom Width (Desktop) %",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100,
+            "help": "Set custom width in % only if 'custom' is selected in Button Width (Desktop)"
+        },
+        {
+            "key": "width_mobile",
+            "label": "Button Width (Mobile)",
+            "type": "select",
+            "options": ["fit", "full", "custom"],
+            "default": "full"
+        },
+        {
+            "key": "custom_width_mobile",
+            "label": "Custom Width (Mobile) %",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100,
+            "help": "Set custom width in % only if 'custom' is selected in Button Width (Mobile)"
+        },
+        {
+            "key": "border",
+            "label": "Button Border",
+            "type": "radio",
+            "options": ["enable", "disable", "custom"],
+            "default": "enable"
+        },
+        {
+            "key": "custom_border_width",
+            "label": "Custom Border Width (px)",
+            "type": "range",
+            "default": 1,
+            "min": 0,
+            "max": 20,
+            "help": "Set custom border width in px only if 'custom' is selected in Button Border"
+        },
+        {
+            "key": "radius",
+            "label": "Button Border Radius",
+            "type": "radio",
+            "options": ["enable", "disable", "custom"],
+            "default": "enable"
+        },
+        {
+            "key": "custom_radius_size",
+            "label": "Custom Border Radius Size (px)",
+            "type": "range",
+            "default": 4,
+            "min": 0,
+            "max": 100,
+            "help": "Set custom border radius size in px only if 'custom' is selected in Button Border Radius"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100,
+            "help": "Set margin top in px"
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100,
+            "help": "Set margin bottom in px"
+        },
+        {
+            "key": "margin_left",
+            "label": "Margin Left",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100,
+            "help": "Set margin left in px"
+        },
+        {
+            "key": "margin_right",
+            "label": "Margin Right",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100,
+            "help": "Set margin right in px"
+        }
+    ]
+}

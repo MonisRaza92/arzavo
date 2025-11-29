@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Models\Tenant;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use App\Models\Tenant;
+
+class User extends Authenticatable
+{
+    protected $connection = 'tenant';
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'banner',
+        'profile_picture',
+        'fname',
+        'lname',
+        'username',
+        'headline',
+        'number',
+        'email',
+        'dob',
+        'class_id',
+        'subject_id',
+        'address',
+        'city',
+        'state',
+        'country',
+        'pincode',
+        'about',
+        'password',
+        'role',
+        'status',
+        'last_login',
+        'email_verified_at',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    public function isStudent()
+    {
+        return $this->role === 'student';
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser()
+    {
+        return $this->role === 'user';
+    }
+    public function isTeacher()
+    {
+        return $this->role === 'teacher';
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Courses::class, 'user_id');
+    }
+
+    public function contents()
+    {
+        return $this->hasMany(Contents::class, 'user_id');
+    }
+    public function feePlans()
+    {
+        return $this->hasMany(FeePlans::class, 'student_id');
+    }
+    public function feePayments()
+    {
+        return $this->hasMany(FeePayments::class, 'student_id');
+    }
+    public function subject()
+    {
+        return $this->belongsTo(Subjects::class, 'subject_id');
+    }
+
+    public function class()
+    { // "class" reserved word hai
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
+}

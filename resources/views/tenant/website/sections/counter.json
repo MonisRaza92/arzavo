@@ -1,0 +1,283 @@
+{
+    "type": "counter",
+    "name": "Counter Section",
+    "icon": "fa-calculator",
+    "order": 12,
+    "page": ["home", "about", "contact", "product"],
+    "category": "Stats",
+    "color_scheme_id": 1,
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "counter_style",
+            "label": "Counter Style",
+            "type": "radio",
+            "options": ["minimal", "card"],
+            "default": "minimal"
+        },
+        {
+            "key": "columns",
+            "label": "Columns (in mobile view)",
+            "type": "radio",
+            "options": ["1", "2"],
+            "default": "1"
+        },
+        {
+            "key": "shadow",
+            "label": "Enable Shadow for Card Style",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "radius",
+            "label": "Border Radius (for Card Style)",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "counter_1_number",
+            "label": "Counter 1: Number",
+            "type": "text",
+            "default": "500"
+        },
+        {
+            "key": "counter_1_suffix",
+            "label": "Counter 1: Suffix",
+            "type": "text",
+            "default": "+"
+        },
+        {
+            "key": "counter_1_label",
+            "label": "Counter 1: Label",
+            "type": "text",
+            "default": "Happy Clients"
+        },
+        {
+            "key": "counter_1_icon",
+            "label": "Counter 1: Icon (Font Awesome)",
+            "type": "select",
+            "options": [
+                "fa-users",
+                "fa-graduation-cap",
+                "fa-book",
+                "fa-lightbulb",
+                "fa-laptop",
+                "fa-chalkboard",
+                "fa-microscope",
+                "fa-globe",
+                "fa-brain",
+                "fa-award",
+                "fa-chart-line",
+                "fa-project-diagram",
+                "fa-trophy",
+                "fa-star"
+            ],
+            "default": "fa-users"
+        },
+        {
+            "key": "counter_2_number",
+            "label": "Counter 2: Number",
+            "type": "text",
+            "default": "1100"
+        },
+        {
+            "key": "counter_2_suffix",
+            "label": "Counter 2: Suffix",
+            "type": "text",
+            "default": "+"
+        },
+        {
+            "key": "counter_2_label",
+            "label": "Counter 2: Label",
+            "type": "text",
+            "default": "Projects Done"
+        },
+        {
+            "key": "counter_2_icon",
+            "label": "Counter 2: Icon",
+            "type": "select",
+            "options": [
+                "fa-users",
+                "fa-graduation-cap",
+                "fa-book",
+                "fa-lightbulb",
+                "fa-laptop",
+                "fa-chalkboard",
+                "fa-microscope",
+                "fa-globe",
+                "fa-brain",
+                "fa-award",
+                "fa-chart-line",
+                "fa-project-diagram",
+                "fa-trophy",
+                "fa-star"
+            ],
+            "default": "fa-project-diagram"
+        },
+        {
+            "key": "counter_3_number",
+            "label": "Counter 3: Number",
+            "type": "text",
+            "default": "15"
+        },
+        {
+            "key": "counter_3_suffix",
+            "label": "Counter 3: Suffix",
+            "type": "text",
+            "default": "+"
+        },
+        {
+            "key": "counter_3_label",
+            "label": "Counter 3: Label",
+            "type": "text",
+            "default": "Years Experience"
+        },
+        {
+            "key": "counter_3_icon",
+            "label": "Counter 3: Icon",
+            "type": "text",
+            "options": [
+                "fa-users",
+                "fa-graduation-cap",
+                "fa-book",
+                "fa-lightbulb",
+                "fa-laptop",
+                "fa-chalkboard",
+                "fa-microscope",
+                "fa-globe",
+                "fa-brain",
+                "fa-award",
+                "fa-chart-line",
+                "fa-project-diagram",
+                "fa-trophy",
+                "fa-star"
+            ],
+
+            "default": "fa-trophy"
+        },
+        {
+            "key": "counter_4_number",
+            "label": "Counter 4: Number",
+            "type": "text",
+            "default": "98"
+        },
+        {
+            "key": "counter_4_suffix",
+            "label": "Counter 4: Suffix",
+            "type": "text",
+            "default": "%"
+        },
+        {
+            "key": "counter_4_label",
+            "label": "Counter 4: Label",
+            "type": "text",
+            "default": "Satisfaction Rate"
+        },
+        {
+            "key": "counter_4_icon",
+            "label": "Counter 4: Icon",
+            "type": "text",
+            "options": [
+                "fa-users",
+                "fa-graduation-cap",
+                "fa-book",
+                "fa-lightbulb",
+                "fa-laptop",
+                "fa-chalkboard",
+                "fa-microscope",
+                "fa-globe",
+                "fa-brain",
+                "fa-award",
+                "fa-chart-line",
+                "fa-project-diagram",
+                "fa-trophy",
+                "fa-star"
+            ],
+            "default": "fa-star"
+        },
+        {
+            "key": "show_icons",
+            "label": "Show Icons",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "animation_speed",
+            "label": "Animation Speed (seconds)",
+            "type": "range",
+            "default": 2,
+            "min": 1,
+            "max": 5
+        },
+        {
+            "key": "number_size",
+            "label": "Number Size",
+            "type": "select",
+            "options": ["small", "medium", "large", "extra-large"],
+            "default": "large"
+        },
+        {
+            "key": "alignment",
+            "label": "Text Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "container_width",
+            "label": "Container Width",
+            "type": "radio",
+            "options": ["full", "container"],
+            "default": "container"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top (px)",
+            "type": "range",
+            "default": 60,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom (px)",
+            "type": "range",
+            "default": 60,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "show_on",
+            "label": "Show Section On",
+            "type": "radio",
+            "options": ["desktop", "mobile", "both"],
+            "default": "both"
+        }
+    ]
+}

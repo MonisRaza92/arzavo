@@ -1,0 +1,151 @@
+{
+    "type": "image",
+    "name": "Image",
+    "icon": "fa-image",
+    "order": 4,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields":[
+        {
+            "key": "desktop_image_block",
+            "label": "Desktop Image",
+            "type": "image",
+            "default": "",
+            "placeholder": "Image for desktop"
+        },
+        {
+            "key": "mobile_image_block",
+            "label": "Mobile Image",
+            "type": "image",
+            "default": "",
+            "placeholder": "Image for mobile"
+        },
+        {
+            "key": "image_link",
+            "label": "Image Link",
+            "type": "link",
+            "default": "",
+            "placeholder": "https://"
+        },
+        {
+            "key": "link_new_tab",
+            "label": "Link Target",
+            "type": "switch",
+            "text": "Turn on to open link in new tab"
+        },
+        {
+            "key": "alt_text",
+            "label": "Alt Text",
+            "type": "text",
+            "default": "",
+            "placeholder": "Enter alt text for the image"
+        },
+        {
+            "key": "image_size",
+            "label": "Image Size",
+            "type": "radio",
+            "default": "full",
+            "options": [ "full", "custom"]
+        },
+        {
+            "key": "custom_image_size",
+            "label": "Custom Image Size",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "image_ratio",
+            "label": "Image Ratio",
+            "type": "select",
+            "options": ["auto", "portrait", "landscape", "square"],
+            "default": "auto"
+        },
+        {
+            "key": "image_fit",
+            "label": "Image Fit",
+            "type": "select",
+            "options": ["cover", "contain", "fill", "none", "scale-down"],
+            "default": "cover"
+        },
+        {
+            "key": "image_border",
+            "label": "Image Border",
+            "type": "radio",
+            "options": ["disable", "enable"],
+            "default": "disable"
+        },
+        {
+            "key": "image_border_radius",
+            "label": "Image Border Radius",
+            "type": "radio",
+            "options": ["disable", "enable", "custom"],
+            "default": "disable"
+        },
+        {
+            "key": "image_custom_radius",
+            "label": "Custom Border Radius (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "show_image",
+            "label": "Show Image On",
+            "type": "radio",
+            "options": ["desktop", "mobile", "both"],
+            "default": "both"
+        },
+        {
+            "key": "opacity",
+            "label": "Image Opacity %",
+            "type": "range",
+            "default": 100,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "image_shadow",
+            "label": "Image Shadow",
+            "type": "radio",
+            "options": ["disable", "enable"],
+            "default": "disable"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 100
+        }
+    ]
+}

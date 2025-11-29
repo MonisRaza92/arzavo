@@ -1,0 +1,93 @@
+{
+    "type": "wave_animation",
+    "name": "Wave Animation",
+    "icon": "fa-water",
+    "order": 2,
+    "page": ["home", "about", "contact"],
+    "category": "layout",
+    "color_scheme_id": 1,
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "section_height",
+            "label": "Section Height (px)",
+            "type": "range",
+            "default": 200,
+            "min": 100,
+            "max": 800
+        },
+        {
+            "key": "wave_direction",
+            "label": "Wave Direction",
+            "type": "radio",
+            "options": ["up", "down"],
+            "default": "up"
+        },
+        {
+            "key": "wave_speed",
+            "label": "Wave Speed (seconds)",
+            "type": "range",
+            "default": 10,
+            "min": 5,
+            "max": 20
+        },
+        {
+            "key": "wave_style",
+            "label": "Wave Style",
+            "type": "select",
+            "options": ["smooth", "sharp", "layered", "minimal"],
+            "default": "smooth"
+        },
+        {
+            "key": "wave_count",
+            "label": "Number of Waves",
+            "type": "radio",
+            "options": ["1", "2", "3"],
+            "default": "3"
+        },
+        {
+            "key": "enable_animation",
+            "label": "Enable Animation",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "reverse_animation",
+            "label": "Reverse Animation",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "disable"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 200
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom (px)",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 200
+        },
+        {
+            "key": "show_on",
+            "label": "Show Section On",
+            "type": "radio",
+            "options": ["desktop", "mobile", "both"],
+            "default": "both"
+        }
+    ]
+}

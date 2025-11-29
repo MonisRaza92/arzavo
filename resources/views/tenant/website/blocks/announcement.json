@@ -1,0 +1,39 @@
+{
+    "type": "announcement",
+    "name": "Announcement",
+    "icon": "fa-bell",
+    "order": 1,
+    "category": "Header",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "announcement",
+            "label": "Announcement Text",
+            "type": "text",
+            "default": "Welcome to our website!"
+        },
+        {
+            "key": "text_type",
+            "label": "Text Type",
+            "type": "radio",
+            "options": ["heading", "paragraph"],
+            "default": "heading"
+        },
+        {
+            "key": "font_size",
+            "label": "Font Size",
+            "type": "radio",
+            "options": ["small", "medium", "large"],
+            "default": "small"
+        },
+        {
+            "key": "font_weight",
+            "label": "Font Weight",
+            "type": "radio",
+            "options": ["normal", "bold"],
+            "default": "normal"
+        }
+    ]
+}

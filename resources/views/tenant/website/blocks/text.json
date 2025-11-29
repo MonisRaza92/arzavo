@@ -1,0 +1,72 @@
+{
+    "type": "text",
+    "name": "Text",
+    "icon": "fa-align-left",
+    "order": 2,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "text",
+            "label": "Text",
+            "type": "text",
+            "default": "Whether you run a school, coaching institute, training center, or college, ARZAVO helps you create a digital ecosystem that actually works for you. Automate repetitive tasks, deliver structured learning experiences, track growth effortlessly, and provide students with a smooth digital journey. Every feature is designed to save time, reduce manual effort, and help your institution scale with confidence",
+            "placeholder": "Enter your text here"
+        },
+        {
+            "key": "type",
+            "label": "Text Type",
+            "type": "select",
+            "options": ["paragraph", "secondary-text"],
+            "default": "paragraph"
+        },
+        {
+            "key": "width",
+            "label": "Width",
+            "type": "radio",
+            "options": ["fit", "full"],
+            "default": "fit"
+        },
+        {
+            "key": "alignment",
+            "label": "Text Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        }
+    ]
+}
