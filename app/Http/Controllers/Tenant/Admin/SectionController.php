@@ -17,7 +17,7 @@ class SectionController
 
         if (!$pageId) {
             return redirect()->route('admin.pages.index')
-                ->with('success', 'Page not found. Please create a page first.');
+                ->with('error', 'Page not found. Please create a page first.');
         }
 
         $page = Page::findOrFail($pageId);

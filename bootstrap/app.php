@@ -18,6 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'role'   => \App\Http\Middleware\RoleMiddleware::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
-    })->create();
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->renderable(function (\Throwable $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+            return back()->with('error', $e->getMessage());
+        });
+    })
+    ->create();

@@ -37,7 +37,7 @@ class ImagesController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Image added successfully');
+        return back()->with('success', 'Selected Image added successfully');
     }
 
     public function destroy($id)
