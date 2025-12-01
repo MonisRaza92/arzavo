@@ -29,7 +29,7 @@
                 id="newCustomDomain"
                 class="w-full border-primary border-rounded p-2 text-tertiary"
                 placeholder="e.g. school.com"
-                disabled
+                readonly
                 value="{{ $tenant->custom_domain }}"
             >
         </div>

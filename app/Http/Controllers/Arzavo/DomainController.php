@@ -15,7 +15,7 @@ class DomainController
 
         $domain = $request->domain;
 
-        $tenant = Tenant::where('domain', $domain)->firstOrFail();
+        $tenant = Tenant::where('custom_domain', $domain)->firstOrFail();
 
         // CHECK DNS → domain must point to server
         $serverIp = '3.80.86.193';
