@@ -22,12 +22,12 @@
         </p>
 
         <!-- Domain Input -->
-        <div>
+        <div class="hidden">
             <label class="block text-xs font-semibold text-secondary mb-1">Your Domain Name</label>
             <input 
                 type="text" 
                 id="newCustomDomain"
-                class="w-full border-primary border-rounded hidden p-2 text-tertiary"
+                class="w-full border-primary border-rounded p-2 text-tertiary"
                 placeholder="e.g. school.com"
                 disabled
                 value="{{ $tenant->custom_domain }}"

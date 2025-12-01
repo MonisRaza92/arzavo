@@ -7,33 +7,15 @@ use Illuminate\Http\Request;
 
 class DomainController
 {
-    // STEP 1 → CLEAN DOMAIN
-    private function cleanDomain($domain)
-    {
-        $domain = strtolower(trim($domain));
-
-        $domain = str_replace(['http://', 'https://'], '', $domain);
-        $domain = preg_replace('/^www\./', '', $domain);
-
-        return rtrim($domain, '/');
-    }
-
-    // STEP 2 → ADD domain + AUTO SSL
-    public function verifyDomain(Request $request, $tenantId)
+    public function verifyDomain(Request $request)
     {
         $request->validate([
             'domain' => 'required|string'
         ]);
 
-        $domain = $this->cleanDomain($request->domain);
+        $domain = $request->domain;
 
-        $tenant = Tenant::findOrFail($tenantId);
-
-        // Save domain in tenant table
-        $tenant->update([
-            'domain' => $domain,
-            'domain_verified' => false,
-        ]);
+        $tenant = Tenant::where('domain', $domain)->firstOrFail();
 
         // CHECK DNS → domain must point to server
         $serverIp = '3.80.86.193';
