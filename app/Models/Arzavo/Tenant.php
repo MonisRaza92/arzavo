@@ -70,12 +70,14 @@ class Tenant extends Model
      */
     public function getUrlAttribute()
     {
-        if ($this->custom_domain) {
+        // Custom Domain (school.com)
+        if ($this->custom_domain && $this->domain_verified) {
             return "https://{$this->custom_domain}";
         }
 
+        // Subdomain (tenant.arzavo.in)
         if ($this->subdomain) {
-            return "https://{$this->subdomain}.arzavo.com";
+            return "https://{$this->subdomain}." . config('app.domain');
         }
 
         return null;

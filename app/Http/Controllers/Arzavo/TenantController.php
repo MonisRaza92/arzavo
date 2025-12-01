@@ -30,7 +30,7 @@ class TenantController
                 Rule::unique('tenants', 'subdomain'),
             ],
             'custom_domain' => [
-                'required',
+                'nullable',
                 'string',
                 'max:50',
                 Rule::unique('tenants', 'custom_domain')

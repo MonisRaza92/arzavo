@@ -5,7 +5,7 @@ namespace App\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\BelongsToTenant;
 
-class page extends Model
+class Page extends Model
 {
     protected $connection = 'tenant';
     protected $fillable = [

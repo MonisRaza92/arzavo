@@ -19,7 +19,7 @@ class DomainController
     }
 
     // STEP 2 → ADD domain + AUTO SSL
-    public function addDomain(Request $request, $tenantId)
+    public function verifyDomain(Request $request, $tenantId)
     {
         $request->validate([
             'domain' => 'required|string'

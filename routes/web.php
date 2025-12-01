@@ -39,8 +39,7 @@ Route::domain(config('app.domain'))->group(function () {
         //Admin Tenant Routes
         Route::resource('tenants', TenantController::class);
         Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
-        Route::get('/verify-domain/{tenant}', [DomainController::class, 'verify'])->name('domain.verify');
-        Route::get('/connect-domain/{tenant}', [DomainController::class, 'connect'])->name('domain.connect');
+        Route::get('/verify-domain/{tenant}', [DomainController::class, 'verifyDomain'])->name('domain.verify');
     });
 });
 
