@@ -1,175 +1,203 @@
 <!-- 🔐 Connect Domain Popup -->
 <div id="connectDomainPopup-{{ $tenant->id }}"
-    class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    
-    <div class="bg-white border-rounded w-full max-w-lg max-h-[90vh] overflow-auto scrollbar p-6 relative animate-fadeIn">
+    class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+    <div class="bg-white border-rounded w-full max-w-4xl p-6 md:h-11/12 h-dvh relative overflow-auto animate-fadeIn shadow-lg">
 
         <!-- Close Button -->
         <button id="closeDomainPopup"
-            class="absolute right-3 top-3 text-gray-500 hover:text-black text-2xl">
+            class="absolute right-4 top-4 text-gray-500 hover:text-black text-2xl">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
-        <!-- Title -->
-        <h2 class="text-xl font-bold text-primary mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-globe"></i> Connect Your Domain
-        </h2>
-
-        <!-- Subtitle -->
-        <p class="text-sm text-gray-600 leading-relaxed mb-4">
-            Connect your own domain (like <b>school.com</b>) and make your website accessible on your personal domain.  
-            Follow the steps below to complete the setup.
-        </p>
-
-        <!-- Domain Input -->
-        <div class="hidden">
-            <label class="block text-xs font-semibold text-secondary mb-1">Your Domain Name</label>
-            <input 
-                type="text" 
-                id="newCustomDomain"
-                class="w-full border-primary border-rounded p-2 text-tertiary"
-                placeholder="e.g. school.com"
-                readonly
-                value="{{ $tenant->custom_domain }}"
-            >
+        <!-- HEADER -->
+        <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-primary bg-opacity-10 border-rounded">
+                <i class="fa-solid fa-globe text-primary text-2xl"></i>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-primary">Connect Your Domain</h2>
+                <p class="text-sm text-gray-600">Make your website live on your own custom domain.</p>
+            </div>
         </div>
 
-        <!-- Step-by-step Guide -->
-        <div class="bg-gray-100 p-4 rounded-md text-sm text-gray-700 mb-4 leading-relaxed">
+        <!-- Steps Box -->
+        <div class="bg-gray-50 border border-primary border-opacity-30 rounded-md p-5 mb-6">
 
-            <h3 class="text-sm font-bold text-primary mb-2">Steps to Connect Your Domain</h3>
+            <h3 class="text-primary font-semibold text-sm mb-3">How to connect your domain</h3>
 
-            <ol class="list-decimal pl-4 space-y-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                <li>
-                    <strong>Log in to your Domain Provider</strong>
-                    <ul class="list-disc pl-5 mt-1 space-y-1">
+                <!-- Step 1 -->
+                <div class="bg-white border rounded-md p-4">
+                    <p class="font-bold text-primary text-sm mb-2">1. Open your domain provider</p>
+
+                    <ul class="text-xs text-gray-600 list-disc pl-4 space-y-1 mb-3">
                         <li>GoDaddy</li>
                         <li>Namecheap</li>
                         <li>Hostinger</li>
-                        <li>Cloudflare</li>
-                        <li>or whichever service you use.</li>
+                        <li>or whichever provider you use</li>
                     </ul>
-                </li>
 
-                <li>
-                    <strong>Open DNS Management / Zone Editor</strong><br>
-                    This is where you add and manage DNS records for your domain.
-                </li>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <p class="font-semibold text-primary">Inside your provider panel:</p>
 
-                <li>
-                    <strong>Add the following 3 DNS Records:</strong>
-                    <div class="bg-white p-3 rounded border mt-2 space-y-3">
+                        <p>• Go to <b>DNS Management</b> or <b>DNS Zone Editor</b></p>
+                        <p>• Sometimes it appears under:
+                            <span class="text-gray-700">
+                                <b>Domain Settings → Manage DNS</b>
+                            </span>
+                        </p>
 
-                        <div>
-                            <strong>Record 1 — Main Domain (A Record):</strong><br>
-                            <code class="text-xs">Type: A | Name: @ | Value: 3.80.86.193 | TTL: 3600</code>
+                        <p>• Look for buttons like:
+                            <span class="text-gray-700">
+                                <b>Add Record</b> / <b>Create New DNS Record</b>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <!-- Step 2 -->
+                <div class="bg-white border rounded-md p-4">
+                    <p class="font-bold text-primary text-sm mb-1">2. Add these DNS Records</p>
+
+                    <div class="space-y-2">
+
+                        <div class="bg-gray-50 border p-2 rounded-md text-xs">
+                            <strong>A Record:</strong><br>
+                            @ → 3.80.86.193
                         </div>
 
-                        <div>
-                            <strong>Record 2 — Verification (CNAME):</strong><br>
-                            <code class="text-xs">Type: CNAME | Name: verify | Value: verify.{{ config('app.domain') }} | TTL: 3600</code>
+                        <div class="bg-gray-50 border p-2 rounded-md text-xs">
+                            <strong>CNAME:</strong><br>
+                            verify → verify.{{ config('app.domain') }}
                         </div>
 
-                        <div>
-                            <strong>Record 3 — WWW Domain (A Record):</strong><br>
-                            <code class="text-xs">Type: A | Name: www | Value: 3.80.86.193 | TTL: 3600</code>
+                        <div class="bg-gray-50 border p-2 rounded-md text-xs">
+                            <strong>A Record (www):</strong><br>
+                            www → 3.80.86.193
                         </div>
 
                     </div>
-                </li>
+                </div>
 
-                <li>
-                    <strong>Wait for DNS propagation</strong><br>
-                    It usually takes 5–30 minutes but may take up to 24 hours.
-                </li>
-
-                <li>
-                    <strong>Click the "Verify Domain" button below</strong>  
-                    to confirm your domain connection.
-                </li>
-
-            </ol>
+            </div>
         </div>
 
         <!-- Domain Display -->
         <div class="bg-gray-50 border border-primary rounded-md p-3 mb-4">
             <p class="text-sm text-gray-700">
                 <strong>Domain to verify:</strong>
-                <span id="domainDisplay" class="text-primary">{{ $tenant->custom_domain ?? 'None' }}</span>
+                <span id="domainDisplay" class="text-primary font-semibold">
+                    {{ $tenant->custom_domain ?? 'None' }}
+                </span>
             </p>
         </div>
 
+        <!-- Status Box -->
+        <div id="statusBox" class="hidden p-3 border rounded-md mb-4"></div>
+
         <!-- Verify Button -->
         <button id="verifyNewDomainBtn"
-            class="w-full bg-invert text-invert font-semibold py-3 border-rounded transition text-center">
-            Verify Domain
+            class="w-full bg-invert text-invert font-semibold py-3 border-rounded transition flex justify-center items-center gap-2">
+            <span id="verifyBtnText">Verify Domain</span>
+            <span id="verifySpinner" class="hidden loader"></span>
         </button>
 
-        <!-- Status Message -->
-        <p id="domainVerifyStatus" class="text-center text-sm mt-3"></p>
     </div>
 </div>
 
+<style>
+    .loader {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid currentColor;
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const openBtn = document.getElementById("connectDomainBtn-{{ $tenant->id }}");
-    const popup = document.getElementById("connectDomainPopup-{{ $tenant->id }}");
-    const closeBtn = document.getElementById("closeDomainPopup");
-    const domainInput = document.getElementById("newCustomDomain");
-    const verifyBtn = document.getElementById("verifyNewDomainBtn");
-    const domainDisplay = document.getElementById("domainDisplay");
-    const statusMsg = document.getElementById("domainVerifyStatus");
+    document.addEventListener("DOMContentLoaded", function() {
+        const openBtn = document.getElementById("connectDomainBtn-{{ $tenant->id }}");
+        const popup = document.getElementById("connectDomainPopup-{{ $tenant->id }}");
+        const closeBtn = document.getElementById("closeDomainPopup");
+        const verifyBtn = document.getElementById("verifyNewDomainBtn");
+        const domainInput = document.getElementById("newCustomDomain");
+        const statusBox = document.getElementById("statusBox");
+        const btnText = document.getElementById("verifyBtnText");
+        const spinner = document.getElementById("verifySpinner");
 
-    if (!openBtn) return;
+        if (!openBtn) return;
 
-    openBtn.addEventListener("click", () => {
-        popup.classList.remove("hidden");
-        statusMsg.textContent = "";
-    });
+        function showStatus(type, message) {
+            statusBox.classList.remove("hidden");
+            statusBox.className = "p-3 border rounded-md mb-4";
 
-    closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
+            if (type === "success") {
+                statusBox.classList.add("border-green-500", "bg-green-50", "text-green-700");
+            } else if (type === "error") {
+                statusBox.classList.add("border-red-500", "bg-red-50", "text-red-700");
+            } else if (type === "wait") {
+                statusBox.classList.add("border-yellow-500", "bg-yellow-50", "text-yellow-700");
+            }
 
-    verifyBtn.addEventListener("click", function() {
-        const domain = domainInput.value.trim();
-        if (!domain) {
-            alert("⚠️ Please enter a domain first.");
-            return;
+            statusBox.innerHTML = message;
         }
 
-        statusMsg.textContent = "⏳ Verifying domain...";
-        statusMsg.className = "text-center text-sm text-gray-500";
+        function setLoading(isLoading) {
+            if (isLoading) {
+                verifyBtn.disabled = true;
+                spinner.classList.remove("hidden");
+                btnText.textContent = "Verifying...";
+            } else {
+                verifyBtn.disabled = false;
+                spinner.classList.add("hidden");
+                btnText.textContent = "Verify Domain";
+            }
+        }
 
-        fetch(`{{ route('domain.verify', $tenant->id) }}?domain=${domain}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    statusMsg.textContent = data.message;
-                    statusMsg.className = "text-center text-sm text-green-600";
+        openBtn.addEventListener("click", () => {
+            popup.classList.remove("hidden");
+            statusBox.classList.add("hidden");
+        });
 
-                    setTimeout(() => {
-                        popup.classList.add("hidden");
-                        window.location.reload();
-                    }, 1500);
-                } else {
-                    statusMsg.textContent = data.message;
-                    statusMsg.className = "text-center text-sm text-red-600";
-                }
-            })
-            .catch(() => {
-                statusMsg.textContent = "❌ Something went wrong. Please retry.";
-                statusMsg.className = "text-center text-sm text-red-600";
-            });
+        closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
+
+        verifyBtn.addEventListener("click", function() {
+            const domain = domainInput.value.trim();
+            if (!domain) return;
+
+            showStatus("wait", "⏳ Checking DNS & SSL... Please wait...");
+            setLoading(true);
+
+            fetch(`{{ route('domain.verify', $tenant->id) }}?domain=${domain}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    if (data.status === "rate_limited") {
+                        showStatus("error", `⚠️ SSL attempts exceeded.<br>Retry after: <b>${data.retry_ist}</b>`);
+                    } else if (data.status === "success") {
+                        showStatus("success", data.message);
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showStatus("error", data.message);
+                    }
+
+                    setLoading(false);
+                })
+                .catch(() => {
+                    showStatus("error", "❌ Something went wrong. Please retry.");
+                    setLoading(false);
+                });
+        });
     });
-});
 </script>
-
-<style>
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to   { opacity: 1; transform: scale(1); }
-}
-.animate-fadeIn {
-    animation: fadeIn 0.3s ease-in-out;
-}
-</style>

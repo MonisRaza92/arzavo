@@ -74,8 +74,8 @@
                             </span>
                             <div class="text-xs text-gray-500">
                                 <button type="button" id="connectDomainBtn-{{ $tenant->id }}"
-                                    class="text-indigo-600 hover:underline">
-                                    <i class="fa-solid fa-link"></i>
+                                    class="text-indigo-600 hover:underline font-semibold">
+                                    <i class="fa-solid fa-link text-[11px]"></i> Verify Domain
                                 </button>
                             </div>
                         </div>

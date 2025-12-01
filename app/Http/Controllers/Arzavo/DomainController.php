@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Arzavo;
 
 use App\Models\Arzavo\Tenant;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class DomainController
 {
@@ -13,59 +14,86 @@ class DomainController
             'domain' => 'required|string'
         ]);
 
-        $domain = $request->domain;
+        $domain = strtolower(trim($request->domain));
 
-        $tenant = Tenant::where('custom_domain', $domain)->firstOrFail();
+        // -----------------------------
+        // 1. Fetch Tenant
+        // -----------------------------
+        $tenant = Tenant::where('custom_domain', $domain)->first();
 
-        // CHECK DNS → domain must point to server
-        $serverIp = '3.80.86.193';
-        $dnsRecords = dns_get_record($domain, DNS_A);
+        if (! $tenant) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => "No tenant found for domain: <b>$domain</b>"
+            ], 404);
+        }
+
+        // -----------------------------
+        // 2. DNS Validation
+        // -----------------------------
+        $serverIp  = '3.80.86.193';
+        $dnsRecords = @dns_get_record($domain, DNS_A);
 
         if (empty($dnsRecords)) {
             return response()->json([
-                'status' => 'error',
-                'message' => "❌ No A-record found for $domain",
+                'status'  => 'error',
+                'message' => "No A-record found for <b>$domain</b>.<br>Add: A → $serverIp"
             ], 400);
         }
 
-        $pointsToUs = false;
-        foreach ($dnsRecords as $rec) {
-            if ($rec['ip'] === $serverIp) {
-                $pointsToUs = true;
-            }
-        }
+        $pointsToUs = collect($dnsRecords)->contains(fn($r) => ($r['ip'] ?? null) === $serverIp);
 
         if (! $pointsToUs) {
             return response()->json([
-                'status' => 'error',
-                'message' => "❌ Domain is not pointing to your server.  
-Add this DNS record first:  
-A → $serverIp",
+                'status'  => 'error',
+                'message' => "Domain is not pointing to server.<br><b>Fix DNS:</b><br>A → $serverIp"
             ], 400);
         }
 
-        // STEP 3 → RUN SSL SCRIPT
+        // -----------------------------
+        // 3. Run SSL Script
+        // -----------------------------
         $command = "sudo /usr/local/bin/tenant-ssl.sh {$domain} 2>&1";
-        $output  = shell_exec($command);
+        $output  = shell_exec($command) ?? '';
 
-        // SSL FAILURE
+        // -----------------------------
+        // 4. Detect Let's Encrypt Rate Limit
+        // -----------------------------
+        if (preg_match('/retry after (.*?) UTC/i', $output, $match)) {
+            $utcTime = $match[1];
+            $istTime = Carbon::parse($utcTime, 'UTC')->setTimezone('Asia/Kolkata')->format('d M Y, h:i A');
+
+            return response()->json([
+                'status'       => 'rate_limited',
+                'message'      => "Too many SSL attempts. Try again after:<br><b>$istTime IST</b>",
+                'retry_utc'    => $utcTime,
+                'retry_ist'    => $istTime,
+                'raw_output'   => $output,
+            ], 429);
+        }
+
+        // -----------------------------
+        // 5. Detect SSL Failure
+        // -----------------------------
         if (! str_contains($output, 'Successfully received certificate')) {
             return response()->json([
-                'status' => 'error',
-                'message' => '❌ SSL generation failed.',
-                'output' => $output
+                'status'    => 'error',
+                'message'   => "SSL generation failed.",
+                'raw_output' => $output
             ], 500);
         }
 
-        // STEP 4 → Mark domain verified
+        // -----------------------------
+        // 6. Mark Verified in Database
+        // -----------------------------
         $tenant->update([
-            'domain_verified' => true,
+            'domain_verified'    => true,
             'domain_verified_at' => now(),
         ]);
 
         return response()->json([
-            'status' => 'success',
-            'message' => "✅ Domain connected & SSL installed successfully!",
+            'status'  => 'success',
+            'message' => "Domain connected & SSL installed successfully!",
             'domain'  => $domain
         ]);
     }
