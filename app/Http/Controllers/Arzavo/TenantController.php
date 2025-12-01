@@ -88,7 +88,7 @@ class TenantController
     // Run tenant migrations & create admin user in tenant DB
     protected function initializeTenant($tenant, $mainUser)
     {
-        // Set tenant DB connection
+        // 1. Set tenant DB connection
         config([
             'database.connections.tenant' => [
                 'driver'   => 'mysql',
@@ -100,37 +100,29 @@ class TenantController
             ]
         ]);
 
-        // Reset cached DB connection
         DB::purge('tenant');
         DB::reconnect('tenant');
 
-        // Run tenant migrations
-        Artisan::call('migrate', [
-            '--database' => 'tenant',
-            '--path' => database_path('migrations/tenant'),
-            '--force' => true
+        // 2. Run tenant migrations
+        Artisan::call('tenant:migrate', [
+            'tenant_id' => $tenant->id,
+            '--seed'    => true, // ONLY for default tenant data
         ]);
 
-        // Run tenant seeder
-        Artisan::call('db:seed', [
-            '--class' => 'TenantSeeder',
-            '--database' => 'tenant',
-            '--force' => true
-        ]);
-
-        // Create admin user
+        // 3. Create tenant admin user
         DB::connection('tenant')->table('users')->insert([
             'fname'      => $mainUser->fname,
             'lname'      => $mainUser->lname,
             'email'      => $mainUser->email,
             'number'     => $mainUser->number,
             'username'   => $mainUser->username,
-            'password'   => $mainUser->password,
+            'password'   => $mainUser->password, // Already hashed
             'role'       => 'admin',
             'created_at' => now(),
-            'updated_at' => now(),
+            'updated_at' => now()
         ]);
     }
+
 
 
     public function update(Request $request, $id)
