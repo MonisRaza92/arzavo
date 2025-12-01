@@ -12,30 +12,67 @@
         --arzavo-heading-font-family: {{ $customizes['heading_font_family'] ?? '' }};
 
         --arzavo-heading-color: #000000;
+
+        /* ========================= */
+        /*           H1              */
+        /* ========================= */
         --arzavo-heading-1-font-size: {{ $customizes['heading_1_font_size'] ?? '40' }}px;
+        --arzavo-heading-1-font-size-tablet: {{ $customizes['heading_1_font_size_tablet'] ?? '32' }}px;
+        --arzavo-heading-1-font-size-mobile: {{ $customizes['heading_1_font_size_mobile'] ?? '26' }}px;
         --arzavo-heading-1-line-height: {{ $customizes['heading_1_line_height'] ?? '1.1' }};
         --arzavo-heading-1-text-transform: {{ $customizes['heading_1_text_transform'] ?? 'default' }};
         --arzavo-heading-1-font-weight: {{ $customizes['heading_1_text_weight'] ?? 'bold' }};
-        --arzavo-heading-2-font-size: {{ $customizes['heading_2_font_size'] ?? '40' }}px;
+
+        /* ========================= */
+        /*           H2              */
+        /* ========================= */
+        --arzavo-heading-2-font-size: {{ $customizes['heading_2_font_size'] ?? '36' }}px;
+        --arzavo-heading-2-font-size-tablet: {{ $customizes['heading_2_font_size_tablet'] ?? '30' }}px;
+        --arzavo-heading-2-font-size-mobile: {{ $customizes['heading_2_font_size_mobile'] ?? '24' }}px;
         --arzavo-heading-2-line-height: {{ $customizes['heading_2_line_height'] ?? '1.1' }};
         --arzavo-heading-2-text-transform: {{ $customizes['heading_2_text_transform'] ?? 'default' }};
         --arzavo-heading-2-font-weight: {{ $customizes['heading_2_text_weight'] ?? 'bold' }};
-        --arzavo-heading-3-font-size: {{ $customizes['heading_3_font_size'] ?? '40' }}px;
+
+        /* ========================= */
+        /*           H3              */
+        /* ========================= */
+        --arzavo-heading-3-font-size: {{ $customizes['heading_3_font_size'] ?? '32' }}px;
+        --arzavo-heading-3-font-size-tablet: {{ $customizes['heading_3_font_size_tablet'] ?? '26' }}px;
+        --arzavo-heading-3-font-size-mobile: {{ $customizes['heading_3_font_size_mobile'] ?? '22' }}px;
         --arzavo-heading-3-line-height: {{ $customizes['heading_3_line_height'] ?? '1.1' }};
         --arzavo-heading-3-text-transform: {{ $customizes['heading_3_text_transform'] ?? 'default' }};
         --arzavo-heading-3-font-weight: {{ $customizes['heading_3_text_weight'] ?? 'bold' }};
-        --arzavo-heading-4-font-size: {{ $customizes['heading_4_font_size'] ?? '40' }}px;
+
+        /* ========================= */
+        /*           H4              */
+        /* ========================= */
+        --arzavo-heading-4-font-size: {{ $customizes['heading_4_font_size'] ?? '28' }}px;
+        --arzavo-heading-4-font-size-tablet: {{ $customizes['heading_4_font_size_tablet'] ?? '24' }}px;
+        --arzavo-heading-4-font-size-mobile: {{ $customizes['heading_4_font_size_mobile'] ?? '20' }}px;
         --arzavo-heading-4-line-height: {{ $customizes['heading_4_line_height'] ?? '1.1' }};
         --arzavo-heading-4-text-transform: {{ $customizes['heading_4_text_transform'] ?? 'default' }};
         --arzavo-heading-4-font-weight: {{ $customizes['heading_4_text_weight'] ?? 'bold' }};
-        --arzavo-heading-5-font-size: {{ $customizes['heading_5_font_size'] ?? '40' }}px;
+
+        /* ========================= */
+        /*           H5              */
+        /* ========================= */
+        --arzavo-heading-5-font-size: {{ $customizes['heading_5_font_size'] ?? '24' }}px;
+        --arzavo-heading-5-font-size-tablet: {{ $customizes['heading_5_font_size_tablet'] ?? '20' }}px;
+        --arzavo-heading-5-font-size-mobile: {{ $customizes['heading_5_font_size_mobile'] ?? '18' }}px;
         --arzavo-heading-5-line-height: {{ $customizes['heading_5_line_height'] ?? '1.1' }};
         --arzavo-heading-5-text-transform: {{ $customizes['heading_5_text_transform'] ?? 'default' }};
         --arzavo-heading-5-font-weight: {{ $customizes['heading_5_text_weight'] ?? 'bold' }};
-        --arzavo-heading-6-font-size: {{ $customizes['heading_6_font_size'] ?? '40' }}px;
+
+        /* ========================= */
+        /*           H6              */
+        /* ========================= */
+        --arzavo-heading-6-font-size: {{ $customizes['heading_6_font_size'] ?? '20' }}px;
+        --arzavo-heading-6-font-size-tablet: {{ $customizes['heading_6_font_size_tablet'] ?? '18' }}px;
+        --arzavo-heading-6-font-size-mobile: {{ $customizes['heading_6_font_size_mobile'] ?? '16' }}px;
         --arzavo-heading-6-line-height: {{ $customizes['heading_6_line_height'] ?? '1.1' }};
         --arzavo-heading-6-text-transform: {{ $customizes['heading_6_text_transform'] ?? 'default' }};
         --arzavo-heading-6-font-weight: {{ $customizes['heading_6_text_weight'] ?? 'bold' }};
+
 
         
         --arzavo-paragraph-color: #525252;

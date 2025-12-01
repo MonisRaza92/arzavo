@@ -13,27 +13,28 @@
         'Structure' => [
         [
         'key' => 'container_width',
-        'label' => 'Container Width',
+        'label' => 'Website Max Width',
         'type' => 'select',
         'options' => [
         ['value'=>'1000','name'=>'Narrow (1000px)'],
         ['value'=>'1200','name'=>'Standard (1200px)'],
         ['value'=>'1400','name'=>'Wide (1400px)'],
-        ['value'=>'full','name'=>'Full Width (100%)'],
+        ['value'=>'1600','name'=>'Extra Wide (1600px)'],
         ],
         'value' => '1200'
         ],
         [
         'key' => 'global_padding',
-        'label' => 'Global Padding',
+        'label' => 'Global Side Gap',
         'type' => 'select',
         'options' => [
-        ['value'=>'0','name'=>'0px'],
-        ['value'=>'8','name'=>'8px'],
-        ['value'=>'16','name'=>'16px'],
-        ['value'=>'24','name'=>'24px'],
-        ['value'=>'32','name'=>'32px'],
-        ['value'=>'40','name'=>'40px']
+        ['value'=>'0','name'=>'None'],
+        ['value'=>'8','name'=>'Tight'],
+        ['value'=>'16','name'=>'Narrow'],
+        ['value'=>'24','name'=>'Normal'],
+        ['value'=>'32','name'=>'Spacious'],
+        ['value'=>'40','name'=>'Wide'],
+        ['value'=>'48','name'=>'Extra Wide']
         ],
         'value' => '16'
         ],

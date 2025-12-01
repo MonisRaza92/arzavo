@@ -58,7 +58,7 @@ body {
     width: 100% !important;
     overflow-x: hidden !important;
 }
-button{
+button {
     cursor: pointer;
 }
 .logo {
@@ -150,7 +150,7 @@ button{
 .border-rounded {
     border-radius: var(--border-rounded);
 }
-.hover-primary { 
+.hover-primary {
     transition: all 0.3s ease;
     &:hover {
         background-color: var(--bg-primary);
@@ -223,7 +223,8 @@ button{
     border-radius: var(--arzavo-border-radius);
 }
 .arzavo-shadow {
-    box-shadow: 0 2px var(--arzavo-shadow-blur) var(--arzavo-shadow-spread) var(--arzavo-shadow-color);
+    box-shadow: 0 2px var(--arzavo-shadow-blur) var(--arzavo-shadow-spread)
+        var(--arzavo-shadow-color);
 }
 .arzavo-heading-1 {
     color: var(--arzavo-heading-color);
@@ -291,7 +292,8 @@ button{
 .arzavo-primary-btn {
     background: var(--arzavo-primary-btn-background);
     color: var(--arzavo-primary-btn-text-color);
-    border: var(--arzavo-primary-btn-border-width) solid var(--arzavo-primary-btn-border-color);
+    border: var(--arzavo-primary-btn-border-width) solid
+        var(--arzavo-primary-btn-border-color);
     border-radius: var(--arzavo-primary-btn-shape);
     font-size: var(--arzavo-primary-btn-font-size);
     font-family: var(--arzavo-primary-btn-font-family);
@@ -309,7 +311,8 @@ button{
 .arzavo-secondary-btn {
     background: var(--arzavo-secondary-btn-background);
     color: var(--arzavo-secondary-btn-text-color);
-    border: var(--arzavo-secondary-btn-border-width) solid var(--arzavo-secondary-btn-border-color);
+    border: var(--arzavo-secondary-btn-border-width) solid
+        var(--arzavo-secondary-btn-border-color);
     border-radius: var(--arzavo-secondary-btn-shape);
     font-size: var(--arzavo-secondary-btn-font-size);
     font-family: var(--arzavo-secondary-btn-font-family);
@@ -343,7 +346,6 @@ button{
     transition: opacity 0.5s ease;
 }
 
-
 .fade-in {
     opacity: 1;
     transition: opacity 0.5s ease;
@@ -358,24 +360,23 @@ button{
     -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 .color-input {
-  -webkit-appearance: none;
-  padding: 0; /* remove extra padding */
-  cursor: pointer;
+    -webkit-appearance: none;
+    padding: 0; /* remove extra padding */
+    cursor: pointer;
 }
 
 /* Chrome / Edge / Safari */
 .color-input::-webkit-color-swatch-wrapper {
-  padding: 0; /* removes the inner gap */
+    padding: 0; /* removes the inner gap */
 }
 .color-input::-webkit-color-swatch {
-  border: none; /* removes swatch border */
+    border: none; /* removes swatch border */
 }
 
 /* Firefox */
 .color-input::-moz-color-swatch {
-  border: none;
+    border: none;
 }
-
 
 @keyframes smooth-shake {
     0% {
@@ -403,5 +404,48 @@ button{
     100% {
         transform: scaleX(1);
         opacity: 1;
+    }
+}
+/* Tablet */
+@media (max-width: 1047px) {
+    .arzavo-heading-1 {
+        font-size: var(--arzavo-heading-1-font-size-tablet);
+    }
+    .arzavo-heading-2 {
+        font-size: var(--arzavo-heading-2-font-size-tablet);
+    }
+    .arzavo-heading-3 {
+        font-size: var(--arzavo-heading-3-font-size-tablet);
+    }
+    .arzavo-heading-4 {
+        font-size: var(--arzavo-heading-4-font-size-tablet);
+    }
+    .arzavo-heading-5 {
+        font-size: var(--arzavo-heading-5-font-size-tablet);
+    }
+    .arzavo-heading-6 {
+        font-size: var(--arzavo-heading-6-font-size-tablet);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .arzavo-heading-1 {
+        font-size: var(--arzavo-heading-1-font-size-mobile);
+    }
+    .arzavo-heading-2 {
+        font-size: var(--arzavo-heading-2-font-size-mobile);
+    }
+    .arzavo-heading-3 {
+        font-size: var(--arzavo-heading-3-font-size-mobile);
+    }
+    .arzavo-heading-4 {
+        font-size: var(--arzavo-heading-4-font-size-mobile);
+    }
+    .arzavo-heading-5 {
+        font-size: var(--arzavo-heading-5-font-size-mobile);
+    }
+    .arzavo-heading-6 {
+        font-size: var(--arzavo-heading-6-font-size-mobile);
     }
 }

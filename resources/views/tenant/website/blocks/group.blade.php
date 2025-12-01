@@ -24,9 +24,11 @@ $pl = $s['padding_left'] ?? '0';
 @endphp
 <style>
     @media (min-width: 768px) {
-        .group-s {
-            width: {{ $size === 'custom' ? $customSize . '%' : '100%' }};
+        @if ($size === 'custom')
+        .group-s-{{ $block->id }} {
+            width: {{  $customSize }}%;
         }
+        @endif
     }
 </style>
 <div
@@ -65,7 +67,7 @@ style="
         height: {{ $customHeight . 'vh' }};
         @endif
         "
-    class="group-s s-component w-full {{ $height === 'full' ? 'min-h-screen' : '' }} flex {{ $dDirection === 'horizontal' ? 'md:flex-row' : 'md:flex-col' }} {{ $mDirection === 'horizontal' ? 'flex-row' : 'flex-col' }} {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}"
+    class="group-s-{{ $block->id }} s-component w-{{ $size }} relative {{ $height === 'full' ? 'min-h-screen' : '' }} flex {{ $dDirection === 'horizontal' ? 'md:flex-row' : 'md:flex-col' }} {{ $mDirection === 'horizontal' ? 'flex-row' : 'flex-col' }} {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}"
     >
     @include('tenant.website.includes.nested-blocks')
 </div>

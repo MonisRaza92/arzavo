@@ -11,7 +11,7 @@ $pr = $s['padding_right'] ?? '0';
 <div class="w-fit shrink-0" style="padding-top: {{ $pt }}px; padding-right: {{ $pr }}px; padding-bottom: {{ $pb }}px; padding-left: {{ $pl }}px;">
     <a href="{{ route('home') }}">
         @if ($customizes['logo'])
-        <img src="{{ asset($customizes['logo']) }}" alt="Logo" class="w-auto logo" style="height: {{ $logoSize }}px;">
+        <img src="{{ asset($customizes['logo']) }}" alt="Logo" class="w-auto" style="height: {{ $logoSize }}px;">
         @else
         <h2 class="text-xl font-semibold" style="color: {{ $colors->subheading ?? '#000000' }};">{{ app('currentTenant')->name }}</h2>
         @endif

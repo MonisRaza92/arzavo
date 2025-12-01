@@ -29,7 +29,7 @@ $pr = $s['padding_right'] ?? '0';
 @endphp
 <style>
     @media (min-width: 768px) {
-        .image-container {
+        .image-container{{ $block->id }} {
             width: {{ $imageSize === 'custom' ? $imageCsize . '%'  : '100%' }};
         }
     }
@@ -41,7 +41,7 @@ $pr = $s['padding_right'] ?? '0';
     padding-right: {{ $pr }}px;
     "
     class="
-    w-full image-container
+    w-full image-container{{ $block->id }}
     {{ $show === 'desktop' ? 'hidden md:s' : '' }}
     {{ $show === 'mobile' ? 'md:hidden' : '' }}">
     @if($imageLink)

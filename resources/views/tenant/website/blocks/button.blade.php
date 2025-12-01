@@ -24,22 +24,22 @@ $iconGap = $s['icon_gap'] ?? '4';
 
 @endphp
 <style>
-    .custom-btn-width {
+    .custom-btn-width-{{ $block->id }} {
         width: {{$customWidthDesktop}}%;
     }
 
     @media (max-width: 768px) {
-        .custom-btn-width {
+        .custom-btn-width-{{ $block->id }} {
             width: {{$customWidthMobile}}%;
         }
     }
 </style>
 <a
-    class="h-fit
+    class="h-fit shrink-0
         text-{{ $alignment }}
         {{ $type === 'primary' ? 'arzavo-primary-btn' : ($type === 'secondary' ? 'arzavo-secondary-btn' : 'arzavo-link-btn') }}
         {{ $widthDesktop === 'full' ? 'md:w-full' : ($widthDesktop === 'custom' ? 'custom-btn-width' : 'md:w-fit') }}
-        {{ $widthMobile === 'full' ? 'w-full' : ($widthMobile === 'custom' ? 'custom-btn-width' : 'w-fit') }}
+        {{ $widthMobile === 'full' ? 'w-full' : ($widthMobile === 'custom' ? 'custom-btn-width-' . $block->id : 'w-fit') }}
         "
     style="
         @if ($border === 'custom' || $border === 'disable')

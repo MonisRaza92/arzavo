@@ -3,11 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Arzavo\HomeController;
 use App\Http\Controllers\Arzavo\TenantController;
+use App\Http\Controllers\Arzavo\DomainController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Tenant\TenantWebsiteController;
-use App\Http\Controllers\Tenant\Admin\DomainController;
 use App\Http\Controllers\Tenant\Admin\AdminController;
 use App\Http\Controllers\Tenant\Admin\StudentsController as AdminStudentsController;
 use App\Http\Controllers\Tenant\Admin\ContentsController;
