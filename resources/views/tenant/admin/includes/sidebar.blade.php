@@ -8,14 +8,14 @@
     ======================== --}}
     <div class="sticky top-0 z-9 bg-primary pt-6">
 
-        <div class="school-coaching-name relative mb-2">
+        <!-- <div class="school-coaching-name relative mb-2">
             <label class="text-[10px] absolute left-1 -top-2 px-1 text-secondary bg-primary">School/Coaching</label>
             <select class="mt-2 block w-full border-rounded p-2 text-sm border-primary uppercase" disabled>
                 <option selected>{{ $settings['site_name'] ?? config('app.name') }}</option>
             </select>
-        </div>
+        </div> -->
 
-        <div class="search-bar relative w-full mb-4">
+        <div class="search-bar relative w-full my-2">
             <input id="searchInput" type="text" placeholder="Search..."
                 class="search-input w-full text-sm border-rounded px-3 py-2 input-focus border-primary">
             <button class="search-button absolute text-tertiary right-0 top-0 mt-[7px] mr-2 text-teriary">

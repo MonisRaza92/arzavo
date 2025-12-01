@@ -3,7 +3,6 @@
 namespace App\Models\Tenant;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\BelongsToTenant;
 
 class Page extends Model
 {

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Tenant\Admin;
 
 use App\Models\Tenant\Page;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class PageController

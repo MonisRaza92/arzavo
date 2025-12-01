@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Arzavo'),
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     | generating URLs and handling multi-tenant setups.
     |*/
     
-    'domain' => env('APP_DOMAIN', 'localhost'),
+    'domain' => env('APP_DOMAIN', 'arzavo.in'),
 
     /*
     |--------------------------------------------------------------------------
