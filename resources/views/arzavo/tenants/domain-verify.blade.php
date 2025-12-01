@@ -94,6 +94,11 @@
                 </span>
             </p>
         </div>
+        <input
+            type="text"
+            id="newCustomDomain"
+            value="{{ $tenant->custom_domain }}"
+            class="opacity-0 absolute pointer-events-none" />
 
         <!-- Status Box -->
         <div id="statusBox" class="hidden p-3 border rounded-md mb-4"></div>

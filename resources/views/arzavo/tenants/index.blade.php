@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Create Tenants - ' . config('app.name'))
+@section('title', 'Manage Tenants - ' . config('app.name'))
 
 @section('content')
 <div class="flex items-start justify-start relative h-dvh w-full">
