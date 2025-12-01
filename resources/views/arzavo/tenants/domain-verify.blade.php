@@ -2,7 +2,7 @@
 <div id="connectDomainPopup-{{ $tenant->id }}"
     class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 
-    <div class="bg-white border-rounded w-full max-w-4xl p-6 md:h-11/12 h-dvh relative overflow-auto animate-fadeIn shadow-lg">
+    <div class="bg-white border-rounded w-full max-w-4xl p-6 md:h-11/12 h-dvh relative overflow-auto scrollbar animate-fadeIn shadow-lg">
 
         <!-- Close Button -->
         <button id="closeDomainPopup"
@@ -188,21 +188,43 @@
                 .then(res => res.json())
                 .then(data => {
 
+                    // --- RATE LIMIT ---
                     if (data.status === "rate_limited") {
-                        showStatus("error", `⚠️ SSL attempts exceeded.<br>Retry after: <b>${data.retry_ist}</b>`);
-                    } else if (data.status === "success") {
+                        showStatus(
+                            "error",
+                            `⚠️ Too many SSL attempts.<br>Retry after: <b>${data.retry_ist}</b>`
+                        );
+                    }
+
+                    // --- SUCCESS ---
+                    else if (data.status === "success") {
                         showStatus("success", data.message);
                         setTimeout(() => location.reload(), 1500);
-                    } else {
-                        showStatus("error", data.message);
+                    }
+
+                    // --- ANY OTHER ERROR (SHOW RAW OUTPUT ALSO) ---
+                    else {
+                        let msg = data.message ?? "❌ SSL generation failed.";
+
+                        if (data.raw_output) {
+                            msg += `
+                    <br><br>
+                    <pre class="text-xs bg-gray-100 p-2 border rounded-md whitespace-pre-wrap">
+${data.raw_output}
+                    </pre>
+                `;
+                        }
+
+                        showStatus("error", msg);
                     }
 
                     setLoading(false);
                 })
-                .catch(() => {
+                .catch((err) => {
                     showStatus("error", "❌ Something went wrong. Please retry.");
                     setLoading(false);
                 });
+
         });
     });
 </script>
