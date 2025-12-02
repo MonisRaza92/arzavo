@@ -20,19 +20,24 @@ class ImagesController extends Controller
             'image' => 'required|image|max:5120', // 5MB max
         ]);
 
-        if (!Storage::disk('public')->exists('images')) {
-            Storage::disk('public')->makeDirectory('images');
-        }
-        $filePath = $request->file('image')->store('images', 'public');
+        // ✔ Use default disk (local on localhost, S3 on live)
+        $disk = Storage::disk(config('filesystems.default'));
 
+        // ✔ Upload file on default disk
+        $filePath = $request->file('image')->store('images');
+
+        // ✔ Store in DB
         $image = Images::create([
             'filename' => $request->file('image')->getClientOriginalName(),
-            'filepath' => 'storage/' . $filePath,
+            'filepath' => $filePath,
         ]);
+
+        // ✔ Generate correct URL (local or s3)
+        $url = Storage::url($filePath);
 
         if ($request->ajax()) {
             return response()->json([
-                'url' => asset($image->filepath),
+                'url'    => $url,
                 'message' => 'Image uploaded successfully'
             ]);
         }
@@ -40,15 +45,20 @@ class ImagesController extends Controller
         return back()->with('success', 'Selected Image added successfully');
     }
 
+
     public function destroy($id)
     {
         $image = Images::findOrFail($id);
-        if (Storage::disk('public')->exists(str_replace('storage/', '', $image->path))) {
-            Storage::disk('public')->delete(str_replace('storage/', '', $image->path));
+
+        // File path stored in DB is already correct (images/xxx.png)
+        $path = $image->filepath ?? $image->path ?? null;
+
+        if ($path && Storage::exists($path)) {
+            Storage::delete($path);
         }
+
         $image->delete();
 
         return back()->with('success', 'Image deleted successfully');
     }
-
 }

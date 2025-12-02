@@ -8,6 +8,7 @@ use App\Models\Tenant\Courses;
 use App\Models\Tenant\Categories;
 use App\Models\Tenant\Classes;
 use App\Models\Tenant\Subjects;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
@@ -47,46 +48,53 @@ class CourseController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
+        // default storage disk (S3 on live, local on dev)
+        $disk = Storage::disk(config('filesystems.default'));
+
+        // Upload Video
         if ($request->hasFile('video')) {
-            $videoPath = $request->file('video')->store('uploads/courses/videos', 'public');
-            $validated['video'] = 'storage/' . $videoPath;
+            $videoPath = $request->file('video')->store('uploads/courses/videos');
+            $validated['video'] = Storage::url($videoPath);
         }
 
+        // Upload Thumbnail
         if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('uploads/courses/thumbnails', 'public');
-            $validated['thumbnail'] = 'storage/' . $thumbnailPath;
+            $thumbnailPath = $request->file('thumbnail')->store('uploads/courses/thumbnails');
+            $validated['thumbnail'] = Storage::url($thumbnailPath);
         }
-
 
         $course = Courses::create($validated);
 
         return redirect()->route('admin-courses')->with('success', 'Course uploaded successfully.');
     }
 
+
     public function deleteCourse(Request $request)
     {
-        // Validate the request
         $request->validate([
-            'id' => 'required|exists:courses,id', // Correct syntax and validation
+            'id' => 'required|exists:courses,id',
         ]);
 
-        $id = $request->id;
+        $course = Courses::findOrFail($request->id);
 
-        $course = Courses::findOrFail($id);
+        // Extract file paths from stored URLs
+        $thumbnailPath = $course->thumbnail ? str_replace(Storage::url(''), '', $course->thumbnail) : null;
+        $videoPath = $course->video ? str_replace(Storage::url(''), '', $course->video) : null;
 
-        // Optional: delete associated thumbnail if exists
-        if ($course->thumbnail && file_exists(public_path($course->thumbnail))) {
-            unlink(public_path($course->thumbnail));
+        // Delete thumbnail (S3 or local automatically)
+        if ($thumbnailPath && Storage::exists($thumbnailPath)) {
+            Storage::delete($thumbnailPath);
         }
 
-        // Optional: delete associated video if exists
-        if ($course->video && file_exists(public_path($course->video))) {
-            unlink(public_path($course->video));
+        // Delete video (S3 or local automatically)
+        if ($videoPath && Storage::exists($videoPath)) {
+            Storage::delete($videoPath);
         }
 
-        // Delete the course
+        // Delete course entry
         $course->delete();
 
-        return redirect()->route('admin-courses')->with('success', 'Course deleted successfully.');
+        return redirect()->route('admin-courses')
+            ->with('success', 'Course deleted successfully.');
     }
 }

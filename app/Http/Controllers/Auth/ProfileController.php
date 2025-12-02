@@ -90,28 +90,32 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        // Validate the banner image
         $request->validate([
-            'banner' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'banner' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle banner upload
+        // Default disk (local or s3 automatically)
+        $disk = Storage::disk(config('filesystems.default'));
+
         if ($request->hasFile('banner')) {
-            // Delete old banner if exists
-            if ($user->banner && Storage::disk('public')->exists($user->banner)) {
-                Storage::disk('public')->delete($user->banner);
+
+            // Delete old banner
+            if ($user->banner) {
+                $old = str_replace(Storage::url(''), '', $user->banner);
+                if (Storage::exists($old)) Storage::delete($old);
             }
 
-            // Store the new banner
-            $path = $request->file('banner')->store('uploads/profiles/banners', 'public');
+            // Upload new banner
+            $path = $request->file('banner')->store('uploads/profiles/banners');
 
-            // Save the relative path in the database
-            $user->banner = 'storage/' . $path;
+            // Save URL
+            $user->banner = Storage::url($path);
             $user->save();
         }
 
         return back()->with('success', 'Banner updated successfully.');
     }
+
 
     public function profilePictureUpdate(Request $request)
     {
@@ -121,23 +125,26 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        // Validate the profile picture
         $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle profile picture upload
+        // Default disk (local or s3 automatically)
+        $disk = Storage::disk(config('filesystems.default'));
+
         if ($request->hasFile('profile_picture')) {
-            // Delete old profile picture if exists
-            if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
-                Storage::disk('public')->delete($user->profile_picture);
+
+            // Delete old profile picture
+            if ($user->profile_picture) {
+                $old = str_replace(Storage::url(''), '', $user->profile_picture);
+                if (Storage::exists($old)) Storage::delete($old);
             }
 
-            // Store the new profile picture
-            $path = $request->file('profile_picture')->store('uploads/profiles/pictures', 'public');
+            // Upload new picture
+            $path = $request->file('profile_picture')->store('uploads/profiles/pictures');
 
-            // Save the relative path in the database
-            $user->profile_picture = 'storage/' . $path;
+            // Save URL
+            $user->profile_picture = Storage::url($path);
             $user->save();
         }
 
