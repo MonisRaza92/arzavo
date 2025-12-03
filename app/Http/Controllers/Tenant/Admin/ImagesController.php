@@ -20,24 +20,24 @@ class ImagesController extends Controller
             'image' => 'required|image|max:5120', // 5MB max
         ]);
 
-        // ✔ Use default disk (local on localhost, S3 on live)
+        // Default disk (local OR s3 automatically)
         $disk = Storage::disk(config('filesystems.default'));
 
-        // ✔ Upload file on default disk
+        // Upload to storage
         $filePath = $request->file('image')->store('images');
 
-        // ✔ Store in DB
+        // Generate FULL URL (local or s3)
+        $fullUrl = Storage::url($filePath);
+
+        // Save to DB
         $image = Images::create([
             'filename' => $request->file('image')->getClientOriginalName(),
-            'filepath' => $filePath,
+            'filepath' => $fullUrl,    // 👈 अब यहीं full URL save होगा
         ]);
-
-        // ✔ Generate correct URL (local or s3)
-        $url = Storage::url($filePath);
 
         if ($request->ajax()) {
             return response()->json([
-                'url'    => $url,
+                'url' => $fullUrl,
                 'message' => 'Image uploaded successfully'
             ]);
         }
