@@ -17,22 +17,22 @@ class ImagesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|max:5120', // 5MB max
+            'image' => 'required|image|max:5120',
         ]);
 
-        // Default disk (local OR s3 automatically)
         $disk = Storage::disk(config('filesystems.default'));
+        $filePath = $disk->put(
+            'images',
+            $request->file('image'),
+            ['visibility' => 'public']
+        );
+        $fullUrl = $disk->url($filePath);
 
-        // Upload to storage
-        $filePath = $request->file('image')->store('images');
 
-        // Generate FULL URL (local or s3)
-        $fullUrl = Storage::url($filePath);
-
-        // Save to DB
+        // Save DB
         $image = Images::create([
             'filename' => $request->file('image')->getClientOriginalName(),
-            'filepath' => $fullUrl,    // 👈 अब यहीं full URL save होगा
+            'filepath' => $fullUrl,
         ]);
 
         if ($request->ajax()) {
@@ -44,6 +44,7 @@ class ImagesController extends Controller
 
         return back()->with('success', 'Selected Image added successfully');
     }
+
 
 
     public function destroy($id)
