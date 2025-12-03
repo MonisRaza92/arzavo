@@ -51,48 +51,30 @@ class DomainController
         }
 
         // --------------------------
-        // 3. CREATE NGINX FILE
+        // 3. CREATE NGINX CONFIG (via root script)
         // --------------------------
-        $nginxConf = "
-server {
-    listen 80;
-    listen [::]:80;
+        $nginxCmd = "sudo /usr/local/bin/generate-domain-nginx.sh " . escapeshellarg($domain) . " 2>&1";
+        $nginxOutput = shell_exec($nginxCmd);
 
-    server_name $domain;
-
-    root /var/www/arzavo/public;
-    index index.php index.html;
-
-    location / {
-        try_files \$uri \$uri/ /index.php?\$query_string;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-    }
-}
-        ";
-
-        file_put_contents("/etc/nginx/sites-available/$domain.conf", $nginxConf);
-
-        // LINK ENABLE SITE
-        shell_exec("sudo ln -sf /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/$domain.conf");
-
-        // Reload nginx
-        shell_exec("sudo systemctl reload nginx");
-
-        // --------------------------
-        // 4. INSTALL SSL
-        // --------------------------
-        $cmd = "sudo certbot --nginx -d $domain --non-interactive --agree-tos -m monisrazakhan2001@gmail.com --redirect 2>&1";
-        $output = shell_exec($cmd);
-
-        if (! str_contains($output, 'Congratulations')) {
+        if (! str_contains($nginxOutput, 'Nginx config created')) {
             return response()->json([
                 'status' => 'error',
-                'message' => "SSL FAILED",
-                'certbot_output' => $output
+                'message' => "Failed to create Nginx config.",
+                'nginx_output' => $nginxOutput
+            ], 500);
+        }
+
+        // --------------------------
+        // 4. INSTALL SSL (via root script)
+        // --------------------------
+        $sslCmd = "sudo /usr/local/bin/tenant-ssl.sh " . escapeshellarg($domain) . " 2>&1";
+        $sslOutput = shell_exec($sslCmd);
+
+        if (! str_contains($sslOutput, 'Congratulations')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => "SSL installation failed.",
+                'ssl_output' => $sslOutput
             ], 500);
         }
 
@@ -100,15 +82,16 @@ server {
         // 5. Update tenant
         // --------------------------
         $tenant->update([
-            'domain_verified' => true,
-            'domain_verified_at' => now(),
-            'domain_ssl_output' => $output
+            'domain_verified'      => true,
+            'domain_verified_at'   => now(),
+            'domain_ssl_output'    => $sslOutput,
         ]);
 
         return response()->json([
             'status' => 'success',
             'message' => "$domain is LIVE with SSL",
-            'output' => $output
+            'nginx_output' => $nginxOutput,
+            'ssl_output' => $sslOutput
         ]);
     }
 }
