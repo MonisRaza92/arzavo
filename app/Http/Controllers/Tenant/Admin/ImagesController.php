@@ -17,42 +17,33 @@ class ImagesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|max:5120',
+            'image' => 'required|image|max:5120', // 5MB max
         ]);
-        
+
+        // Default disk (local OR s3 automatically)
         $disk = Storage::disk(config('filesystems.default'));
-        dd($disk);
 
+        // Upload to storage
+        $filePath = $request->file('image')->store('images');
 
-        // Use putFile (NOT put), and proper options format
-        $filePath = $disk->putFile(
-            'images',
-            $request->file('image'),
-            ['visibility' => 'public']
-        );
+        // Generate FULL URL (local or s3)
+        $fullUrl = Storage::url($filePath);
 
-        // If upload failed
-        if (!$filePath) {
+        // Save to DB
+        $image = Images::create([
+            'filename' => $request->file('image')->getClientOriginalName(),
+            'filepath' => $fullUrl,    // 👈 अब यहीं full URL save होगा
+        ]);
+
+        if ($request->ajax()) {
             return response()->json([
-                'error' => 'Upload failed — S3 did not return file path.'
-            ], 500);
+                'url' => $fullUrl,
+                'message' => 'Image uploaded successfully'
+            ]);
         }
 
-        // VERY IMPORTANT → Use same disk to generate URL
-        $fullUrl = $disk->url($filePath);
-
-        Images::create([
-            'filename' => $request->file('image')->getClientOriginalName(),
-            'filepath' => $filePath,
-        ]);
-
-        return [
-            'url' => $fullUrl,
-            'message' => 'Image uploaded successfully'
-        ];
+        return back()->with('success', 'Selected Image added successfully');
     }
-
-
 
 
     public function destroy($id)
