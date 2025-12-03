@@ -22,17 +22,21 @@ class ImagesController extends Controller
 
         $disk = Storage::disk(config('filesystems.default'));
 
-        // FIXED: putFile with correct options
-        $filePath = $disk->putFile('images', $request->file('image'), [
-            'visibility' => 'public'
-        ]);
+        // Use putFile (NOT put), and proper options format
+        $filePath = $disk->putFile(
+            'images',
+            $request->file('image'),
+            ['visibility' => 'public']
+        );
 
+        // If upload failed
         if (!$filePath) {
             return response()->json([
-                'error' => 'S3 upload failed. Check permissions or visibility.'
+                'error' => 'Upload failed — S3 did not return file path.'
             ], 500);
         }
 
+        // VERY IMPORTANT → Use same disk to generate URL
         $fullUrl = $disk->url($filePath);
 
         Images::create([
