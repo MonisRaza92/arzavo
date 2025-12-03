@@ -21,29 +21,31 @@ class ImagesController extends Controller
         ]);
 
         $disk = Storage::disk(config('filesystems.default'));
-        $filePath = $disk->put(
-            'images',
-            $request->file('image'),
-            ['visibility' => 'public']
-        );
-        $fullUrl = $disk->url($filePath);
 
-
-        // Save DB
-        $image = Images::create([
-            'filename' => $request->file('image')->getClientOriginalName(),
-            'filepath' => $fullUrl,
+        // FIXED: putFile with correct options
+        $filePath = $disk->putFile('images', $request->file('image'), [
+            'visibility' => 'public'
         ]);
 
-        if ($request->ajax()) {
+        if (!$filePath) {
             return response()->json([
-                'url' => $fullUrl,
-                'message' => 'Image uploaded successfully'
-            ]);
+                'error' => 'S3 upload failed. Check permissions or visibility.'
+            ], 500);
         }
 
-        return back()->with('success', 'Selected Image added successfully');
+        $fullUrl = $disk->url($filePath);
+
+        Images::create([
+            'filename' => $request->file('image')->getClientOriginalName(),
+            'filepath' => $filePath,
+        ]);
+
+        return [
+            'url' => $fullUrl,
+            'message' => 'Image uploaded successfully'
+        ];
     }
+
 
 
 
