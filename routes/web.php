@@ -168,3 +168,35 @@ function registerDomains($domain)
     });
 }
 
+
+// ✅ OPTIMIZED DOMAIN REGISTRATION
+$currentHost = request()->getHost();
+$baseDomain = config('app.domain');
+
+// ✅ AGAR MAIN DOMAIN PE HAI TOH SAB REGISTER KARO
+if ($currentHost === $baseDomain || $currentHost === "www." . $baseDomain) {
+    // Database se saare active tenants
+    $tenants = \App\Models\Arzavo\Tenant::all();
+
+    foreach ($tenants as $tenant) {
+        // ✅ Subdomain register karo (as-it-is, e.g., "tenant1")
+        if (!empty($tenant->subdomain) && $tenant->subdomain !== $baseDomain && $tenant->subdomain !== "www." . $baseDomain) {
+            registerDomains($tenant->subdomain);
+        }
+
+        // ✅ Verified custom domain register karo (as-it-is, e.g., "school.com")
+        if ($tenant->domain_verified && !empty($tenant->custom_domain)) {
+            if ($tenant->custom_domain !== $baseDomain && $tenant->custom_domain !== "www." . $baseDomain) {
+                registerDomains($tenant->custom_domain);
+            }
+        }
+    }
+
+    // // Manual domains
+    // registerDomains('sanskriti.test');
+    // registerDomains('arzaq.arzavo.test');
+}
+// ✅ AGAR TENANT DOMAIN PE HAI TOH SIRF CURRENT DOMAIN REGISTER KARO
+else {
+    registerDomains($currentHost);
+}
