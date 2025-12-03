@@ -19,8 +19,10 @@ class ImagesController extends Controller
         $request->validate([
             'image' => 'required|image|max:5120',
         ]);
-
+        
         $disk = Storage::disk(config('filesystems.default'));
+        dd($disk);
+
 
         // Use putFile (NOT put), and proper options format
         $filePath = $disk->putFile(
