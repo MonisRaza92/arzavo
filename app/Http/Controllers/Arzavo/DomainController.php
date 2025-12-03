@@ -13,85 +13,102 @@ class DomainController
             'domain' => 'required|string'
         ]);
 
-        // Cleanup domain
         $domain = strtolower(trim($request->domain));
         $domain = str_replace(['https://', 'http://'], '', $domain);
         $domain = explode('/', $domain)[0];
 
+        // --------------------------
         // 1. Find tenant
+        // --------------------------
         $tenant = Tenant::where('custom_domain', $domain)->first();
         if (! $tenant) {
             return response()->json([
-                'status'  => 'error',
-                'message' => "No tenant found for domain: <b>$domain</b>"
+                'status' => 'error',
+                'message' => "No tenant found for domain: $domain"
             ], 404);
         }
 
-        // 2. Auto-detect public server IP
+        // --------------------------
+        // 2. Detect server IP
+        // --------------------------
         $serverIp = trim(shell_exec("curl -s http://checkip.amazonaws.com"));
 
-        if (!$serverIp || !filter_var($serverIp, FILTER_VALIDATE_IP)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => "Unable to detect server public IP."
-            ], 500);
-        }
-
-        // 3. DNS validation
         $dns = @dns_get_record($domain, DNS_A);
-
         if (empty($dns)) {
             return response()->json([
                 'status' => 'error',
-                'message' => "No A-record found for <b>$domain</b>.<br>Add: A → $serverIp"
-            ], 400);
+                'message' => "No A-record found for $domain. Add A → $serverIp"
+            ]);
         }
 
-        $pointsToUs = collect($dns)->contains(fn($r) => ($r['ip'] ?? null) === $serverIp);
+        $points = collect($dns)->contains(fn($r) => ($r['ip'] ?? null) === $serverIp);
 
-        if (! $pointsToUs) {
+        if (! $points) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Domain is not pointing to server.<br><b>Add A-record:</b> $serverIp"
-            ], 400);
+                'message' => "Domain not pointing. Add:<br>A → $serverIp"
+            ]);
         }
 
-        // 4. Generate SSL directly from here (NO JOB)
-        $safeDomain = escapeshellarg($domain);
+        // --------------------------
+        // 3. CREATE NGINX FILE
+        // --------------------------
+        $nginxConf = "
+server {
+    listen 80;
+    listen [::]:80;
 
-        $cmd = "sudo certbot --nginx -d {$safeDomain} --non-interactive --agree-tos -m monisrazakhan2001@gmail.com --redirect 2>&1";
+    server_name $domain;
 
+    root /var/www/arzavo/public;
+    index index.php index.html;
+
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    }
+}
+        ";
+
+        file_put_contents("/etc/nginx/sites-available/$domain.conf", $nginxConf);
+
+        // LINK ENABLE SITE
+        shell_exec("sudo ln -sf /etc/nginx/sites-available/$domain.conf /etc/nginx/sites-enabled/$domain.conf");
+
+        // Reload nginx
+        shell_exec("sudo systemctl reload nginx");
+
+        // --------------------------
+        // 4. INSTALL SSL
+        // --------------------------
+        $cmd = "sudo certbot --nginx -d $domain --non-interactive --agree-tos -m monisrazakhan2001@gmail.com --redirect 2>&1";
         $output = shell_exec($cmd);
 
-        if (! $output) {
-            return response()->json([
-                'status' => 'error',
-                'message' => "Failed to run Certbot command."
-            ], 500);
-        }
-
-        // 5. Check success
         if (! str_contains($output, 'Congratulations')) {
             return response()->json([
                 'status' => 'error',
-                'message' => "SSL installation failed.",
+                'message' => "SSL FAILED",
                 'certbot_output' => $output
             ], 500);
         }
 
-        // 6. Mark verified
+        // --------------------------
+        // 5. Update tenant
+        // --------------------------
         $tenant->update([
-            'domain_verified'     => true,
-            'domain_verified_at'  => now(),
-            'domain_ssl_output'   => $output
+            'domain_verified' => true,
+            'domain_verified_at' => now(),
+            'domain_ssl_output' => $output
         ]);
 
         return response()->json([
             'status' => 'success',
-            'message' => "Domain verified and SSL installed successfully!",
-            'domain' => $domain,
-            'server_ip' => $serverIp,
-            'certbot_output' => $output
+            'message' => "$domain is LIVE with SSL",
+            'output' => $output
         ]);
     }
 }
