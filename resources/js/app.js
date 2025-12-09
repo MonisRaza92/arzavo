@@ -1,7 +1,6 @@
 import './bootstrap';
 import Alpine from 'alpinejs';
 import Pickr from '@simonwep/pickr';
-import 'htmx.org';
 import "@hotwired/turbo";
 import '@simonwep/pickr/dist/themes/monolith.min.css';
 

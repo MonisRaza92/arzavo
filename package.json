@@ -17,7 +17,6 @@
     "dependencies": {
         "@hotwired/turbo": "^8.0.20",
         "@simonwep/pickr": "^1.9.1",
-        "alpinejs": "^3.14.9",
-        "htmx.org": "^2.0.8"
+        "alpinejs": "^3.14.9"
     }
 }
