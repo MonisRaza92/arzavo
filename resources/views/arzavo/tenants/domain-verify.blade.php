@@ -135,7 +135,7 @@
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("turbo:load", function() {
         const openBtn = document.getElementById("connectDomainBtn-{{ $tenant->id }}");
         const popup = document.getElementById("connectDomainPopup-{{ $tenant->id }}");
         const closeBtn = document.getElementById("closeDomainPopup");
