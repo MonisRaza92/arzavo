@@ -6,7 +6,7 @@
 
         <!-- Close Button -->
         <button id="closeDomainPopup"
-            class="absolute right-4 top-4 text-gray-500 hover:text-black text-2xl">
+            class="absolute right-4 top-6 text-gray-500 hover:text-black text-2xl">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
@@ -86,7 +86,7 @@
         </div>
 
         <!-- Domain Display -->
-        <div class="bg-gray-50 border border-primary rounded-md p-3 mb-4">
+        <div class="bg-gray-50 absolute opacity-0 border border-primary rounded-md p-3 mb-4">
             <p class="text-sm text-gray-700">
                 <strong>Domain to verify:</strong>
                 <span id="domainDisplay" class="text-primary font-semibold">
@@ -94,11 +94,15 @@
                 </span>
             </p>
         </div>
+        <span class="text-sm text-primary font-semibold">Your Domain to verify</span>
         <input
             type="text"
             id="newCustomDomain"
             value="{{ $tenant->custom_domain }}"
-            class="opacity-0 absolute pointer-events-none" />
+            class="w-full text-primary mt-2 border-rounded p-3 mb-4 border-primary"
+            placeholder="Enter Your Domian"
+            />
+        <input type="hidden" value="{{ $tenant->id }}" name="id">
 
         <!-- Status Box -->
         <div id="statusBox" class="hidden p-3 border rounded-md mb-4"></div>

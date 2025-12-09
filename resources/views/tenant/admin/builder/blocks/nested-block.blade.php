@@ -1,4 +1,4 @@
-<li id="block-{{ $block->id }}" class="block-item border-primary border-rounded cursor-pointer select-none py-0.5 pl-2 pr-1 my-1 flex justify-between items-center"
+<li id="block-{{ $block->id }}" class="block-item relative group bg-hover-secondary border-rounded cursor-pointer select-none py-0.5 pl-2 pr-1 my-1 flex justify-between items-center"
     data-block-id="{{ $block->id }}">
 
     <div class="flex items-center grow">
@@ -15,13 +15,13 @@
         <span class="text-sm cursor-pointer block-open-btn w-full" data-block-id="{{ $block->id }}">{{ $block->name }}</span>
     </div>
 
-    <div class="flex items-center">
-        <button class="cursor-drag bg-hover-secondary text-tertiary text-xs py-2 px-1 border-rounded block-drag-handle">
+    <div class="flex items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
+        <button class="cursor-drag text-hover-primary text-tertiary text-xs py-2 px-1 border-rounded block-drag-handle">
             <i class="fa-solid fa-up-down"></i>
         </button>
         {{-- ACTIVE/INACTIVE --}}
         <button type="button"
-            class="toggle-block-active text-tertiary text-xs bg-hover-secondary py-2 px-1 border-rounded"
+            class="toggle-block-active text-tertiary text-xs text-hover-primary py-2 px-1 border-rounded"
             data-block-id="{{ $block->id }}">
             @if($block->is_active)
             <i class="fa-solid fa-eye"></i>
@@ -38,7 +38,7 @@
             @method('DELETE')
 
             <button type="button"
-                class="delete-block-btn text-tertiary bg-hover-secondary py-2 px-1 border-rounded text-xs">
+                class="delete-block-btn text-tertiary text-hover-primary py-2 px-1 border-rounded text-xs">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </form>
@@ -60,9 +60,9 @@
     @endphp
     @if(is_null($maxNestedBlocks) || $currentNestedBlockCount < $maxNestedBlocks)
         <button type="button"
-        class="text-blue-800 text-left text-sm bg-hover-secondary mt-1 w-full block p-2 border-primary border-rounded"
+        class="text-blue-600 text-left text-sm bg-hover-secondary mt-1 w-full block p-2 border-rounded"
         onclick="openAddNestedBlock({{ $block->id }})">
-        <i class="fa-regular fa-square-plus mr-1"></i> Add Block
+        <i class="fa-regular fa-square-plus mr-1 ml-5 text-[13px]"></i> Add Block
         </button>
         @endif
 </div>

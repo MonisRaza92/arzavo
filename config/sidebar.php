@@ -207,7 +207,7 @@ return [
                 'links' => [
                     ['icon' => 'fa-pen-nib', 'text' => 'Page Builder', 'route' => 'admin.builder.index'],
                     ['icon' => 'fa-window-restore', 'text' => 'Web Pages', 'route' => 'admin.pages.index', 'active' => 'admin/pages'],
-                    ['icon' => 'fa-image', 'text' => 'Media Library', 'route' => 'admin.images.index'],
+                    ['icon' => 'fa-image', 'text' => 'Media Library', 'route' => 'admin.images.index', 'active' => 'admin/images'],
                     // ['icon' => 'fa-palette', 'text' => 'Themes', 'route' => '#'],
                     ['icon' => 'fa-cog', 'text' => 'Website Settings', 'route' => '#'],
                 ],

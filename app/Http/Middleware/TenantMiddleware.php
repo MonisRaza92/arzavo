@@ -26,7 +26,7 @@ class TenantMiddleware
             ->orWhere('custom_domain', $host)
             ->where('domain_verified', true)
             ->first();
-
+            
         if (!$tenant) {
             abort(404, "Tenant not found for: $host");
         }
@@ -45,15 +45,16 @@ class TenantMiddleware
         config([
             'database.connections.tenant' => [
                 'driver'   => 'mysql',
-                'host'     => env('DB_HOST'),
-                'port'     => env('DB_PORT'),
+                'host'     => config('database.connections.mysql.host', '127.0.0.1'),
+                'port'     => config('database.connections.mysql.port', 3306),
                 'database' => $tenant->db_name,
                 'username' => $tenant->db_username,
-                'password' => $tenant->db_password ?: null,
+                'password' => $tenant->db_password,
                 'charset'  => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
         ]);
+
 
         DB::purge('tenant');
         DB::reconnect('tenant');

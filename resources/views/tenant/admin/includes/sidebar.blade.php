@@ -72,13 +72,13 @@
 
                 <i id="arrow-{{ $item['id'] }}"
                     class="fas fa-angle-right absolute right-2 top-1/2 transform
-                               -translate-y-1/2 transition-all duration-300 ease-in-out"></i>
+                               -translate-y-1/2 transition-all duration-500 ease-in-out"></i>
             </button>
 
             {{-- MENU LINKS --}}
             <ul id="{{ $item['id'] }}"
                 class="ml-4 pl-2 border-left overflow-hidden max-h-0
-                                   transition-all duration-300 ease-linear space-y-2">
+                                   transition-all duration-500 ease-linear space-y-2">
 
                 @foreach($item['links'] as $link)
 
@@ -116,18 +116,18 @@
 
         if (closed) {
             menu.classList.remove('max-h-0');
-            menu.classList.add('max-h-200', 'pt-2');
+            menu.classList.add('max-h-100', 'pt-2');
             arrow.classList.add('rotate-90');
             localStorage.setItem(menuId, 'open');
         } else {
             menu.classList.add('max-h-0');
-            menu.classList.remove('max-h-200', 'pt-2');
+            menu.classList.remove('max-h-100', 'pt-2');
             arrow.classList.remove('rotate-90');
             localStorage.setItem(menuId, 'closed');
         }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("turbo:load", () => {
 
         // Restore dropdown state
         document.querySelectorAll('.admin-nav ul[id]').forEach(menu => {
@@ -136,7 +136,7 @@
 
             if (state === 'open') {
                 menu.classList.remove('max-h-0');
-                menu.classList.add('max-h-200', 'pt-2');
+                menu.classList.add('max-h-100', 'pt-2');
                 arrow?.classList.add('rotate-90');
             }
         });
@@ -160,11 +160,11 @@
 
                     if (saved === 'open') {
                         menu.classList.remove('max-h-0');
-                        menu.classList.add('max-h-200', 'pt-2');
+                        menu.classList.add('max-h-100', 'pt-2');
                         arrow?.classList.add('rotate-90');
                     } else {
                         menu.classList.add('max-h-0');
-                        menu.classList.remove('max-h-200', 'pt-2');
+                        menu.classList.remove('max-h-100', 'pt-2');
                         arrow?.classList.remove('rotate-90');
                     }
                 });
@@ -198,11 +198,28 @@
 
                         // Open menu
                         submenu.classList.remove('max-h-0');
-                        submenu.classList.add('max-h-200', 'pt-2');
+                        submenu.classList.add('max-h-100', 'pt-2');
                         arrow?.classList.add('rotate-90');
                     }
                 }
             });
         });
+    });
+    // Save scroll BEFORE Turbo request starts (ALWAYS fires)
+    document.addEventListener("turbo:before-fetch-request", () => {
+        const sidebar = document.getElementById("adminMobileMenu");
+        if (sidebar) {
+            localStorage.setItem("sidebarScroll", sidebar.scrollTop);
+        }
+    });
+
+    // Restore scroll AFTER Turbo loads new content
+    document.addEventListener("turbo:load", () => {
+        const sidebar = document.getElementById("adminMobileMenu");
+        const saved = localStorage.getItem("sidebarScroll");
+
+        if (sidebar && saved !== null) {
+            sidebar.scrollTop = parseInt(saved, 10);
+        }
     });
 </script>

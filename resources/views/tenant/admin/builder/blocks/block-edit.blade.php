@@ -1,4 +1,4 @@
-<div id="edit-block-form-{{ $block->id }}" class="hidden fixed top-0 left-0 bottom-0 w-[299px] pt-29 overflow-auto scrollbar bg-primary">
+<div id="edit-block-form-{{ $block->id }}" class="hidden fixed top-0 left-0 bottom-0 w-[299px] pt-29 z-10 overflow-auto scrollbar bg-primary">
     <div class="flex items-center justify-between p-2 border-bottom sticky top-0 bg-primary z-10">
         <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center curser-pointer" onclick="closeBlockEditForm({{ $block->id }})">
             <i class="fa-solid fa-arrow-left text-tertiary"></i> {{ $block->name }}

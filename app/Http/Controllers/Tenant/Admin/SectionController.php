@@ -53,6 +53,7 @@ class SectionController
                     'category' => $data['category'] ?? null,
                     'max_blocks' => $data['max_blocks'] ?? null,
                     'allowed_blocks' => $data['allowed_blocks'] ?? null,
+                    'moveable' => $data['moveable'] ?? 'allow',
                 ];
             });
         $availableBlocks = collect(glob(resource_path('views/tenant/website/blocks/*.json')))
@@ -69,6 +70,7 @@ class SectionController
                     'category' => $data['category'] ?? null,
                     'max_blocks' => $data['max_blocks'] ?? null,
                     'allowed_blocks' => $data['allowed_blocks'] ?? null,
+                    'moveable' => $data['moveable'] ?? 'allow',
                 ];
             });
 

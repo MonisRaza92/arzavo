@@ -44,7 +44,7 @@
     }
 
     // Restore menu states on page load
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('turbo:load', () => {
         // Restore menus: colors-settings-menu, logo-settings-menu, etc.
         const menus = ['colors-settings-menu', 'logo-settings-menu', 'typography-settings-menu', 'border-shadow-settings-menu', 'buttons-settings-menu', 'layout-settings-menu', 'ui-elements-settings-menu', 'animations-settings-menu', 'advanced-settings-menu'];
         
@@ -135,7 +135,7 @@
     });
 
     // ✅ On page load, restore the last active tab
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('turbo:load', () => {
         const savedTab = localStorage.getItem('activeTab');
         if (savedTab) {
             // Remove all active classes first

@@ -1,7 +1,7 @@
 @php
 $s = $block->settings ?? [];
 
-$dImage = $s['desktop_image_block'] ?? '';
+$dImage = $s['desktop_image_block'] ?? 'images/square/square1.webp';
 $mImage = $s['mobile_image_block'] ?? $dImage;
 $altText = $s['alt_text'] ?? '';
 $imageLink = $s['image_link'] ?? '';
@@ -48,7 +48,7 @@ $pr = $s['padding_right'] ?? '0';
     <a href="{{ $imageLink }}" @if($linkTarget==='1' ) target="_blank" rel="noopener" @endif>
         @endif
         <img src="{{ asset($mImage) }}" alt="{{ $altText }}" class="md:hidden w-full {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $boxShadow === 'enable' ? 'arzavo-shadow' : '' }}" style="opacity: {{ $opacity }}%; aspect-ratio: {{ $ratio }}; object-fit: {{ $imageFit }}; @if ($borderRadius === 'custom') border-radius: {{ $customRadius }}px; @endif">
-        <img src="{{ asset($dImage) }}" alt="{{ $altText }}" class="hidden md:block w-auto w-full {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $boxShadow === 'enable' ? 'arzavo-shadow' : '' }}" style="opacity: {{ $opacity }}%; aspect-ratio: {{ $ratio }}; object-fit: {{ $imageFit }}; @if ($borderRadius === 'custom') border-radius: {{ $customRadius }}px; @endif">
+        <img src="{{ asset($dImage) }}" alt="{{ $altText }}" class="hidden md:block w-full {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $boxShadow === 'enable' ? 'arzavo-shadow' : '' }}" style="opacity: {{ $opacity }}%; aspect-ratio: {{ $ratio }}; object-fit: {{ $imageFit }}; @if ($borderRadius === 'custom') border-radius: {{ $customRadius }}px; @endif">
         @if($imageLink)
     </a>
     @endif

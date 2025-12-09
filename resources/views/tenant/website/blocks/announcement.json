@@ -7,6 +7,7 @@
     "max_blocks": 0,
     "allowed_blocks": "",
     "default_blocks": "",
+    "moveable": "none",
     "fields": [
         {
             "key": "announcement",

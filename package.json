@@ -15,8 +15,9 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
-        "@barba/core": "^2.10.3",
+        "@hotwired/turbo": "^8.0.20",
         "@simonwep/pickr": "^1.9.1",
-        "alpinejs": "^3.14.9"
+        "alpinejs": "^3.14.9",
+        "htmx.org": "^2.0.8"
     }
 }

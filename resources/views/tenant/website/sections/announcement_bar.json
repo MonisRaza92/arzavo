@@ -8,6 +8,7 @@
     "max_blocks": 1,
     "allowed_blocks": ["announcement"],
     "default_blocks": ["announcement"],
+    "moveable": "none" ,
     "fields": [
         {
             "key": "color_scheme_id",

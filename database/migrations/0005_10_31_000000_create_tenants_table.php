@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('custom_domain')->unique()->nullable();
             $table->boolean('domain_verified')->default(true);
             $table->timestamp('domain_verified_at')->nullable();
+            $table->text('domain_ssl_output')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();

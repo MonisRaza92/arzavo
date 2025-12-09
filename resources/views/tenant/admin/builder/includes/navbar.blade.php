@@ -55,7 +55,7 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('turbo:load', function() {
         const btn = document.getElementById('pageSelectBtn');
         const dropdown = document.getElementById('pageDropdown');
         const selected = document.getElementById('selectedPage');
@@ -92,7 +92,7 @@
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('turbo:load', function() {
         const radios = document.querySelectorAll('input[name="view-mode"]');
         const preview = document.getElementById('livePreviewContent');
         const editorSidebar = document.getElementById('editorSidebar');

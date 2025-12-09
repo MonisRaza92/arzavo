@@ -1,5 +1,5 @@
 <div id="addSectionContainer" class="hidden z-20 fixed top-0 left-0 bottom-0 w-[299px] pt-29 bg-primary inset-0 overflow-y-auto scrollbar">
-    <h3 class="flex text-sm justify-between items-center font-bold p-4 text-primary border-bottom">
+    <h3 class="flex text-sm sticky top-0 bg-primary justify-between items-center font-bold p-4 text-primary border-bottom">
         <span>Available Sections</span>
         <i class="fa-solid fa-xmark cursor-pointer" onclick="document.getElementById('addSectionContainer').classList.add('hidden')"></i>
     </h3>

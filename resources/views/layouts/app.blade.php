@@ -2,16 +2,15 @@
 <html lang="en">
 
 <head>
-    @include('includes.header')
+    <x-header />
 </head>
 
-<body data-barba="wrapper">
-    <div data-barba="container" data-barba-namespace="{{ last(explode('.', request()->route()->getName())) }}">
-        <x-alert />
-        {{-- Main content --}}
-        <main>
-            @yield('content')
-        </main>
-    </div>
+<body>
+    <x-alert />
+    {{-- Main content --}}
+    <main>
+        @yield('content')
+    </main>
 </body>
+
 </html>

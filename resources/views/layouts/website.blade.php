@@ -2,14 +2,15 @@
 <html lang="en">
 
 <head>
-    @include('includes.header')
+    <x-header />
 </head>
 
-<body data-barba="wrapper" style="background: {{ $customizes['background_color'] ?? 'fafafa' }} !important;">
+<body style="background: {{ $customizes['background_color'] ?? 'fafafa' }} !important;">
     {{-- Alerts --}}
     <x-alert />
-    <main class="relative" data-barba="container" data-barba-namespace="{{ last(explode('.', request()->route()->getName())) }}">
+    <main class="relative">
         @yield('content')
     </main>
 </body>
+
 </html>

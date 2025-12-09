@@ -1,4 +1,4 @@
-<li id="block-{{ $block->id }}" class="block-item border-primary border-rounded cursor-pointer select-none py-0.5 px-1 mt-1 flex justify-between items-center"
+<li id="block-{{ $block->id }}" class="block-item bg-hover-secondary relative group border-rounded cursor-pointer select-none py-0.5 px-1 mt-1 flex justify-between items-center"
     data-block-id="{{ $block->id }}">
 
     @php
@@ -6,7 +6,8 @@
     return [
     $block['type'] => [
     'max_blocks' => $block['max_blocks'] ?? null,
-    'allowed_blocks' => $block['allowed_blocks'] ?? []
+    'allowed_blocks' => $block['allowed_blocks'] ?? [],
+    'moveable' => $block['moveable'] ?? "allow"
     ]
     ];
     });
@@ -28,13 +29,21 @@
         <span class="text-sm cursor-pointer block-open-btn w-full" data-block-id="{{ $block->id }}">{{ $block->name }}</span>
     </div>
 
-    <div class="flex items-center">
-        <button class="cursor-drag bg-hover-secondary text-tertiary text-xs py-2 px-1 border-rounded block-drag-handle">
+    <div class="flex items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
+        @php
+        $blockRule = $blockRules[$block->type] ?? null;
+        $moveable = $blockRule['moveable'] ?? "allow";
+        @endphp
+        @if ($moveable === "allow")
+        <button class="cursor-drag text-hover-primary text-tertiary text-xs py-2 px-1 border-rounded block-drag-handle">
             <i class="fa-solid fa-up-down"></i>
         </button>
+        @else
+        <i class="fa-solid fa-lock text-tertiary text-xs my-2 mx-1"></i>
+        @endif
         {{-- ACTIVE/INACTIVE --}}
         <button type="button"
-            class="toggle-block-active text-tertiary text-xs bg-hover-secondary py-2 px-1 border-rounded"
+            class="toggle-block-active text-tertiary text-[13px] text-hover-primary py-2 px-1 border-rounded"
             data-block-id="{{ $block->id }}">
             @if($block->is_active)
             <i class="fa-solid fa-eye"></i>
@@ -51,7 +60,7 @@
             @method('DELETE')
 
             <button type="button"
-                class="delete-block-btn text-tertiary bg-hover-secondary py-2 px-1 border-rounded text-xs">
+                class="delete-block-btn text-tertiary text-hover-primary py-2 px-1 border-rounded text-xs">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </form>
@@ -75,9 +84,9 @@
     @endphp
     @if(is_null($maxNestedBlocks) || $currentNestedBlockCount < $maxNestedBlocks)
         <button type="button"
-        class="text-blue-800 text-left text-sm bg-hover-secondary mt-1 w-full block p-2 border-primary border-rounded"
+        class="text-blue-600 text-left text-sm bg-hover-secondary mt-1 w-full block p-2 border-rounded"
         onclick="openAddNestedBlock({{ $block->id }})">
-        <i class="fa-regular fa-square-plus mr-1"></i> Add Block
+        <i class="fa-regular fa-square-plus mr-1 ml-5.5 text-[13px]"></i> Add Block
         </button>
         @endif
 </div>
@@ -108,7 +117,7 @@
         const nestedBlocksState = JSON.parse(localStorage.getItem("nestedBlocksState") || "{}");
 
         // Restore saved state on page load
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("turbo:load", function() {
             document.querySelectorAll("[id^='block-btn-']").forEach(el => {
             const blockId = el.id.replace("block-btn-", "");
             const arrow = document.getElementById("block-btn-arrow-" + blockId);
@@ -206,7 +215,7 @@
         // -----------------------------------------
         // BLOCK SORTING (Handle-based drag only)
         // -----------------------------------------
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("turbo:load", function() {
             document.querySelectorAll(".block-list").forEach(list => {
                 Sortable.create(list, {
                     animation: 150,
@@ -305,8 +314,6 @@
             const blockId = form.dataset.blockId;
             if (!blockId) return;
 
-            if (!confirm("Are you sure you want to delete this block?")) return;
-
             fetch(form.action, {
                     method: "POST",
                     headers: {
@@ -366,7 +373,7 @@
                             if (!existingBtn) {
                                 const addBtn = document.createElement("button");
                                 addBtn.className =
-                                    "add-block-btn text-blue-800 text-left text-sm bg-hover-secondary w-full mt-1 block p-2 border-primary border-rounded";
+                                    "add-block-btn text-blue-600 text-left text-sm bg-hover-secondary w-full mt-1 block p-2 border-rounded";
 
                                 // nested or main?
                                 if (isNested) {
@@ -376,7 +383,7 @@
                                 }
 
                                 addBtn.innerHTML =
-                                    `<i class="fa-regular fa-square-plus mr-1"></i> Add Block`;
+                                    `<i class="fa-regular fa-square-plus mr-1 ml-5.5 text-[13px]"></i> Add Block`;
 
                                 parentWrapper.appendChild(addBtn);
                             }
