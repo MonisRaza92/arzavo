@@ -1,96 +1,96 @@
-<li id="block-{{ $block->id }}" class="block-item bg-hover-secondary relative group border-rounded cursor-pointer select-none py-0.5 px-1 mt-1 flex justify-between items-center"
+<li id="block-{{ $block->id }}" class="block-item"
     data-block-id="{{ $block->id }}">
+    <div class="bg-hover-secondary relative group border-rounded cursor-pointer select-none py-0.5 px-1 mt-1 flex justify-between items-center">
 
-    @php
-    $blockRules = collect($availableBlocks)->mapWithKeys(function($block) {
-    return [
-    $block['type'] => [
-    'max_blocks' => $block['max_blocks'] ?? null,
-    'allowed_blocks' => $block['allowed_blocks'] ?? [],
-    'moveable' => $block['moveable'] ?? "allow"
-    ]
-    ];
-    });
-    @endphp
-    <div class="flex items-center grow">
-
-        {{-- NESTED TOGGLER --}}
-        @if (!empty($blockRules[$block->type]['allowed_blocks']))
-        <button type="button" id="block-btn-{{ $block->id }}"
-            class="text-tertiary bg-hover-secondary pt-0.5 pb-1.5 px-1 mr-1 border-rounded toggle-block-btn"
-            data-id="{{ $block->id }}">
-            <i id="block-btn-arrow-{{ $block->id }}" class="fa-solid fa-chevron-right text-[10px]"></i>
-        </button>
-        @else
-        <span class="w-8"></span>
-        @endif
-        <i class="fa-solid {{ $block->icon ?? 'fa-shapes' }} text-xs mr-2 text-tertiary"></i>
-
-        <span class="text-sm cursor-pointer block-open-btn w-full" data-block-id="{{ $block->id }}">{{ $block->name }}</span>
-    </div>
-
-    <div class="flex items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
         @php
-        $blockRule = $blockRules[$block->type] ?? null;
-        $moveable = $blockRule['moveable'] ?? "allow";
+        $blockRules = collect($availableBlocks)->mapWithKeys(function($block) {
+        return [
+        $block['type'] => [
+        'max_blocks' => $block['max_blocks'] ?? null,
+        'allowed_blocks' => $block['allowed_blocks'] ?? [],
+        'moveable' => $block['moveable'] ?? "allow"
+        ]
+        ];
+        });
         @endphp
-        @if ($moveable === "allow")
-        <button class="cursor-drag text-hover-primary text-tertiary text-xs py-2 px-1 border-rounded block-drag-handle">
-            <i class="fa-solid fa-up-down"></i>
-        </button>
-        @else
-        <i class="fa-solid fa-lock text-tertiary text-xs my-2 mx-1"></i>
-        @endif
-        {{-- ACTIVE/INACTIVE --}}
-        <button type="button"
-            class="toggle-block-active text-tertiary text-[13px] text-hover-primary py-2 px-1 border-rounded"
-            data-block-id="{{ $block->id }}">
-            @if($block->is_active)
-            <i class="fa-solid fa-eye"></i>
-            @else
-            <i class="fa-solid fa-eye-slash"></i>
-            @endif
-        </button>
+        <div class="flex items-center grow">
 
-        {{-- DELETE --}}
-        <form class="delete-block-form" data-block-id="{{ $block->id }}"
-            action="{{ route('admin.builder.sections.blocks.destroy', $block->id) }}"
-            method="POST">
-            @csrf
-            @method('DELETE')
-
-            <button type="button"
-                class="delete-block-btn text-tertiary text-hover-primary py-2 px-1 border-rounded text-xs">
-                <i class="fa-solid fa-trash"></i>
+            {{-- NESTED TOGGLER --}}
+            @if (!empty($blockRules[$block->type]['allowed_blocks']))
+            <button type="button" id="block-btn-{{ $block->id }}"
+                class="text-tertiary bg-hover-secondary pt-0.5 pb-1.5 px-1 mr-1 border-rounded toggle-block-btn"
+                data-id="{{ $block->id }}">
+                <i id="block-btn-arrow-{{ $block->id }}" class="fa-solid fa-chevron-right text-[10px]"></i>
             </button>
-        </form>
+            @else
+            <span class="w-8"></span>
+            @endif
+            <span class="text-sm cursor-pointer block-open-btn w-full" data-block-id="{{ $block->id }}"><i class="fa-solid {{ $block->icon ?? 'fa-shapes' }} text-xs mr-2 text-tertiary"></i>{{ $block->name }}</span>
+        </div>
 
+        <div class="flex items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
+            @php
+            $blockRule = $blockRules[$block->type] ?? null;
+            $moveable = $blockRule['moveable'] ?? "allow";
+            @endphp
+            @if ($moveable === "allow")
+            <button class="cursor-drag text-hover-primary text-tertiary text-xs py-2 px-1 border-rounded block-drag-handle">
+                <i class="fa-solid fa-up-down"></i>
+            </button>
+            @else
+            <i class="fa-solid fa-lock text-tertiary text-xs my-2 mx-1"></i>
+            @endif
+            {{-- ACTIVE/INACTIVE --}}
+            <button type="button"
+                class="toggle-block-active text-tertiary text-[13px] text-hover-primary py-2 px-1 border-rounded"
+                data-block-id="{{ $block->id }}">
+                @if($block->is_active)
+                <i class="fa-solid fa-eye"></i>
+                @else
+                <i class="fa-solid fa-eye-slash"></i>
+                @endif
+            </button>
+
+            {{-- DELETE --}}
+            <form class="delete-block-form" data-block-id="{{ $block->id }}"
+                action="{{ route('admin.builder.sections.blocks.destroy', $block->id) }}"
+                method="POST">
+                @csrf
+                @method('DELETE')
+
+                <button type="button"
+                    class="delete-block-btn text-tertiary text-hover-primary py-2 px-1 border-rounded text-xs">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </form>
+
+        </div>
+        @include('tenant.admin.builder.blocks.block-edit')
     </div>
-    @include('tenant.admin.builder.blocks.block-edit')
 
     {{-- Nested Blocks --}}
+    <div id="nested-blocks-{{ $block->id }}" class="ml-[21px] hidden">
+        {{-- List of blocks --}}
+        <ul class="nested-block-list" id="nested-block-list-{{ $block->id }}">
+            @foreach($block->children as $child)
+            @include('tenant.admin.builder.blocks.nested-block', ['block' => $child])
+            @endforeach
+        </ul>
+        @php
+        $blockRule = $blockRules[$block->type] ?? null;
+        $maxNestedBlocks = $blockRule['max_blocks'] ?? null;
+        $currentNestedBlockCount = $block->children->count();
+        @endphp
+        @if(is_null($maxNestedBlocks) || $currentNestedBlockCount < $maxNestedBlocks)
+            <button type="button"
+            class="text-blue-600 text-left text-sm bg-hover-secondary mt-1 w-full block p-2 border-rounded"
+            onclick="openAddNestedBlock({{ $block->id }})">
+            <i class="fa-regular fa-square-plus mr-1 ml-6 text-[13px]"></i> Add Block
+            </button>
+            @endif
+    </div>
+    @include('tenant.admin.builder.blocks.nested-block-add')
 </li>
-<div id="nested-blocks-{{ $block->id }}" class="ml-[21px] hidden">
-    {{-- List of blocks --}}
-    <ul class="nested-block-list" id="nested-block-list-{{ $block->id }}">
-        @foreach($block->children as $child)
-        @include('tenant.admin.builder.blocks.nested-block', ['block' => $child])
-        @endforeach
-    </ul>
-    @php
-    $blockRule = $blockRules[$block->type] ?? null;
-    $maxNestedBlocks = $blockRule['max_blocks'] ?? null;
-    $currentNestedBlockCount = $block->children->count();
-    @endphp
-    @if(is_null($maxNestedBlocks) || $currentNestedBlockCount < $maxNestedBlocks)
-        <button type="button"
-        class="text-blue-600 text-left text-sm bg-hover-secondary mt-1 w-full block p-2 border-rounded"
-        onclick="openAddNestedBlock({{ $block->id }})">
-        <i class="fa-regular fa-square-plus mr-1 ml-5.5 text-[13px]"></i> Add Block
-        </button>
-        @endif
-</div>
-@include('tenant.admin.builder.blocks.nested-block-add')
 
 
 <script>
@@ -119,14 +119,14 @@
         // Restore saved state on page load
         document.addEventListener("turbo:load", function() {
             document.querySelectorAll("[id^='block-btn-']").forEach(el => {
-            const blockId = el.id.replace("block-btn-", "");
-            const arrow = document.getElementById("block-btn-arrow-" + blockId);
-            const container = document.getElementById(`nested-blocks-${blockId}`);
+                const blockId = el.id.replace("block-btn-", "");
+                const arrow = document.getElementById("block-btn-arrow-" + blockId);
+                const container = document.getElementById(`nested-blocks-${blockId}`);
 
-            if (nestedBlocksState[blockId]) {
-                container?.classList.remove("hidden");
-                arrow?.classList.add("rotate-90");
-            }
+                if (nestedBlocksState[blockId]) {
+                    container?.classList.remove("hidden");
+                    arrow?.classList.add("rotate-90");
+                }
             });
         });
 
@@ -160,34 +160,34 @@
         // ---------------------------------------------
         document.addEventListener("click", function(e) {
             if (e.target.classList.contains("block-open-btn")) {
-            e.stopPropagation();
-            e.preventDefault();
+                e.stopPropagation();
+                e.preventDefault();
 
-            const blockId = e.target.dataset.blockId;
-            if (!blockId) return;
+                const blockId = e.target.dataset.blockId;
+                if (!blockId) return;
 
-            const editForm = document.getElementById(`edit-block-form-${blockId}`);
+                const editForm = document.getElementById(`edit-block-form-${blockId}`);
 
-            if (!editForm) {
-                console.error("Block edit form not found for block:", blockId);
-                return;
-            }
+                if (!editForm) {
+                    console.error("Block edit form not found for block:", blockId);
+                    return;
+                }
 
-            // Hide ALL edit forms (sections and blocks)
-            document.querySelectorAll("[id^='edit-section-form-']").forEach(f => f.classList.add("hidden"));
-            document.querySelectorAll("[id^='edit-block-form-']").forEach(f => f.classList.add("hidden"));
+                // Hide ALL edit forms (sections and blocks)
+                document.querySelectorAll("[id^='edit-section-form-']").forEach(f => f.classList.add("hidden"));
+                document.querySelectorAll("[id^='edit-block-form-']").forEach(f => f.classList.add("hidden"));
 
-            // Show this block's edit form
-            editForm.classList.remove("hidden");
-            editForm.scrollTop = 0;
+                // Show this block's edit form
+                editForm.classList.remove("hidden");
+                editForm.scrollTop = 0;
 
-            // Open nested blocks list
-            const nestedContainer = document.getElementById(`nested-blocks-${blockId}`);
-            const arrow = document.getElementById(`block-btn-arrow-${blockId}`);
-            if (nestedContainer && nestedContainer.classList.contains("hidden")) {
-                nestedContainer.classList.remove("hidden");
-                arrow?.classList.add("rotate-90");
-            }
+                // Open nested blocks list
+                const nestedContainer = document.getElementById(`nested-blocks-${blockId}`);
+                const arrow = document.getElementById(`block-btn-arrow-${blockId}`);
+                if (nestedContainer && nestedContainer.classList.contains("hidden")) {
+                    nestedContainer.classList.remove("hidden");
+                    arrow?.classList.add("rotate-90");
+                }
             }
         });
 

@@ -35,10 +35,10 @@ $iconGap = $s['icon_gap'] ?? '4';
     }
 </style>
 <a
-    class="h-fit shrink-0
+    class="h-fit
         text-{{ $alignment }}
         {{ $type === 'primary' ? 'arzavo-primary-btn' : ($type === 'secondary' ? 'arzavo-secondary-btn' : 'arzavo-link-btn') }}
-        {{ $widthDesktop === 'full' ? 'md:w-full' : ($widthDesktop === 'custom' ? 'custom-btn-width' : 'md:w-fit') }}
+        {{ $widthDesktop === 'full' ? 'md:w-full' : ($widthDesktop === 'custom' ? 'custom-btn-width-' . $block->id : 'md:w-fit') }}
         {{ $widthMobile === 'full' ? 'w-full' : ($widthMobile === 'custom' ? 'custom-btn-width-' . $block->id : 'w-fit') }}
         "
     style="

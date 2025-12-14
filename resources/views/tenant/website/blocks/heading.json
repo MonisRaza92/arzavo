@@ -12,7 +12,7 @@
             "key": "text",
             "label": "Heading Text",
             "type": "text",
-            "default": "Welcome to Arzavo!",
+            "default": "Redefining the Future of Educational Management",
             "placeholder": "Enter your heading here"
         },
         {
@@ -32,6 +32,13 @@
         {
             "key": "alignment",
             "label": "Text Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Text Alignment Mobile",
             "type": "radio",
             "options": ["left", "center", "right"],
             "default": "left"

@@ -3,7 +3,8 @@ $s = $block->settings ?? [];
 
 $text = $s['text'] ?? '';
 $type = $s['type'] ?? 'paragraph';
-$alignment = $s['alignment'] ?? 'left';
+$alignment = $s['alignment'] ?? '';
+$mAlignment = $s['mobile_alignment'] ?? '';
 $width = $s['width'] ?? 'fit';
 $pt = $s['padding_top'] ?? 0;
 $pb = $s['padding_bottom'] ?? 0;
@@ -20,9 +21,8 @@ $pr = $s['padding_right'] ?? 0;
     class="
         arzavo-{{ $type }}
         {{ $width === 'full' ? 'w-full' : 'max-w-fit' }}
-        {{ $alignment === 'center' ? 'mx-auto text-center' : '' }}
-        {{ $alignment === 'right' ? 'ml-auto text-right' : '' }}
-        {{ $alignment === 'justify' ? 'text-justify' : '' }}
+        {{ $mAlignment === 'center' ? 'text-center' : ($mAlignment === 'right' ? 'text-right' : 'text-left') }} 
+        {{ $alignment === 'center' ? 'md:text-center' : ($mAlignment === 'right' ? 'md:text-right' : 'md:text-left') }}
     ">
     {!! nl2br(e($text)) !!}
 </p>

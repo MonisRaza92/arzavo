@@ -5,8 +5,8 @@
     "order": 2,
     "Page": ["global"],
     "category": "Header",
-    "max_blocks": 2,
-    "allowed_blocks": ["logo", "menu"],
+    "max_blocks": 0,
+    "allowed_blocks": "",
     "default_blocks": "",
     "moveable": "none",
     "fields": [

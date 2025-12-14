@@ -12,7 +12,7 @@
             "key": "text",
             "label": "Text",
             "type": "text",
-            "default": "Whether you run a school, coaching institute, training center, or college, ARZAVO helps you create a digital ecosystem that actually works for you. Automate repetitive tasks, deliver structured learning experiences, track growth effortlessly, and provide students with a smooth digital journey. Every feature is designed to save time, reduce manual effort, and help your institution scale with confidence",
+            "default": "Arzavo sets a new direction for how institutions operate, evolve, and lead. Designed with clarity and intention, it brings a level of control and refinement that today’s educational systems have never experienced. With Arzavo, institutions don’t just manage — they advance.",
             "placeholder": "Enter your text here"
         },
         {
@@ -32,6 +32,13 @@
         {
             "key": "alignment",
             "label": "Text Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Text Alignment Mobile",
             "type": "radio",
             "options": ["left", "center", "right"],
             "default": "left"

@@ -24,14 +24,14 @@
         @include('tenant.admin.builder.sections.sections')
     </div>
     <div class="tab-content hidden" id="apps" data-content="apps">
-         <p class="p-4">No App Available Right Now</p>
+        <p class="p-4">No App Available Right Now</p>
     </div>
 </div>
 <script>
     function openCustomizesMenu(menuId, arrowId) {
         const menu = document.getElementById(menuId);
         const arrow = document.getElementById(arrowId);
-        
+
         if (menu.classList.contains('max-h-0')) {
             menu.classList.remove('max-h-0');
             arrow.classList.add('rotate-90');
@@ -47,15 +47,15 @@
     document.addEventListener('turbo:load', () => {
         // Restore menus: colors-settings-menu, logo-settings-menu, etc.
         const menus = ['colors-settings-menu', 'logo-settings-menu', 'typography-settings-menu', 'border-shadow-settings-menu', 'buttons-settings-menu', 'layout-settings-menu', 'ui-elements-settings-menu', 'animations-settings-menu', 'advanced-settings-menu'];
-        
+
         menus.forEach(menuId => {
             const menu = document.getElementById(menuId);
             if (!menu) return;
-            
+
             const arrowId = menuId.replace('-menu', '').replace('settings', '') + 'arrow'.replace('--', '-');
             const savedState = localStorage.getItem(`menu_${menuId}`);
             const arrow = document.getElementById('arrow-' + menuId.replace('-settings-menu', ''));
-            
+
             if (savedState === 'open') {
                 menu.classList.remove('max-h-0');
                 arrow?.classList.add('rotate-90');
@@ -116,21 +116,22 @@
             .catch(err => console.error('AJAX update failed:', err));
     }
 
+    window.addEventListener('turbo:load', () => {
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.getAttribute('data-target');
 
-    document.querySelectorAll('.tab-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const target = button.getAttribute('data-target');
+                // Remove active class from all buttons and contents
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-invert', 'text-invert'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
 
-            // Remove active class from all buttons and contents
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-invert', 'text-invert'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+                // Add active class to clicked button and corresponding content
+                button.classList.add('bg-invert', 'text-invert');
+                document.querySelector(`.tab-content[data-content="${target}"]`).classList.remove('hidden');
 
-            // Add active class to clicked button and corresponding content
-            button.classList.add('bg-invert', 'text-invert');
-            document.querySelector(`.tab-content[data-content="${target}"]`).classList.remove('hidden');
-
-            // ✅ Save current tab to localStorage
-            localStorage.setItem('activeTab', target);
+                // ✅ Save current tab to localStorage
+                localStorage.setItem('activeTab', target);
+            });
         });
     });
 

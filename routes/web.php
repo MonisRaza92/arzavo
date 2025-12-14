@@ -126,6 +126,7 @@ function registerDomains($domain)
                     Route::get('/', [SectionController::class, 'index'])->name('index');
                     Route::prefix('sections')->name('sections.')->group(function () {
                         Route::post('/{pageId}', [SectionController::class, 'store'])->name('store');
+                        Route::post('/{pageId}/template', [SectionController::class, 'storeTemplate'])->name('store.template');
                         Route::put('/{sectionId}', [SectionController::class, 'update'])->name('update');
                         Route::delete('/{sectionId}', [SectionController::class, 'destroy'])->name('destroy');
                         Route::post('/{pageId}/reorder', [SectionController::class, 'reorder'])->name('reorder');
@@ -137,6 +138,7 @@ function registerDomains($domain)
                             Route::delete('/{blockId}', [BlockController::class, 'destroy'])->name('destroy');
                             Route::post('/{blockId}/toggle-active', [BlockController::class, 'toggleActive'])->name('toggleActive');
                             Route::post('/{sectionId}', [BlockController::class, 'reorder'])->name('reorder');
+                            Route::post('nested/{blockId}', [BlockController::class, 'reorderNested'])->name('nested.reorder');
                         });
                     });
                 });

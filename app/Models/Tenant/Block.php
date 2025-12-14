@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Block extends Model
 {
     protected $connection = 'tenant';
-    protected $fillable = ['section_id', 'parent_block_id', 'name', 'type', 'icon', 'settings', 'order', 'is_active'];
+    protected $fillable = ['section_id', 'parent_block_id', 'name', 'type', 'icon', 'settings', 'order', 'color_scheme_id', 'is_active'];
 
     protected $casts = [
         'settings' => 'array',
@@ -30,5 +30,9 @@ class Block extends Model
     {
         return $this->hasMany(Block::class, 'parent_block_id')
             ->orderBy('order');
+    }
+    public function colorScheme()
+    {
+        return $this->belongsTo(ColorScheme::class, 'color_scheme_id');
     }
 }

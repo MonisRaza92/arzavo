@@ -37,4 +37,9 @@ class ColorScheme extends Model
     {
         return $this->hasMany(Section::class, 'color_scheme_id');
     }
+
+    public function blocks()
+    {
+        return $this->hasMany(Block::class, 'color_scheme_id');
+    }
 }

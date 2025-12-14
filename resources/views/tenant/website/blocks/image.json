@@ -12,7 +12,7 @@
             "key": "desktop_image_block",
             "label": "Desktop Image",
             "type": "image",
-            "default": "",
+            "default": "images/square/square1.webp",
             "placeholder": "Image for desktop"
         },
         {
@@ -83,7 +83,7 @@
             "label": "Image Border Radius",
             "type": "radio",
             "options": ["disable", "enable", "custom"],
-            "default": "disable"
+            "default": "enable"
         },
         {
             "key": "image_custom_radius",

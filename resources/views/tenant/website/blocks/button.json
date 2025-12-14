@@ -25,51 +25,7 @@
         {
             "key": "icon",
             "label": "Button Icon",
-            "type": "select",
-            "options": [
-                "none",
-                "arrow-right",
-                "arrow-left",
-                "arrow-up",
-                "arrow-down",
-                "check",
-                "times",
-                "plus",
-                "minus",
-                "shopping-cart",
-                "heart",
-                "star",
-                "download",
-                "info-circle",
-                "external-link-alt",
-                "cursor-pointer",
-                "paper-plane",
-                "phone",
-                "envelope",
-                "search",
-                "user",
-                "cog",
-                "gift",
-                "lock",
-                "calendar",
-                "map-marker",
-                "camera",
-                "play",
-                "bell",
-                "cloud-download",
-                "thumbs-up",
-                "lightbulb",
-                "fire",
-                "rocket",
-                "music",
-                "coffee",
-                "leaf",
-                "smile",
-                "trophy",
-                "umbrella",
-                "wrench",
-                "bicycle"
-            ],
+            "type": "icon",
             "default": "none"
         },
         {
@@ -103,15 +59,9 @@
             "default": "center"
         },
         {
-            "key": "btn_new_tab",
-            "label": "Button Link",
-            "type": "switch",
-            "text": "Turn on to open link in new tab"
-        },
-        {
             "key": "width_desktop",
             "label": "Button Width (Desktop)",
-            "type": "select",
+            "type": "radio",
             "options": ["fit", "full", "custom"],
             "default": "fit"
         },
@@ -122,12 +72,15 @@
             "default": 0,
             "min": 0,
             "max": 100,
-            "help": "Set custom width in % only if 'custom' is selected in Button Width (Desktop)"
+            "conditional": {
+                "field": "width_desktop",
+                "value": "custom"
+            }
         },
         {
             "key": "width_mobile",
             "label": "Button Width (Mobile)",
-            "type": "select",
+            "type": "radio",
             "options": ["fit", "full", "custom"],
             "default": "full"
         },
@@ -138,7 +91,10 @@
             "default": 0,
             "min": 0,
             "max": 100,
-            "help": "Set custom width in % only if 'custom' is selected in Button Width (Mobile)"
+            "conditional": {
+                "field": "width_mobile",
+                "value": "custom"
+            }
         },
         {
             "key": "border",
@@ -149,12 +105,15 @@
         },
         {
             "key": "custom_border_width",
-            "label": "Custom Border Width (px)",
+            "label": "Custom Border Width",
             "type": "range",
             "default": 1,
             "min": 0,
             "max": 20,
-            "help": "Set custom border width in px only if 'custom' is selected in Button Border"
+            "conditional": {
+                "field": "border",
+                "value": "custom"
+            }
         },
         {
             "key": "radius",
@@ -165,12 +124,21 @@
         },
         {
             "key": "custom_radius_size",
-            "label": "Custom Border Radius Size (px)",
+            "label": "Custom Border Radius",
             "type": "range",
             "default": 4,
             "min": 0,
             "max": 100,
-            "help": "Set custom border radius size in px only if 'custom' is selected in Button Border Radius"
+            "conditional": {
+                "field": "radius",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "btn_new_tab",
+            "label": "Button Link",
+            "type": "switch",
+            "text": "Turn on to open link in new tab"
         },
         {
             "key": "margin_top",
@@ -178,8 +146,7 @@
             "type": "range",
             "default": 0,
             "min": 0,
-            "max": 100,
-            "help": "Set margin top in px"
+            "max": 100
         },
         {
             "key": "margin_bottom",
@@ -187,8 +154,7 @@
             "type": "range",
             "default": 0,
             "min": 0,
-            "max": 100,
-            "help": "Set margin bottom in px"
+            "max": 100
         },
         {
             "key": "margin_left",
@@ -196,8 +162,7 @@
             "type": "range",
             "default": 0,
             "min": 0,
-            "max": 100,
-            "help": "Set margin left in px"
+            "max": 100
         },
         {
             "key": "margin_right",
@@ -205,8 +170,7 @@
             "type": "range",
             "default": 0,
             "min": 0,
-            "max": 100,
-            "help": "Set margin right in px"
+            "max": 100
         }
     ]
 }

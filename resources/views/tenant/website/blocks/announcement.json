@@ -18,23 +18,9 @@
         {
             "key": "text_type",
             "label": "Text Type",
-            "type": "radio",
-            "options": ["heading", "paragraph"],
-            "default": "heading"
-        },
-        {
-            "key": "font_size",
-            "label": "Font Size",
-            "type": "radio",
-            "options": ["small", "medium", "large"],
-            "default": "small"
-        },
-        {
-            "key": "font_weight",
-            "label": "Font Weight",
-            "type": "radio",
-            "options": ["normal", "bold"],
-            "default": "normal"
+            "type": "select",
+            "options": ["heading-1", "heading-2", "heading-3", "heading-4", "heading-5", "heading-6", "paragraph"],
+            "default": "paragraph"
         }
     ]
 }

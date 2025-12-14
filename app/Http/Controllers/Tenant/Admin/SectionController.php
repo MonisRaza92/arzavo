@@ -73,6 +73,19 @@ class SectionController
                     'moveable' => $data['moveable'] ?? 'allow',
                 ];
             });
+        $availableTemplates = collect(glob(resource_path('views/tenant/website/templates/*.json')))
+            ->map(function ($file) {
+                $data = json_decode(file_get_contents($file), true);
+                return [
+                    'type' => basename($file, '.json'),
+                    'name' => $data['name'] ?? basename($file, '.json'),
+                    'icon' => $data['icon'] ?? 'fa-shapes',
+                    'category' => $data['category'] ?? 'Templates',
+                    'preview' => $data['preview'] ?? null,
+                    'order' => $data['order'] ?? 9999
+                ];
+            });
+
 
 
         $pages = Page::all();
@@ -83,6 +96,7 @@ class SectionController
             'sections',
             'availableSections',
             'availableBlocks',
+            'availableTemplates',
             'pages',
             'images'
         ));
@@ -183,7 +197,90 @@ class SectionController
         return back()->with('success', 'Section added successfully');
     }
 
+    public function storeTemplate(Request $request, $pageId)
+    {
+        $request->validate([
+            'template_type' => 'required|string',
+            'section_name' => 'required|string'
+        ]);
 
+        $page = Page::findOrFail($pageId);
+        $order = ($page->sections()->max('order') ?? 0) + 1;
+
+        // Load template JSON
+        $jsonPath = resource_path("views/tenant/website/templates/{$request->template_type}.json");
+
+        if (!file_exists($jsonPath)) {
+            return back()->with('error', 'Template not found.');
+        }
+
+        $template = json_decode(file_get_contents($jsonPath), true);
+
+        $sectionSettings = $template['settings'] ?? [];
+        $sectionIcon = $template['icon'] ?? 'fa-shapes';
+        $colorSchemeId = $template['color_scheme_id'] ?? 1;
+
+        // Create section
+        $section = Section::create([
+            'page_id' => $page->id,
+            'name' => $request->section_name,
+            'type' => $template['type'] ?? 'template',
+            'icon' => $sectionIcon,
+            'settings' => $sectionSettings,
+            'color_scheme_id' => $colorSchemeId,
+            'order' => $order
+        ]);
+
+        // Recursively create blocks
+        $orderCounter = 1;
+
+        foreach ($template['default_blocks'] ?? [] as $blockData) {
+            $this->createBlockRecursive($section->id, $blockData, null, $orderCounter);
+        }
+
+        return back()->with('success', 'Template added successfully!');
+    }
+
+    private function createBlockRecursive($sectionId, $blockData, $parentId = null, &$order = 1)
+    {
+        // Base block schema
+        $schemaPath = resource_path("views/tenant/website/blocks/{$blockData['type']}.json");
+        $schemaDefaults = [];
+
+        if (file_exists($schemaPath)) {
+            $schemaJson = json_decode(file_get_contents($schemaPath), true);
+
+            if (!empty($schemaJson['fields'])) {
+                foreach ($schemaJson['fields'] as $field) {
+                    if (isset($field['key']) && array_key_exists('default', $field)) {
+                        $schemaDefaults[$field['key']] = $field['default'];
+                    }
+                }
+            }
+            $blockIcon = $schemaJson['icon'] ?? '';
+            $blockSchemeId = $schemaJson['color_scheme_id'] ?? null;
+        }
+
+        // Merge schema default + template custom settings
+        $finalSettings = array_merge($schemaDefaults, $blockData['settings'] ?? []);
+
+        // Create parent block
+        $block = Block::create([
+            'section_id' => $sectionId,
+            'parent_block_id' => $parentId,
+            'name' => ucfirst($blockData['type']),
+            'icon' => $blockIcon,
+            'type' => $blockData['type'],
+            'settings' => $finalSettings,
+            'color_scheme_id'=> $blockSchemeId,
+            'order' => $order++
+        ]);
+
+        // Children recursively
+        foreach ($blockData['default_blocks'] ?? [] as $child) {
+            $this->createBlockRecursive($sectionId, $child, $block->id, $order);
+        }
+    }
 
     public function update(Request $request, $sectionId)
     {

@@ -42,21 +42,18 @@
 
         @foreach($fields as $field)
         @php
-        $shouldShow = true;
         if (isset($field['conditional'])) {
         $conditionalField = $field['conditional']['field'];
         $conditionalValue = $field['conditional']['value'];
         $currentValue = $block->settings[$conditionalField] ?? null;
-        $shouldShow = ($currentValue === $conditionalValue);
         }
         @endphp
 
-        @if($shouldShow)
         <div class="field-item flex justify-between items-center gap-4 border-bottom p-4 transition-all duration-300"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
-            data-conditional-field="{{ $field['conditional']['field'] }}"
-            data-conditional-value="{{ $field['conditional']['value'] }}"
+            data-cond-field="{{ $field['conditional']['field'] }}"
+            data-cond-value="{{ $field['conditional']['value'] }}"
             @endif>
 
             <label class="block text-xs font-semibold text-primary text-left w-1/3">
@@ -123,16 +120,50 @@
                 </select>
                 @break
 
+                @case('icon')
+                <select name="settings[{{ $field['key'] }}]"
+                    {{ ($field['required'] ?? false) ? 'required' : '' }}
+                    class="w-full capitalize p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
+
+                    @foreach(config('icons') as $icon)
+                    <option value="{{ $icon }}"
+                        {{ ($block->settings[$field['key']] ?? $field['default'] ?? '') === $icon ? 'selected' : '' }}>
+                        {{ $icon }}
+                    </option>
+                    @endforeach
+
+                </select>
+                @break
+
+
                 @case('checkbox')
-                <label class="inline-flex items-center gap-2 cursor-pointer text-sm group">
-                    <input type="checkbox"
-                        name="settings[{{ $field['key'] }}]"
-                        value="1"
-                        {{ !empty($block->settings[$field['key']]) ? 'checked' : '' }}
-                        class="border-rounded border-primary accent-accent w-4 h-4 live-input cursor-pointer transition-all">
-                    <span class="group-hover:text-accent transition-colors">{{ $field['text'] ?? 'Enable' }}</span>
+                <label class="flex items-center gap-3 cursor-pointer select-none group">
+
+                    {{-- Hidden input ensures 0 is sent when unchecked --}}
+                    <input type="hidden" name="settings[{{ $field['key'] }}]" value="0">
+
+                    {{-- BEAUTIFUL TOGGLE CHECKBOX --}}
+                    <div class="relative inline-flex items-center">
+                        <input type="checkbox"
+                            name="settings[{{ $field['key'] }}]"
+                            value="1"
+                            {{ !empty($block->settings[$field['key']]) ? 'checked' : '' }}
+                            class="sr-only peer live-input">
+
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-accent transition-all duration-300 shadow-inner"></div>
+
+                        <div class="absolute left-0.5 top-1/2 -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-sm
+                    transition-all duration-300 peer-checked:translate-x-5"></div>
+                    </div>
+
+                    {{-- LABEL --}}
+                    <span class="text-sm font-medium text-primary group-hover:text-accent transition-colors">
+                        {{ $field['text'] ?? 'Enable' }}
+                    </span>
+
                 </label>
                 @break
+
 
                 @case('switch')
                 <label class="relative inline-flex items-center cursor-pointer group">
@@ -151,12 +182,12 @@
                 @break
 
                 @case('color')
-                <div class="flex items-center gap-3">
+                <div class="flex items-start gap-2">
                     <div class="relative group">
                         <input type="color"
                             id="colorPicker-block-{{ $block->id }}-{{ $field['key'] }}"
                             value="{{ $block->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
-                            class="w-14 h-10 border-primary border-rounded cursor-pointer live-input transition-all hover:scale-105"
+                            class="w-10 h-10.5 border-primary color-input border-rounded cursor-pointer live-input transition-all hover:scale-105"
                             oninput="document.getElementById('colorInput-block-{{ $block->id }}-{{ $field['key'] }}').value = this.value">
                         <div class="absolute inset-0 border-2 border-transparent group-hover:border-accent border-rounded pointer-events-none transition-all"></div>
                     </div>
@@ -166,7 +197,7 @@
                         value="{{ $block->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
                         maxlength="7"
                         pattern="^#[0-9A-Fa-f]{6}$"
-                        class="w-28 p-2.5 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
+                        class="w-30 p-2.5 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
                         oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('colorPicker-block-{{ $block->id }}-{{ $field['key'] }}').value = this.value">
                 </div>
                 @break
@@ -294,7 +325,6 @@
                 @endif
             </div>
         </div>
-        @endif
         @endforeach
     </form>
     @endif
@@ -426,38 +456,59 @@
             }
         };
 
-        // Handle conditional field visibility
-        function updateConditionalFields(form) {
-            const conditionalFields = form.querySelectorAll('[data-conditional-field]');
+        function initBlockConditional(blockId) {
+            const form = document.querySelector(`.editBlockForm[data-block-id="${blockId}"]`);
+            if (!form) return;
 
-            conditionalFields.forEach(field => {
-                const conditionalFieldName = field.dataset.conditionalField;
-                const conditionalValue = field.dataset.conditionalValue;
-                const controlField = form.querySelector(`[name="settings[${conditionalFieldName}]"]`);
+            function getValue(input) {
+                if (!input) return null;
 
-                if (controlField) {
-                    let currentValue = null;
-
-                    if (controlField.type === 'radio') {
-                        const checkedRadio = form.querySelector(`[name="settings[${conditionalFieldName}]"]:checked`);
-                        currentValue = checkedRadio ? checkedRadio.value : null;
-                    } else if (controlField.type === 'checkbox') {
-                        currentValue = controlField.checked ? '1' : '0';
-                    } else {
-                        currentValue = controlField.value;
-                    }
-
-                    if (currentValue === conditionalValue) {
-                        field.style.display = 'flex';
-                        field.classList.remove('opacity-0');
-                        field.classList.add('opacity-100');
-                    } else {
-                        field.style.display = 'none';
-                        field.classList.remove('opacity-100');
-                        field.classList.add('opacity-0');
-                    }
+                if (input.type === "radio") {
+                    const checked = form.querySelector(`input[name="${input.name}"]:checked`);
+                    return checked ? checked.value : null;
                 }
-            });
+                if (input.type === "checkbox") {
+                    return input.checked ? input.value : "0";
+                }
+
+                // for hidden input (ignore if checkbox exists)
+                if (input.type === "hidden") {
+                    const checkbox = form.querySelector(`input[type="checkbox"][name="${input.name}"]`);
+                    if (checkbox) {
+                        return checkbox.checked ? checkbox.value : "0";
+                    }
+                    return input.value;
+                }
+                return input.value;
+            }
+
+            function updateConditionalFields() {
+                const conditionalFields = form.querySelectorAll("[data-cond-field]");
+
+                conditionalFields.forEach((field) => {
+                    const dependOn = field.dataset.condField;
+                    const expect = field.dataset.condValue;
+
+                    const control = form.querySelector(
+                        `[name="settings[${dependOn}]"], [name="${dependOn}"]`
+                    );
+
+                    const value = getValue(control);
+
+                    if (value === expect) {
+                        field.style.display = "flex";
+                        field.style.opacity = "1";
+                    } else {
+                        field.style.display = "none";
+                        field.style.opacity = "0";
+                    }
+                });
+            }
+
+            updateConditionalFields();
+
+            form.addEventListener("input", updateConditionalFields);
+            form.addEventListener("change", updateConditionalFields);
         }
 
         // Form change handler
@@ -468,7 +519,7 @@
             clearTimeout(blockSubmitTimeout);
             blockSubmitTimeout = setTimeout(() => {
                 window.submitBlockForm(form); // ✅ Use global function
-            }, 800);
+            }, 150);
         }
 
         // Update delete buttons
@@ -498,17 +549,13 @@
         }
 
         // Initialize on DOM load
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector(`.editBlockForm[data-block-id="${blockId}"]`);
+        document.addEventListener("turbo:load", function() {
+            initBlockConditional({{$block->id}});
+            const form = document.querySelector(`.editBlockForm[data-block-id="{{ $block->id }}"]`);
             if (!form) return;
 
-            updateConditionalFields(form);
-
-            form.addEventListener('input', handleBlockFormChange);
-            form.addEventListener('change', function(e) {
-                handleBlockFormChange(e);
-                updateConditionalFields(form);
-            });
+            form.addEventListener("input", handleBlockFormChange);
+            form.addEventListener("change", handleBlockFormChange);
         });
     })();
 </script>

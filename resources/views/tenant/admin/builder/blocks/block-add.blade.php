@@ -61,7 +61,7 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("turbo:load", () => {
 
         document.querySelectorAll('.blockAddBtn').forEach(btn => {
 

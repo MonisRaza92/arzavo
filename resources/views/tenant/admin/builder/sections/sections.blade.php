@@ -24,8 +24,8 @@
                     @else
                     <span class="w-8"></span>
                     @endif
-                    <h2 class="text-sm w-full">
-                        <i class="fa-solid {{ $section->icon ?? 'fa-braille' }} text-tertiary text-xs mr-1"></i>{{ $section->name }}
+                    <h2 class="text-sm w-full section-header">
+                        <i class="fa-solid {{ $section->icon ?? 'fa-braille' }} text-xs text-tertiary mr-2"></i>{{ $section->name }}
                     </h2>
                 </div>
                 <div class="flex items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
@@ -73,8 +73,8 @@
                 @if(is_null($maxBlocks) || $currentBlockCount < $maxBlocks)
                     <button type="button"
                     class="text-blue-600 text-left text-sm bg-hover-secondary w-full mt-1 block p-2 border-rounded"
-                    onclick="openAddBlock({{ $section->id }})">
-                    <i class="fa-regular fa-square-plus mr-1 ml-4.5 text-[13px]"></i> Add Block
+                    onclick="document.getElementById('addBlockContainer{{ $section->id }}').classList.remove('hidden')">
+                    <i class="fa-regular fa-square-plus mr-1 ml-6 text-[13px]"></i> Add Block
                     </button>
                     @endif
 
@@ -85,213 +85,188 @@
         </li>
         @endforeach
 
-        <li class="cursor-pointer border-rounded text-blue-600 bg-hover-secondary p-2"
+        <li class="cursor-pointer border-rounded text-blue-600 text-sm bg-hover-secondary p-3"
             onclick="document.getElementById('addSectionContainer').classList.remove('hidden')">
-            <i class="fa-regular fa-square-plus ml-5.5 text-sm"></i> Add Section
+            <i class="fa-regular fa-square-plus ml-5 mr-1"></i> Add Section
         </li>
     </ul>
 </div>
 
 <script>
-    document.addEventListener("turbo:load", () => {
-
-        // -------------------------------
-        // SECTION → BLOCKS EXPAND/COLLAPSE + LOCALSTORAGE
-        // -------------------------------
-
-        const blocksState = JSON.parse(localStorage.getItem("SectionBlocksState") || "{}");
-
-        // Restore saved state on page load
-        document.querySelectorAll("[id^='blocks-']").forEach(el => {
-            const sectionId = el.id.replace("blocks-", "");
-            const arrow = document.getElementById("arrow-" + sectionId);
-
-            if (blocksState[sectionId]) {
-                el.classList.remove("hidden");
-                arrow?.classList.add("rotate-90");
-            }
-        });
-
-        // Toggle blocks inside section + save state
-        document.querySelectorAll("[id^='section-btn-']").forEach(btn => {
-            btn.addEventListener("click", function(e) {
-                e.stopPropagation();
-
-                const sectionId = this.id.replace("section-btn-", "");
-                const container = document.getElementById(`blocks-${sectionId}`);
-                const arrow = document.getElementById(`arrow-${sectionId}`);
-
-                const isNowOpen = container.classList.toggle("hidden") === false;
-
-                // update arrow
-                arrow.classList.toggle("rotate-90", isNowOpen);
-
-                // save state
-                blocksState[sectionId] = isNowOpen;
-                localStorage.setItem("SectionBlocksState", JSON.stringify(blocksState));
-            });
-        });
+    window.csrfToken = "{{ csrf_token() }}";
+    window.sectionReorderUrl = "{{ route('admin.builder.sections.reorder', $page->id) }}";
 
 
-        // Open Add Block Modal
-        function openAddBlock(sectionId) {
-            const container = document.getElementById(`addBlockContainer${sectionId}`);
-            if (container) {
-                container.classList.remove("hidden");
-            }
-        }
-    });
+    document.addEventListener("turbo:load", initBuilder);
+    document.addEventListener("turbo:render", initBuilder);
 
-
-    document.addEventListener("turbo:load", () => {
+    function initBuilder() {
         const sectionList = document.getElementById("sectionList");
         if (!sectionList) return;
 
-        let isDragging = false;
-        let dragTimer = null;
+        // Avoid double initialization
+        if (sectionList.dataset.initialized === "1") return;
+        sectionList.dataset.initialized = "1";
 
-        const sortable = Sortable.create(sectionList, {
+        // -----------------------------
+        // LOCAL STORAGE FOR BLOCKS
+        // -----------------------------
+        const blocksState = JSON.parse(localStorage.getItem("SectionBlocksState") || "{}");
+
+        document.querySelectorAll("[id^='blocks-']").forEach(el => {
+            const id = el.id.replace("blocks-", "");
+            if (blocksState[id]) {
+                el.classList.remove("hidden");
+                document.getElementById("arrow-" + id)?.classList.add("rotate-90");
+            }
+        });
+
+        // -----------------------------
+        // SORTABLE (ONLY ONCE)
+        // -----------------------------
+        Sortable.create(sectionList, {
             animation: 150,
             ghostClass: "bg-gray-100",
-            handle: ".section-drag-handle", // 👈 only this icon will drag
+            handle: ".section-drag-handle",
             onStart() {
-                isDragging = true;
+                window._dragging = true
             },
             onEnd() {
-                isDragging = false;
+                window._dragging = false;
 
-                // Save order to backend
                 const order = {};
                 sectionList.querySelectorAll("li[data-id]").forEach((el, index) => {
                     order[el.dataset.id] = index + 1;
                 });
 
-                fetch("{{ route('admin.builder.sections.reorder', $page->id) }}", {
-                        method: "POST",
-                        headers: {
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            order
-                        }),
+                fetch(window.sectionReorderUrl, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": window.csrfToken,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        order
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "ok" || data.status === "success") {
-                            const iframe = document.getElementById("livePreviewContent");
-                            if (iframe) iframe.contentWindow.location.reload();
-                        }
-                    })
-                    .catch(console.error);
+                }).then(() => {
+                    reloadPreview();
+                });
             }
+
         });
 
-        sectionList.addEventListener("mousedown", e => {
-            dragStartY = e.clientY;
-            isDragging = false;
-        });
+        // -----------------------------
+        // CLICK HANDLER (ONLY ONE)
+        // -----------------------------
+        sectionList.addEventListener("click", (e) => {
+            if (window._dragging) return;
 
-        sectionList.addEventListener("mousemove", e => {
-            if (Math.abs(e.clientY - dragStartY) > DRAG_THRESHOLD) {
-                isDragging = true;
-            }
-        });
+            const arrowBtn = e.target.closest("[id^='section-btn-']");
+            const header = e.target.closest(".section-header");
 
-        sectionList.addEventListener("mouseup", e => {
-            // Reset drag flag after click finishes
-            setTimeout(() => isDragging = false, 0);
-        });
+            // 1) ----------------- ARROW CLICK → OPEN/CLOSE BLOCKS ---------------------
+            if (arrowBtn) {
+                e.stopPropagation();
 
+                const id = arrowBtn.id.replace("section-btn-", "");
+                const blocks = document.getElementById("blocks-" + id);
+                const arrow = document.getElementById("arrow-" + id);
 
-        sectionList.addEventListener("click", e => {
-            if (isDragging) return;
+                const open = !blocks.classList.toggle("hidden");
+                arrow.classList.toggle("rotate-90", open);
 
-            if (e.target.closest(".block-item")) return;
-
-            const li = e.target.closest("li[data-id]");
-            if (!li) return;
-
-            const sectionId = li.dataset.id;
-
-            const editForm = document.getElementById(`edit-form-${sectionId}`);
-            const blockContainer = document.getElementById(`blocks-${sectionId}`);
-            const arrow = document.getElementById(`arrow-${sectionId}`);
-
-            const isOpening = editForm.classList.contains("hidden");
-
-            editForm.classList.toggle("hidden");
-
-            if (isOpening) {
-                blockContainer.classList.remove("hidden");
-                arrow?.classList.add("rotate-90");
-
-                blocksState[sectionId] = true;
+                blocksState[id] = open;
                 localStorage.setItem("SectionBlocksState", JSON.stringify(blocksState));
+                return;
+            }
+
+            // 2) ----------------- HEADER CLICK → OPEN EDIT FORM ---------------------
+            if (header) {
+                e.stopPropagation();
+
+                const li = header.closest("li[data-id]");
+                const id = li.dataset.id;
+
+                const editForm = document.getElementById("edit-form-" + id);
+                const blocks = document.getElementById("blocks-" + id);
+                const arrow = document.getElementById("arrow-" + id);
+
+                const opening = editForm.classList.contains("hidden");
+
+                editForm.classList.toggle("hidden");
+
+                if (opening) {
+                    blocks.classList.remove("hidden");
+                    arrow?.classList.add("rotate-90");
+
+                    blocksState[id] = true;
+                    localStorage.setItem("SectionBlocksState", JSON.stringify(blocksState));
+                }
+
+                return;
             }
         });
 
-
-
-        // ✅ Toggle Active
+        // -----------------------------
+        // TOGGLE ACTIVE
+        // -----------------------------
         document.querySelectorAll(".toggle-active-btn").forEach(btn => {
-            btn.addEventListener("click", function(e) {
+            btn.onclick = (e) => {
                 e.stopPropagation();
-                const sectionId = this.dataset.sectionId;
-                fetch(`/admin/builder/sections/${sectionId}/toggle-active`, {
+                const id = btn.dataset.sectionId;
+
+                fetch(`/admin/builder/sections/${id}/toggle-active`, {
                         method: "POST",
                         headers: {
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                            "Content-Type": "application/json",
-                        },
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            btn.innerHTML = data.is_active ?
-                                '<i class="fa-solid fa-eye"></i>' :
-                                '<i class="fa-solid fa-eye-slash"></i>';
-                            const iframe = document.getElementById("livePreviewContent");
-                            if (iframe) iframe.contentWindow.location.reload();
+                            "X-CSRF-TOKEN": window.csrfToken
                         }
                     })
-                    .catch(console.error);
-            });
+                    .then(res => res.json())
+                    .then(d => {
+                        btn.innerHTML = d.is_active ?
+                            '<i class="fa-solid fa-eye"></i>' :
+                            '<i class="fa-solid fa-eye-slash"></i>';
+
+                        document.getElementById("livePreviewContent")?.contentWindow.location.reload();
+                    });
+            };
         });
 
-        // ✅ Delete Section
+        // -----------------------------
+        // DELETE SECTION
+        // -----------------------------
         document.querySelectorAll(".delete-section-form .delete-btn").forEach(btn => {
-            btn.addEventListener("click", function(e) {
+            btn.onclick = (e) => {
                 e.stopPropagation();
-                const form = this.closest(".delete-section-form");
-                const sectionId = form.dataset.sectionId;
+                const form = btn.closest(".delete-section-form");
+                const id = form.dataset.sectionId;
 
                 fetch(form.action, {
                         method: "POST",
                         headers: {
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": window.csrfToken,
                             "X-HTTP-Method-Override": "DELETE",
-                        },
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            const li = document.getElementById(`section-${sectionId}`);
-                            if (li) {
-                                li.style.transition = "opacity 0.3s ease";
-                                li.style.opacity = "0";
-                                setTimeout(() => li.remove(), 300);
-                            }
-                            const iframe = document.getElementById("livePreviewContent");
-                            if (iframe) iframe.contentWindow.location.reload();
-
-                        } else {
-                            alert("Failed to delete section.");
+                            "Content-Type": "application/json"
                         }
                     })
-                    .catch(console.error);
-            });
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.status === "success") {
+                            const li = document.getElementById("section-" + id);
+                            li.style.opacity = 0;
+                            setTimeout(() => li.remove(), 300);
+
+                            document.getElementById("livePreviewContent")?.contentWindow.location.reload();
+                        }
+                    });
+            };
         });
-    });
+
+        function reloadPreview() {
+            const iframe = document.getElementById("livePreviewContent");
+            if (!iframe) return;
+            iframe.src = iframe.src.split("?")[0] + "?v=" + Date.now();
+        }
+
+    }
 </script>

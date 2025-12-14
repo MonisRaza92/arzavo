@@ -1,7 +1,7 @@
 @php
 $s = $block->settings ?? [];
 
-$dImage = $s['desktop_image_block'] ?? 'images/square/square1.webp';
+$dImage = $s['desktop_image_block'] ?? '';
 $mImage = $s['mobile_image_block'] ?? $dImage;
 $altText = $s['alt_text'] ?? '';
 $imageLink = $s['image_link'] ?? '';

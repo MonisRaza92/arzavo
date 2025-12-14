@@ -6,7 +6,7 @@
         @method('PUT')
 
 
-        <div id="schemeFields" class="pb-16">
+        <div id="schemeFields">
             @foreach(config('color_schemes.color_schemes') as $schemeKey => $items)
             <h3 class="font-semibold text-primary p-4 border-bottom {{ $schemeKey === 'scheme_colors' ? '' : 'border-top' }}">
                 {{ ucwords(str_replace('_', ' ', $schemeKey)) }}
@@ -31,7 +31,7 @@
             @endforeach
 
 
-            <div class="flex sticky bottom-6 bg-primary border-top items-center">
+            <div class="flex sticky bottom-0 bg-primary border-top items-center">
                 <button type="button" class="bg-primary text-primary flex-1 text-center py-3 uppercase font-semibold" onclick="closeColorSchemeEditModal()">
                     Close <i class="fa-solid fa-xmark"></i>
                 </button>

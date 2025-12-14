@@ -3,7 +3,8 @@ $s = $block->settings ?? [];
 
 $heading = $s['text'] ?? '';
 $type = $s['type'] ?? 'heading-2';
-$alignment = $s['alignment'] ?? 'left';
+$alignment = $s['alignment'] ?? '';
+$mAlignment = $s['mobile_alignment'] ?? '';
 $width = $s['width'] ?? 'fit';
 $pt = $s['padding_top'] ?? 0;
 $pb = $s['padding_bottom'] ?? 0;
@@ -31,8 +32,8 @@ $tag = match ($type) {
     class="
         arzavo-{{ $type }}
         {{ $width === 'full' ? 'w-full' : 'max-w-fit' }}
-        {{ $alignment === 'center' ? 'mx-auto text-center' : '' }}
-        {{ $alignment === 'right' ? 'ml-auto text-right' : '' }}
+        {{ $mAlignment === 'center' ? 'text-center' : ($mAlignment === 'right' ? 'text-right' : 'text-left') }} 
+        {{ $alignment === 'center' ? 'md:text-center' : ($mAlignment === 'right' ? 'md:text-right' : 'md:text-left') }}
     ">
     {!! nl2br(e($heading)) !!}
 </{{ $tag }}>

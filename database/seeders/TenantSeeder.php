@@ -13,111 +13,101 @@ class TenantSeeder extends Seeder
     public function run(): void
     {
 
-        // DB::table('pages')->insert([
-        //     [
-        //         'title' => 'Home',
-        //         'slug' => 'home',
-        //         'status' => true,
-        //     ],
-        //     [
-        //         'title' => 'About Us',
-        //         'slug' => 'about-us',
-        //         'status' => true,
-        //     ],
-        //     [
-        //         'title' => 'Contact Us',
-        //         'slug' => 'contact-us',
-        //         'status' => true,
-        //     ],
-        //     [
-        //         'title' => 'Courses',
-        //         'slug' => 'courses',
-        //         'status' => true,
-        //     ],
-        //     [
-        //         'title' => 'Blog',
-        //         'slug' => 'blog',
-        //         'status' => true,
-        //     ],
-        // ]);
+        DB::table('pages')->insert([
+            [
+                'name' => 'Home',
+                'slug' => 'home',
+                'status' => true,
+            ],
+            [
+                'name' => 'Contact Us',
+                'slug' => 'contact-us',
+                'status' => true,
+            ],
+            [
+                'name' => 'Courses',
+                'slug' => 'courses',
+                'status' => true,
+            ],
+        ]);
         DB::table('color_schemes')->insert([
             [
-                // 1. Midnight Professional - Dark elegant
                 'colors' => json_encode([
                     'scheme_colors' => [
-                        'background' => '#0a0e27',
-                        'heading' => '#ffffff',
-                        'subheading' => '#e0e7ff',
-                        'paragraph' => '#c7d2fe',
-                        'secondary_text' => '#a5b4fc',
-                        'link' => '#818cf8',
-                        'link_hover' => '#6366f1',
-                        'border' => '#312e81',
-                        'shadow' => 'rgba(99, 102, 241, 0.2)',
+                        'background' => '#ffffff',
+                        'heading' => '#111111',
+                        'subheading' => '#1f1f1f',
+                        'paragraph' => '#3a3a3a',
+                        'secondary_text' => '#6b6b6b',
+                        'link' => '#111111',
+                        'link_hover' => '#000000',
+                        'border' => '#e5e5e5',
+                        'shadow' => 'rgba(0,0,0,0.05)',
                     ],
                     'primary_btn' => [
-                        'background' => '#6366f1',
+                        'background' => '#111111',
                         'text' => '#ffffff',
-                        'hover_background' => '#4f46e5',
+                        'hover_background' => '#000000',
                         'hover_text' => '#ffffff',
-                        'border' => '#6366f1',
-                        'hover_border' => '#4f46e5'
+                        'border' => '#111111',
+                        'hover_border' => '#000000'
                     ],
                     'secondary_btn' => [
                         'background' => 'transparent',
-                        'text' => '#818cf8',
-                        'hover_background' => 'rgba(99, 102, 241, 0.1)',
-                        'hover_text' => '#6366f1',
-                        'border' => '#4c1d95',
-                        'hover_border' => '#6366f1'
+                        'text' => '#111111',
+                        'hover_background' => 'rgba(0,0,0,0.05)',
+                        'hover_text' => '#000000',
+                        'border' => '#d4d4d4',
+                        'hover_border' => '#000000'
                     ],
                     'input' => [
-                        'background' => '#1e1b4b',
-                        'text' => '#ffffff',
-                        'border' => '#312e81',
-                        'focus_border' => '#6366f1'
+                        'background' => '#ffffff',
+                        'text' => '#111111',
+                        'border' => '#e5e5e5',
+                        'focus_border' => '#111111'
                     ]
                 ])
             ],
 
+
             [
-                // 2. Minimal Sage - Soft green minimalism
                 'colors' => json_encode([
                     'scheme_colors' => [
-                        'background' => '#fafaf9',
-                        'heading' => '#1c1917',
-                        'subheading' => '#44403c',
-                        'paragraph' => '#57534e',
-                        'secondary_text' => '#78716c',
-                        'link' => '#16a34a',
-                        'link_hover' => '#15803d',
-                        'border' => '#e7e5e4',
-                        'shadow' => 'rgba(0, 0, 0, 0.04)',
+                        'background' => '#faf9f7',
+                        'heading' => '#2c2c2c',
+                        'subheading' => '#444444',
+                        'paragraph' => '#555555',
+                        'secondary_text' => '#7a7a7a',
+                        'link' => '#7c3aed',
+                        'link_hover' => '#6d28d9',
+                        'border' => '#e8e6e3',
+                        'shadow' => 'rgba(0,0,0,0.04)',
                     ],
                     'primary_btn' => [
-                        'background' => '#16a34a',
+                        'background' => '#7c3aed',
                         'text' => '#ffffff',
-                        'hover_background' => '#15803d',
+                        'hover_background' => '#6d28d9',
                         'hover_text' => '#ffffff',
-                        'border' => '#16a34a',
-                        'hover_border' => '#15803d'
+                        'border' => '#7c3aed',
+                        'hover_border' => '#6d28d9'
                     ],
                     'secondary_btn' => [
-                        'background' => '#ffffff',
-                        'text' => '#16a34a',
-                        'hover_background' => '#f5f5f4',
-                        'hover_text' => '#15803d',
+                        'background' => 'transparent',
+                        'text' => '#7c3aed',
+                        'hover_background' => 'rgba(124,58,237,0.08)',
+                        'hover_text' => '#6d28d9',
                         'border' => '#d6d3d1',
-                        'hover_border' => '#a8a29e'
+                        'hover_border' => '#7c3aed'
                     ],
                     'input' => [
                         'background' => '#ffffff',
-                        'text' => '#1c1917',
-                        'border' => '#e7e5e4',
-                        'focus_border' => '#16a34a'
+                        'text' => '#2c2c2c',
+                        'border' => '#e8e6e3',
+                        'focus_border' => '#7c3aed'
                     ]
                 ])
             ],
+
 
             [
                 // 3. Ocean Depth - Premium blue
@@ -159,43 +149,43 @@ class TenantSeeder extends Seeder
             ],
 
             [
-                // 4. Monochrome Elite - Pure black & white
                 'colors' => json_encode([
                     'scheme_colors' => [
-                        'background' => '#ffffff',
-                        'heading' => '#000000',
-                        'subheading' => '#171717',
-                        'paragraph' => '#404040',
-                        'secondary_text' => '#737373',
-                        'link' => '#000000',
-                        'link_hover' => '#404040',
-                        'border' => '#e5e5e5',
-                        'shadow' => 'rgba(0, 0, 0, 0.08)',
+                        'background' => 'rgba(255,255,255,0.85)',
+                        'heading' => '#0f172a',
+                        'subheading' => '#1e293b',
+                        'paragraph' => '#475569',
+                        'secondary_text' => '#64748b',
+                        'link' => '#2563eb',
+                        'link_hover' => '#1d4ed8',
+                        'border' => 'rgba(0,0,0,0.08)',
+                        'shadow' => 'rgba(0,0,0,0.06)',
                     ],
                     'primary_btn' => [
-                        'background' => '#000000',
+                        'background' => '#2563eb',
                         'text' => '#ffffff',
-                        'hover_background' => '#262626',
+                        'hover_background' => '#1d4ed8',
                         'hover_text' => '#ffffff',
-                        'border' => '#000000',
-                        'hover_border' => '#262626'
+                        'border' => '#2563eb',
+                        'hover_border' => '#1d4ed8'
                     ],
                     'secondary_btn' => [
-                        'background' => '#ffffff',
-                        'text' => '#000000',
-                        'hover_background' => '#fafafa',
-                        'hover_text' => '#000000',
-                        'border' => '#e5e5e5',
-                        'hover_border' => '#a3a3a3'
+                        'background' => 'rgba(37,99,235,0.08)',
+                        'text' => '#2563eb',
+                        'hover_background' => 'rgba(37,99,235,0.15)',
+                        'hover_text' => '#1d4ed8',
+                        'border' => 'rgba(37,99,235,0.25)',
+                        'hover_border' => 'rgba(37,99,235,0.4)'
                     ],
                     'input' => [
-                        'background' => '#ffffff',
-                        'text' => '#000000',
-                        'border' => '#e5e5e5',
-                        'focus_border' => '#000000'
+                        'background' => 'rgba(255,255,255,0.7)',
+                        'text' => '#0f172a',
+                        'border' => 'rgba(0,0,0,0.1)',
+                        'focus_border' => '#2563eb'
                     ]
                 ])
             ],
+
 
             [
                 // 5. Warm Sand - Beige luxury
@@ -237,43 +227,43 @@ class TenantSeeder extends Seeder
             ],
 
             [
-                // 6. Slate Modern - Cool gray
                 'colors' => json_encode([
                     'scheme_colors' => [
-                        'background' => '#f8fafc',
+                        'background' => '#f7faff',
                         'heading' => '#0f172a',
                         'subheading' => '#1e293b',
-                        'paragraph' => '#334155',
+                        'paragraph' => '#475569',
                         'secondary_text' => '#64748b',
-                        'link' => '#475569',
-                        'link_hover' => '#334155',
+                        'link' => '#3b82f6',
+                        'link_hover' => '#2563eb',
                         'border' => '#e2e8f0',
-                        'shadow' => 'rgba(15, 23, 42, 0.06)',
+                        'shadow' => 'rgba(0,0,0,0.04)',
                     ],
                     'primary_btn' => [
-                        'background' => '#0f172a',
+                        'background' => '#3b82f6',
                         'text' => '#ffffff',
-                        'hover_background' => '#1e293b',
+                        'hover_background' => '#2563eb',
                         'hover_text' => '#ffffff',
-                        'border' => '#0f172a',
-                        'hover_border' => '#1e293b'
+                        'border' => '#3b82f6',
+                        'hover_border' => '#2563eb'
                     ],
                     'secondary_btn' => [
                         'background' => '#ffffff',
-                        'text' => '#0f172a',
-                        'hover_background' => '#f1f5f9',
-                        'hover_text' => '#0f172a',
-                        'border' => '#cbd5e1',
-                        'hover_border' => '#94a3b8'
+                        'text' => '#3b82f6',
+                        'hover_background' => '#f0f5ff',
+                        'hover_text' => '#2563eb',
+                        'border' => '#dbeafe',
+                        'hover_border' => '#bfdbfe'
                     ],
                     'input' => [
                         'background' => '#ffffff',
                         'text' => '#0f172a',
                         'border' => '#e2e8f0',
-                        'focus_border' => '#475569'
+                        'focus_border' => '#3b82f6'
                     ]
                 ])
             ],
+
 
             [
                 // 7. Rose Gold - Premium pink/gold
@@ -352,7 +342,7 @@ class TenantSeeder extends Seeder
                     ]
                 ])
             ],
-            
+
             [
                 // 1. Sunset Gradient - Warm orange to pink
                 'colors' => json_encode([

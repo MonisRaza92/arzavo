@@ -220,4 +220,14 @@ class BlockController
 
         return response()->json(['status' => 'success']);
     }
+    public function reorderNested(Request $request, $parentId)
+    {
+        foreach ($request->order as $childId => $position) {
+            Block::where('id', $childId)
+                ->where('parent_block_id', $parentId)
+                ->update(['order' => $position]);
+        }
+
+        return response()->json(['status' => 'success']);
+    }
 }

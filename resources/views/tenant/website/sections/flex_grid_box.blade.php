@@ -3,13 +3,16 @@ $s = $section->settings ?? [];
 
 $bgType = $s['background_type'] ?? 'color';
 $bgImage = $s['background_image_custom_section'] ?? '';
-$dDirection = $s['desktop_direction'] ?? 'vertical';
-$mDirection = $s['mobile_direction'] ?? 'vertical';
+$overlay = $s['background_image_overlay'] ?? '';
+$overlayColor = $s['overlay_color'] ?? ''; 
+$overlayOpacity = $s['overlay_opacity'] ?? '50'; 
+$direction = $s['direction'] ?? '';
+$mDirection = $s['mobile_direction'] ?? '';
 $alignment = $s['alignment'] ?? 'start';
 $position = $s['position'] ?? 'start';
-$sectionBorder = $s['section_border'] ?? 'disable';
 $gap = $s['gap'] ?? '0';
 $height = $s['height'] ?? 'auto';
+$mHeight = $s['mobile_height'] ?? '1';
 $pt = $s['padding_top'] ?? '0';
 $pb = $s['padding_bottom'] ?? '0';
 $mt = $s['margin_top'] ?? '0';
@@ -50,22 +53,26 @@ $linkBtnColors = $section->colorScheme->link_btn;
     background-position: center;
     @else
     background: var(--arzavo-background);
-    display: flex;
     @endif
+    padding-top: {{ $pt }}px;
     padding-bottom: {{ $pb }}px;
+    margin-top: {{ $mt }}px;
     margin-bottom: {{ $mb }}px;
     "
-    class="custom-section-section w-full relative overflow-hidden {{ $sectionBorder === 'enable' ? 'arzavo-border-top arzavo-border-bottom' : '' }}">
+    class="custom-section-section w-full relative overflow-hidden">
+    @if ( $overlay === "1" && ($bgType === 'image' && $bgImage) )
+    <div class="absolute top-0 bottom-0 left-0 right-0" style="background-color: {{ $overlayColor }}; opacity: {{ $overlayOpacity }}%;"></div>
+    @endif
     <div class="container mx-auto w-full flex 
-    {{ $dDirection === 'horizontal' ? 'md:flex-row' : 'md:flex-col' }} 
-    {{ $mDirection === 'horizontal' ? 'flex-row' : 'flex-col' }}
+    {{ $mDirection === '0' ? 'flex-row' : 'flex-col' }}
+    {{ $direction === 'horizontal' ? 'md:flex-row' : 'md:flex-col' }} 
     justify-{{ $position }}
     items-{{ $alignment }}
-    {{ $height === 'full' ? 'min-h-screen' : 'h-auto' }}" 
+    {{ $height === 'full' ? 'md:min-h-screen' : 'md:h-auto' }}
+    {{ $height === 'full' && $mHeight === '1' ? 'min-h-screen' : 'h-auto' }}"
     style="
-    padding-top: {{ $pt }}px;
-    margin-top: {{ $mt }}px;
-    gap: {{ $gap }}px;">
+    gap: {{ $gap }}px;
+    ">
         @include('tenant.website.includes.blocks')
     </div>
 </div>

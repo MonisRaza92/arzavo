@@ -6,6 +6,7 @@
 
     @php
     $groupedSections = collect($availableSections)->groupBy('category');
+    $groupedTemplates = collect($availableTemplates)->groupBy('category');
     $fixedOrder = [
     'Header' => 1,
     'Sections' => 2,
@@ -46,11 +47,59 @@
 
         @endforeach
     </div>
+
+    @php
+    $fixedTemplateOrder = [
+    'Hero' => 1,
+    'Features' => 2,
+    'Testimonials' => 3,
+    'Pricing' => 4,
+    'Gallery' => 5,
+    'Footer' => 6,
+    ];
+    @endphp
+
+    <div>
+        @foreach(
+        $groupedTemplates->sortBy(function($value, $key) use ($fixedTemplateOrder) {
+        return $fixedTemplateOrder[$key] ?? 999;
+        }) as $category => $templates
+        )
+
+        <div class="border-bottom section-category" data-category="TEMPLATE-{{ $category }}">
+
+            <button type="button"
+                class="flex justify-between items-center w-full text-left p-4 text-sm font-semibold bg-hover-secondary category-toggle">
+                {{ $category }}
+                <i class="fa-solid fa-angle-down transition-all duration-300"></i>
+            </button>
+
+            <div class="category-items transition-all duration-300">
+                @foreach($templates->sortBy('order') as $t)
+                <form method="POST" action="{{ route('admin.builder.sections.store.template', $page->id) }}">
+                    @csrf
+                    <input type="hidden" name="template_type" value="{{ $t['type'] }}">
+                    <input type="hidden" name="section_name" value="{{ $t['name'] }}">
+
+                    <button type="submit"
+                        class="w-full font-semibold text-xs text-left p-4 border-top bg-hover-secondary flex items-center gap-2">
+                        <i class="fa-solid {{ $t['icon'] }}"></i>
+                        {{ $t['name'] }}
+                    </button>
+                </form>
+                @endforeach
+            </div>
+
+        </div>
+
+        @endforeach
+    </div>
+
 </div>
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("turbo:load", function() {
         const savedState = JSON.parse(localStorage.getItem('sectionCategoriesState')) || {};
 
         document.querySelectorAll('.section-category').forEach(cat => {

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('name'); // e.g. hero, features, testimonials
             $table->string('type'); // e.g. hero, features, testimonials
             $table->string('icon')->default('fa-shapes'); // icon for the block
+            $table->foreignId('color_scheme_id')->nullable()->constrained('color_schemes')->nullOnDelete();
             $table->json('settings')->nullable(); // section data in JSON
             $table->integer('order')->default(0); // order for sorting
             $table->boolean('is_active')->default(true);

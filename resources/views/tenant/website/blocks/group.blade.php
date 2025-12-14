@@ -1,38 +1,62 @@
 @php
 $s = $block->settings ?? [];
 
-$bgType = $s['background_type'] ?? 'none';
-$bgColor = $s['background_color'] ?? 'transparent';
+$colorScheme = $s['color_scheme'] ?? 'parent';
 $bgImage = $s['background_image'] ?? '';
-$dDirection = $s['desktop_direction'] ?? 'vertical';
-$mDirection = $s['mobile_direction'] ?? 'vertical';
+$image = $s['background_image_group'] ?? '';
+$overlay = $s['background_image_overlay'] ?? '';
+$overlayColor = $s['overlay_color'] ?? ''; 
+$overlayOpacity = $s['overlay_opacity'] ?? '50'; 
+$direction = $s['direction'] ?? '';
+$mDirection = $s['mobile_direction'] ?? '';
 $alignment = $s['alignment'] ?? 'start';
 $position = $s['position'] ?? 'start';
 $gap = $s['gap'] ?? '0';
-$size = $s['size'] ?? 'fit';
-$customSize = $s['custom_size'] ?? '';
-$height = $s['height'] ?? 'fit';
+$width = $s['width'] ?? 'auto';
+$customWidth = $s['custom_width'] ?? '';
+$widthM = $s['width_mobile'] ?? 'auto';
+$customWidthM = $s['custom_width_mobile'] ?? '';
+$height = $s['height'] ?? 'auto';
 $customHeight = $s['custom_height'] ?? '';
 $border = $s['border'] ?? 'enable';
 $customBorderWidth = $s['custom_border_width'] ?? '';
-$radius = $s['border_radius'] ?? 'enable';
-$customRadius = $s['custom_border_radius'] ?? '0';
+$borderWidth = $s['border_width'] ?? '';
+$radius = $s['radius'] ?? 'enable';
+$customRadius = $s['custom_border_radius'] ?? '';
+$borderRadius = $s['border_radius'] ?? '';
 $pt = $s['padding_top'] ?? '0';
 $pr = $s['padding_right'] ?? '0';
 $pb = $s['padding_bottom'] ?? '0';
 $pl = $s['padding_left'] ?? '0';
+$blockPosition = $s['block_position'] ?? 'relative';
+$top = $s['top'] ?? '';
+$left = $s['left'] ?? '';
+$mobile = $s['hide_mobile'] ?? '';
+$desktop = $s['hide_desktop'] ?? '';
+
+if($colorScheme === 'saparate'){
+$colors = $block->colorScheme->scheme_colors;
+$primaryBtnColors = $block->colorScheme->primary_btn;
+$secondaryBtnColors = $block->colorScheme->secondary_btn;
+$linkBtnColors = $block->colorScheme->link_btn;
+}
 @endphp
 <style>
-    @media (min-width: 768px) {
-        @if ($size === 'custom')
-        .group-s-{{ $block->id }} {
-            width: {{  $customSize }}%;
-        }
+    .group-s-{{ $block->id }} {
+        @if ($widthM === 'custom')
+        width: {{ $customWidthM }}%;
         @endif
+    }
+    @media (min-width: 768px) {
+        .group-s-{{ $block->id }} {
+        @if ($width === 'custom')
+        width: {{ $customWidth }}%;
+        @endif
+        }
     }
 </style>
 <div
-style="
+    style="
     --arzavo-background: {{ $colors->background ?? '' }};
     --arzavo-border-color: {{ $colors->border ?? '' }};
     --arzavo-heading-color: {{ $colors->heading ?? '' }};
@@ -57,17 +81,45 @@ style="
         padding-bottom: {{ $pb }}px;
         padding-left: {{ $pl }}px;
         gap: {{ $gap }}px;
-        @if ($radius === 'custom')
-        border-radius: {{ $customRadius . 'px' }};
+        @if ($customRadius === '1')
+        border-radius: {{ $borderRadius . 'px' }};
         @endif
-        @if ($border === 'custom')
-        border-width: {{ $customBorderWidth . 'px' }};
+        @if ($customBorderWidth === '1')
+        border-width: {{ $borderWidth . 'px' }};
         @endif
         @if ($height === 'custom')
-        height: {{ $customHeight . 'vh' }};
+        min-height: {{ $customHeight }}%;
+        @endif
+        @if ($colorScheme === 'saparate')
+        background: var(--arzavo-background);
+        @endif
+        @if ($bgImage === '1' && $image !== null)
+        background-image: url('{{ asset($image) }}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        @endif
+        @if ($blockPosition === 'absolute')
+        top: {{ $top }}%;
+        left: {{ $left }}%;
         @endif
         "
-    class="group-s-{{ $block->id }} s-component w-{{ $size }} relative {{ $height === 'full' ? 'min-h-screen' : '' }} flex {{ $dDirection === 'horizontal' ? 'md:flex-row' : 'md:flex-col' }} {{ $mDirection === 'horizontal' ? 'flex-row' : 'flex-col' }} {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}"
-    >
+    class="
+    {{ $mobile === '0' ? 'flex' : 'hidden' }}
+    {{ $desktop === '0' ? 'md:flex' : 'md:hidden' }}
+    group-s-{{ $block->id }} 
+    s-component flex
+    {{ $widthM === 'full' ? 'w-full' : 'w-auto' }}
+    {{ $width === 'full' ? 'md:w-full' : 'md:w-auto' }}
+    {{ $blockPosition }} 
+    {{ $height === 'full' ? 'min-h-screen' : '' }}
+    {{ $direction === 'horizontal' ? 'md:flex-row' : 'md:flex-col' }} 
+    {{ $mDirection === '0' ? 'flex-row' : 'flex-col' }} 
+    {{ $border === 'enable' ? 'arzavo-border' : '' }} 
+    {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}
+    ">
+    @if ( $overlay === "1" && ($bgImage === '1' && $image) )
+    <div class="absolute top-0 bottom-0 left-0 right-0" style="background-color: {{ $overlayColor }}; opacity: {{ $overlayOpacity }}%;"></div>
+    @endif
     @include('tenant.website.includes.nested-blocks')
 </div>

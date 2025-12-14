@@ -1,6 +1,6 @@
-<div id="edit-form-{{ $section->id }}" class="hidden fixed top-0 left-0 bottom-0 w-[299px] pt-29 overflow-auto scrollbar bg-primary z-9">
+<div id="edit-form-{{ $section->id }}" class="hidden edit-form fixed top-0 left-0 bottom-0 w-[299px] pt-29 overflow-auto scrollbar bg-primary z-9">
     <div class="flex items-center justify-between p-2 border-bottom sticky top-0 bg-primary z-10">
-        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center">
+        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center" onclick="document.getElementById('edit-form-{{ $section->id }}').classList.add('hidden')">
             <i class="fa-solid fa-arrow-left text-tertiary"></i> {{ $section->name }}
         </h2>
         <div class="flex items-center">
@@ -42,12 +42,11 @@
         }
         @endphp
 
-        @if($shouldShow)
         <div class="field-item flex justify-between items-center gap-4 border-bottom p-4 transition-all duration-300"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
-            data-conditional-field="{{ $field['conditional']['field'] }}"
-            data-conditional-value="{{ $field['conditional']['value'] }}"
+            data-cond-field="{{ $field['conditional']['field'] }}"
+            data-cond-value="{{ $field['conditional']['value'] }}"
             @endif>
 
             <label class="block text-xs font-semibold text-primary text-left w-1/3">
@@ -178,13 +177,13 @@
 
                 {{-- 🎨 Color Picker --}}
                 @case('color')
-                <div class="flex items-center gap-3">
+                <div class="flex items-start gap-2">
                     {{-- Color Picker --}}
                     <div class="relative group">
                         <input type="color"
                             id="colorPicker-{{ $field['key'] }}"
                             value="{{ $section->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
-                            class="w-14 h-10 border-primary border-rounded cursor-pointer live-input transition-all hover:scale-105"
+                            class="w-10 h-10.5 border-primary border-rounded cursor-pointer color-input live-input transition-all hover:scale-105"
                             oninput="document.getElementById('colorInput-{{ $field['key'] }}').value = this.value">
                         <div class="absolute inset-0 border-2 border-transparent group-hover:border-accent border-rounded pointer-events-none transition-all"></div>
                     </div>
@@ -196,7 +195,7 @@
                         value="{{ $section->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
                         maxlength="7"
                         pattern="^#[0-9A-Fa-f]{6}$"
-                        class="w-28 p-2.5 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
+                        class="w-30 p-2.5 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
                         oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('colorPicker-{{ $field['key'] }}').value = this.value">
                 </div>
                 @break
@@ -336,7 +335,6 @@
                 @endif
             </div>
         </div>
-        @endif
         @endforeach
     </form>
     @endif
@@ -438,55 +436,62 @@
     }
 
     // Handle conditional field visibility
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('.editSectionForm');
+    document.addEventListener("turbo:load", function() {
+        const form = document.querySelector(`#edit-form-{{ $section->id }} .editSectionForm`);
         if (!form) return;
 
-        // Function to toggle conditional fields
+        function getValue(input) {
+            if (!input) return null;
+
+            if (input.type === "radio") {
+                const checked = form.querySelector(`input[name="${input.name}"]:checked`);
+                return checked ? checked.value : null;
+            }
+            if (input.type === "checkbox") {
+                return input.checked ? input.value : "0";
+            }
+
+            // for hidden input (ignore if checkbox exists)
+            if (input.type === "hidden") {
+                const checkbox = form.querySelector(`input[type="checkbox"][name="${input.name}"]`);
+                if (checkbox) {
+                    return checkbox.checked ? checkbox.value : "0";
+                }
+                return input.value;
+            }
+            return input.value;
+        }
+
         function updateConditionalFields() {
-            const conditionalFields = form.querySelectorAll('[data-conditional-field]');
+            const conditionalFields = form.querySelectorAll("[data-cond-field]");
 
-            conditionalFields.forEach(field => {
-                const conditionalFieldName = field.dataset.conditionalField;
-                const conditionalValue = field.dataset.conditionalValue;
+            conditionalFields.forEach((field) => {
+                const dependOn = field.dataset.condField;
+                const expect = field.dataset.condValue;
 
-                // Find the controlling field
-                const controlField = form.querySelector(`[name="settings[${conditionalFieldName}]"]`);
+                // THIS is the real fix:
+                const control = form.querySelector(`[name="settings[${dependOn}]"], [name="${dependOn}"]`);
 
-                if (controlField) {
-                    let currentValue = null;
+                const value = getValue(control);
 
-                    // Get value based on field type
-                    if (controlField.type === 'radio') {
-                        const checkedRadio = form.querySelector(`[name="settings[${conditionalFieldName}]"]:checked`);
-                        currentValue = checkedRadio ? checkedRadio.value : null;
-                    } else if (controlField.type === 'checkbox') {
-                        currentValue = controlField.checked ? '1' : '0';
-                    } else {
-                        currentValue = controlField.value;
-                    }
-
-                    // Show/hide field based on condition
-                    if (currentValue === conditionalValue) {
-                        field.style.display = 'flex';
-                        field.classList.remove('opacity-0');
-                        field.classList.add('opacity-100');
-                    } else {
-                        field.style.display = 'none';
-                        field.classList.remove('opacity-100');
-                        field.classList.add('opacity-0');
-                    }
+                if (value === expect) {
+                    field.style.display = "flex";
+                    field.style.opacity = "1";
+                } else {
+                    field.style.opacity = "0";
+                    field.style.display = "none";
                 }
             });
         }
 
-        // Initial check
+        // First load
         updateConditionalFields();
 
-        // Listen for changes
-        form.addEventListener('change', updateConditionalFields);
-        form.addEventListener('input', updateConditionalFields);
+        // Live update listeners
+        form.addEventListener("input", updateConditionalFields);
+        form.addEventListener("change", updateConditionalFields);
     });
+
 
     // Auto-submit form with debouncing
     if (typeof submitTimeout === 'undefined') {
