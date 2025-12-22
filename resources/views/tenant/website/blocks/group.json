@@ -235,7 +235,7 @@
             "type": "range",
             "default": "0",
             "min": 0,
-            "max": 100,
+            "max": 10,
             "conditional": {
                 "field": "custom_border_width",
                 "value": "1"

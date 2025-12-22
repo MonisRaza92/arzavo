@@ -117,6 +117,8 @@ $linkBtnColors = $block->colorScheme->link_btn;
     {{ $mDirection === '0' ? 'flex-row' : 'flex-col' }} 
     {{ $border === 'enable' ? 'arzavo-border' : '' }} 
     {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}
+    items-{{ $alignment }}
+    justify-{{ $position }}
     ">
     @if ( $overlay === "1" && ($bgImage === '1' && $image) )
     <div class="absolute top-0 bottom-0 left-0 right-0" style="background-color: {{ $overlayColor }}; opacity: {{ $overlayOpacity }}%;"></div>

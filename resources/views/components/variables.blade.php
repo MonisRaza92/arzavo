@@ -10,6 +10,8 @@
         --arzavo-border-width: {{ $customizes['border_width'] ?? '1px' }};
         --arzavo-border-radius: {{ $customizes['border_radius']  ?? '0px' }};
         --arzavo-heading-font-family: {{ $customizes['heading_font_family'] ?? '' }};
+        --arzavo-paragraph-font-family: {{ $customizes['paragraph_font_family'] ?? '' }};
+        --arzavo-secondary-text-font-family: {{ $customizes['secondary_text_font_family'] ?? '' }};
 
         --arzavo-heading-color: #000000;
 
@@ -77,6 +79,7 @@
         
         --arzavo-paragraph-color: #525252;
         --arzavo-paragraph-font-size: {{ $customizes['paragraph_font_size'] ?? '16' }}px;
+        --arzavo-paragraph-font-size-mobile: {{ $customizes['paragraph_font_size_mobile'] ?? '14' }}px;
         --arzavo-paragraph-text-transform: {{ $customizes['paragraph_text_transform'] ?? 'default' }};
         --arzavo-paragraph-font-weight: {{ $customizes['paragraph_text_weight'] ?? 'normal' }};
         

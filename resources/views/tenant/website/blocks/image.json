@@ -7,12 +7,12 @@
     "max_blocks": 0,
     "allowed_blocks": "",
     "default_blocks": "",
-    "fields":[
+    "fields": [
         {
             "key": "desktop_image_block",
             "label": "Desktop Image",
             "type": "image",
-            "default": "images/square/square1.webp",
+            "default": "",
             "placeholder": "Image for desktop"
         },
         {
@@ -47,7 +47,7 @@
             "label": "Image Size",
             "type": "radio",
             "default": "full",
-            "options": [ "full", "custom"]
+            "options": ["full", "custom"]
         },
         {
             "key": "custom_image_size",
@@ -72,33 +72,90 @@
             "default": "cover"
         },
         {
-            "key": "image_border",
-            "label": "Image Border",
+            "key": "border",
+            "label": "Border",
             "type": "radio",
-            "options": ["disable", "enable"],
+            "options": ["enable", "disable"],
             "default": "disable"
         },
         {
-            "key": "image_border_radius",
-            "label": "Image Border Radius",
-            "type": "radio",
-            "options": ["disable", "enable", "custom"],
-            "default": "enable"
+            "key": "custom_border_width",
+            "label": "Custom Border",
+            "type": "switch",
+            "default": "0",
+            "text": "enable for custom border width",
+            "conditional": {
+                "field": "border",
+                "value": "enable"
+            }
         },
         {
-            "key": "image_custom_radius",
-            "label": "Custom Border Radius (px)",
+            "key": "border_width",
+            "label": "Border Width",
             "type": "range",
-            "default": 0,
+            "default": "0",
             "min": 0,
-            "max": 100
+            "max": 10,
+            "conditional": [
+                {
+                    "field": "border",
+                    "value": "enable"
+                },
+                {
+                    "field": "custom_border_width",
+                    "value": "1"
+                }
+            ]
         },
         {
-            "key": "show_image",
-            "label": "Show Image On",
+            "key": "radius",
+            "label": "Border Radius",
             "type": "radio",
-            "options": ["desktop", "mobile", "both"],
-            "default": "both"
+            "options": ["enable", "disable"],
+            "default": "disable"
+        },
+        {
+            "key": "custom_border_radius",
+            "label": "Custom Radius",
+            "type": "switch",
+            "default": "0",
+            "text": "enable for custom border Roundness",
+            "conditional": {
+                "field": "radius",
+                "value": "enable"
+            }
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100,
+            "conditional": [
+                {
+                    "field": "radius",
+                    "value": "enable"
+                },
+                {
+                    "field": "custom_border_radius",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "key": "hide_desktop",
+            "label": "Hide Desktop",
+            "type": "switch",
+            "default": "0",
+            "text": "Hide Image in Desktop Screen"
+        },
+        {
+            "key": "hide_mobile",
+            "label": "Hide Mobile",
+            "type": "switch",
+            "default": "0",
+            "text": "Hide Image in Mobile Screen"
         },
         {
             "key": "opacity",
@@ -111,9 +168,9 @@
         {
             "key": "image_shadow",
             "label": "Image Shadow",
-            "type": "radio",
-            "options": ["disable", "enable"],
-            "default": "disable"
+            "type": "switch",
+            "default": "0",
+            "text": "Enable for shadow"
         },
         {
             "key": "padding_top",

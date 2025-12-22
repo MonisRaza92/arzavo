@@ -1,5 +1,5 @@
 {
-    "type": "flex_grid_box",
+    "type": "custom_section",
     "name": "Hero: Basic",
     "icon": "fa-feather-pointed",
     "order": 2,
@@ -95,7 +95,6 @@
         {
             "type": "image",
             "settings": {
-                "desktop_image_block": "images/pngs/hero.png",
                 "show_image": "both"
             }
         }

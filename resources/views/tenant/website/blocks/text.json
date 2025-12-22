@@ -44,6 +44,13 @@
             "default": "left"
         },
         {
+            "key": "font_style",
+            "label": "Font Style",
+            "type": "radio",
+            "options": ["normal", "italic"],
+            "default": "normal"
+        },
+        {
             "key": "padding_top",
             "label": "Padding Top",
             "type": "range",

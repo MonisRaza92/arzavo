@@ -1,5 +1,5 @@
 {
-    "type": "flex_grid_box",
+    "type": "custom_section",
     "name": "Custom Section",
     "icon": "fa-shapes",
     "order": 3,
@@ -56,10 +56,16 @@
             "label": "Overlay Color",
             "type": "color",
             "default": "#000000",
-            "conditional": {
-                "field": "background_type",
-                "value": "image"
-            }
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "image"
+                },
+                {
+                    "field": "background_image_overlay",
+                    "value": "1"
+                }
+            ]
         },
         {
             "key": "overlay_opacity",
@@ -68,10 +74,16 @@
             "default": "50",
             "min": 0,
             "max": 100,
-            "conditional": {
-                "field": "background_type",
-                "value": "image"
-            }
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "image"
+                },
+                {
+                    "field": "background_image_overlay",
+                    "value": "1"
+                }
+            ]
         },
         {
             "key": "height",

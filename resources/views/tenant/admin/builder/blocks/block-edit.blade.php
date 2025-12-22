@@ -42,18 +42,22 @@
 
         @foreach($fields as $field)
         @php
-        if (isset($field['conditional'])) {
-        $conditionalField = $field['conditional']['field'];
-        $conditionalValue = $field['conditional']['value'];
-        $currentValue = $block->settings[$conditionalField] ?? null;
+        $conditions = $field['conditional'] ?? [];
+        if (!empty($conditions) && isset($conditions[0])) {
+        foreach ($conditions as $cond) {
+        $fieldName = $cond['field'] ?? null;
+        $expected = $cond['value'] ?? null;
+        $current = $fieldName ? ($block->settings[$fieldName] ?? null) : null;
+        // use if needed
+        }
         }
         @endphp
+
 
         <div class="field-item flex justify-between items-center gap-4 border-bottom p-4 transition-all duration-300"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
-            data-cond-field="{{ $field['conditional']['field'] }}"
-            data-cond-value="{{ $field['conditional']['value'] }}"
+            data-conditions='@json($field["conditional"])'
             @endif>
 
             <label class="block text-xs font-semibold text-primary text-left w-1/3">
@@ -483,27 +487,45 @@
             }
 
             function updateConditionalFields() {
-                const conditionalFields = form.querySelectorAll("[data-cond-field]");
+                const conditionalFields = form.querySelectorAll("[data-conditions]");
 
                 conditionalFields.forEach((field) => {
-                    const dependOn = field.dataset.condField;
-                    const expect = field.dataset.condValue;
+                    let conditions = JSON.parse(field.dataset.conditions);
 
-                    const control = form.querySelector(
-                        `[name="settings[${dependOn}]"], [name="${dependOn}"]`
-                    );
+                    // backward compatibility
+                    if (!Array.isArray(conditions)) {
+                        conditions = [conditions];
+                    }
 
-                    const value = getValue(control);
+                    let shouldShow = true;
 
-                    if (value === expect) {
+                    conditions.forEach(cond => {
+                        const control = form.querySelector(
+                            `[name="settings[${cond.field}]"], [name="${cond.field}"]`
+                        );
+
+                        const value = getValue(control);
+
+                        if (String(value) !== String(cond.value)) {
+                            shouldShow = false;
+                        }
+                    });
+
+                    if (shouldShow) {
                         field.style.display = "flex";
                         field.style.opacity = "1";
+                        field.querySelectorAll("input,select,textarea")
+                            .forEach(el => el.disabled = false);
                     } else {
                         field.style.display = "none";
                         field.style.opacity = "0";
+                        field.querySelectorAll("input,select,textarea")
+                            .forEach(el => el.disabled = true);
                     }
                 });
             }
+
+
 
             updateConditionalFields();
 

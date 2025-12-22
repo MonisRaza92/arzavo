@@ -1,7 +1,7 @@
 @php
 $s = $block->settings ?? [];
 
-$dImage = $s['desktop_image_block'] ?? '';
+$dImage = $s['desktop_image_block'] ?? 'images/tenant/bg.jpg';
 $mImage = $s['mobile_image_block'] ?? $dImage;
 $altText = $s['alt_text'] ?? '';
 $imageLink = $s['image_link'] ?? '';
@@ -13,15 +13,19 @@ $ratioMap = [
 'square' => '1/1',
 ];
 $ratio = $ratioMap[$s['image_ratio'] ?? 'auto'];
-$show = $s['show_image'] ?? 'both'; // desktop, mobile, both
 $imageFit = $s['image_fit'] ?? 'cover';
 $imageSize = $s['image_size'] ?? 'full';
 $imageCsize = $s['custom_image_size'] ?? '100';
-$border = $s['image_border'] ?? 'disable';
-$borderRadius = $s['image_border_radius'] ?? 'disable';
-$customRadius = $s['image_custom_radius'] ?? '0';
+$border = $s['border'] ?? 'enable';
+$customBorderWidth = $s['custom_border_width'] ?? '';
+$borderWidth = $s['border_width'] ?? '';
+$radius = $s['radius'] ?? 'enable';
+$customRadius = $s['custom_border_radius'] ?? '';
+$borderRadius = $s['border_radius'] ?? '';
 $boxShadow = $s['image_box_shadow'] ?? 'none';
 $opacity = $s['image_opacity'] ?? '100';
+$mobile = $s['hide_mobile'] ?? '';
+$desktop = $s['hide_desktop'] ?? '';
 $pt = $s['padding_top'] ?? '0';
 $pb = $s['padding_bottom'] ?? '0';
 $pl = $s['padding_left'] ?? '0';
@@ -42,13 +46,15 @@ $pr = $s['padding_right'] ?? '0';
     "
     class="
     w-full image-container{{ $block->id }}
-    {{ $show === 'desktop' ? 'hidden md:s' : '' }}
-    {{ $show === 'mobile' ? 'md:hidden' : '' }}">
+    {{ $mobile === '0' ? 'flex' : 'hidden' }}
+    {{ $desktop === '0' ? 'md:flex' : 'md:hidden' }} 
+    {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}
+    ">
     @if($imageLink)
     <a href="{{ $imageLink }}" @if($linkTarget==='1' ) target="_blank" rel="noopener" @endif>
         @endif
-        <img src="{{ asset($mImage) }}" alt="{{ $altText }}" class="md:hidden w-full {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $boxShadow === 'enable' ? 'arzavo-shadow' : '' }}" style="opacity: {{ $opacity }}%; aspect-ratio: {{ $ratio }}; object-fit: {{ $imageFit }}; @if ($borderRadius === 'custom') border-radius: {{ $customRadius }}px; @endif">
-        <img src="{{ asset($dImage) }}" alt="{{ $altText }}" class="hidden md:block w-full {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $boxShadow === 'enable' ? 'arzavo-shadow' : '' }}" style="opacity: {{ $opacity }}%; aspect-ratio: {{ $ratio }}; object-fit: {{ $imageFit }}; @if ($borderRadius === 'custom') border-radius: {{ $customRadius }}px; @endif">
+        <img src="{{ asset($mImage) }}" alt="{{ $altText }}" class="md:hidden w-full {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}" style="aspect-ratio: {{ $ratio }}; object-fit: {{ $imageFit }}; @if ($customRadius === '1') border-radius: {{ $borderRadius . 'px' }}; @endif @if ($customBorderWidth === '1') border-width: {{ $borderWidth . 'px' }}; @endif">
+        <img src="{{ asset($dImage) }}" alt="{{ $altText }}" class="hidden md:block w-full {{ $border === 'enable' ? 'arzavo-border' : '' }} {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}" style="aspect-ratio: {{ $ratio }}; object-fit: {{ $imageFit }}; @if ($customRadius === '1') border-radius: {{ $borderRadius . 'px' }}; @endif @if ($customBorderWidth === '1') border-width: {{ $borderWidth . 'px' }}; @endif">
         @if($imageLink)
     </a>
     @endif
