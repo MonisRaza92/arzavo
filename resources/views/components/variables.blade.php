@@ -76,23 +76,32 @@
         --arzavo-heading-6-font-weight: {{ $customizes['heading_6_text_weight'] ?? 'bold' }};
 
 
-        
+        /* ========================= */
+        /*        Paragraph          */
+        /* ========================= */
         --arzavo-paragraph-color: #525252;
         --arzavo-paragraph-font-size: {{ $customizes['paragraph_font_size'] ?? '16' }}px;
         --arzavo-paragraph-font-size-mobile: {{ $customizes['paragraph_font_size_mobile'] ?? '14' }}px;
         --arzavo-paragraph-text-transform: {{ $customizes['paragraph_text_transform'] ?? 'default' }};
         --arzavo-paragraph-font-weight: {{ $customizes['paragraph_text_weight'] ?? 'normal' }};
         
+
+        /* ========================= */
+        /*       Secondary Text      */
+        /* ========================= */
         --arzavo-secondary-text-color: #858585;
         --arzavo-secondary-text-font-size: {{ $customizes['secondary_text_font_size'] ?? '12' }}px;
         --arzavo-secondary-text-text-transform: {{ $customizes['secondary_text_text_transform'] ?? 'default' }};
         --arzavo-secondary-text-font-weight: {{ $customizes['secondary_text_font_weight'] ?? 'normal' }};
 
+        /* ========================= */
+        /*       Primary Btn         */
+        /* ========================= */
         --arzavo-primary-btn-background: #000000;
-        --arzavo-primary-btn-text-color: #ffffff;
+        --arzavo-primary-btn-text: #ffffff;
         --arzavo-primary-btn-hover-background: #ffffff;
-        --arzavo-primary-btn-hover-text-color: #000000;
-        --arzavo-primary-btn-border-color: #000000;
+        --arzavo-primary-btn-hover-text: #000000;
+        --arzavo-primary-btn-border: #000000;
         --arzavo-primary-btn-hover-border: #000000;
         --arzavo-primary-btn-size: {{ $customizes['primary_button_size'] ?? '8px 12px' }};
         --arzavo-primary-btn-font-size: {{ $customizes['primary_button_font_size'] ?? '16px' }};
@@ -101,11 +110,16 @@
         --arzavo-primary-btn-font-family: {{ $customizes['primary_button_font_family'] ?? 'Outfit' }};
         --arzavo-primary-btn-font-weight: {{ $customizes['primary_button_font_weight'] ?? 'bold' }};
         --arzavo-primary-btn-text-transform: {{ $customizes['primary_button_text_transform'] ?? 'default' }};
+
+        
+        /* ========================= */
+        /*      Secondary Btn        */
+        /* ========================= */
         --arzavo-secondary-btn-background: #f3f4f6;
-        --arzavo-secondary-btn-text-color: #000000;
+        --arzavo-secondary-btn-text: #000000;
         --arzavo-secondary-btn-hover-background: #000000;
-        --arzavo-secondary-btn-hover-text-color: #ffffff;
-        --arzavo-secondary-btn-border-color: #000000;
+        --arzavo-secondary-btn-hover-text: #ffffff;
+        --arzavo-secondary-btn-border: #000000;
         --arzavo-secondary-btn-hover-border: #000000;
         --arzavo-secondary-btn-size: {{ $customizes['secondary_button_size'] ?? '8px 12px' }};
         --arzavo-secondary-btn-font-size: {{ $customizes['secondary_button_font_size'] ?? '16px' }};

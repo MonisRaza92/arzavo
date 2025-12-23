@@ -18,16 +18,7 @@ class TenantSeeder extends Seeder
                 'name' => 'Home',
                 'slug' => 'home',
                 'status' => true,
-            ],
-            [
-                'name' => 'Contact Us',
-                'slug' => 'contact-us',
-                'status' => true,
-            ],
-            [
-                'name' => 'Courses',
-                'slug' => 'courses',
-                'status' => true,
+                'created_at'=> now(),
             ],
         ]);
         DB::table('color_schemes')->insert([

@@ -14,7 +14,13 @@ return new class extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->string('name')->unique();
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->string('description')->nullable();
+            $table->unsignedInteger('order')->default(0);
+
+            // Soft control (hide without deleting)
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

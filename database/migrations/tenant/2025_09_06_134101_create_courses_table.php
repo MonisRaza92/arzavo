@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('video')->nullable(); // video path
             $table->string('thumbnail')->nullable(); // image path
-            $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('subject_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('class_id')->nullable()->constrained()->onDelete('set null');
             $table->decimal('price', 10, 2)->default(0); // free/paid course

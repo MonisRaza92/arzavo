@@ -35,13 +35,19 @@ $iconGap = $s['icon_gap'] ?? '4';
     }
 </style>
 <a
-    class="h-fit
-        text-{{ $alignment }}
-        {{ $type === 'primary' ? 'arzavo-primary-btn' : ($type === 'secondary' ? 'arzavo-secondary-btn' : 'arzavo-link-btn') }}
-        {{ $widthDesktop === 'full' ? 'md:w-full' : ($widthDesktop === 'custom' ? 'custom-btn-width-' . $block->id : 'md:w-fit') }}
-        {{ $widthMobile === 'full' ? 'w-full' : ($widthMobile === 'custom' ? 'custom-btn-width-' . $block->id : 'w-fit') }}
-        "
     style="
+        --arzavo-primary-btn-background: {{ $primaryBtnColors->background ?? '' }};
+        --arzavo-primary-btn-text: {{ $primaryBtnColors->text ?? '' }};
+        --arzavo-primary-btn-border: {{ $primaryBtnColors->border ?? '' }};
+        --arzavo-primary-btn-hover-background: {{ $primaryBtnColors->hover_background ?? '' }};
+        --arzavo-primary-btn-hover-text: {{ $primaryBtnColors->hover_text ?? '' }};
+        --arzavo-primary-btn-hover-border: {{ $primaryBtnColors->hover_border ?? '' }};
+        --arzavo-secondary-btn-background: {{ $secondaryBtnColors->background ?? '' }};
+        --arzavo-secondary-btn-text: {{ $secondaryBtnColors->text ?? '' }};
+        --arzavo-secondary-btn-border: {{ $secondaryBtnColors->border ?? '' }};
+        --arzavo-secondary-btn-hover-background: {{ $secondaryBtnColors->hover_background ?? '' }};
+        --arzavo-secondary-btn-hover-text: {{ $secondaryBtnColors->hover_text ?? '' }};
+        --arzavo-secondary-btn-hover-border: {{ $secondaryBtnColors->hover_border ?? '' }};
         @if ($border === 'custom' || $border === 'disable')
         border-width: {{ $border === 'custom' ? $cBorder . 'px' : '0' }};
         @endif
@@ -52,6 +58,12 @@ $iconGap = $s['icon_gap'] ?? '4';
         margin-bottom: {{ $mb }}px;
         margin-left: {{ $ml }}px;
         margin-right: {{ $mr }}px;
+        "
+    class="h-fit
+        text-{{ $alignment }}
+        {{ $type === 'primary' ? 'arzavo-primary-btn' : ($type === 'secondary' ? 'arzavo-secondary-btn' : 'arzavo-link-btn') }}
+        {{ $widthDesktop === 'full' ? 'md:w-full' : ($widthDesktop === 'custom' ? 'custom-btn-width-' . $block->id : 'md:w-fit') }}
+        {{ $widthMobile === 'full' ? 'w-full' : ($widthMobile === 'custom' ? 'custom-btn-width-' . $block->id : 'w-fit') }}
         "
     href="{{ $url }}"
     {{ $btnNewTab === '1' ? 'target="_blank"' : '' }}>{!! $icon !== 'none' && $iconPosition === 'left' ? '<i class="fa-solid fa-' . $icon . '" style="margin-right: ' . $iconGap . 'px;"></i>' : '' !!}{{ $text }}{!! $icon !== 'none' && $iconPosition === 'right' ? '<i class="fa-solid fa-' . $icon . '" style="margin-left: ' . $iconGap . 'px;"></i>' : '' !!}

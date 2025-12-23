@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Tenant;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tenant\Courses;
-use App\Models\Tenant\Categories;
 use App\Models\Tenant\Page;
 use App\Models\Tenant\Images;
 
@@ -26,10 +25,9 @@ class TenantWebsiteController extends Controller
         ->with('colorScheme')
         ->orderBy('order')
         ->get();
-        $categories = Categories::all();
         $images = Images::all();
 
-        return view('tenant.website.pages.index', compact('page', 'sections', 'categories'));
+        return view('tenant.website.pages.index', compact('page', 'sections'));
     }
     public function viewCourse($slug)
     {

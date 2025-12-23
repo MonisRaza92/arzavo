@@ -14,7 +14,6 @@ class Contents extends Model
         'file',
         'title',
         'slug',
-        'category_id',
         'subject_id',
         'class_id',
         'description',
@@ -40,10 +39,6 @@ class Contents extends Model
         });
     }
 
-    public function category()
-    {
-        return $this->belongsTo(Categories::class, 'category_id');
-    }
 
     public function subject()
     {

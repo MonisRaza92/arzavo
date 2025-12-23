@@ -323,9 +323,9 @@ button {
 }
 .arzavo-primary-btn {
     background: var(--arzavo-primary-btn-background);
-    color: var(--arzavo-primary-btn-text-color);
+    color: var(--arzavo-primary-btn-text);
     border: var(--arzavo-primary-btn-border-width) solid
-        var(--arzavo-primary-btn-border-color);
+        var(--arzavo-primary-btn-border);
     border-radius: var(--arzavo-primary-btn-shape);
     font-size: var(--arzavo-primary-btn-font-size);
     font-family: var(--arzavo-primary-btn-font-family);
@@ -336,15 +336,15 @@ button {
     transition: all 0.3s ease;
     &:hover {
         background-color: var(--arzavo-primary-btn-hover-background);
-        color: var(--arzavo-primary-btn-hover-text-color);
+        color: var(--arzavo-primary-btn-hover-text);
         border-color: var(--arzavo-primary-btn-hover-border);
     }
 }
 .arzavo-secondary-btn {
     background: var(--arzavo-secondary-btn-background);
-    color: var(--arzavo-secondary-btn-text-color);
+    color: var(--arzavo-secondary-btn-text);
     border: var(--arzavo-secondary-btn-border-width) solid
-        var(--arzavo-secondary-btn-border-color);
+        var(--arzavo-secondary-btn-border);
     border-radius: var(--arzavo-secondary-btn-shape);
     font-size: var(--arzavo-secondary-btn-font-size);
     font-family: var(--arzavo-secondary-btn-font-family);
@@ -355,7 +355,7 @@ button {
     transition: all 0.3s ease;
     &:hover {
         background-color: var(--arzavo-secondary-btn-hover-background);
-        color: var(--arzavo-secondary-btn-hover-text-color);
+        color: var(--arzavo-secondary-btn-hover-text);
         border-color: var(--arzavo-secondary-btn-hover-border);
     }
 }

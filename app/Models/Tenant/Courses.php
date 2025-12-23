@@ -4,7 +4,7 @@ namespace App\Models\Tenant;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\Models\Tenant\User;
 use Illuminate\Support\Str;
 
 class Courses extends Model
@@ -58,10 +58,6 @@ class Courses extends Model
     public function teacher()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-    public function category()
-    {
-        return $this->belongsTo(Categories::class);
     }
 
     public function subject()

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('file');
             $table->string('title');
             $table->string('slug')->unique();
-            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('set null');
             $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('set null');
             $table->text('description')->nullable();
