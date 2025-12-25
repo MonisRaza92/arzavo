@@ -1,0 +1,48 @@
+{{-- CURRENT THEME BLOCK --}}
+<div class="my-4 border-rounded border-primary bg-primary p-4">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+        {{-- LEFT: THEME INFO --}}
+        <div class="flex items-start gap-5">
+
+            {{-- PREVIEW PLACEHOLDER --}}
+            <div
+                class="w-28 h-20 rounded-md border bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+                Preview
+            </div>
+
+            {{-- DETAILS --}}
+            <div>
+                <p class="text-xs uppercase tracking-wide text-gray-400 mb-1">
+                    Current Theme
+                </p>
+
+                <h2 class="text-xl font-semibold text-gray-900">
+                    {{ $theme?->theme_name ?? 'Default Theme' }}
+                </h2>
+
+                @if($theme)
+                    <p class="text-sm text-gray-500 mt-1">
+                        Applied on:
+                        <span class="text-gray-700">
+                            {{ $theme->applied_at?->format('d M Y, h:i A') }}
+                        </span>
+                    </p>
+                @endif
+            </div>
+        </div>
+
+        {{-- RIGHT: ACTION --}}
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.builder.index', $theme->theme_slug) }}"
+               class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md
+                      bg-black text-white hover:bg-gray-800 transition">
+                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                Customize Theme
+            </a>
+        </div>
+
+    </div>
+</div>
+{{-- END CURRENT THEME BLOCK --}}

@@ -22,6 +22,8 @@ class SectionController
 
         $page = Page::findOrFail($pageId);
 
+        $theme = app('currentTheme');
+        
         // Load sections + blocks + nested blocks (Shopify style)
         $sections = $page->sections()
             ->with([
@@ -40,7 +42,7 @@ class SectionController
             ->get();
 
         // Available sections JSON files
-        $availableSections = collect(glob(resource_path('views/tenant/website/sections/*.json')))
+        $availableSections = collect(glob(resource_path("views/tenant/themes/{$theme}/sections/*.json")))
             ->map(function ($file) {
                 $data = json_decode(file_get_contents($file), true);
                 return [
@@ -56,7 +58,7 @@ class SectionController
                     'moveable' => $data['moveable'] ?? 'allow',
                 ];
             });
-        $availableBlocks = collect(glob(resource_path('views/tenant/website/blocks/*.json')))
+        $availableBlocks = collect(glob(resource_path("views/tenant/themes/{$theme}/blocks/*.json")))
             ->map(function ($file) {
                 $data = json_decode(file_get_contents($file), true);
 
@@ -73,18 +75,24 @@ class SectionController
                     'moveable' => $data['moveable'] ?? 'allow',
                 ];
             });
-        $availableTemplates = collect(glob(resource_path('views/tenant/website/templates/*.json')))
+        $availableTemplates = collect(glob(resource_path("views/tenant/themes/{$theme}/templates/*.json")))
             ->map(function ($file) {
-                $data = json_decode(file_get_contents($file), true);
+                $content = file_get_contents($file);
+                // $content = preg_replace('/^\xEF\xBB\xBF/', '', $content);
+                $data = json_decode($content, true);
+                
+                
                 return [
-                    'type' => basename($file, '.json'),
+                    'type' => $data['type'] ?? 'custom_section',
                     'name' => $data['name'] ?? basename($file, '.json'),
-                    'icon' => $data['icon'] ?? 'fa-shapes',
-                    'category' => $data['category'] ?? 'Templates',
+                    'icon' => $data['icon'] ?? 'fa-puzzle-piece',
+                    'category' => $data['category'] ?? 'Layout',
                     'preview' => $data['preview'] ?? null,
-                    'order' => $data['order'] ?? 9999
+                    'order' => $data['order'] ?? 9999,
+                    'template_file' => basename($file, '.json')
                 ];
-            });
+            })
+            ->filter(); // Remove null values
 
 
 
@@ -104,6 +112,8 @@ class SectionController
 
     public function store(Request $request, $pageId)
     {
+        $theme = app('currentTheme');
+
         $request->validate([
             'section_type' => 'required|string',
             'section_name' => 'required|string'
@@ -114,7 +124,7 @@ class SectionController
         $order = ($page->sections()->max('order') ?? 0) + 1;
 
         // JSON file
-        $jsonPath = resource_path("views/tenant/website/sections/{$request->section_type}.json");
+        $jsonPath = resource_path("views/tenant/themes/{$theme}/sections/{$request->section_type}.json");
 
         $defaultSettings = [];
         $colorSchemeId = 1;
@@ -163,7 +173,7 @@ class SectionController
 
         foreach ($defaultBlocks as $blockType) {
 
-            $blockJsonPath = resource_path("views/tenant/website/blocks/{$blockType}.json");
+            $blockJsonPath = resource_path("views/tenant/themes/{$theme}/blocks/{$blockType}.json");
             $blockDefaultSettings = [];
 
             if (file_exists($blockJsonPath)) {
@@ -199,6 +209,8 @@ class SectionController
 
     public function storeTemplate(Request $request, $pageId)
     {
+        $theme = app('currentTheme');
+
         $request->validate([
             'template_type' => 'required|string',
             'section_name' => 'required|string'
@@ -208,7 +220,7 @@ class SectionController
         $order = ($page->sections()->max('order') ?? 0) + 1;
 
         // Load template JSON
-        $jsonPath = resource_path("views/tenant/website/templates/{$request->template_type}.json");
+        $jsonPath = resource_path("views/tenant/themes/{$theme}/templates/{$request->template_type}.json");
 
         if (!file_exists($jsonPath)) {
             return back()->with('error', 'Template not found.');
@@ -243,8 +255,10 @@ class SectionController
 
     private function createBlockRecursive($sectionId, $blockData, $parentId = null, &$order = 1)
     {
+        $theme = app('currentTheme');
+
         // Base block schema
-        $schemaPath = resource_path("views/tenant/website/blocks/{$blockData['type']}.json");
+        $schemaPath = resource_path("views/tenant/themes/{$theme}/blocks/{$blockData['type']}.json");
         $schemaDefaults = [];
 
         if (file_exists($schemaPath)) {

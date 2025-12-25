@@ -15,7 +15,7 @@ class TenantWebsiteController extends Controller
     {
         $page = Page::where('slug', $slug)->first();
         if (! $page) {
-            return view('tenant.website.pages.coming-soon');
+            return view('tenant.themes.pages.coming-soon');
         }
 
         
@@ -27,7 +27,7 @@ class TenantWebsiteController extends Controller
         ->get();
         $images = Images::all();
 
-        return view('tenant.website.pages.index', compact('page', 'sections'));
+        return view('tenant.themes.pages.index', compact('page', 'sections'));
     }
     public function viewCourse($slug)
     {

@@ -1,0 +1,114 @@
+{
+    "type": "progress_bar",
+    "name": "Progress Bar",
+    "icon": "fa-chart-line",
+    "order": 11,
+    "category": "Interactive",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "label",
+            "label": "Progress Label",
+            "type": "text",
+            "default": "Progress",
+            "placeholder": "Enter progress label"
+        },
+        {
+            "key": "percentage",
+            "label": "Percentage",
+            "type": "range",
+            "default": 75,
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "show_percentage",
+            "label": "Show Percentage",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "bar_style",
+            "label": "Bar Style",
+            "type": "select",
+            "options": ["rounded", "square", "pill"],
+            "default": "rounded"
+        },
+        {
+            "key": "bar_height",
+            "label": "Bar Height",
+            "type": "select",
+            "options": ["thin", "medium", "thick"],
+            "default": "medium"
+        },
+        {
+            "key": "animation",
+            "label": "Animation",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "animation_duration",
+            "label": "Animation Duration (seconds)",
+            "type": "range",
+            "default": 2,
+            "min": 1,
+            "max": 5
+        },
+        {
+            "key": "gradient_effect",
+            "label": "Gradient Effect",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "no"
+        },
+        {
+            "key": "striped_pattern",
+            "label": "Striped Pattern",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "no"
+        },
+        {
+            "key": "label_position",
+            "label": "Label Position",
+            "type": "select",
+            "options": ["top", "bottom", "inline"],
+            "default": "top"
+        },
+        {
+            "key": "alignment",
+            "label": "Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        }
+    ]
+}

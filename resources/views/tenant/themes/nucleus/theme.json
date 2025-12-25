@@ -1,0 +1,12 @@
+{
+    "name": "Nucleus",
+    "slug": "nucleus",
+    "version": "1.0.0",
+    "author": "Arzavo",
+    "description": "A modern and sleek theme for Arzavo-powered websites.",
+    "category": "modern",
+    "is_paid": false,
+    "price": 0,
+    "source": "system",
+    "is_active": true
+}

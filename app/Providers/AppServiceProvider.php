@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
                 $customizes = \App\Models\Tenant\Customizes::pluck('value', 'key')->toArray();
                 $images = \App\Models\Tenant\Images::all();
                 $colorSchemes = \App\Models\Tenant\ColorScheme::all();
+                $theme = \App\Models\Tenant\ThemeState::current();
 
                 $students = \App\Models\Tenant\User::where('role', 'student')->get();
                 $teachers = \App\Models\Tenant\User::where('role', 'teacher')->get();
@@ -56,6 +57,7 @@ class AppServiceProvider extends ServiceProvider
                     'courses'    => $courses,
                     'images'     => $images,
                     'colorSchemes'     => $colorSchemes,
+                    'theme' => $theme,
                 ]);
             }
         });

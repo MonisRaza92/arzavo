@@ -1,0 +1,150 @@
+{
+    "type": "video",
+    "name": "Video (YouTube)",
+    "icon": "fa-photo-film",
+    "order": 18,
+    "category": "Video",
+    "color_scheme_id": 1,
+    "max_blocks": 0,
+    "allowed_blocks": [],
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "youtube_url",
+            "label": "YouTube URL",
+            "type": "text",
+            "default": "",
+            "placeholder": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+            "key": "video_title",
+            "label": "Video Title",
+            "type": "text",
+            "default": "",
+            "placeholder": "Enter video title"
+        },
+        {
+            "key": "show_title",
+            "label": "Show Title",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "video_description",
+            "label": "Video Description",
+            "type": "textarea",
+            "default": "",
+            "placeholder": "Enter video description"
+        },
+        {
+            "key": "show_description",
+            "label": "Show Description",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "aspect_ratio",
+            "label": "Aspect Ratio",
+            "type": "radio",
+            "options": ["16:9", "4:3", "21:9", "1:1"],
+            "default": "16:9"
+        },
+        {
+            "key": "alignment",
+            "label": "Alignment",
+            "type": "radio",
+            "options": ["start", "center", "end"],
+            "default": "center"
+        },
+        {
+            "key": "max_width",
+            "label": "Max Width (px)",
+            "type": "range",
+            "default": "1200",
+            "min": 400,
+            "max": 1920,
+            "step": 50
+        },
+        {
+            "key": "autoplay",
+            "label": "Autoplay",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "disable",
+            "help": "Autoplay works only if muted is enable"
+        },
+        {
+            "key": "muted",
+            "label": "Muted",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "controls",
+            "label": "Show Controls",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "loop",
+            "label": "Loop Video",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "disable"
+        },
+        {
+            "key": "background_type",
+            "label": "Background Type",
+            "type": "radio",
+            "options": ["none", "color", "image"],
+            "default": "none"
+        },
+        {
+            "key": "background_image",
+            "label": "Background Image",
+            "type": "image",
+            "default": ""
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "default": "40",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "default": "40",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        }
+    ]
+}

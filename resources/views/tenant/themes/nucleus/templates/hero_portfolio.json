@@ -1,0 +1,54 @@
+{
+    "type": "custom_section",
+    "name": "Hero: Portfolio",
+    "icon": "fa-user",
+    "order": 35,
+    "category": "Hero",
+    "color_scheme_id": 1,
+    "max_blocks": 6,
+    "allowed_blocks": ["heading", "text", "button", "image", "group"],
+    "default_blocks": [
+        {
+            "type": "heading",
+            "settings": {
+                "text": "Amazing Portfolio Experience",
+                "heading_type": "heading-1",
+                "alignment": "center",
+                "mobile_alignment": "center"
+            }
+        },
+        {
+            "type": "text",
+            "settings": {
+                "text": "Create something extraordinary with our powerful platform designed for modern businesses and creative professionals.",
+                "text_type": "paragraph",
+                "font_size": "large",
+                "alignment": "center",
+                "mobile_alignment": "center"
+            }
+        },
+        {
+            "type": "button",
+            "settings": {
+                "text": "Get Started Now",
+                "button_type": "primary",
+                "size": "large",
+                "alignment": "center",
+                "mobile_alignment": "center"
+            }
+        }
+    ],
+    "settings": {
+        "background_type": "color",
+        "height": "full",
+        "mobile_height": "1",
+        "direction": "vertical",
+        "mobile_direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 32,
+        "padding_top": 80,
+        "padding_bottom": 80
+    }
+}
+

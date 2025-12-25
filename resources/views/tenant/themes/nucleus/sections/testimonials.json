@@ -1,0 +1,123 @@
+{
+    "type": "testimonials",
+    "name": "Testimonials Section",
+    "icon": "fa-quote-left",
+    "order": 8,
+    "category": "Testimonials",
+    "page": ["home", "about"],
+    "max_blocks": 15,
+    "allowed_blocks": [
+        "heading",
+        "text",
+        "testimonial_card",
+        "divider"
+    ],
+    "default_blocks": [
+        "heading",
+        "text",
+        "testimonial_card",
+        "testimonial_card",
+        "testimonial_card"
+    ],
+    "fields": [
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "layout_style",
+            "label": "Layout Style",
+            "type": "select",
+            "options": ["grid", "slider", "masonry", "single_featured"],
+            "default": "grid"
+        },
+        {
+            "key": "columns_desktop",
+            "label": "Columns (Desktop)",
+            "type": "select",
+            "options": ["1", "2", "3", "4"],
+            "default": "3"
+        },
+        {
+            "key": "columns_mobile",
+            "label": "Columns (Mobile)",
+            "type": "select",
+            "options": ["1", "2"],
+            "default": "1"
+        },
+        {
+            "key": "content_alignment",
+            "label": "Content Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "equal_height",
+            "label": "Equal Height Cards",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "slider_autoplay",
+            "label": "Slider Autoplay",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "slider_speed",
+            "label": "Slider Speed (seconds)",
+            "type": "range",
+            "default": 5,
+            "min": 2,
+            "max": 10
+        },
+        {
+            "key": "show_navigation",
+            "label": "Show Navigation",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "show_pagination",
+            "label": "Show Pagination Dots",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "animation_enabled",
+            "label": "Animation",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "stagger_animation",
+            "label": "Stagger Animation",
+            "type": "radio",
+            "options": ["enable", "disable"],
+            "default": "enable"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 60
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 60
+        }
+    ]
+}

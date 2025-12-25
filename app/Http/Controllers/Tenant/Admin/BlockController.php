@@ -10,6 +10,8 @@ class BlockController
 {
     public function store(Request $request, $sectionId)
     {
+        $theme = app('currentTheme');
+        
         $request->validate([
             'block_type' => 'required|string',
             'block_name' => 'required|string'
@@ -21,7 +23,7 @@ class BlockController
         $order = ($section->blocks()->max('order') ?? 0) + 1;
 
         // 1️⃣ JSON FILE READ
-        $jsonPath = resource_path("views/tenant/website/blocks/{$request->block_type}.json");
+        $jsonPath = resource_path("views/tenant/themes/{$theme}blocks/{$request->block_type}.json");
 
         $defaultSettings = [];
         $defaultBlocks = [];
@@ -63,7 +65,7 @@ class BlockController
 
         foreach ($defaultBlocks as $blockType) {
 
-            $blockJsonPath = resource_path("views/tenant/website/blocks/{$blockType}.json");
+            $blockJsonPath = resource_path("views/tenant/themes/{$theme}blocks/{$blockType}.json");
             $blockDefaultSettings = [];
             $blockIcon = 'fa-puzzle-piece';
 
@@ -102,6 +104,8 @@ class BlockController
     }
     public function storeNested(Request $request, $blockId)
     {
+        $theme = app('currentTheme');
+        
         $request->validate([
             'block_type' => 'required|string',
             'block_name' => 'required|string'
@@ -113,7 +117,7 @@ class BlockController
         $order = ($parentBlock->children()->max('order') ?? 0) + 1;
 
         // 1️⃣ JSON FILE READ
-        $jsonPath = resource_path("views/tenant/website/blocks/{$request->block_type}.json");
+        $jsonPath = resource_path("views/tenant/themes/{$theme}blocks/{$request->block_type}.json");
 
         $defaultSettings = [];
         $blockIcon = 'fa-puzzle-piece';

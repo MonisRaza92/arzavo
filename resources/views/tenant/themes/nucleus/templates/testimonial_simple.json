@@ -1,0 +1,108 @@
+{
+    "type": "custom_section",
+    "name": "Testimonial: Simple Quote",
+    "icon": "fa-quote-left",
+    "order": 8,
+    "category": "Testimonials",
+    "color_scheme_id": 1,
+    "max_blocks": 6,
+    "allowed_blocks": ["heading", "text", "image", "group"],
+    "default_blocks": [
+        {
+            "type": "group",
+            "settings": {
+                "background_type": "none",
+                "direction": "vertical",
+                "mobile_direction": "vertical",
+                "alignment": "center",
+                "position": "center",
+                "gap": 32,
+                "width": "full",
+                "height": "auto"
+            },
+            "default_blocks": [
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "\"This platform has completely transformed how we manage our business. The results speak for themselves - we've seen a 300% increase in efficiency!\"",
+                        "text_type": "paragraph",
+                        "font_size": "large",
+                        "font_style": "italic",
+                        "alignment": "center",
+                        "mobile_alignment": "center"
+                    }
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "background_type": "none",
+                        "direction": "horizontal",
+                        "mobile_direction": "horizontal",
+                        "alignment": "center",
+                        "position": "center",
+                        "gap": 16,
+                        "width": "fit",
+                        "height": "auto"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "image",
+                            "settings": {
+                                "desktop_image": "",
+                                "alt_text": "Customer Photo",
+                                "aspect_ratio": "square",
+                                "border_radius": 50,
+                                "custom_width": 15,
+                                "image_size": "custom",
+                                "custom_height": 60
+                            }
+                        },
+                        {
+                            "type": "group",
+                            "settings": {
+                                "background_type": "none",
+                                "direction": "vertical",
+                                "mobile_direction": "vertical",
+                                "alignment": "start",
+                                "position": "center",
+                                "gap": 4,
+                                "width": "fit",
+                                "height": "auto"
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Sarah Johnson",
+                                        "heading_type": "heading-5",
+                                        "font_weight": "semibold"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "CEO, TechCorp",
+                                        "text_type": "secondary-text",
+                                        "font_size": "small"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "background_type": "color",
+        "height": "auto",
+        "mobile_height": "0",
+        "direction": "vertical",
+        "mobile_direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 0,
+        "padding_top": 60,
+        "padding_bottom": 60
+    }
+}

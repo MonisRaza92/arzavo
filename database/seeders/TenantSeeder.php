@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Arzavo\Theme;
+use App\Models\Tenant\ThemeState;
 
 class TenantSeeder extends Seeder
 {
@@ -12,6 +15,41 @@ class TenantSeeder extends Seeder
      */
     public function run(): void
     {
+        /**
+         * SAFETY CHECK
+         * Agar pehle se theme applied hai, dobara mat lagao
+         */
+        if (ThemeState::count() > 0) {
+            return;
+        }
+
+        /**
+         * MAIN DB se Nucleus theme lao
+         */
+        $theme = Theme::where('slug', 'nucleus')->first();
+
+        if (! $theme) {
+            logger()->error('Default theme "Nucleus" not found.');
+            return;
+        }
+
+        /**
+         * Theme state set karo (TENANT DB)
+         */
+        ThemeState::create([
+            'theme_id' => $theme->id,
+            'theme_name' => $theme->name,
+            'theme_slug' => $theme->slug,
+            'theme_version' => $theme->version,
+            'applied_with_reset' => true,
+            'applied_at' => now(),
+        ]);
+
+        /**
+         * YAHAN actual theme apply logic call hoga
+         * (JSON → sections → blocks)
+         */
+        // app(\App\Services\Theme\ThemeApplyService::class)->apply($theme);
 
         DB::table('pages')->insert([
             [

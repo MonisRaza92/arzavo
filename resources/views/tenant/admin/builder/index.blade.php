@@ -1,5 +1,5 @@
 @extends('layouts.editor')
-@section('title', 'Webpage Builder - ' . app("currentTenant")->name )
+@section('title', 'Webpage Builder - ' . ($theme->theme_name ?? 'Nucleus') . ' - ' . app('currentTenant')->name)
 @section('content')
 @include('tenant.admin.builder.includes.navbar')
 @include('tenant.admin.builder.includes.sidebar')

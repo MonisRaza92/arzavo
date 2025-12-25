@@ -1,0 +1,187 @@
+{
+    "type": "custom_section",
+    "name": "Testimonials: 3 Cards",
+    "icon": "fa-comments",
+    "order": 11,
+    "category": "Testimonials",
+    "color_scheme_id": 1,
+    "max_blocks": 12,
+    "allowed_blocks": ["heading", "text", "card", "group"],
+    "default_blocks": [
+        {
+            "type": "heading",
+            "settings": {
+                "text": "What Our Customers Say",
+                "heading_type": "heading-2",
+                "alignment": "center",
+                "mobile_alignment": "center"
+            }
+        },
+        {
+            "type": "group",
+            "settings": {
+                "background_type": "none",
+                "direction": "horizontal",
+                "mobile_direction": "vertical",
+                "alignment": "start",
+                "position": "between",
+                "gap": 32,
+                "width": "full",
+                "height": "auto",
+                "padding_top": 40
+            },
+            "default_blocks": [
+                {
+                    "type": "card",
+                    "settings": {
+                        "card_style": "shadow",
+                        "border_radius": 12,
+                        "alignment": "center",
+                        "mobile_alignment": "center",
+                        "padding_top": 32,
+                        "padding_bottom": 32,
+                        "padding_left": 24,
+                        "padding_right": 24
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "\"Outstanding service and incredible results. Our team productivity has increased by 200% since we started using this platform.\"",
+                                "text_type": "paragraph",
+                                "font_size": "medium",
+                                "font_style": "italic",
+                                "alignment": "center",
+                                "mobile_alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Sarah Johnson",
+                                "heading_type": "heading-5",
+                                "alignment": "center",
+                                "mobile_alignment": "center",
+                                "margin_top": 16
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "CEO, TechCorp",
+                                "text_type": "secondary-text",
+                                "font_size": "small",
+                                "alignment": "center",
+                                "mobile_alignment": "center"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "card",
+                    "settings": {
+                        "card_style": "shadow",
+                        "border_radius": 12,
+                        "alignment": "center",
+                        "mobile_alignment": "center",
+                        "padding_top": 32,
+                        "padding_bottom": 32,
+                        "padding_left": 24,
+                        "padding_right": 24
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "\"Game-changing platform! The automation features have saved us countless hours and the support team is always there when we need them.\"",
+                                "text_type": "paragraph",
+                                "font_size": "medium",
+                                "font_style": "italic",
+                                "alignment": "center",
+                                "mobile_alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Michael Chen",
+                                "heading_type": "heading-5",
+                                "alignment": "center",
+                                "mobile_alignment": "center",
+                                "margin_top": 16
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Operations Manager, StartupXYZ",
+                                "text_type": "secondary-text",
+                                "font_size": "small",
+                                "alignment": "center",
+                                "mobile_alignment": "center"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "card",
+                    "settings": {
+                        "card_style": "shadow",
+                        "border_radius": 12,
+                        "alignment": "center",
+                        "mobile_alignment": "center",
+                        "padding_top": 32,
+                        "padding_bottom": 32,
+                        "padding_left": 24,
+                        "padding_right": 24
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "\"Best investment we've made! Easy to use, powerful features, and excellent ROI. Highly recommend to any growing business.\"",
+                                "text_type": "paragraph",
+                                "font_size": "medium",
+                                "font_style": "italic",
+                                "alignment": "center",
+                                "mobile_alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Emily Rodriguez",
+                                "heading_type": "heading-5",
+                                "alignment": "center",
+                                "mobile_alignment": "center",
+                                "margin_top": 16
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Marketing Director, GrowthCo",
+                                "text_type": "secondary-text",
+                                "font_size": "small",
+                                "alignment": "center",
+                                "mobile_alignment": "center"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "background_type": "color",
+        "height": "auto",
+        "mobile_height": "0",
+        "direction": "vertical",
+        "mobile_direction": "vertical",
+        "alignment": "center",
+        "position": "start",
+        "gap": 32,
+        "padding_top": 60,
+        "padding_bottom": 60
+    }
+}

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use App\Models\Arzavo\Tenant;
+use App\Models\Tenant\ThemeState;
 
 class TenantMiddleware
 {
@@ -26,7 +27,7 @@ class TenantMiddleware
             ->orWhere('custom_domain', $host)
             ->where('domain_verified', true)
             ->first();
-            
+
         if (!$tenant) {
             abort(404, "Tenant not found for: $host");
         }
@@ -61,8 +62,17 @@ class TenantMiddleware
         DB::setDefaultConnection('tenant');
 
         // 5. BIND TENANT INSTANCE
-        app()->instance('currentTenant', $tenant);
+        $themeState = ThemeState::current();
 
+        $themeSlug = $themeState?->theme_slug ?? 'nucleus';
+
+        // Bind globally for this request
+        app()->instance('currentTenant', $tenant);
+        app()->instance('currentTheme', $themeSlug);
+
+        URL::defaults([
+            'theme' => $themeSlug,
+        ]);
         return $next($request);
     }
 }

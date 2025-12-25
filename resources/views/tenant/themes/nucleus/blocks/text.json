@@ -1,0 +1,100 @@
+{
+    "type": "text",
+    "name": "Text",
+    "icon": "fa-align-left",
+    "order": 2,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "text",
+            "label": "Text Content",
+            "type": "textarea",
+            "default": "Your text content goes here. You can write multiple lines and it will be displayed beautifully on your website.",
+            "placeholder": "Enter your text here"
+        },
+        {
+            "key": "text_type",
+            "label": "Text Type",
+            "type": "select",
+            "options": ["paragraph", "secondary-text"],
+            "default": "paragraph"
+        },
+        {
+            "key": "font_style",
+            "label": "Font Style",
+            "type": "radio",
+            "options": ["normal", "italic"],
+            "default": "normal"
+        },
+        {
+            "key": "text_decoration",
+            "label": "Text Decoration",
+            "type": "select",
+            "options": ["none", "underline", "line-through"],
+            "default": "none"
+        },
+        {
+            "key": "line_height",
+            "label": "Line Height",
+            "type": "select",
+            "options": ["tight", "normal", "relaxed", "loose"],
+            "default": "normal"
+        },
+        {
+            "key": "width",
+            "label": "Width",
+            "type": "radio",
+            "options": ["fit", "full"],
+            "default": "fit"
+        },
+        {
+            "key": "alignment",
+            "label": "Text Alignment",
+            "type": "select",
+            "options": ["left", "center", "right", "justify"],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "select",
+            "options": ["left", "center", "right", "justify"],
+            "default": "left"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        }
+    ]
+}

@@ -1,0 +1,77 @@
+{
+    "type": "custom_section",
+    "name": "About: Left Text Right Image",
+    "icon": "fa-info-circle",
+    "order": 5,
+    "category": "About",
+    "color_scheme_id": 1,
+    "max_blocks": 6,
+    "allowed_blocks": ["heading", "text", "button", "image", "group"],
+    "default_blocks": [
+        {
+            "type": "group",
+            "settings": {
+                "background_type": "none",
+                "direction": "vertical",
+                "mobile_direction": "vertical",
+                "alignment": "start",
+                "position": "center",
+                "gap": 24,
+                "width": "full",
+                "height": "auto"
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Our Story",
+                        "heading_type": "heading-2",
+                        "alignment": "left",
+                        "mobile_alignment": "center"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Founded with a vision to revolutionize the industry, we have been at the forefront of innovation for over a decade. Our journey began with a simple idea: to make technology accessible and powerful for everyone.",
+                        "text_type": "paragraph",
+                        "font_size": "medium",
+                        "alignment": "left",
+                        "mobile_alignment": "center"
+                    }
+                },
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Learn More About Us",
+                        "button_type": "primary",
+                        "alignment": "left",
+                        "mobile_alignment": "center"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "image",
+            "settings": {
+                "desktop_image": "",
+                "alt_text": "About Us Image",
+                "aspect_ratio": "landscape",
+                "border_radius": 12,
+                "shadow": "medium"
+            }
+        }
+    ],
+    "settings": {
+        "background_type": "color",
+        "height": "auto",
+        "mobile_height": "0",
+        "direction": "horizontal",
+        "mobile_direction": "vertical",
+        "alignment": "center",
+        "position": "between",
+        "gap": 48,
+        "padding_top": 60,
+        "padding_bottom": 60
+    }
+}

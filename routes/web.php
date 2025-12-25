@@ -18,6 +18,7 @@ use App\Http\Controllers\Tenant\Admin\ImagesController;
 use App\Http\Controllers\Tenant\Admin\ModulesController;
 use App\Http\Controllers\Tenant\Admin\SettingsController;
 use App\Http\Controllers\Tenant\Admin\PageController;
+use App\Http\Controllers\Tenant\Admin\ThemeController;
 use App\Http\Controllers\Tenant\Admin\SectionController;
 use App\Http\Controllers\Tenant\Admin\BlockController;
 use App\Http\Controllers\Tenant\User\UserController;
@@ -26,6 +27,13 @@ use App\Http\Controllers\Tenant\Teachers\TeachersController;
 
 Route::domain(config('app.domain'))->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/about', [HomeController::class, 'about'])->name('about');
+    Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
+    Route::get('/docs', [HomeController::class, 'documentation'])->name('docs');
+    Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
+    Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+    Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
+    
     //Auth Routes
     Route::prefix('auth')->group(function () {
         Route::get('/login', [LoginController::class, 'login'])->name('login.form');
@@ -34,8 +42,12 @@ Route::domain(config('app.domain'))->group(function () {
         Route::post('/register', [LoginController::class, 'registerHandle'])->name('register.handle');
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     });
+    
     //Admin Routes
     Route::middleware('auth:web')->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+        
         //Admin Tenant Routes
         Route::resource('tenants', TenantController::class);
         Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
@@ -122,8 +134,11 @@ function registerDomains($domain)
                 Route::get('/scheme/get/{id}', [ColorSchemeController::class, 'get'])->name('scheme.get');
                 Route::resource('images', ImagesController::class);
                 Route::resource('pages', PageController::class);
+                Route::resource('themes', ThemeController::class);
+                Route::post('/themes/apply/{id}', [ThemeController::class, 'apply'])->name('themes.apply');
                 Route::prefix('builder')->name('builder.')->group(function () {
-                    Route::get('/', [SectionController::class, 'index'])->name('index');
+                    Route::get('{theme}', [SectionController::class, 'index'])->name('index');
+                    
                     Route::prefix('sections')->name('sections.')->group(function () {
                         Route::post('/{pageId}', [SectionController::class, 'store'])->name('store');
                         Route::post('/{pageId}/template', [SectionController::class, 'storeTemplate'])->name('store.template');

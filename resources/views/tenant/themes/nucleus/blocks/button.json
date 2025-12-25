@@ -1,0 +1,146 @@
+{
+    "type": "button",
+    "name": "Button",
+    "icon": "fa-arrow-pointer",
+    "order": 3,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "text",
+            "label": "Button Text",
+            "type": "text",
+            "default": "Click Here",
+            "placeholder": "Enter button text"
+        },
+        {
+            "key": "url",
+            "label": "Button URL",
+            "type": "text",
+            "default": "#",
+            "placeholder": "https://example.com"
+        },
+        {
+            "key": "button_type",
+            "label": "Button Type",
+            "type": "select",
+            "options": ["primary", "secondary", "link"],
+            "default": "primary"
+        },
+        {
+            "key": "icon",
+            "label": "Button Icon",
+            "type": "icon",
+            "default": "none",
+            "placeholder": "fa-arrow-right"
+        },
+        {
+            "key": "icon_position",
+            "label": "Icon Position",
+            "type": "radio",
+            "options": ["left", "right"],
+            "default": "right"
+        },
+        {
+            "key": "width_desktop",
+            "label": "Desktop Width",
+            "type": "radio",
+            "options": ["fit", "full", "custom"],
+            "default": "fit"
+        },
+        {
+            "key": "custom_width_desktop",
+            "label": "Custom Desktop Width (%)",
+            "type": "range",
+            "default": 50,
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "width_desktop",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "width_mobile",
+            "label": "Mobile Width",
+            "type": "radio",
+            "options": ["fit", "full", "custom"],
+            "default": "full"
+        },
+        {
+            "key": "custom_width_mobile",
+            "label": "Custom Mobile Width (%)",
+            "type": "range",
+            "default": 100,
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "width_mobile",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "alignment",
+            "label": "Button Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 6
+        },
+        {
+            "key": "open_new_tab",
+            "label": "Open in New Tab",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "no"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "margin_left",
+            "label": "Margin Left",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "margin_right",
+            "label": "Margin Right",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        }
+    ]
+}
