@@ -1,14 +1,8 @@
 <nav class="navbar sticky top-0 bg-primary w-full border-bottom z-50 backdrop-blur-sm bg-opacity-95">
     <div class="container flex justify-between items-center py-4">
-        <div class="flex gap-2 items-center">
-            <!-- Mobile Menu Button -->
-            <button class="md:hidden text-primary text-2xl hover-primary border-rounded transition-all duration-300" onclick="toggleMobileMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <!-- Logo -->
-            <div class="flex items-center space-x-2">
-                <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="Arzavo" class="logo">
-            </div>
+        <!-- Logo -->
+        <div class="flex items-center space-x-2">
+            <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="Arzavo" class="logo">
         </div>
 
         <!-- Desktop Navigation -->
@@ -31,10 +25,14 @@
                 <i class="fa-solid fa-user-plus mr-2"></i>Get Started
             </a>
             @else
-            <a href="{{ route('tenants.index') }}" class="text-primary text-2xl font-medium transition-all duration-300">
+            <a href="{{ route('tenants.index') }}" class="text-primary text-xl font-medium transition-all duration-300">
                 <i class="fa-regular fa-user mr-2"></i>
             </a>
             @endif
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-primary text-2xl hover-primary border-rounded transition-all duration-300" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </div>
     </div>
 
