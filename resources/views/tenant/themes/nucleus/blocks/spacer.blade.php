@@ -13,7 +13,7 @@ $visibilityClass = match($visibility) {
 };
 @endphp
 
-<div 
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
     class="spacer-block {{ $visibilityClass }}"
     style="
         height: {{ $heightMobile }}px;

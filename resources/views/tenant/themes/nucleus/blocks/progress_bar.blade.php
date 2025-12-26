@@ -47,7 +47,7 @@ $mobileAlignmentClass = match($mobileAlignment) {
 };
 @endphp
 
-<div class="arzavo-progress-bar {{ $alignmentClass }} {{ $mobileAlignmentClass }}" 
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" class="arzavo-progress-bar {{ $alignmentClass }} {{ $mobileAlignmentClass }}" 
      style="margin-top: {{ $marginTop }}px; margin-bottom: {{ $marginBottom }}px;">
     
     @if($labelPosition === 'top')

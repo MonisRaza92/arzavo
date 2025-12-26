@@ -11,7 +11,7 @@ $pb = $singleImage['padding_bottom'] ?? '0';
 $linkOpen = $singleImage['link_open_page'] ?? 'same';
 @endphp
 
-<div class="{{ $imageSize }} w-full" style="padding-top: {{ $pt }}px; padding-bottom: {{ $pb }}px;">
+<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" class="{{ $imageSize }} w-full" style="padding-top: {{ $pt }}px; padding-bottom: {{ $pb }}px;">
     @if($imageLink !== '#')
     <a href="{{ $imageLink }}" @if($linkOpen==='new' ) target="_blank" @endif>
         <!-- Desktop Image (default hidden on mobile if mobile image exists) -->

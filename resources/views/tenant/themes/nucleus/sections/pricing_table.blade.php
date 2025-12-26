@@ -23,7 +23,7 @@ for ($i = 1; $i <= $plansCount; $i++) {
 }
 @endphp
 
-<section 
+<section data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
         --arzavo-background: {{ $colors->background ?? '' }};
         --arzavo-border-color: {{ $colors->border ?? '' }};

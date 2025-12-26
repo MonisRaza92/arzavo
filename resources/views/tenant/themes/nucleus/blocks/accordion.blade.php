@@ -45,7 +45,7 @@ $iconClasses = [
 @endphp
 
 @if(count($accordionItems) > 0)
-<div class="arzavo-accordion" 
+<div class="arzavo-accordion" data-block-id="{{ $block->id }}" data-name="{{ $block->name }}"
      style="margin-top: {{ $marginTop }}px; margin-bottom: {{ $marginBottom }}px;"
      data-allow-multiple="{{ $allowMultiple }}"
      data-accordion-id="{{ $accordionId }}">

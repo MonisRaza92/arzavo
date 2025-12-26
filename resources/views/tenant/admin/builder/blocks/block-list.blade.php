@@ -151,46 +151,7 @@
             nestedBlocksState[blockId] = !isNowOpen;
             localStorage.setItem("nestedBlocksState", JSON.stringify(nestedBlocksState));
         });
-
-
-
-
-        // ---------------------------------------------
-        // OPEN BLOCK EDIT FORM ON NAME CLICK
-        // ---------------------------------------------
-        document.addEventListener("click", function(e) {
-            if (e.target.classList.contains("block-open-btn")) {
-                e.stopPropagation();
-                e.preventDefault();
-
-                const blockId = e.target.dataset.blockId;
-                if (!blockId) return;
-
-                const editForm = document.getElementById(`edit-block-form-${blockId}`);
-
-                if (!editForm) {
-                    console.error("Block edit form not found for block:", blockId);
-                    return;
-                }
-
-                // Hide ALL edit forms (sections and blocks)
-                document.querySelectorAll("[id^='edit-section-form-']").forEach(f => f.classList.add("hidden"));
-                document.querySelectorAll("[id^='edit-block-form-']").forEach(f => f.classList.add("hidden"));
-
-                // Show this block's edit form
-                editForm.classList.remove("hidden");
-                editForm.scrollTop = 0;
-
-                // Open nested blocks list
-                const nestedContainer = document.getElementById(`nested-blocks-${blockId}`);
-                const arrow = document.getElementById(`block-btn-arrow-${blockId}`);
-                if (nestedContainer && nestedContainer.classList.contains("hidden")) {
-                    nestedContainer.classList.remove("hidden");
-                    arrow?.classList.add("rotate-90");
-                }
-            }
-        });
-
+        
         // ---------------------------------------------
         // TOGGLE NESTED BLOCK LIST
         // ---------------------------------------------
@@ -401,24 +362,5 @@
                     alert("Failed to delete block. Please try again.");
                 });
         });
-
-
-
-        // -----------------------------------------
-        // CLOSE EDIT FORMS WHEN CLICKING BACK ARROW
-        // -----------------------------------------
-        document.addEventListener("click", function(e) {
-            if (e.target.classList.contains("fa-arrow-left") ||
-                (e.target.closest("h2") && e.target.closest("h2").querySelector(".fa-arrow-left"))) {
-
-                const editForm = e.target.closest("[id^='edit-block-form-']") ||
-                    e.target.closest("[id^='edit-section-form-']");
-
-                if (editForm) {
-                    editForm.classList.add("hidden");
-                }
-            }
-        });
-
     })();
 </script>

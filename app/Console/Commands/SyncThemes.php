@@ -41,13 +41,13 @@ class SyncThemes extends Command
             try {
                 $data = json_decode(file_get_contents($file), true);
 
-                if (!$data || empty($data['slug']) || empty($data['name'])) {
+                if (!$data || empty($data['folder']) || empty($data['name'])) {
                     throw new \Exception('Invalid or incomplete theme.json');
                 }
 
-                $foundSlugs[] = $data['slug'];
+                $foundSlugs[] = $data['folder'];
 
-                $theme = Theme::where('slug', $data['slug'])->first();
+                $theme = Theme::where('slug', $data['folder'])->first();
 
                 if ($theme) {
                     $theme->update([
@@ -60,10 +60,10 @@ class SyncThemes extends Command
                     ]);
 
                     $updated++;
-                    $this->line("🔁 Updated: <info>{$data['name']}</info> ({$data['slug']})");
+                    $this->line("🔁 Updated: <info>{$data['name']}</info> ({$data['folder']})");
                 } else {
                     Theme::create([
-                        'slug'      => $data['slug'],
+                        'slug'      => $data['folder'],
                         'name'      => $data['name'],
                         'category'  => $data['category'] ?? null,
                         'version'   => $data['version'] ?? '1.0.0',
@@ -74,7 +74,7 @@ class SyncThemes extends Command
                     ]);
 
                     $created++;
-                    $this->line("✅ Created: <info>{$data['name']}</info> ({$data['slug']})");
+                    $this->line("✅ Created: <info>{$data['name']}</info> ({$data['folder']})");
                 }
             } catch (\Throwable $e) {
                 $errors++;

@@ -44,7 +44,7 @@ $mAlignmentClass = match($mAlignment) {
 };
 @endphp
 
-<p 
+<p data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
     style="
         padding-top: {{ $pt }}px;
         padding-bottom: {{ $pb }}px;

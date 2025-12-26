@@ -15,7 +15,7 @@
         @foreach($sections as $section)
         <li id="section-{{ $section->id }}" class="cursor-pointer select-none" data-id="{{ $section->id }}">
             <div class="flex justify-between items-center p-1 border-rounded relative group bg-hover-secondary">
-                <div class="flex items-center grow">
+                <div class="flex items-center grow section-items">
                     @if (!empty($rules[$section->type]['allowed_blocks']))
                     <button id="section-btn-{{ $section->id }}" type="button"
                         class="text-primary bg-hover-secondary border-rounded pt-0.5 pb-1.5 px-2 transition-all">
@@ -24,11 +24,11 @@
                     @else
                     <span class="w-8"></span>
                     @endif
-                    <h2 class="text-sm w-full section-header">
+                    <h2 class="text-sm w-full section-header" data-id="{{ $section->id }}">
                         <i class="fa-solid {{ $section->icon ?? 'fa-braille' }} text-xs text-tertiary mr-2"></i>{{ $section->name }}
                     </h2>
                 </div>
-                <div class="flex items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
+                <div class="flex items-center section-items opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
                     @php
                     $sectionRules = $rules[$section->type] ?? null;
                     $moveable = $sectionRules['moveable'] ?? "allow";
@@ -191,19 +191,47 @@
                 const blocks = document.getElementById("blocks-" + id);
                 const arrow = document.getElementById("arrow-" + id);
 
-                const opening = editForm.classList.contains("hidden");
+                // 🔴 CLOSE ALL BLOCK EDIT FORMS
+                document.querySelectorAll(".edit-block-form").forEach(f => {
+                    f.classList.add("hidden");
+                });
+                window.currentOpenBlockId = null;
 
-                editForm.classList.toggle("hidden");
+                const isOpening = editForm.classList.contains("hidden");
 
-                if (opening) {
-                    blocks.classList.remove("hidden");
-                    arrow?.classList.add("rotate-90");
+                // 🔹 SAME SECTION → CLOSE
+                if (!isOpening && window.currentOpenSectionId === id) {
+                    editForm.classList.add("hidden");
 
-                    blocksState[id] = true;
-                    localStorage.setItem("SectionBlocksState", JSON.stringify(blocksState));
+                    clearPreviewHighlights(); // ✅ FIX
+
+                    window.currentOpenSectionId = null;
+                    return;
                 }
 
-                return;
+                // 🔹 OPEN NEW SECTION
+
+                // close all section forms
+                document.querySelectorAll(".section-edit-form").forEach(f => {
+                    f.classList.add("hidden");
+                });
+
+                clearPreviewHighlights(); // ✅ FIX
+
+                editForm.classList.remove("hidden");
+
+                const previewEl =
+                    document.getElementById("livePreviewContent")
+                    ?.contentWindow
+                    ?.document
+                    ?.querySelector(`[data-section-id="${id}"]`);
+
+                previewEl?.classList.add("preview-active");
+
+                blocks?.classList.remove("hidden");
+                arrow?.classList.add("rotate-90");
+
+                window.currentOpenSectionId = id;
             }
         });
 

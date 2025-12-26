@@ -58,7 +58,7 @@ $mobileAlignmentClass = match($mobileAlignment) {
 };
 @endphp
 
-<div class="arzavo-video flex {{ $alignmentClass }} {{ $mobileAlignmentClass }}" 
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" class="arzavo-video flex {{ $alignmentClass }} {{ $mobileAlignmentClass }}" 
      style="margin-top: {{ $marginTop }}px; margin-bottom: {{ $marginBottom }}px;">
     <div class="{{ $widthClass }}">
         @if($videoType === 'youtube' && $videoId)

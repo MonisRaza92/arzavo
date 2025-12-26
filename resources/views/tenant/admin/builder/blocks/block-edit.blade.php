@@ -1,6 +1,6 @@
-<div id="edit-block-form-{{ $block->id }}" class="hidden fixed top-0 left-0 bottom-0 w-[299px] pt-29 z-10 overflow-auto scrollbar bg-primary">
+<div id="edit-block-form-{{ $block->id }}" class="edit-block-form hidden fixed top-0 left-0 bottom-0 w-[299px] pt-29 z-10 overflow-auto scrollbar bg-primary">
     <div class="flex items-center justify-between p-2 border-bottom sticky top-0 bg-primary z-10">
-        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center curser-pointer" onclick="closeBlockEditForm({{ $block->id }})">
+        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center curser-pointer" id="blockFormClose">
             <i class="fa-solid fa-arrow-left text-tertiary"></i> {{ $block->name }}
         </h2>
         <div class="flex items-center">
@@ -334,12 +334,22 @@
     @endif
 </div>
 <script>
-    function closeBlockEditForm(BlockId) {
-        const form = document.getElementById(`edit-block-form-${BlockId}`);
-        if (form) {
-            form.classList.add("hidden");
-        }
-    }
+    document.addEventListener("click", function (e) {
+    const closeBtn = e.target.closest("#blockFormClose");
+    if (!closeBtn) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    document.querySelectorAll(".edit-block-form").forEach(f => {
+        f.classList.add("hidden");
+    });
+
+    clearPreviewHighlights();
+    window.currentOpenBlockId = null;
+});
+
+
 
     (function() {
         const blockId = {{$block->id}};

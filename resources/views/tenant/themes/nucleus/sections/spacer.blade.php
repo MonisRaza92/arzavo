@@ -11,7 +11,7 @@ $mb = $s['margin_bottom'] ?? '0';
 $colors = $section->colorScheme->scheme_colors;
 @endphp
 
-<div
+<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
     --arzavo-background: {{ $colors->background ?? '' }};
     @if ($bgType === 'image' && $bgImage)

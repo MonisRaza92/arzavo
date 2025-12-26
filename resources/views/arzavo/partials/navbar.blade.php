@@ -8,10 +8,8 @@
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center gap-6">
             <a href="{{ route('home') }}" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Home</a>
-            <a href="{{ route('about') }}" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">About</a>
             <a href="{{ route('home') }}#features" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Features</a>
             <a href="{{ route('home') }}#pricing" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Pricing</a>
-            <a href="{{ route('home') }}#contact" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Contact</a>
             <a href="{{ route('documentation') }}" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Documentation</a>
         </div>
 
@@ -40,10 +38,8 @@
     <div id="mobileMenu" class="md:hidden bg-primary border-top hidden">
         <div class="container py-4 space-y-3">
             <a href="{{ route('home') }}" class="block text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">Home</a>
-            <a href="{{ route('about') }}" class="block text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">About</a>
             <a href="{{ route('home') }}#features" class="block text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">Features</a>
             <a href="{{ route('home') }}#pricing" class="block text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">Pricing</a>
-            <a href="{{ route('home') }}#contact" class="block text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">Contact</a>
             <a href="{{ route('documentation') }}" class="block text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">Documentation</a>
 
             @if (!Auth::check())

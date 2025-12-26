@@ -60,7 +60,7 @@ $mobileLinks = [];
 }
 
 @endphp
-<nav style="--arzavo-border-color: {{ $colors->border ?? '#d4d4d4d' }}; background: {{ $colors->background ?? '#ffffff' }};" class="hidden md:block py-0 z-20 {{ $navBehavior === 'sticky' ? 'sticky top-0 left-0' : '' }} {{ $border === 'enable' ? 'arzavo-border-bottom' : '' }}">
+<nav style="--arzavo-border-color: {{ $colors->border ?? '#d4d4d4d' }}; background: {{ $colors->background ?? '#ffffff' }};" data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" class="preview-section hidden md:block py-0 z-20 {{ $navBehavior === 'sticky' ? 'sticky top-0 left-0' : '' }} {{ $border === 'enable' ? 'arzavo-border-bottom' : '' }}">
     <div class="container navbar flex justify-between items-center w-full {{ $navHeight === 'compact' ? 'py-2' : ($navHeight === 'standard' ? 'py-3' : 'py-4') }}">
         <div class="logo-links-icons w-full flex justify-between gap-8 items-center">
             <a href="{{ route('home') }}" class="w-fit shrink-0">
@@ -94,7 +94,7 @@ $mobileLinks = [];
 
 <!-- Mobile Navbar -->
 
-<nav style="--arzavo-border-color: {{ $colors->border ?? '#d4d4d4d' }}; background: {{ $colors->background ?? '#ffffff' }};" class="md:hidden py-0 z-20 {{ $navBehavior === 'sticky' ? 'sticky top-0 left-0' : '' }} {{ $border === 'enable' ? 'arzavo-border-bottom' : '' }}">
+<nav data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" style="--arzavo-border-color: {{ $colors->border ?? '#d4d4d4d' }}; background: {{ $colors->background ?? '#ffffff' }};" class="md:hidden py-0 z-20 {{ $navBehavior === 'sticky' ? 'sticky top-0 left-0' : '' }} {{ $border === 'enable' ? 'arzavo-border-bottom' : '' }}">
     <div class="container navbar flex justify-between items-center w-full {{ $navHeight === 'compact' ? 'py-1' : ($navHeight === 'standard' ? 'py-2' : 'py-4') }}">
         <div class="logo-links-icons w-full flex justify-between gap-8 items-center">
             @if ($logoPosition === 'left')
@@ -133,27 +133,27 @@ $mobileLinks = [];
         </div>
     </div>
 </nav>
-<div style="--arzavo-border-color: {{ $colors->border ?? '#d4d4d4d' }}; background: {{ $colors->background ?? '#ffffff' }};" id="mobileMenu" class="w-3/4 h-dvh md:hidden z-21 -translate-x-full fixed transform transition-all duration-300 top-0 left-0">
-<div class="logo-and-menu flex items-center arzavo-border-bottom justify-between px-4 {{ $navHeight === 'compact' ? 'py-1' : ($navHeight === 'standard' ? 'py-2' : 'py-4') }}" style="color: {{ $colors->subheading ?? '#000000' }};">
-    <a href="{{ route('home') }}">
-        @if ($customizes['logo'])
-        <img src="{{ asset($customizes['logo'] ?? '') }}" alt="Logo" class="w-auto logo" style="height: {{ $logoSize }}px;">
-        @else
-        <h2 class="text-xl font-semibold" style="color: {{ $colors->subheading ?? '#000000' }};">{{ app('currentTenant')->name }}</h2>
-        @endif
-    </a>
-    <i class="fa-solid fa-xmark text-xl" onclick="document.getElementById('mobileMenu').classList.add('-translate-x-full'); document.getElementById('mobileMenu').classList.remove('arzavo-border-right')"></i>
-</div>
-<div class="links flex flex-col w-full items-center" style="color: {{ $colors->subheading ?? '#000000' }};">
-    @foreach ($mobileLinks as $link)
-    <a href="/{{ $link }}" class="w-full arzavo-border-bottom py-2 px-4 relative font-{{ $fontWeight }} {{ $textTransform }} {{ $fontSize === 'medium' ? 'text-lg' : ($fontSize === 'large' ? 'text-xl' : 'text-md') }}">{{ $link }} <i class="fa-solid fa-chevron-right text-xs absolute right-4 top-3.5"></i></a>
-    @endforeach
-</div>
-<div class="social-icons {{ $socialIcons === 'enable' ? 'flex' : 'hidden!' }} flex-row justify-between p-4 absolute bottom-0 left-0 w-full arzavo-border-top" style="color: {{ $colors->subheading ?? '#000000' }};">
-    <i class="fa-brands fa-facebook"></i>
-    <i class="fa-brands fa-whatsapp"></i>
-    <i class="fa-brands fa-instagram"></i>
-    <i class="fa-brands fa-twitter"></i>
-    <i class="fa-brands fa-linkedin"></i>
-</div>
+<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" style="--arzavo-border-color: {{ $colors->border ?? '#d4d4d4d' }}; background: {{ $colors->background ?? '#ffffff' }};" id="mobileMenu" class="w-3/4 h-dvh md:hidden z-21 -translate-x-full fixed transform transition-all duration-300 top-0 left-0">
+    <div class="logo-and-menu flex items-center arzavo-border-bottom justify-between px-4 {{ $navHeight === 'compact' ? 'py-1' : ($navHeight === 'standard' ? 'py-2' : 'py-4') }}" style="color: {{ $colors->subheading ?? '#000000' }};">
+        <a href="{{ route('home') }}">
+            @if ($customizes['logo'])
+            <img src="{{ asset($customizes['logo'] ?? '') }}" alt="Logo" class="w-auto logo" style="height: {{ $logoSize }}px;">
+            @else
+            <h2 class="text-xl font-semibold" style="color: {{ $colors->subheading ?? '#000000' }};">{{ app('currentTenant')->name }}</h2>
+            @endif
+        </a>
+        <i class="fa-solid fa-xmark text-xl" onclick="document.getElementById('mobileMenu').classList.add('-translate-x-full'); document.getElementById('mobileMenu').classList.remove('arzavo-border-right')"></i>
+    </div>
+    <div class="links flex flex-col w-full items-center" style="color: {{ $colors->subheading ?? '#000000' }};">
+        @foreach ($mobileLinks as $link)
+        <a href="/{{ $link }}" class="w-full arzavo-border-bottom py-2 px-4 relative font-{{ $fontWeight }} {{ $textTransform }} {{ $fontSize === 'medium' ? 'text-lg' : ($fontSize === 'large' ? 'text-xl' : 'text-md') }}">{{ $link }} <i class="fa-solid fa-chevron-right text-xs absolute right-4 top-3.5"></i></a>
+        @endforeach
+    </div>
+    <div class="social-icons {{ $socialIcons === 'enable' ? 'flex' : 'hidden!' }} flex-row justify-between p-4 absolute bottom-0 left-0 w-full arzavo-border-top" style="color: {{ $colors->subheading ?? '#000000' }};">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-whatsapp"></i>
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-linkedin"></i>
+    </div>
 </div>

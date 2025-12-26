@@ -41,7 +41,7 @@ $mobileAlignmentClass = match($mobileAlignment) {
 };
 @endphp
 
-<div class="arzavo-countdown {{ $sizeClasses[$size]['container'] }}" 
+<div class="arzavo-countdown {{ $sizeClasses[$size]['container'] }}" data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
      style="margin-top: {{ $marginTop }}px; margin-bottom: {{ $marginBottom }}px;">
     <div class="flex flex-col {{ $alignmentClass }} {{ $mobileAlignmentClass }}">
         

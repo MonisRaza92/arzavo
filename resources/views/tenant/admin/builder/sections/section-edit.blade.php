@@ -1,6 +1,6 @@
-<div id="edit-form-{{ $section->id }}" class="hidden edit-form fixed top-0 left-0 bottom-0 w-[299px] pt-29 overflow-auto scrollbar bg-primary z-9">
+<div id="edit-form-{{ $section->id }}" class="section-edit-form hidden edit-form fixed top-0 left-0 bottom-0 w-[299px] pt-29 overflow-auto scrollbar bg-primary z-9">
     <div class="flex items-center justify-between p-2 border-bottom sticky top-0 bg-primary z-10">
-        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center" onclick="document.getElementById('edit-form-{{ $section->id }}').classList.add('hidden')">
+        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center" onclick="document.getElementById('edit-form-{{ $section->id }}').classList.add('hidden'); clearPreviewHighlights();" id="sectionFormClose">
             <i class="fa-solid fa-arrow-left text-tertiary"></i> {{ $section->name }}
         </h2>
         <div class="flex items-center">

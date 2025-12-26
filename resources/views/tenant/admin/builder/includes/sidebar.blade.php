@@ -1,9 +1,8 @@
 <div id="editorSidebar" class="w-[300px] pt-16 h-dvh border-right fixed top-0 left-0 bg-primary overflow-auto scrollbar">
     <div class="tab-btns border-bottom flex justify-center sticky top-0 left-0 bg-primary z-30">
-        <button type="button" class="tab-btn w-1/4 font-semibold text-lg border-right bg-invert text-invert p-3" title="Settings" data-target="basics"><i class="fas fa-cog"></i></button>
-        <button type="button" class="tab-btn w-1/4 font-semibold text-lg border-right p-3" title="Sections" data-target="sections"><i class="fa-solid fa-code"></i></button>
-        <button type="button" class="tab-btn w-1/4 font-semibold text-lg border-right p-3" title="Themes" data-target="themes"><i class="fa-solid fa-palette"></i></button>
-        <button type="button" class="tab-btn w-1/4 font-semibold text-lg p-3" title="Apps" data-target="apps"><i class="fa-solid fa-layer-group"></i></button>
+        <button type="button" class="tab-btn w-full font-semibold text-lg border-right bg-invert text-invert p-3" title="Settings" data-target="basics"><i class="fas fa-cog"></i></button>
+        <button type="button" class="tab-btn w-full font-semibold text-lg border-right p-3" title="Sections" data-target="sections"><i class="fa-solid fa-code"></i></button>
+        <button type="button" class="tab-btn w-full font-semibold text-lg p-3" title="Apps" data-target="apps"><i class="fa-solid fa-layer-group"></i></button>
     </div>
     <div class="tab-content active relative" id="basics" data-content="basics">
         <form id="customize-form" action="{{ route('admin.customizes.store') }}" method="POST">
@@ -23,9 +22,6 @@
     </div>
     <div class="tab-content hidden" id="sections" data-content="sections">
         @include('tenant.admin.builder.sections.sections')
-    </div>
-    <div class="tab-content hidden" id="themes" data-content="themes">
-        @include('tenant.admin.builder.themes.themes')
     </div>
     <div class="tab-content hidden" id="apps" data-content="apps">
         <p class="p-4">No App Available Right Now</p>

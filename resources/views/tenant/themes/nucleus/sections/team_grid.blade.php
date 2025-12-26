@@ -26,7 +26,7 @@ $cardClasses = match($cardStyle) {
 };
 @endphp
 
-<section 
+<section  data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
         --arzavo-background: {{ $colors->background ?? '' }};
         --arzavo-border-color: {{ $colors->border ?? '' }};

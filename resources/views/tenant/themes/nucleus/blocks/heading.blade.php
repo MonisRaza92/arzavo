@@ -40,7 +40,7 @@ $mAlignmentClass = match($mAlignment) {
 };
 @endphp
 
-<{{ $tag }}
+<{{ $tag }} data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
     style="
         margin-top: {{ $mt }}px;
         margin-bottom: {{ $mb }}px;

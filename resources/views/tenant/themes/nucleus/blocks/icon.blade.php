@@ -10,6 +10,6 @@ $mr = $s['margin_right'] ?? '0';
 $ml = $s['margin_left'] ?? '0';
 @endphp
 
-<div class="icon-block" style="margin-top: {{ $mt }}px; margin-bottom: {{ $mb }}; margin-left: {{ $ml }}; margin-right: {{ $mr }};">
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" class="icon-block" style="margin-top: {{ $mt }}px; margin-bottom: {{ $mb }}; margin-left: {{ $ml }}; margin-right: {{ $mr }};">
     <i class="fa-solid fa-{{ $icon }}" style="font-size: {{ $size }}px; color: var(--arzavo-{{ $color }}-color);"></i>
 </div>

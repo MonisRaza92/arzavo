@@ -19,7 +19,7 @@ $pt = $s['padding_top'] ?? 60;
 $pb = $s['padding_bottom'] ?? 60;
 @endphp
 
-<section 
+<section data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
         --arzavo-background: {{ $colors->background ?? '' }};
         --arzavo-border-color: {{ $colors->border ?? '' }};

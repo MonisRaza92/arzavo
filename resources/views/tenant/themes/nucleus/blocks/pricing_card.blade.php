@@ -77,7 +77,7 @@ $mobileAlignmentClass = match($mobileAlignment) {
 };
 @endphp
 
-<div class="arzavo-pricing-card relative {{ $cardStyleClasses[$cardStyle] ?? 'bg-white shadow-lg' }} 
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" class="arzavo-pricing-card relative {{ $cardStyleClasses[$cardStyle] ?? 'bg-white shadow-lg' }} 
             {{ $hoverEffectClasses[$hoverEffect] ?? 'hover:-translate-y-2' }} 
             {{ $alignmentClass }} {{ $mobileAlignmentClass }}
             transition-all duration-300 h-full flex flex-col"

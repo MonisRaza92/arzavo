@@ -10,7 +10,7 @@ $rounded = $s['rounded'] ?? 'disable';
 $colors = $section->colorScheme->scheme_colors;
 
 @endphp
-<div
+<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     class="divider-s flex items-center justify-center {{ $size }}"
     style="
     --arzavo-background-: {{ $colors->background ?? '#ffffff' }} ;

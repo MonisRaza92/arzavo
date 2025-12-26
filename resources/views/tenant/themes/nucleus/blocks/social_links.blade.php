@@ -78,7 +78,7 @@ $target = $openNewTab === 'yes' ? '_blank' : '_self';
 @endphp
 
 @if(count($socialLinks) > 0)
-<div class="arzavo-social-links" style="margin-top: {{ $marginTop }}px; margin-bottom: {{ $marginBottom }}px;">
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" class="arzavo-social-links" style="margin-top: {{ $marginTop }}px; margin-bottom: {{ $marginBottom }}px;">
     <div class="flex {{ $layoutClasses[$layout] ?? 'flex-row' }} {{ $alignmentClass }} {{ $mobileAlignmentClass }} items-center" 
          style="gap: {{ $spacing }}px;">
         @foreach($socialLinks as $platform => $link)

@@ -62,39 +62,7 @@ class TenantSeeder extends Seeder
         DB::table('color_schemes')->insert([
             [
                 'colors' => json_encode([
-                    'scheme_colors' => [
-                        'background' => '#ffffff',
-                        'heading' => '#111111',
-                        'subheading' => '#1f1f1f',
-                        'paragraph' => '#3a3a3a',
-                        'secondary_text' => '#6b6b6b',
-                        'link' => '#111111',
-                        'link_hover' => '#000000',
-                        'border' => '#e5e5e5',
-                        'shadow' => 'rgba(0,0,0,0.05)',
-                    ],
-                    'primary_btn' => [
-                        'background' => '#111111',
-                        'text' => '#ffffff',
-                        'hover_background' => '#000000',
-                        'hover_text' => '#ffffff',
-                        'border' => '#111111',
-                        'hover_border' => '#000000'
-                    ],
-                    'secondary_btn' => [
-                        'background' => 'transparent',
-                        'text' => '#111111',
-                        'hover_background' => 'rgba(0,0,0,0.05)',
-                        'hover_text' => '#000000',
-                        'border' => '#d4d4d4',
-                        'hover_border' => '#000000'
-                    ],
-                    'input' => [
-                        'background' => '#ffffff',
-                        'text' => '#111111',
-                        'border' => '#e5e5e5',
-                        'focus_border' => '#111111'
-                    ]
+                    
                 ])
             ],
 

@@ -48,7 +48,7 @@ $widthMobileClass = match($widthMobile) {
     default => 'w-full'
 };
 @endphp
-    <a
+    <a data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
         href="{{ $url }}"
         {{ $openNewTab === 'yes' ? 'target="_blank"' : '' }}
         class="

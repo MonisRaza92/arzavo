@@ -51,7 +51,7 @@ $embedUrl = "https://www.youtube.com/embed/{$videoId}?" . implode('&', $embedPar
 $colors = $section->colorScheme->scheme_colors;
 @endphp
 
-<div
+<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
     --arzavo-background: {{ $colors->background ?? '' }};
     --arzavo-heading-color: {{ $colors->heading ?? '' }};

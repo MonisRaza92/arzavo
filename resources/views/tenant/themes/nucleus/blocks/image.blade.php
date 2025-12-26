@@ -76,7 +76,7 @@ $imageToShow = $mobileImage ?: $desktopImage;
 @endphp
 
 @if($imageToShow)
-<div 
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
     class="flex {{ $mAlignmentClass }} {{ $alignmentClass }} {{ $visibilityClass }}"
     style="
         margin-top: {{ $mt }}px;

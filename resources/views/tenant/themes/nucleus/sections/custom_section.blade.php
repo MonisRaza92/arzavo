@@ -23,7 +23,7 @@ $primaryBtnColors = $section->colorScheme->primary_btn;
 $secondaryBtnColors = $section->colorScheme->secondary_btn;
 $linkBtnColors = $section->colorScheme->link_btn;
 @endphp
-<div
+<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
     --arzavo-background: {{ $colors->background ?? '' }};
     --arzavo-border-color: {{ $colors->border ?? '' }};

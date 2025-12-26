@@ -24,7 +24,7 @@ $animationDirection = $reverseAnimation === 'enable' ? 'reverse' : 'normal';
 $uniqueId = 'wave-' . $section->id;
 @endphp
 
-<section
+<section  data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     id="{{ $uniqueId }}"
     style="
         --arzavo-background: {{ $bgColor }};

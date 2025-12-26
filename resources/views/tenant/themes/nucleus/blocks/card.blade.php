@@ -19,7 +19,7 @@ $cardClasses = match($cardStyle) {
 };
 @endphp
 
-<div 
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
     class="card-block {{ $cardClasses }} {{ $mAlignment === 'center' ? 'text-center' : ($mAlignment === 'right' ? 'text-right' : 'text-left') }} {{ $alignment === 'center' ? 'md:text-center' : ($alignment === 'right' ? 'md:text-right' : 'md:text-left') }}"
     style="
         border-radius: {{ $borderRadius }}px;

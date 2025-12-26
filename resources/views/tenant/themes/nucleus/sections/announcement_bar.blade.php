@@ -7,15 +7,15 @@ $border = $announcebar['divider'] ?? 'enable';
 $barHideBtn = $announcebar['bar_hide_btn'] ?? 'enable';
 @endphp
 
-<div id="announcement-bar-{{ $section->id }}"
+<div id="announcement-bar-{{ $section->id }}" data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
         --arzavo-background: {{ $colors->background ?? '#ffffff' }};
         --arzavo-border-color: {{ $colors->border ?? '#d4d4d4d' }};
         background: var(--arzavo-background);"
-    class="w-full relative overflow-hidden flex items-center justify-center {{ $border === 'enable' ? 'arzavo-border-bottom' : '' }}">
+    class="preview-section w-full relative overflow-hidden flex items-center justify-center {{ $border === 'enable' ? 'arzavo-border-bottom' : '' }}">
 
     <div class="container mx-auto py-{{ $padding }}">
-        <div class="announcement-container text-center w-full relative">
+        <div class="announcement-container text-center w-full flex items-center justify-center relative">
             @include('tenant.themes.includes.blocks')
             @if($barHideBtn === 'enable')
             <button class="text-base absolute right-0 top-1/2 transform -translate-y-1/2 p-2"

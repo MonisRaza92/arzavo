@@ -8,7 +8,7 @@ $pb = $s['padding_bottom'] ?? '0';
 $rounded = $s['rounded'] ?? 'disable';
 
 @endphp
-<div
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
     class="divider-s flex items-center justify-center"
     style="
     --arzavo-background-: {{ $colors->background ?? '#ffffff' }} ;

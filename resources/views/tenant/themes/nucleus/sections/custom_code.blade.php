@@ -15,7 +15,7 @@ $enableBorder = $s['enable_border'] ?? 'disable';
 $enableShadow = $s['enable_shadow'] ?? 'disable';
 @endphp
 
-<section
+<section data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
         --arzavo-background: {{ $colors->background ?? '#ffffff' }};
         --arzavo-border-color: {{ $colors->border ?? '#d4d4d4' }};

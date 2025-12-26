@@ -55,7 +55,7 @@ $linkBtnColors = $block->colorScheme->link_btn;
         }
     }
 </style>
-<div
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
     style="
     --arzavo-background: {{ $colors->background ?? '' }};
     --arzavo-border-color: {{ $colors->border ?? '' }};
