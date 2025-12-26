@@ -215,7 +215,7 @@
         </div>
 
         <!-- Support Options -->
-        <div class="bg-primary border-primary border-rounded p-12 shadow-xl">
+        <div class="bg-primary border-primary border-rounded p-4 md:p-10 shadow-xl">
             <div class="text-center mb-12">
                 <h3 class="text-3xl font-bold text-primary mb-4">Need Help? We're Here for You</h3>
                 <p class="text-xl text-secondary max-w-2xl mx-auto">
