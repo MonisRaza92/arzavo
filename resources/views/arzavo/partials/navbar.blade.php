@@ -21,7 +21,7 @@
             <a href="{{ route('login.form') }}" class="text-primary border-primary hover-primary px-4 py-2 border-rounded font-medium transition-all duration-300">
                 <i class="fa-solid fa-right-to-bracket mr-2"></i>Login
             </a>
-            <a href="{{ route('register.form') }}" class="bg-accent hidden md:block text-invert px-6 py-2 border-rounded font-semibold hover-invert transition-all duration-300 shadow-lg">
+            <a href="{{ route('register.form') }}" class="bg-accent border-accent hidden md:block text-invert px-6 py-2 border-rounded font-semibold hover-invert transition-all duration-300 shadow-lg">
                 <i class="fa-solid fa-user-plus mr-2"></i>Get Started
             </a>
             @else
@@ -51,7 +51,7 @@
                 <a href="{{ route('login.form') }}" class="block border-primary text-center text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">
                     <i class="fa-solid fa-right-to-bracket mr-2"></i>Login
                 </a>
-                <a href="{{ route('register.form') }}" class="block text-center bg-accent text-invert px-3 py-2 border-rounded font-semibold hover-invert transition-all duration-300">
+                <a href="{{ route('register.form') }}" class="block border-accent text-center bg-accent text-invert px-3 py-2 border-rounded font-semibold hover-invert transition-all duration-300">
                     <i class="fa-solid fa-user-plus mr-2"></i>Get Started
                 </a>
             </div>

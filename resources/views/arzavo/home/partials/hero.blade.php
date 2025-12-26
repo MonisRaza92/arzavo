@@ -87,7 +87,7 @@
             <div class="relative">
 
                 <!-- Main Dashboard Card -->
-                <div class="bg-primary border-primary border-rounded p-4 sm:p-6 lg:p-10 relative z-10 transform lg:hover:scale-105 transition-all duration-500 backdrop-blur-sm overflow-hidden">
+                <div class="bg-primary border-primary border-rounded shadow-lg p-4 sm:p-6 lg:p-10 relative z-10 transform lg:hover:scale-105 transition-all duration-500 backdrop-blur-sm overflow-hidden">
                     <!-- Dashboard Header -->
                     <div class="flex sm:items-center justify-between gap-4 mb-6 sm:mb-8 relative z-10">
                         <div class="flex items-center space-x-4">
@@ -147,12 +147,12 @@
 
                         <!-- Students -->
                         <div
-                            class="p-4 sm:p-6 border-rounded border-primary shadow-xl
+                            class="p-4 sm:p-6 border-rounded border-primary shadow-md
                        bg-hover-secondary transition-all duration-300
                        group relative overflow-hidden">
                             <div
                                 class="absolute inset-0 bg-linear-to-br
-                           from-accent/5 to-transparent opacity-0
+                           from-red-700/20 to-transparent opacity-0
                            group-hover:opacity-100 transition-opacity duration-300"></div>
 
                             <div class="flex items-center justify-between relative z-10">
@@ -178,12 +178,12 @@
 
                         <!-- Courses -->
                         <div
-                            class="p-4 sm:p-6 border-rounded border-primary shadow-xl
+                            class="p-4 sm:p-6 border-rounded border-primary shadow-md
                        bg-hover-secondary transition-all duration-300
                        group relative overflow-hidden">
                             <div
                                 class="absolute inset-0 bg-linear-to-br
-                           from-accent-secondary/5 to-transparent opacity-0
+                           from-yellow-600/20 to-transparent opacity-0
                            group-hover:opacity-100 transition-opacity duration-300"></div>
 
                             <div class="flex items-center justify-between relative z-10">
@@ -210,7 +210,7 @@
 
                     <!-- Chart Area -->
                     <div
-                        class="p-4 sm:p-6 border-rounded shadow-xl border-primary
+                        class="p-4 sm:p-6 border-rounded shadow-md border-primary
                    bg-hover-secondary relative overflow-hidden z-10">
 
                         <div class="flex items-center justify-between mb-4 sm:mb-6">
@@ -219,9 +219,9 @@
                                 Enrollment Trends
                             </h4>
                             <span
-                                class="text-accent text-xs sm:text-sm bg-accent-subtle
+                                class="text-accent text-xs sm:text-sm 
                            px-3 sm:px-4 py-1.5 sm:py-2 border-rounded
-                           font-semibold shadow-lg border border-accent/20">
+                           font-semibold border-accent">
                                 +12% this month
                             </span>
                         </div>
@@ -281,7 +281,7 @@
 
         </div>
         <!-- Enhanced Trust Indicators -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 p-8 mt-24 w-full border-primary border-rounded">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 p-8 mt-24 w-full border-primary border-rounded bg-primary shadow-lg">
             <div class="text-center group cursor-pointer">
                 <div class="text-4xl lg:text-5xl font-bold text-accent mb-2 group-hover:scale-110 transition-transform duration-300">500+</div>
                 <div class="text-tertiary text-sm font-semibold uppercase tracking-wide">Active Schools</div>
