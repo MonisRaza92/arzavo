@@ -18,10 +18,10 @@
         <!-- Auth Buttons -->
         <div class="flex items-center gap-2 sm:gap-3">
             @if (!Auth::check())
-            <a href="{{ route('login.form') }}" class="text-primary hover-primary px-4 py-2 border-rounded font-medium transition-all duration-300">
+            <a href="{{ route('login.form') }}" class="text-primary border-primary hover-primary px-4 py-2 border-rounded font-medium transition-all duration-300">
                 <i class="fa-solid fa-right-to-bracket mr-2"></i>Login
             </a>
-            <a href="{{ route('register.form') }}" class="bg-accent text-invert px-6 py-2 border-rounded font-semibold hover-invert transition-all duration-300 shadow-lg">
+            <a href="{{ route('register.form') }}" class="bg-accent hidden md:block text-invert px-6 py-2 border-rounded font-semibold hover-invert transition-all duration-300 shadow-lg">
                 <i class="fa-solid fa-user-plus mr-2"></i>Get Started
             </a>
             @else
@@ -48,7 +48,7 @@
 
             @if (!Auth::check())
             <div class="pt-3 border-top space-y-2">
-                <a href="{{ route('login.form') }}" class="block text-center text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">
+                <a href="{{ route('login.form') }}" class="block border-primary text-center text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300">
                     <i class="fa-solid fa-right-to-bracket mr-2"></i>Login
                 </a>
                 <a href="{{ route('register.form') }}" class="block text-center bg-accent text-invert px-3 py-2 border-rounded font-semibold hover-invert transition-all duration-300">
