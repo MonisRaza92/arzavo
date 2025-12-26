@@ -225,7 +225,7 @@
 
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Knowledge Base -->
-                <div class="text-center">
+                <div class="text-center border-rounded border-primary p-6 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
                     <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <i class="fa-solid fa-book text-3xl"></i>
                     </div>
@@ -239,7 +239,7 @@
                 </div>
 
                 <!-- Live Chat -->
-                <div class="text-center">
+                <div class="text-center border-rounded border-primary p-6 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
                     <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <i class="fa-solid fa-comments text-3xl"></i>
                     </div>
@@ -253,7 +253,7 @@
                 </div>
 
                 <!-- Email Support -->
-                <div class="text-center">
+                <div class="text-center border-rounded border-primary p-6 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
                     <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <i class="fa-solid fa-envelope text-3xl"></i>
                     </div>
