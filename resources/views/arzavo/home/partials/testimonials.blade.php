@@ -166,7 +166,7 @@
 
         <!-- Stats Section -->
         <div class="bg-primary border-primary border-rounded p-12">
-            <div class="grid md:grid-cols-4 gap-8 text-center">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div>
                     <div class="text-4xl font-bold text-accent mb-2">500+</div>
                     <div class="text-secondary">Happy Institutions</div>
