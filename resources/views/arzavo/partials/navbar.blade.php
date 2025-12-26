@@ -7,12 +7,12 @@
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center gap-6">
-            <a href="{{ route('home') }}" class="text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300 border-bottom-hover">Home</a>
-            <a href="{{ route('about') }}" class="text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300 border-bottom-hover">About</a>
-            <a href="{{ route('home') }}#features" class="text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300 border-bottom-hover">Features</a>
-            <a href="{{ route('home') }}#pricing" class="text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300 border-bottom-hover">Pricing</a>
-            <a href="{{ route('home') }}#contact" class="text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300 border-bottom-hover">Contact</a>
-            <a href="{{ route('documentation') }}" class="text-primary hover-primary px-3 py-2 border-rounded font-medium transition-all duration-300 border-bottom-hover">Documentation</a>
+            <a href="{{ route('home') }}" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Home</a>
+            <a href="{{ route('about') }}" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">About</a>
+            <a href="{{ route('home') }}#features" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Features</a>
+            <a href="{{ route('home') }}#pricing" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Pricing</a>
+            <a href="{{ route('home') }}#contact" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Contact</a>
+            <a href="{{ route('documentation') }}" class="text-primary bg-hover-secondary px-3 py-2 font-medium transition-all duration-300">Documentation</a>
         </div>
 
         <!-- Auth Buttons -->
