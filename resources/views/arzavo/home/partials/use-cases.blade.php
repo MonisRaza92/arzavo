@@ -162,7 +162,7 @@
                 <p class="text-secondary mb-6">
                     Specialized platform for vocational training and professional skill development.
                 </p>
-                <ul class="space-y-2 text-tertiary mb-6"></ul>
+                <ul class="space-y-2 text-tertiary mb-6">
                     <li class="flex items-center">
                         <i class="fa-solid fa-check text-accent mr-2"></i>
                         Skill assessment tools
@@ -216,37 +216,6 @@
                 <div class="text-accent font-semibold bg-accent-subtle px-3 py-2 border-rounded">
                     <i class="fa-solid fa-users mr-2"></i>
                     Perfect for 10-200 students
-                </div>
-            </div>
-        </div>
-
-        <!-- Success Stories -->
-        <div class="mt-20">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold text-primary mb-4">Success Stories</h3>
-                <p class="text-secondary">See how institutions are transforming education with Arzavo</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg hover-primary transition-all duration-300 transform hover:scale-105">
-                    <div class="text-4xl mb-4">🏫</div>
-                    <h4 class="text-lg font-semibold text-primary mb-2">Delhi Public School</h4>
-                    <p class="text-tertiary text-sm mb-3">"Increased parent engagement by 300% with Arzavo's communication tools"</p>
-                    <div class="text-accent font-semibold bg-accent-subtle px-3 py-1 border-rounded">2,500 Students</div>
-                </div>
-                
-                <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg hover-primary transition-all duration-300 transform hover:scale-105">
-                    <div class="text-4xl mb-4">📚</div>
-                    <h4 class="text-lg font-semibold text-primary mb-2">Aakash Institute</h4>
-                    <p class="text-tertiary text-sm mb-3">"Streamlined operations and improved student performance tracking"</p>
-                    <div class="text-accent font-semibold bg-accent-subtle px-3 py-1 border-rounded">15,000 Students</div>
-                </div>
-                
-                <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg hover-primary transition-all duration-300 transform hover:scale-105">
-                    <div class="text-4xl mb-4">🎓</div>
-                    <h4 class="text-lg font-semibold text-primary mb-2">IIT Academy</h4>
-                    <p class="text-tertiary text-sm mb-3">"Reduced administrative work by 60% with automated systems"</p>
-                    <div class="text-accent font-semibold bg-accent-subtle px-3 py-1 border-rounded">5,000 Students</div>
                 </div>
             </div>
         </div>

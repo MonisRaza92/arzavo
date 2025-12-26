@@ -269,7 +269,7 @@
         </div>
 
         <!-- Video Tutorials -->
-        <div class="mt-16 text-center">
+        <!-- <div class="mt-16 text-center">
             <h3 class="text-3xl font-bold text-primary mb-8">Video Tutorials</h3>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-primary border-primary border-rounded overflow-hidden hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
@@ -305,6 +305,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>

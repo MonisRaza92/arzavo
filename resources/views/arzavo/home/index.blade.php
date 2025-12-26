@@ -8,7 +8,6 @@
 @include('arzavo.home.partials.use-cases')
 @include('arzavo.home.partials.testimonials')
 @include('arzavo.home.partials.pricing')
-@include('arzavo.home.partials.contact')
 @include('arzavo.home.partials.documentation')
 @include('arzavo.partials.footer')
 @endsection

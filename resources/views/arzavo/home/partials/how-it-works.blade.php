@@ -1,190 +1,148 @@
-<!-- How It Works Section -->
+<!-- How Arzavo Works -->
 <section class="bg-primary py-20 relative overflow-hidden">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-3">
-        <div class="absolute top-16 left-16 w-20 h-20 bg-accent border-rounded transform rotate-12"></div>
-        <div class="absolute top-40 right-24 w-16 h-16 bg-accent-secondary border-rounded transform -rotate-12"></div>
-        <div class="absolute bottom-24 left-1/4 w-12 h-12 bg-accent border-rounded transform rotate-45"></div>
-        <div class="absolute bottom-48 right-16 w-18 h-18 bg-accent-secondary border-rounded transform -rotate-30"></div>
+
+    <!-- Soft Background -->
+    <div class="absolute inset-0 hidden sm:block opacity-5">
+        <div class="absolute -top-20 -left-20 w-64 h-64 bg-accent border-rounded rotate-12"></div>
+        <div class="absolute bottom-0 right-0 w-80 h-80 bg-accent-secondary border-rounded -rotate-12"></div>
     </div>
-    
+
     <div class="container relative z-10">
-        <!-- Section Header -->
-        <div class="text-center mb-16">
-            <div class="inline-flex items-center bg-accent-subtle text-accent px-4 py-2 border-rounded text-sm font-medium mb-4 shadow-lg">
+
+        <!-- Header -->
+        <div class="text-center mx-auto mb-16 lg:mb-24 px-2">
+            <div class="inline-flex items-center bg-accent-subtle text-accent px-5 py-2 border-rounded text-sm font-semibold mb-6">
                 <i class="fa-solid fa-lightbulb mr-2"></i>
-                Simple & Straightforward
+                How It Works
             </div>
-            <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
-                How Arzavo Works
+
+            <h2 class="text-4xl sm:text-4xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
+                From Signup to
+                <span class="text-accent relative">
+                    Your Own Website
+                </span>
             </h2>
-            <p class="text-xl text-secondary max-w-3xl mx-auto">
-                Get your educational platform up and running in just 4 simple steps. No technical knowledge required - we handle all the complexity for you.
+
+            <p class="text-base sm:text-lg lg:text-xl text-secondary leading-relaxed">
+                Arzavo automatically creates a <strong>separate website, admin panel, and database</strong>
+                for every institute — no technical setup required.
             </p>
         </div>
 
         <!-- Steps -->
-        <div class="relative mb-16">
-            <!-- Progress Line (Desktop) -->
-            <div class="hidden lg:block absolute top-16 left-1/2 transform -translate-x-1/2 w-3/4 h-1 bg-tertiary shadow-lg">
-                <div class="h-full bg-accent w-full border-rounded"></div>
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 mb-20">
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Step 1 -->
-                <div class="text-center relative group">
-                    <div class="bg-accent text-invert w-24 h-24 border-rounded flex items-center justify-center mx-auto mb-6 relative z-10 shadow-xl group-hover:scale-110 transition-all duration-300 transform hover:rotate-3">
-                        <div class="text-center">
-                            <i class="fa-solid fa-user-plus text-2xl mb-1"></i>
-                            <div class="text-sm font-bold">STEP 1</div>
-                        </div>
-                    </div>
-                    <div class="bg-secondary border-primary border-rounded p-6 group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
-                        <h3 class="text-xl font-bold text-primary mb-3">Sign Up & Verify</h3>
-                        <p class="text-secondary text-sm leading-relaxed mb-4">
-                            Create your account. Verify your email and choose your perfect subdomain or connect your custom domain.
-                        </p>
-                        <div class="flex items-center justify-center space-x-2 text-accent text-sm bg-accent-subtle px-3 py-1 border-rounded">
-                            <i class="fa-solid fa-clock"></i>
-                            <span>2 minutes</span>
-                        </div>
-                    </div>
+            <!-- Step 1 -->
+            <div class="bg-secondary border-primary border-rounded p-6 lg:p-8 text-center shadow-xl hover-primary transition-all transform lg:hover:-translate-y-2">
+                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <i class="fa-solid fa-user-plus text-xl"></i>
                 </div>
-
-                <!-- Step 2 -->
-                <div class="text-center relative group">
-                    <div class="bg-accent text-invert w-24 h-24 border-rounded flex items-center justify-center mx-auto mb-6 relative z-10 shadow-xl group-hover:scale-110 transition-all duration-300 transform hover:rotate-3">
-                        <div class="text-center">
-                            <i class="fa-solid fa-building text-2xl mb-1"></i>
-                            <div class="text-sm font-bold">STEP 2</div>
-                        </div>
-                    </div>
-                    <div class="bg-secondary border-primary border-rounded p-6 group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
-                        <h3 class="text-xl font-bold text-primary mb-3">Create Tenant</h3>
-                        <p class="text-secondary text-sm leading-relaxed mb-4">
-                            Set up your institution profile with logo, branding, and basic information. Your isolated database is created automatically.
-                        </p>
-                        <div class="flex items-center justify-center space-x-2 text-accent text-sm bg-accent-subtle px-3 py-1 border-rounded">
-                            <i class="fa-solid fa-clock"></i>
-                            <span>5 minutes</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="text-center relative group">
-                    <div class="bg-accent text-invert w-24 h-24 border-rounded flex items-center justify-center mx-auto mb-6 relative z-10 shadow-xl group-hover:scale-110 transition-all duration-300 transform hover:rotate-3">
-                        <div class="text-center">
-                            <i class="fa-solid fa-palette text-2xl mb-1"></i>
-                            <div class="text-sm font-bold">STEP 3</div>
-                        </div>
-                    </div>
-                    <div class="bg-secondary border-primary border-rounded p-6 group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
-                        <h3 class="text-xl font-bold text-primary mb-3">Setup & Customize</h3>
-                        <p class="text-secondary text-sm leading-relaxed mb-4">
-                            Add classes, subjects, and users. Customize your website design with our intuitive drag-and-drop page builder.
-                        </p>
-                        <div class="flex items-center justify-center space-x-2 text-accent text-sm bg-accent-subtle px-3 py-1 border-rounded">
-                            <i class="fa-solid fa-clock"></i>
-                            <span>15 minutes</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="text-center relative group">
-                    <div class="bg-accent text-invert w-24 h-24 border-rounded flex items-center justify-center mx-auto mb-6 relative z-10 shadow-xl group-hover:scale-110 transition-all duration-300 transform hover:rotate-3">
-                        <div class="text-center">
-                            <i class="fa-solid fa-rocket text-2xl mb-1"></i>
-                            <div class="text-sm font-bold">STEP 4</div>
-                        </div>
-                    </div>
-                    <div class="bg-secondary border-primary border-rounded p-6 group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
-                        <h3 class="text-xl font-bold text-primary mb-3">Launch & Grow</h3>
-                        <p class="text-secondary text-sm leading-relaxed mb-4">
-                            Start enrolling students, creating courses, and managing your educational platform. Scale seamlessly as you grow!
-                        </p>
-                        <div class="flex items-center justify-center space-x-2 text-accent text-sm bg-accent-subtle px-3 py-1 border-rounded">
-                            <i class="fa-solid fa-infinity"></i>
-                            <span>Unlimited</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Features Highlight -->
-        <div class="grid md:grid-cols-3 gap-8 mb-16">
-            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg hover-primary transition-all duration-300 transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <i class="fa-solid fa-shield-halved text-2xl"></i>
-                </div>
-                <h4 class="text-lg font-semibold text-primary mb-2">Secure & Isolated</h4>
-                <p class="text-tertiary text-sm">Each tenant gets its own database and complete data isolation for maximum security.</p>
-            </div>
-            
-            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg hover-primary transition-all duration-300 transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <i class="fa-solid fa-bolt text-2xl"></i>
-                </div>
-                <h4 class="text-lg font-semibold text-primary mb-2">Lightning Fast</h4>
-                <p class="text-tertiary text-sm">Optimized infrastructure ensures your platform loads quickly and performs smoothly.</p>
-            </div>
-            
-            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg hover-primary transition-all duration-300 transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <i class="fa-solid fa-headset text-2xl"></i>
-                </div>
-                <h4 class="text-lg font-semibold text-primary mb-2">24/7 Support</h4>
-                <p class="text-tertiary text-sm">Our expert support team is always ready to help you succeed with your platform.</p>
-            </div>
-        </div>
-
-        <!-- Demo Video -->
-        <div class="bg-secondary border-primary border-rounded p-8 text-center relative overflow-hidden shadow-xl">
-            <div class="relative z-10">
-                <h3 class="text-2xl font-bold text-primary mb-4">See It In Action</h3>
-                <p class="text-secondary mb-8 max-w-2xl mx-auto">
-                    Watch our comprehensive 5-minute demo to see exactly how easy it is to set up and customize your educational platform with Arzavo.
+                <span class="text-accent text-sm font-bold">STEP 1</span>
+                <h3 class="text-xl font-bold text-primary mt-2 mb-3">
+                    Sign Up & Choose Domain
+                </h3>
+                <p class="text-secondary text-sm leading-relaxed">
+                    Create your account and choose a subdomain or connect your own custom domain.
                 </p>
-                
-                <div class="relative inline-block">
-                    <div class="bg-accent border-rounded p-16 relative cursor-pointer hover:bg-accent-secondary transition-all duration-300 shadow-xl group transform hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-br from-accent to-accent-secondary opacity-90"></div>
-                        <div class="relative z-10 flex flex-col items-center">
-                            <div class="bg-invert bg-opacity-20 w-20 h-20 border-rounded flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300 shadow-lg">
-                                <i class="fa-solid fa-play text-invert text-3xl"></i>
-                            </div>
-                            <span class="text-invert font-semibold text-lg">Play Demo Video</span>
-                            <span class="text-invert-secondary text-sm mt-1">5:30 minutes</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Floating Elements -->
-                    <div class="absolute -top-3 -right-3 bg-accent-secondary text-invert px-3 py-1 border-rounded text-xs font-semibold shadow-lg">
-                        NEW
-                    </div>
-                </div>
-                
-                <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('register.form') }}" class="bg-accent text-invert px-6 py-3 border-rounded font-semibold hover-invert transition-all duration-300 shadow-lg transform hover:scale-105">
-                        <i class="fa-solid fa-rocket mr-2"></i>
-                        Start Building Now
-                    </a>
-                    <a href="{{ route('documentation') }}" class="bg-primary text-primary border-primary px-6 py-3 border-rounded font-semibold hover-primary transition-all duration-300 shadow-lg">
-                        <i class="fa-solid fa-book mr-2"></i>
-                        Read Documentation
-                    </a>
-                </div>
             </div>
-            
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-5">
-                <div class="absolute top-4 left-4 w-8 h-8 bg-accent border-rounded"></div>
-                <div class="absolute top-12 right-8 w-6 h-6 bg-accent-secondary border-rounded"></div>
-                <div class="absolute bottom-8 left-12 w-4 h-4 bg-accent border-rounded"></div>
-                <div class="absolute bottom-4 right-4 w-10 h-10 bg-accent-secondary border-rounded"></div>
+
+            <!-- Step 2 -->
+            <div class="bg-secondary border-primary border-rounded p-6 lg:p-8 text-center shadow-xl hover-primary transition-all transform lg:hover:-translate-y-2">
+                <div class="bg-accent-secondary text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <i class="fa-solid fa-building text-xl"></i>
+                </div>
+                <span class="text-accent-secondary text-sm font-bold">STEP 2</span>
+                <h3 class="text-xl font-bold text-primary mt-2 mb-3">
+                    Institute Setup
+                </h3>
+                <p class="text-secondary text-sm leading-relaxed">
+                    Add institute details, logo, roles, and settings. Arzavo creates an isolated system instantly.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="bg-secondary border-primary border-rounded p-6 lg:p-8 text-center shadow-xl hover-primary transition-all transform lg:hover:-translate-y-2">
+                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <i class="fa-solid fa-palette text-xl"></i>
+                </div>
+                <span class="text-accent text-sm font-bold">STEP 3</span>
+                <h3 class="text-xl font-bold text-primary mt-2 mb-3">
+                    Build Your Website
+                </h3>
+                <p class="text-secondary text-sm leading-relaxed">
+                    Design pages using the drag-and-drop builder. Customize colors, fonts, and sections.
+                </p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="bg-secondary border-primary border-rounded p-6 lg:p-8 text-center shadow-xl hover-primary transition-all transform lg:hover:-translate-y-2">
+                <div class="bg-accent-secondary text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <i class="fa-solid fa-rocket text-xl"></i>
+                </div>
+                <span class="text-accent-secondary text-sm font-bold">STEP 4</span>
+                <h3 class="text-xl font-bold text-primary mt-2 mb-3">
+                    Launch & Scale
+                </h3>
+                <p class="text-secondary text-sm leading-relaxed">
+                    Start enrolling students, managing courses, fees, staff, and grow without limits.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- IMAGE SLOT -->
+        <!-- IMAGE SLOT: How Arzavo Creates Separate Websites (AI Illustration / Dashboard Flow) -->
+
+        <!-- Key Guarantees -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-10 mb-20">
+            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg">
+                <i class="fa-solid fa-database text-accent text-3xl mb-4"></i>
+                <h4 class="text-lg font-bold text-primary mb-2">Fully Isolated Data</h4>
+                <p class="text-tertiary text-sm">
+                    Every institute runs on its own database with complete data privacy.
+                </p>
+            </div>
+            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg">
+                <i class="fa-solid fa-globe text-accent text-3xl mb-4"></i>
+                <h4 class="text-lg font-bold text-primary mb-2">Separate Public Website</h4>
+                <p class="text-tertiary text-sm">
+                    Each user gets a standalone website — not a shared page or sub-panel.
+                </p>
+            </div>
+            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg">
+                <i class="fa-solid fa-shield-halved text-accent text-3xl mb-4"></i>
+                <h4 class="text-lg font-bold text-primary mb-2">Secure by Design</h4>
+                <p class="text-tertiary text-sm">
+                    Role-based access, session isolation, and secure authentication.
+                </p>
             </div>
         </div>
+
+        <!-- Demo / CTA -->
+        <div class="bg-secondary border-primary border-rounded p-8 sm:p-12 text-center shadow-xl">
+            <h3 class="text-2xl sm:text-3xl font-bold text-primary mb-4">
+                See How Arzavo Builds a Website for You
+            </h3>
+            <p class="text-secondary max-w-2xl mx-auto mb-8">
+                Watch how a new institute gets its own website and system in minutes.
+            </p>
+
+            <!-- VIDEO / IMAGE SLOT -->
+            <!-- IMAGE / VIDEO SLOT: Arzavo Demo -->
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                <a href="{{ route('register.form') }}"
+                   class="bg-accent text-invert px-8 py-4 border-rounded font-bold hover-invert transition-all shadow-lg">
+                    <i class="fa-solid fa-rocket mr-2"></i>
+                    Start Free Trial
+                </a>
+                <a href="{{ route('documentation') }}"
+                   class="bg-primary text-primary border-primary px-8 py-4 border-rounded font-bold hover-primary transition-all shadow-lg">
+                    <i class="fa-solid fa-book mr-2"></i>
+                    Read Docs
+                </a>
+            </div>
+        </div>
+
     </div>
 </section>

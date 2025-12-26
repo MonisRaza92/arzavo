@@ -11,7 +11,7 @@
     <div class="container relative z-10">
         <!-- Section Header -->
         <div class="text-center mb-20">
-            <h2 class="text-5xl lg:text-6xl font-bold text-primary mb-8 outfit-font">
+            <h2 class="text-5xl lg:text-6xl font-bold text-primary mb-8 ">
                 Simple, Transparent 
                 <span class="text-accent relative">
                     Pricing
@@ -41,12 +41,12 @@
         <!-- Pricing Cards -->
         <div class="grid md:grid-cols-3 gap-10 max-w-7xl mx-auto">
             <!-- Starter Plan -->
-            <div class="bg-primary border-primary border-rounded p-10 relative shadow-xl hover-primary transition-all duration-500 transform hover:scale-105">
+            <div class="bg-primary border-primary border-rounded p-10 relative lg:shadow-xl hover-primary transition-all duration-500 transform hover:scale-105">
                 <div class="text-center mb-10">
-                    <h3 class="text-3xl font-bold text-primary mb-3 outfit-font">Starter</h3>
+                    <h3 class="text-3xl font-bold text-primary mb-3 ">Starter</h3>
                     <p class="text-secondary mb-8 text-lg">Perfect for small schools and coaching centers</p>
                     <div class="mb-8">
-                        <span class="text-6xl font-bold text-accent outfit-font" id="starter-price">₹999</span>
+                        <span class="text-6xl font-bold text-accent " id="starter-price">₹999</span>
                         <span class="text-secondary text-xl">/month</span>
                     </div>
                 </div>
@@ -84,17 +84,17 @@
             </div>
 
             <!-- Professional Plan (Popular) -->
-            <div class="bg-primary border-accent border-rounded p-10 relative transform scale-110 shadow-2xl">
+            <div class="bg-primary border-accent border-rounded p-10 mt-4 sm:mt-0 relative transform lg:scale-110 lg:shadow-2xl">
                 <!-- Popular Badge -->
-                <div class="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span class="bg-accent text-invert px-8 py-3 border-rounded font-bold text-lg shadow-xl">Most Popular</span>
                 </div>
 
                 <div class="text-center mb-10 mt-6">
-                    <h3 class="text-3xl font-bold text-primary mb-3 outfit-font">Professional</h3>
+                    <h3 class="text-3xl font-bold text-primary mb-3 ">Professional</h3>
                     <p class="text-secondary mb-8 text-lg">Ideal for growing institutions</p>
                     <div class="mb-8">
-                        <span class="text-6xl font-bold text-accent outfit-font" id="professional-price">₹2,499</span>
+                        <span class="text-6xl font-bold text-accent" id="professional-price">₹2,499</span>
                         <span class="text-secondary text-xl">/month</span>
                     </div>
                 </div>
@@ -140,12 +140,12 @@
             </div>
 
             <!-- Enterprise Plan -->
-            <div class="bg-primary border-primary border-rounded p-10 relative shadow-xl hover-primary transition-all duration-500 transform hover:scale-105">
+            <div class="bg-primary border-primary border-rounded p-10 relative lg:shadow-xl hover-primary transition-all duration-500 transform hover:scale-105">
                 <div class="text-center mb-10">
-                    <h3 class="text-3xl font-bold text-primary mb-3 outfit-font">Enterprise</h3>
+                    <h3 class="text-3xl font-bold text-primary mb-3 ">Enterprise</h3>
                     <p class="text-secondary mb-8 text-lg">For large educational institutions</p>
                     <div class="mb-8">
-                        <span class="text-6xl font-bold text-accent outfit-font" id="enterprise-price">₹4,999</span>
+                        <span class="text-6xl font-bold text-accent " id="enterprise-price">₹4,999</span>
                         <span class="text-secondary text-xl">/month</span>
                     </div>
                 </div>
@@ -192,9 +192,9 @@
         </div>
 
         <!-- FAQ Section -->
-        <div class="mt-20">
+        <div class="mt-32">
             <h3 class="text-3xl font-bold text-primary text-center mb-12">Frequently Asked Questions</h3>
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8 mx-auto">
                 <div class="bg-primary border-primary border-rounded p-6">
                     <h4 class="text-xl font-semibold text-primary mb-3">Is there a free trial?</h4>
                     <p class="text-secondary">Yes! We offer a 14-day free trial for all plans. No credit card required to get started.</p>

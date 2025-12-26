@@ -95,6 +95,9 @@ button {
 .bg-accent-secondary {
     background-color: var(--bg-accent-secondary);
 }
+.bg-hover-accent-secondary:hover {
+    background-color: var(--bg-accent-secondary);
+}
 .bg-invert {
     background-color: var(--bg-invert);
 }
@@ -130,6 +133,9 @@ button {
 }
 .border-primary {
     border: var(--border-width) solid var(--border-primary);
+}
+.border-accent {
+    border: var(--border-width) solid var(--bg-accent);
 }
 .border-invert {
     border: 2px solid var(--bg-invert);

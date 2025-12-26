@@ -1,198 +1,166 @@
 <!-- Features Section -->
-<section id="features" class="bg-primary py-32 relative overflow-hidden">
-    <!-- Enhanced Background Pattern -->
-    <div class="absolute inset-0 opacity-3">
-        <div class="absolute top-10 left-10 w-28 h-28 bg-accent border-rounded transform rotate-45 animate-pulse"></div>
-        <div class="absolute top-32 right-20 w-20 h-20 bg-accent-secondary border-rounded transform -rotate-12 animate-bounce"></div>
-        <div class="absolute bottom-20 left-1/3 w-16 h-16 bg-accent border-rounded transform rotate-12 animate-pulse"></div>
-        <div class="absolute bottom-40 right-1/4 w-32 h-32 bg-accent-secondary border-rounded transform -rotate-45 animate-bounce"></div>
-        <div class="absolute top-1/2 left-1/2 w-48 h-48 bg-accent opacity-5 border-rounded transform -translate-x-1/2 -translate-y-1/2 rotate-12 animate-spin" style="animation-duration: 30s;"></div>
+<section id="features" class="bg-primary py-20 sm:py-28 lg:py-36 relative overflow-hidden">
+
+    <!-- Soft Background -->
+    <div class="absolute inset-0 hidden sm:block opacity-5">
+        <div class="absolute -top-24 -left-24 w-80 h-80 bg-accent border-rounded rotate-12"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-secondary border-rounded -rotate-12"></div>
     </div>
-    
+
     <div class="container relative z-10">
+
         <!-- Section Header -->
-        <div class="text-center mb-20">
-            <div class="inline-flex items-center bg-accent-subtle text-accent px-6 py-3 border-rounded text-sm font-bold mb-6 shadow-lg">
-                <i class="fa-solid fa-sparkles mr-3 text-accent-secondary"></i>
-                Platform Features
+        <div class="text-center max-w-4xl mx-auto mb-16 lg:mb-24 px-2">
+            <div class="inline-flex items-center bg-accent-subtle text-accent px-5 py-2 border-rounded text-sm font-bold mb-6">
+                <i class="fa-solid fa-circle-question mr-3 text-accent-secondary"></i>
+                Why Arzavo
             </div>
-            <h2 class="text-5xl lg:text-6xl font-bold text-primary mb-8 outfit-font">
-                Powerful Features for 
-                <span class="text-accent relative">
-                    Modern Education
-                    <div class="absolute -bottom-2 left-0 w-full h-1 bg-accent opacity-30 border-rounded"></div>
+
+            <h2 class="text-3xl sm:text-4xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
+                Every Institute Gets Its
+                <span class="text-accent relative inline-block">
+                    Own Website & System
                 </span>
             </h2>
-            <p class="text-xl lg:text-2xl text-secondary max-w-4xl mx-auto leading-relaxed">
-                Everything you need to create, manage, and scale your educational platform. From multi-tenant architecture to advanced customization.
+
+            <p class="text-base sm:text-lg lg:text-xl text-secondary leading-relaxed">
+                Arzavo is not just a dashboard.  
+                It creates a <strong>separate, fully branded platform</strong> for every school, college, or coaching institute —
+                with its own website, admin panel, data, and identity.
             </p>
         </div>
 
-        <!-- Features Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Multi-Tenant Architecture -->
-            <div class="bg-secondary border-primary border-rounded p-10 hover-primary transition-all duration-500 group shadow-xl transform hover:scale-105">
-                <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <i class="fa-solid fa-building text-3xl"></i>
+        <!-- Feature Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
+
+            <!-- Feature 1 -->
+            <div class="group bg-secondary border-primary border-rounded p-8 lg:p-10 hover-primary shadow-xl transition-all duration-300 transform lg:hover:-translate-y-2">
+                <div class="w-14 h-14 bg-accent text-invert border-rounded flex items-center justify-center mb-6 shadow-lg">
+                    <i class="fa-solid fa-globe text-2xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-6 outfit-font">Multi-Tenant Architecture</h3>
-                <p class="text-secondary mb-6 leading-relaxed">
-                    Complete isolation between tenants with separate databases, custom domains, and independent configurations.
+                <h3 class="text-xl font-bold text-primary mb-3">
+                    Separate Website for Every Institute
+                </h3>
+                <p class="text-secondary mb-5 leading-relaxed">
+                    Each institute gets its own public website with custom domain or subdomain, fully isolated from others.
                 </p>
-                <ul class="space-y-3 text-tertiary">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Separate databases per tenant</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Custom domain support</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Session isolation</span>
-                    </li>
+                <ul class="space-y-2 text-tertiary text-sm">
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Own website & admin panel</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Custom domain support</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Complete data isolation</li>
                 </ul>
             </div>
 
-            <!-- Advanced Page Builder -->
-            <div class="bg-secondary border-primary border-rounded p-10 hover-primary transition-all duration-500 group shadow-xl transform hover:scale-105">
-                <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <i class="fa-solid fa-palette text-3xl"></i>
+            <!-- Feature 2 -->
+            <div class="group bg-secondary border-primary border-rounded p-8 lg:p-10 hover-primary shadow-xl transition-all duration-300 transform lg:hover:-translate-y-2">
+                <div class="w-14 h-14 bg-accent-secondary text-invert border-rounded flex items-center justify-center mb-6 shadow-lg">
+                    <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-6 outfit-font">Advanced Page Builder</h3>
-                <p class="text-secondary mb-6 leading-relaxed">
-                    Drag-and-drop page builder with sections, blocks, and complete customization options for your website.
+                <h3 class="text-xl font-bold text-primary mb-3">
+                    Website Builder for Institutes
+                </h3>
+                <p class="text-secondary mb-5 leading-relaxed">
+                    Institutes can design their own website pages using sections, blocks, colors, and fonts — without coding.
                 </p>
-                <ul class="space-y-3 text-tertiary">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Hierarchical sections & blocks</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Custom color schemes</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Font & theme customization</span>
-                    </li>
+                <ul class="space-y-2 text-tertiary text-sm">
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Drag & drop page builder</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Theme & typography control</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Mobile responsive by default</li>
                 </ul>
             </div>
 
-            <!-- Course Management -->
-            <div class="bg-secondary border-primary border-rounded p-10 hover-primary transition-all duration-500 group shadow-xl transform hover:scale-105">
-                <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <i class="fa-solid fa-graduation-cap text-3xl"></i>
+            <!-- IMAGE SLOT -->
+            <!-- IMAGE SLOT: Institute Website Builder Illustration (AI Image) -->
+
+            <!-- Feature 3 -->
+            <div class="group bg-secondary border-primary border-rounded p-8 lg:p-10 hover-primary shadow-xl transition-all duration-300 transform lg:hover:-translate-y-2">
+                <div class="w-14 h-14 bg-accent text-invert border-rounded flex items-center justify-center mb-6 shadow-lg">
+                    <i class="fa-solid fa-graduation-cap text-2xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-6 outfit-font">Course Management</h3>
-                <p class="text-secondary mb-6 leading-relaxed">
-                    Create and manage courses with pricing, content linking, and enrollment tracking for comprehensive education delivery.
+                <h3 class="text-xl font-bold text-primary mb-3">
+                    Academics & Course Management
+                </h3>
+                <p class="text-secondary mb-5 leading-relaxed">
+                    Manage classes, courses, batches, subjects, content, exams, attendance, and student progress in one place.
                 </p>
-                <ul class="space-y-3 text-tertiary">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Course pricing & discounts</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Content management</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Enrollment tracking</span>
-                    </li>
+                <ul class="space-y-2 text-tertiary text-sm">
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Courses, batches & subjects</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Online content & exams</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Attendance & performance</li>
                 </ul>
             </div>
 
-            <!-- Student Management -->
-            <div class="bg-secondary border-primary border-rounded p-10 hover-primary transition-all duration-500 group shadow-xl transform hover:scale-105">
-                <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <i class="fa-solid fa-users text-3xl"></i>
+            <!-- Feature 4 -->
+            <div class="group bg-secondary border-primary border-rounded p-8 lg:p-10 hover-primary shadow-xl transition-all duration-300 transform lg:hover:-translate-y-2">
+                <div class="w-14 h-14 bg-accent-secondary text-invert border-rounded flex items-center justify-center mb-6 shadow-lg">
+                    <i class="fa-solid fa-users-gear text-2xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-6 outfit-font">Student Management</h3>
-                <p class="text-secondary mb-6 leading-relaxed">
-                    Comprehensive student profiles, fee management, class assignments, and progress tracking in one place.
+                <h3 class="text-xl font-bold text-primary mb-3">
+                    Students, Staff & Roles
+                </h3>
+                <p class="text-secondary mb-5 leading-relaxed">
+                    Role-based access for admins, teachers, staff, and students with secure permissions.
                 </p>
-                <ul class="space-y-3 text-tertiary">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Student profiles & enrollment</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Fee plans & payments</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Class & subject assignments</span>
-                    </li>
+                <ul class="space-y-2 text-tertiary text-sm">
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Student & staff profiles</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Salary & staff management</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Role-based permissions</li>
                 </ul>
             </div>
 
-            <!-- Role-Based Access -->
-            <div class="bg-secondary border-primary border-rounded p-10 hover-primary transition-all duration-500 group shadow-xl transform hover:scale-105">
-                <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <i class="fa-solid fa-shield-halved text-3xl"></i>
+            <!-- Feature 5 -->
+            <div class="group bg-secondary border-primary border-rounded p-8 lg:p-10 hover-primary shadow-xl transition-all duration-300 transform lg:hover:-translate-y-2">
+                <div class="w-14 h-14 bg-accent text-invert border-rounded flex items-center justify-center mb-6 shadow-lg">
+                    <i class="fa-solid fa-credit-card text-2xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-6 outfit-font">Role-Based Access</h3>
-                <p class="text-secondary mb-6 leading-relaxed">
-                    Multiple user roles with granular permissions for admins, teachers, students, and staff members.
+                <h3 class="text-xl font-bold text-primary mb-3">
+                    Fees, Payments & Accounting
+                </h3>
+                <p class="text-secondary mb-5 leading-relaxed">
+                    Handle fees, installments, online payments, expenses, and income with full transparency.
                 </p>
-                <ul class="space-y-3 text-tertiary">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Admin, teacher, student roles</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Granular permissions</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Secure authentication</span>
-                    </li>
+                <ul class="space-y-2 text-tertiary text-sm">
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Fee plans & installments</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Invoices & receipts</li>
+                    <li class="flex items-start"><i class="fa-solid fa-check text-accent mr-2 mt-1"></i>Income & expense tracking</li>
                 </ul>
             </div>
 
-            <!-- Subscription Management -->
-            <div class="bg-secondary border-primary border-rounded p-10 hover-primary transition-all duration-500 group shadow-xl transform hover:scale-105">
-                <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <i class="fa-solid fa-credit-card text-3xl"></i>
+            <!-- Feature 6 -->
+            <div class="group bg-secondary border-primary border-rounded p-8 lg:p-10 hover-primary shadow-xl transition-all duration-300 transform lg:hover:-translate-y-2">
+                <div class="w-14 h-14 bg-accent-secondary text-invert border-rounded flex items-center justify-center mb-6 shadow-lg">
+                    <i class="fa-solid fa-rocket text-2xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-6 outfit-font">Subscription Management</h3>
-                <p class="text-secondary mb-6 leading-relaxed">
-                    Flexible subscription plans with feature-based access control, trial periods, and automated billing.
+                <h3 class="text-xl font-bold text-primary mb-3">
+                    Powerful Platform (Coming Soon)
+                </h3>
+                <p class="text-secondary mb-5 leading-relaxed">
+                    Advanced integrations and automation to scale institutes without manual work.
                 </p>
-                <ul class="space-y-3 text-tertiary">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Feature-based plans</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Trial period support</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-3 text-lg"></i>
-                        <span class="font-medium">Automated billing</span>
-                    </li>
+                <ul class="space-y-2 text-tertiary text-sm">
+                    <li class="flex items-start"><i class="fa-solid fa-clock text-accent mr-2 mt-1"></i>WhatsApp & SMS</li>
+                    <li class="flex items-start"><i class="fa-solid fa-clock text-accent mr-2 mt-1"></i>API & integrations</li>
+                    <li class="flex items-start"><i class="fa-solid fa-clock text-accent mr-2 mt-1"></i>Buisness Number</li>
                 </ul>
             </div>
+
         </div>
 
         <!-- Bottom CTA -->
-        <div class="text-center mt-20">
-            <div class="bg-secondary border-primary border-rounded p-12 shadow-xl">
-                <h3 class="text-3xl font-bold text-primary mb-4 outfit-font">Ready to Experience These Features?</h3>
-                <p class="text-xl text-secondary mb-8 max-w-2xl mx-auto">
-                    Start your free trial today and see how these powerful features can transform your educational platform.
+        <div class="text-center mt-18">
+            <div class="bg-secondary border-primary border-rounded p-8 sm:p-12 shadow-xl max-w-3xl mx-auto">
+                <h3 class="text-2xl sm:text-3xl font-bold text-primary mb-4">
+                    One Platform. Unlimited Institutes.
+                </h3>
+                <p class="text-secondary mb-8">
+                    Arzavo gives every institute its own digital identity — website, system, and control panel.
                 </p>
-                <a href="{{ route('register.form') }}" class="bg-accent text-invert px-10 py-5 border-rounded font-bold hover-invert transition-all duration-300 text-xl inline-block shadow-xl transform hover:scale-105">
-                    <i class="fa-solid fa-arrow-right mr-3"></i>
-                    Explore All Features
+                <a href="{{ route('register.form') }}"
+                    class="bg-accent text-invert px-8 py-4 border-rounded font-bold hover-invert transition-all text-lg inline-block shadow-lg transform lg:hover:scale-105">
+                    Start Free Trial
                 </a>
             </div>
         </div>
+
     </div>
 </section>
