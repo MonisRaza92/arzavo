@@ -14,24 +14,20 @@ class ColorScheme extends Model
         'colors' => 'array',
     ];
 
-    // Force deep object decoding for all access
-    public function getColorsAttribute($value)
-    {
-        return json_decode($value);  // full object of all scheme groups
-    }
-
     // Enable direct access like $scheme->scheme_colors, $scheme->primary_btn
     public function __get($key)
     {
-        // Decode raw original JSON (without recursion)
-        $json = json_decode($this->attributes['colors'] ?? '{}');
+        $colors = $this->getAttribute('colors'); // get raw attribute value
 
-        if (is_object($json) && property_exists($json, $key)) {
-            return $json->$key; // return the object for that group
+        if (is_array($colors) && isset($colors[0]) && is_array($colors[0])) {
+            if (array_key_exists($key, $colors[0])) {
+                return (object) $colors[0][$key]; // 👈 IMPORTANT
+            }
         }
 
         return parent::__get($key);
     }
+
 
     public function sections()
     {

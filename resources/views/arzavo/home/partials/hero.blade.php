@@ -23,7 +23,7 @@
                     <!-- Main Heading with enhanced styling -->
                     <h1 class="text-3xl lg:text-5xl font-bold text-primary">
                         The Ultimate Educational Management Platform
-                        <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="arzavo" class="mt-4 border-rounded border-primary p-3">
+                        <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="arzavo" class="mt-6 w-[90%]">
                     </h1>
 
                     <!-- Description -->

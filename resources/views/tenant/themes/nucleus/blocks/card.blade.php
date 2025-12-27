@@ -31,6 +31,6 @@ $cardClasses = match($cardStyle) {
     "
 >
     <div class="space-y-4">
-        @include('tenant.website.includes.blocks', ['blocks' => $block->blocks])
+        @include('tenant.themes.includes.nested-blocks')
     </div>
 </div>

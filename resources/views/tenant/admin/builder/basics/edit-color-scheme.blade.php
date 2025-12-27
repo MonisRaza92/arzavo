@@ -23,7 +23,7 @@
                     </div>
                     <input type="text"
                         id="edit_{{ $id }}Code"
-                        name="colors[{{ $schemeKey }}][{{ $item['key'] }}]"
+                        name="colors[0][{{ $schemeKey }}][{{ $item['key'] }}]"
                         class="h-8 w-24 ml-2 p-2 border-rounded border-primary auto-save">
                 </div>
             </div>
@@ -53,7 +53,12 @@
         fetch(`/admin/scheme/get/${schemeId}`)
             .then(res => res.json())
             .then(data => {
-                Object.entries(data.colors).forEach(([group, items]) => {
+
+                const colors = Array.isArray(data.colors) ?
+                    data.colors[0] :
+                    data.colors;
+
+                Object.entries(colors).forEach(([group, items]) => {
                     Object.entries(items).forEach(([key, value]) => {
 
                         const inputId = `edit_${group}_${key}Code`;
@@ -70,6 +75,7 @@
                 setTimeout(initEditPickers, 50);
             });
     }
+
 
     // AUTO-SAVE FORM (AJAX)
     function autoSubmitColorForm() {

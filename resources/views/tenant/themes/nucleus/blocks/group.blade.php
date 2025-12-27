@@ -111,5 +111,5 @@ $linkBtnColors = $block->colorScheme->link_btn;
     @if ( $overlay === "1" && ($bgImage === '1' && $image) )
     <div class="absolute top-0 bottom-0 left-0 right-0" style="background-color: {{ $overlayColor }}; opacity: {{ $overlayOpacity }}%;"></div>
     @endif
-    @include('tenant.website.includes.nested-blocks')
+    @include('tenant.themes.includes.nested-blocks')
 </div>

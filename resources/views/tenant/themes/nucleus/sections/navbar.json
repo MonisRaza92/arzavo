@@ -1,8 +1,8 @@
 {
-    "type": "header",
+    "type": "navbar",
     "name": "Header: Navbar",
     "icon": "fa-bars",
-    "order": 2,
+    "order": 1,
     "Page": ["global"],
     "category": "Header",
     "max_blocks": 0,

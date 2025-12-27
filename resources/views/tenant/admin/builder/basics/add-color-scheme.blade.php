@@ -21,7 +21,7 @@
                     </div>
                     <input type="text"
                         id="{{ $id }}Code"
-                        name="colors[{{ $schemeKey }}][{{ $item['key'] }}]"
+                        name="colors[0][{{ $schemeKey }}][{{ $item['key'] }}]"
                         class="h-8 w-24 ml-2 p-2 border-rounded border-primary auto-save">
                 </div>
             </div>

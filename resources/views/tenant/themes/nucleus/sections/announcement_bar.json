@@ -2,7 +2,7 @@
     "type": "announcement_bar",
     "name": "Announcement Bar",
     "icon": "fa-bullhorn",
-    "order": 1,
+    "order": 0,
     "category": "Header",
     "page": "home",
     "max_blocks": 1,

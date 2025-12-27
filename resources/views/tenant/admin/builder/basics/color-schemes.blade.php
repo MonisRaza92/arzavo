@@ -40,7 +40,7 @@
                             <i class="fa-solid fa-font text-[10px]"></i>
                             <span class="text-xs font-semibold">Heading</span>
                         </div>
-                        <span class="text-[10px]" style="color: {{ $paragraph }};">Paragraph Text</span>
+                        <span class="text-[10px]" style="color: {{ $paragraph }};">Paragraph</span>
                     </div>
 
                     <!-- Buttons Preview -->
