@@ -23,7 +23,7 @@
                     <!-- Main Heading with enhanced styling -->
                     <h1 class="text-3xl lg:text-5xl font-bold text-primary">
                         The Ultimate Educational Management Platform
-                        <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="arzavo" class="mt-6 w-[90%]">
+                        <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="arzavo" class="mt-6">
                     </h1>
 
                     <!-- Description -->
@@ -33,33 +33,21 @@
                 </div>
 
                 <!-- Enhanced Key Benefits with icons and animations -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex items-center space-x-4 bg-primary p-3 border-rounded hover-primary transition-all duration-300 group border-primary relative overflow-hidden">
-                        <div class="absolute inset-0 bg-linear-to-r from-red-200 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div class="bg-accent text-invert w-12 h-12 border-rounded flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg relative z-10">
-                            <i class="fa-solid fa-globe text-lg"></i>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="text-primary text-xl flex gap-2 items-center shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-10">
+                        <i class="fa-solid text-accent fa-globe text-lg"></i>
                         <span class="text-secondary font-semibold relative z-10">Custom Domain Support</span>
                     </div>
-                    <div class="flex items-center space-x-4 bg-primary p-3 border-rounded hover-primary transition-all duration-300 group border-primary relative overflow-hidden">
-                        <div class="absolute inset-0 bg-linear-to-r from-yellow-200 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div class="bg-accent-secondary text-invert w-12 h-12 border-rounded flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg relative z-10">
-                            <i class="fa-solid fa-shield-halved text-lg"></i>
-                        </div>
+                    <div class="text-primary text-xl flex gap-2 items-center shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-10">
+                        <i class="fa-solid text-accent fa-shield-halved text-lg"></i>
                         <span class="text-secondary font-semibold relative z-10">Complete Data Isolation</span>
                     </div>
-                    <div class="flex items-center space-x-4 bg-primary p-3 border-rounded hover-primary transition-all duration-300 group border-primary relative overflow-hidden">
-                        <div class="absolute inset-0 bg-linear-to-r from-red-200 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div class="bg-accent text-invert w-12 h-12 border-rounded flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg relative z-10">
-                            <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
-                        </div>
+                    <div class="text-primary text-xl flex gap-2 items-center shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-10">
+                        <i class="fa-solid text-accent fa-wand-magic-sparkles text-lg"></i>
                         <span class="text-secondary font-semibold relative z-10">Advanced Page Builder</span>
                     </div>
-                    <div class="flex items-center space-x-4 bg-primary p-3 border-rounded hover-primary transition-all duration-300 group border-primary relative overflow-hidden">
-                        <div class="absolute inset-0 bg-linear-to-r from-yellow-200 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div class="bg-accent-secondary text-invert w-12 h-12 border-rounded flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg relative z-10">
-                            <i class="fa-solid fa-users-gear text-lg"></i>
-                        </div>
+                    <div class="text-primary text-xl flex gap-2 items-center shrink-0 group-hover:scale-110 transition-transform duration-300 relative z-10">
+                        <i class="fa-solid text-accent fa-users-gear text-lg"></i>
                         <span class="text-secondary font-semibold relative z-10">Multi-Role Management</span>
                     </div>
                 </div>
