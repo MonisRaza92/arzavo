@@ -1,0 +1,20 @@
+{
+    "type": "menu",
+    "name": "Menu: Links",
+    "icon": "fa-arrow-up-right-from-square",
+    "order": 7,
+    "category": "Basic",
+    "max_blocks": 10,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "gap",
+            "lable": "Gap",
+            "type": "range",
+            "min": 0,
+            "max": 40,
+            "default": 16
+        }
+    ]
+}

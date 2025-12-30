@@ -14,7 +14,7 @@ $barHideBtn = $announcebar['bar_hide_btn'] ?? 'enable';
         background: var(--arzavo-background);"
     class="preview-section w-full relative overflow-hidden flex items-center justify-center {{ $border === 'enable' ? 'arzavo-border-bottom' : '' }}">
 
-    <div class="container mx-auto py-{{ $padding }}">
+    <div class="container mx-auto" style="padding-top: {{ $padding }}px; padding-bottom: {{ $padding }}px;">
         <div class="announcement-container text-center w-full flex items-center justify-center relative">
             @include('tenant.themes.includes.blocks')
             @if($barHideBtn === 'enable')

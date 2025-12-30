@@ -3,10 +3,10 @@
 @section('content')
 <div class="bg-primary border-rounded border-primary">
     <div class="flex justify-between items-center p-4">
-        <h3 class="text-primary text-lg font-bold"><i class="fa-solid fa-images"></i> Images Library</h3>
+        <h3 class="text-primary text-lg font-bold"><i class="fa-solid fa-images mr-1"></i> Images Library</h3>
         <form id="image-upload-form" action="{{ route('admin.images.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <label for="imageInput" class="bg-invert text-md text-invert py-2 px-3 border-rounded">Upload File <i class="fas fa-upload pl-2 border-left"></i></label>
+            <label for="imageInput" class="bg-invert text-base text-invert py-2 px-3 border-rounded">Upload File <i class="fas fa-upload pl-2 border-left"></i></label>
             <input type="file" name="image" accept="image/*" class="hidden" id="imageInput" onchange="submitImagesForm()">
         </form>
     </div>

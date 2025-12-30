@@ -1,109 +1,169 @@
-<!-- Notifications Container -->
-<div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 max-w-sm w-full">
+<!-- ================= TOAST CONTAINER ================= -->
+<div id="toast-container"
+    class="fixed bottom-4 right-4 z-50 flex flex-col gap-2
+            w-[calc(100%-2rem)] sm:w-96">
 
     @php
-        $toasts = [];
-        
-        if ($errors->any()) {
-            foreach ($errors->all() as $error) {
-                $toasts[] = ['message' => $error, 'type' => 'error'];
-            }
-        }
-        
-        if (session('success')) {
-            $toasts[] = ['message' => session('success'), 'type' => 'success'];
-        }
-        if (session('error')) {
-            $toasts[] = ['message' => session('error'), 'type' => 'error'];
-        }
-        if (session('warning')) {
-            $toasts[] = ['message' => session('warning'), 'type' => 'warning'];
-        }
-        if (session('info')) {
-            $toasts[] = ['message' => session('info'), 'type' => 'info'];
-        }
+    $toasts = [];
+
+    if ($errors->any()) {
+    foreach ($errors->all() as $error) {
+    $toasts[] = ['message' => $error, 'type' => 'error'];
+    }
+    }
+
+    foreach (['success','error','warning','info'] as $type) {
+    if (session($type)) {
+    $toasts[] = ['message' => session($type), 'type' => $type];
+    }
+    }
     @endphp
 
-    @forelse ($toasts as $toast)
-        <div class="toast flex items-center bg-{{ $toast['type'] === 'success' ? 'green' : ($toast['type'] === 'error' ? 'red' : ($toast['type'] === 'warning' ? 'yellow' : 'blue')) }}-100 text-{{ $toast['type'] === 'success' ? 'green' : ($toast['type'] === 'error' ? 'red' : ($toast['type'] === 'warning' ? 'yellow' : 'blue')) }}-700 border-l-4 border-{{ $toast['type'] === 'success' ? 'green' : ($toast['type'] === 'error' ? 'red' : ($toast['type'] === 'warning' ? 'yellow' : 'blue')) }}-500 px-4 py-3 shadow-lg mb-2 animate-slideIn">
-            <div class="flex-1 leading-tight text-sm font-medium">
-                {{ $toast['message'] }}
-            </div>
-            <button class="ml-4 text-base focus:outline-none hover:opacity-70 transition-opacity" onclick="this.parentElement.remove()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+    @foreach ($toasts as $toast)
+    <div class="arz-toast arz-toast-{{ $toast['type'] }}">
+        <div class="arz-toast-icon">
+            @if($toast['type'] === 'success') <i class="fa-solid fa-check"></i>
+            @elseif($toast['type'] === 'error') 
+            @elseif($toast['type'] === 'warning') <i class="fa-solid fa-exclamation-triangle"></i>
+            @else <i class="fa-solid fa-info-circle"></i>
+            @endif
         </div>
-    @empty
-    @endforelse
+
+        <div class="arz-toast-body">
+            {{ $toast['message'] }}
+        </div>
+
+        <button class="arz-toast-close"
+            onclick="removeToast(this.parentElement)">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @endforeach
 
 </div>
+<style>
+    /* ================= ARZAVO TOAST ================= */
 
-<!-- Toast Animation Script -->
+    .arz-toast {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 14px;
+        border-radius: 4px;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-primary);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+        animation: arzSlideIn 0.35s ease forwards;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Icon */
+    .arz-toast-icon {
+        font-size: 12px;
+        line-height: 1;
+        margin-top: 2px;
+    }
+
+    /* Message */
+    .arz-toast-body {
+        flex: 1;
+        font-size: 14px;
+        color: var(--text-primary);
+        line-height: 1.45;
+    }
+
+    /* Close button */
+    .arz-toast-close {
+        font-size: 14px;
+        color: var(--text-primary);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .arz-toast-close:hover {
+        color: var(--text-primary);
+    }
+
+    /* Variants */
+    .arz-toast-success {
+        border-left: 16px solid green;
+    }
+
+    .arz-toast-error {
+        border-left: 16px solid var(--bg-accent);
+    }
+
+    .arz-toast-warning {
+        border-left: 16px solid #c58400;
+    }
+
+    .arz-toast-info {
+        border-left: 16px solid var(--bg-accent-secondary);
+    }
+
+    /* Animation */
+    @keyframes arzSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Fade out */
+    .arz-toast.hide {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.4s ease;
+    }
+</style>
 <script>
+    /* ================= TOAST JS ================= */
+
+    function removeToast(toast) {
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 400);
+    }
+
+    function autoHideToast(toast, delay = 6000) {
+        setTimeout(() => {
+            if (toast) removeToast(toast);
+        }, delay);
+    }
+
+    /* Auto hide all existing toasts */
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('.arz-toast').forEach(toast => {
+            autoHideToast(toast);
+        });
+    });
+
+    /* ========= OPTIONAL: JS Toast (AJAX / Live use) ========= */
     function showToast(message, type = 'info') {
         const container = document.getElementById('toast-container');
-        const colors = {
-            success: {
-                bg: 'bg-green-100',
-                text: 'text-green-700',
-                border: 'border-green-500'
-            },
-            error: {
-                bg: 'bg-red-100',
-                text: 'text-red-700',
-                border: 'border-red-500'
-            },
-            warning: {
-                bg: 'bg-yellow-100',
-                text: 'text-yellow-700',
-                border: 'border-yellow-500'
-            },
-            info: {
-                bg: 'bg-blue-100',
-                text: 'text-blue-700',
-                border: 'border-blue-500'
-            }
+
+        const icons = {
+            success: '<i class="fa-solid fa-check"></i>',
+            error: '',
+            warning: '<i class="fa-solid fa-exclamation-triangle"></i>',
+            info: '<i class="fa-solid fa-info-circle"></i>'
         };
-        const color = colors[type] || colors.info;
 
         const toast = document.createElement('div');
-        toast.className = `toast flex items-start ${color.bg} ${color.text} border-l-4 ${color.border} px-4 py-3 shadow-lg rounded-lg mb-2`;
+        toast.className = `arz-toast arz-toast-${type}`;
         toast.innerHTML = `
-            <div class="flex-1 leading-tight text-sm font-medium">${message}</div>
-            <button class="ml-4 text-lg focus:outline-none" onclick="this.parentElement.remove()">
-                &times;
-            </button>
-        `;
+        <div class="arz-toast-icon">${icons[type] || icons.info}</div>
+        <div class="arz-toast-body">${message}</div>
+        <button class="arz-toast-close" onclick="removeToast(this.parentElement)">✕</button>
+    `;
 
         container.appendChild(toast);
         autoHideToast(toast);
     }
-
-    function autoHideToast(toast) {
-        setTimeout(() => {
-            toast.classList.add('opacity-0', 'translate-x-5');
-            setTimeout(() => toast.remove(), 500);
-        }, 10000);
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const toasts = document.querySelectorAll('.toast');
-        toasts.forEach((toast) => autoHideToast(toast));
-    });
 </script>
-<style>
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateX(100%);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    .animate-slideIn {
-        animation: slideIn 0.3s ease-out;
-    }
-</style>

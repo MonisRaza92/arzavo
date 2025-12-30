@@ -10,17 +10,20 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Tenant\TenantWebsiteController;
 use App\Http\Controllers\Tenant\Admin\AdminController;
 use App\Http\Controllers\Tenant\Admin\StudentsController as AdminStudentsController;
-use App\Http\Controllers\Tenant\Admin\ContentsController;
+use App\Http\Controllers\Tenant\Admin\ContentController;
 use App\Http\Controllers\Tenant\Admin\CourseController;
 use App\Http\Controllers\Tenant\Admin\CustomizesController;
 use App\Http\Controllers\Tenant\Admin\ColorSchemeController;
 use App\Http\Controllers\Tenant\Admin\ImagesController;
-use App\Http\Controllers\Tenant\Admin\ModulesController;
 use App\Http\Controllers\Tenant\Admin\SettingsController;
 use App\Http\Controllers\Tenant\Admin\PageController;
 use App\Http\Controllers\Tenant\Admin\ThemeController;
 use App\Http\Controllers\Tenant\Admin\SectionController;
 use App\Http\Controllers\Tenant\Admin\BlockController;
+use App\Http\Controllers\Tenant\Admin\ClassCourseController;
+use App\Http\Controllers\Tenant\Admin\SubjectController;
+use App\Http\Controllers\Tenant\Admin\MenuController;
+use App\Http\Controllers\Tenant\Admin\MenuItemController;
 use App\Http\Controllers\Tenant\User\UserController;
 use App\Http\Controllers\Tenant\Students\StudentsController;
 use App\Http\Controllers\Tenant\Teachers\TeachersController;
@@ -106,13 +109,17 @@ function registerDomains($domain)
 
 
                 //Admin Contents Routes
-                Route::get('/notes', [ContentsController::class, 'notes'])->name('admin-notes');
-                Route::get('/books', [ContentsController::class, 'books'])->name('admin-books');
-                Route::get('/videos', [ContentsController::class, 'videos'])->name('admin-videos');
-                Route::post('/content/upload', [ContentsController::class, 'uploadContent'])->name('admin-content-upload');
-                Route::put('/content/update/{id}', [ContentsController::class, 'updateContent'])->name('admin-content-update');
-                Route::delete('/content/delete/{id}', [ContentsController::class, 'deleteContent'])->name('admin-content-delete');
+                Route::resource('contents', ContentController::class);
 
+                //Admin Subjects Routes
+                Route::get('/classes/courses', [ClassCourseController::class, 'index'])->name('classes.courses.index');
+                Route::post('/classes/courses', [ClassCourseController::class, 'store'])->name('classes.courses.store');
+                Route::get('/classes/courses/{id}/get', [ClassCourseController::class, 'get'])->name('classes.courses.get');
+                Route::put('/classes/courses/{id}/update', [ClassCourseController::class, 'update'])->name('classes.courses.update');
+                Route::delete('/classes/courses/{id}/delete', [ClassCourseController::class, 'destroy'])->name('classes.courses.destroy');
+                Route::resource('subjects', SubjectController::class);
+                Route::get('/subjects/{id}/get', [SubjectController::class, 'get'])->name('subjects.get');
+                Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update');
 
                 //Admin Courses Routes
                 Route::get('/courses', [CourseController::class, 'courses'])->name('admin-courses');
@@ -135,6 +142,9 @@ function registerDomains($domain)
                 Route::resource('images', ImagesController::class);
                 Route::resource('pages', PageController::class);
                 Route::resource('themes', ThemeController::class);
+                Route::resource('menus', MenuController::class);
+                Route::resource('menu-items', MenuItemController::class);
+                Route::post('/menu-items/reorder', [MenuItemController::class, 'reorder'])->name('menu-items.reorder');
                 Route::post('/themes/apply/{id}', [ThemeController::class, 'apply'])->name('themes.apply');
                 Route::prefix('builder')->name('builder.')->group(function () {
                     Route::get('{theme}', [SectionController::class, 'index'])->name('index');
@@ -157,22 +167,6 @@ function registerDomains($domain)
                         });
                     });
                 });
-
-
-                //Admin Modules Routes
-                Route::get('/modules', [ModulesController::class, 'adminModules'])->name('admin-modules');
-                Route::post('/add/category', [ModulesController::class, 'addCategory'])->name('admin-add-category');
-                Route::put('/update/category/{id}', [ModulesController::class, 'updateCategory'])->name('admin-update-category');
-                Route::delete('/delete/category/{id}', [ModulesController::class, 'deleteCategory'])->name('admin-delete-category');
-                Route::post('/add/class', [ModulesController::class, 'addClass'])->name('admin-add-class');
-                Route::put('/update/class/{id}', [ModulesController::class, 'updateClass'])->name('admin-update-class');
-                Route::delete('/delete/class/{id}', [ModulesController::class, 'deleteClass'])->name('admin-delete-class');
-                Route::post('/add/subject', [ModulesController::class, 'addSubject'])->name('admin-add-subject');
-                Route::put('/update/subject/{id}', [ModulesController::class, 'updateSubject'])->name('admin-update-subject');
-                Route::delete('/delete/subject/{id}', [ModulesController::class, 'deleteSubject'])->name('admin-delete-subject');
-                Route::post('/add/faq', [ModulesController::class, 'addFaq'])->name('admin-add-faq');
-                Route::delete('/delete/faq/{id}', [ModulesController::class, 'deleteFaq'])->name('admin-delete-faq');
-
 
                 //Admin Settings Routes
                 Route::resource('settings', SettingsController::class);

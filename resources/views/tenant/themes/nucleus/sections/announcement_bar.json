@@ -16,75 +16,11 @@
             "type": "color_scheme_selector"
         },
         {
-            "key": "bar_style",
-            "label": "Bar Style",
-            "type": "select",
-            "options": ["solid", "gradient", "bordered", "minimal"],
-            "default": "solid"
-        },
-        {
-            "key": "bar_position",
-            "label": "Bar Position",
-            "type": "radio",
-            "options": ["top", "bottom"],
-            "default": "top"
-        },
-        {
             "key": "bar_behavior",
             "label": "Bar Behavior",
-            "type": "select",
-            "options": ["static", "sticky", "fixed"],
-            "default": "static"
-        },
-        {
-            "key": "animation_type",
-            "label": "Animation Type",
-            "type": "select",
-            "options": ["none", "slide_down", "fade_in", "bounce"],
-            "default": "slide_down"
-        },
-        {
-            "key": "text_animation",
-            "label": "Text Animation",
-            "type": "select",
-            "options": ["none", "scroll", "blink", "pulse"],
-            "default": "none"
-        },
-        {
-            "key": "padding",
-            "label": "Vertical Spacing",
-            "type": "range",
-            "default": 1,
-            "min": 0,
-            "max": 4
-        },
-        {
-            "key": "text_alignment",
-            "label": "Text Alignment",
-            "type": "select",
-            "options": ["left", "center", "right"],
-            "default": "center"
-        },
-        {
-            "key": "mobile_alignment",
-            "label": "Mobile Alignment",
-            "type": "select",
-            "options": ["left", "center", "right"],
-            "default": "center"
-        },
-        {
-            "key": "show_icon",
-            "label": "Show Icon",
             "type": "radio",
-            "options": ["yes", "no"],
-            "default": "yes"
-        },
-        {
-            "key": "icon_position",
-            "label": "Icon Position",
-            "type": "radio",
-            "options": ["left", "right"],
-            "default": "left"
+            "options": ["scroll_up", "sticky"],
+            "default": "scroll_up"
         },
         {
             "key": "divider",
@@ -101,33 +37,10 @@
             "default": "enable"
         },
         {
-            "key": "hide_button_style",
-            "label": "Hide Button Style",
-            "type": "select",
-            "options": ["cross", "arrow", "text"],
-            "default": "cross"
-        },
-        {
-            "key": "auto_hide",
-            "label": "Auto Hide After (seconds)",
+            "key": "padding",
+            "label": "Vertical Spacing",
             "type": "range",
-            "default": 0,
-            "min": 0,
-            "max": 30,
-            "help": "0 = Never auto hide"
-        },
-        {
-            "key": "show_on_pages",
-            "label": "Show On Pages",
-            "type": "select",
-            "options": ["all", "home_only", "specific"],
-            "default": "all"
-        },
-        {
-            "key": "border_radius",
-            "label": "Border Radius",
-            "type": "range",
-            "default": 0,
+            "default": 4,
             "min": 0,
             "max": 20
         }

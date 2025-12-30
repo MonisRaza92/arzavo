@@ -12,17 +12,17 @@ return new class extends Migration
             $table->id();
             // Parent Class / Course
 
-            $table->foreignId('class_id')
-                ->constrained('classes')
+            $table->foreignId('class_courses_id')
+                ->constrained('class_courses')
                 ->cascadeOnDelete();
 
-            $table->string('image');
+            $table->string('image')->nullable();
             // Display name
             $table->string('name');
             // Maths, Physics, Biology, Legal Reasoning
 
             // Internal code (auto-generated)
-            $table->string('code');
+            $table->string('slug')->unique();
             // maths, physics, biology
 
             $table->string('description')->nullable();
@@ -33,8 +33,8 @@ return new class extends Migration
             $table->timestamps();
 
             // Safety: same class me duplicate subject nahi
-            $table->unique(['class_id', 'name']);
-            $table->unique(['class_id', 'code']);
+            $table->unique(['class_courses_id', 'name']);
+            $table->unique(['class_courses_id', 'slug']);
         });
     }
 

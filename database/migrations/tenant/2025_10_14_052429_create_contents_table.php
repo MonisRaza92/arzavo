@@ -13,19 +13,10 @@ return new class extends Migration
     {
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['video', 'note', 'book']);
-            $table->string('file');
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('set null');
-            $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('set null');
-            $table->text('description')->nullable();
-            $table->decimal('price', 8, 2)->default(0);
-            $table->decimal('discount_price', 8, 2)->nullable();
-            $table->boolean('is_free')->default(false);
-            $table->decimal('duration', 8, 2)->nullable(); // duration in minutes for videos
-            $table->string('thumbnail')->nullable();
-            $table->enum('status', ['published', 'archived', 'draft'])->default('draft');
+            $table->enum('type', ['video', 'note', 'book', 'audio']);
+            $table->string('filename');
+            $table->string('filepath');
+            $table->boolean('is_active');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });

@@ -18,7 +18,7 @@
             {{-- NESTED TOGGLER --}}
             @if (!empty($blockRules[$block->type]['allowed_blocks']))
             <button type="button" id="block-btn-{{ $block->id }}"
-                class="text-tertiary bg-hover-secondary pt-0.5 pb-1.5 px-1 mr-1 border-rounded toggle-block-btn"
+                class="text-tertiary bg-hover-secondary pt-0.5 pb-1.5 px-1.5 mr-1 border-rounded toggle-block-btn"
                 data-id="{{ $block->id }}">
                 <i id="block-btn-arrow-{{ $block->id }}" class="fa-solid fa-chevron-right text-[10px]"></i>
             </button>

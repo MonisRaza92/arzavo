@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('faqs', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->string('question')->nullable();
-            $table->string('answer')->nullable();
+            $table->string('name');          // Header Menu, Footer Menu
+            $table->string('slug')->unique(); // header-menu
+            $table->string('location')->nullable(); // header, footer, sidebar
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('faqs');
+        Schema::dropIfExists('menus');
     }
 };

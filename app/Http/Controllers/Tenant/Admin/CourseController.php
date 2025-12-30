@@ -4,19 +4,17 @@ namespace App\Http\Controllers\Tenant\Admin;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Tenant\Courses;
-use App\Models\Tenant\Categories;
-use App\Models\Tenant\Classes;
-use App\Models\Tenant\Subjects;
+use App\Models\Tenant\Course;
+use App\Models\Tenant\ClassCourse;
+use App\Models\Tenant\Subject;
 use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
     public function courses()
     {
-        $categories = Categories::all();
-        $classes = Classes::orderBy('name')->get();
-        $subjects = Subjects::all();
+        $classes = ClassCourse::orderBy('name')->get();
+        $subjects = Subject::all();
         return view('admin.courses', compact('categories', 'classes', 'subjects'));
     }
 
@@ -63,7 +61,7 @@ class CourseController extends Controller
             $validated['thumbnail'] = Storage::url($thumbnailPath);
         }
 
-        $course = Courses::create($validated);
+        $course = Course::create($validated);
 
         return redirect()->route('admin-courses')->with('success', 'Course uploaded successfully.');
     }
@@ -75,7 +73,7 @@ class CourseController extends Controller
             'id' => 'required|exists:courses,id',
         ]);
 
-        $course = Courses::findOrFail($request->id);
+        $course = Course::findOrFail($request->id);
 
         // Extract file paths from stored URLs
         $thumbnailPath = $course->thumbnail ? str_replace(Storage::url(''), '', $course->thumbnail) : null;

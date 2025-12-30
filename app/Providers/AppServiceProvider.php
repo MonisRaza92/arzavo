@@ -45,7 +45,9 @@ class AppServiceProvider extends ServiceProvider
                 $teachers = \App\Models\Tenant\User::where('role', 'teacher')->get();
                 $staff = \App\Models\Tenant\User::where('role', 'staff')->get();
 
-                $courses = \App\Models\Tenant\Courses::all();
+                // $classCourse = \App\Models\Tenant\ClassCourse::all();
+                // $subject = \App\Models\Tenant\Subject::all();
+                $courses = \App\Models\Tenant\Course::all();
 
                 return $view->with([
                     'user'       => $user,

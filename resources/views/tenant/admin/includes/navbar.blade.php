@@ -17,7 +17,7 @@
                     @csrf
                 </form>
             </div>
-            <button id="adminSidebarToggle" class="lg:hidden bg-invert text-invert w-11 aspect-square border-rounded flex items-center justify-center text-2xl" onclick="document.getElementById('adminMobileMenu').classList.toggle('-translate-x-full')"><i class="fa-solid fa-bars"></i></button>
+            <button id="adminSidebarToggle" class="lg:hidden bg-invert text-invert text-xl aspect-square border-rounded flex items-center justify-center p-1.25" onclick="document.getElementById('adminMobileMenu').classList.toggle('-translate-x-full')"><i class="fa-solid fa-bars"></i></button>
         </div>
     </div>
 </div>

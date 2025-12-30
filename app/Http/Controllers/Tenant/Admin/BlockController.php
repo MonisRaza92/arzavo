@@ -11,7 +11,7 @@ class BlockController
     public function store(Request $request, $sectionId)
     {
         $theme = app('currentTheme');
-        
+
         $request->validate([
             'block_type' => 'required|string',
             'block_name' => 'required|string'
@@ -23,7 +23,7 @@ class BlockController
         $order = ($section->blocks()->max('order') ?? 0) + 1;
 
         // 1️⃣ JSON FILE READ
-        $jsonPath = resource_path("views/tenant/themes/{$theme}blocks/{$request->block_type}.json");
+        $jsonPath = resource_path("views/tenant/themes/{$theme}/blocks/{$request->block_type}.json");
 
         $defaultSettings = [];
         $defaultBlocks = [];
@@ -49,13 +49,12 @@ class BlockController
                 $defaultBlockIcon = $json['icon'];
             }
         }
-
         // 2️⃣ SECTION CREATE + DEFAULT SETTINGS SAVE
         $block = Block::create([
             'section_id' => $section->id,
             'name' => $request->block_name,
             'type' => $request->block_type,
-            'icon' => $defaultBlockIcon ?? 'fa-shapes',
+            'icon' => $defaultBlockIcon,
             'settings' => $defaultSettings,
             'order' => $order
         ]);
@@ -105,7 +104,7 @@ class BlockController
     public function storeNested(Request $request, $blockId)
     {
         $theme = app('currentTheme');
-        
+
         $request->validate([
             'block_type' => 'required|string',
             'block_name' => 'required|string'

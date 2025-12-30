@@ -19,70 +19,8 @@
             "key": "text_type",
             "label": "Text Type",
             "type": "select",
-            "options": ["heading-1", "heading-2", "heading-3", "heading-4", "heading-5", "heading-6", "paragraph"],
+            "options": ["heading-1", "heading-2", "heading-3", "heading-4", "heading-5", "heading-6", "paragraph", "secondary-text"],
             "default": "paragraph"
-        },
-        {
-            "key": "font_weight",
-            "label": "Font Weight",
-            "type": "select",
-            "options": ["normal", "medium", "semibold", "bold"],
-            "default": "medium"
-        },
-        {
-            "key": "text_transform",
-            "label": "Text Transform",
-            "type": "select",
-            "options": ["none", "uppercase", "lowercase", "capitalize"],
-            "default": "none"
-        },
-        {
-            "key": "alignment",
-            "label": "Text Alignment",
-            "type": "select",
-            "options": ["left", "center", "right"],
-            "default": "center"
-        },
-        {
-            "key": "mobile_alignment",
-            "label": "Mobile Alignment",
-            "type": "select",
-            "options": ["left", "center", "right"],
-            "default": "center"
-        },
-        {
-            "key": "announcement_link",
-            "label": "Announcement Link",
-            "type": "text",
-            "default": "",
-            "placeholder": "https://example.com (optional)"
-        },
-        {
-            "key": "open_new_tab",
-            "label": "Open in New Tab",
-            "type": "radio",
-            "options": ["yes", "no"],
-            "default": "no"
-        },
-        {
-            "key": "show_icon",
-            "label": "Show Icon",
-            "type": "radio",
-            "options": ["yes", "no"],
-            "default": "yes"
-        },
-        {
-            "key": "icon_name",
-            "label": "Icon",
-            "type": "icon",
-            "default": "bell"
-        },
-        {
-            "key": "icon_position",
-            "label": "Icon Position",
-            "type": "radio",
-            "options": ["left", "right"],
-            "default": "left"
         }
     ]
 }

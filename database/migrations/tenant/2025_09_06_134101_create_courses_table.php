@@ -13,37 +13,53 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            // Course info
-            $table->string('title');
-            $table->string('slug')->unique(); // url friendly name
-            $table->text('description')->nullable();
-            $table->string('video')->nullable(); // video path
-            $table->string('thumbnail')->nullable(); // image path
-            $table->foreignId('subject_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('class_id')->nullable()->constrained()->onDelete('set null');
-            $table->decimal('price', 10, 2)->default(0); // free/paid course
-            $table->decimal('discount_price', 10, 2)->nullable(); // agar discount hai to
-            $table->integer('max_students')->nullable(); // maximum students allowed
-            $table->boolean('is_featured')->default(false); // featured course
-            $table->boolean('is_popular')->default(false); // popular course
-            $table->boolean('is_new')->default(true); // new course
-            $table->boolean('is_recommended')->default(false); // recommended course
-            $table->boolean('is_certified')->default(false); // certificate available
-            $table->boolean('allow_reviews')->default(true); // reviews allowed
-            $table->integer('total_reviews')->default(0); // total reviews count
-            $table->integer('total_enrollments')->default(0); // total enrollments count
-            
-            
-            // Teacher / Author
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            // ye users table se connect karega
 
-            // Extra fields
-            $table->string('language')->default('en'); // course language
-            $table->integer('duration')->nullable(); // minutes me store kar sakte ho
-            $table->integer('level')->default(1); // 1=Beginner, 2=Intermediate, 3=Advanced
-            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
-            $table->date('expire_date')->nullable(); // course expire date
+            // Core
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('description')->nullable();
+            $table->string('thumbnail')->nullable();
+            $table->string('video')->nullable();
+
+            // Meta
+            $table->string('language')->default('en');
+            $table->enum('level', ['beginner', 'intermediate', 'advanced'])
+                ->default('beginner');
+
+            $table->integer('duration')->nullable();
+            $table->integer('max_students')->nullable();
+
+            // Pricing
+            $table->boolean('is_paid')->default(false);
+            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('discount_price', 10, 2)->nullable();
+
+            // Access & visibility
+            $table->boolean('is_public')->default(true);
+            $table->boolean('requires_enrollment')->default(true);
+
+            // Feature toggles
+            $table->boolean('enable_modules')->default(true);
+            $table->boolean('enable_lessons')->default(true);
+            $table->boolean('enable_quizzes')->default(false);
+            $table->boolean('enable_assignments')->default(false);
+            $table->boolean('enable_certificates')->default(false);
+            $table->boolean('enable_reviews')->default(true);
+
+            // Lifecycle
+            $table->enum('status', ['draft', 'published', 'archived'])
+                ->default('draft');
+            $table->date('publish_date')->nullable();
+            $table->date('expire_date')->nullable();
+
+            // Analytics
+            $table->unsignedInteger('total_enrollments')->default(0);
+            $table->unsignedInteger('total_reviews')->default(0);
+
+            // Author
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });

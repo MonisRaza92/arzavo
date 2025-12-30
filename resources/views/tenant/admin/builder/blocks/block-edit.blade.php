@@ -236,13 +236,19 @@
                 @case('radio')
                 <div class="flex border-rounded border-primary overflow-hidden">
                     @foreach($field['options'] ?? [] as $value)
-                    <label class="flex-1 text-center cursor-pointer group relative">
+                    <label class="flex-1 cursor-pointer relative group">
                         <input type="radio"
                             name="settings[{{ $field['key'] }}]"
                             value="{{ $value }}"
-                            {{ ($block->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
-                            class="peer hidden live-input">
-                        <span class="block p-2.5 text-xs border-rounded capitalize peer-checked:bg-black peer-checked:text-white hover:bg-gray-100 peer-checked:hover:bg-gray-900 transition-all duration-200">
+                            {{ ($section->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
+                            class="sr-only peer live-input">
+
+                        <span class="block p-2.5 text-xs capitalize text-center
+                         transition-all duration-200
+                         peer-checked:bg-black
+                         peer-checked:text-white
+                         hover:bg-gray-100
+                         peer-checked:hover:bg-gray-900">
                             {{ ucfirst(str_replace(['_', '-'], ' ', $value)) }}
                         </span>
                     </label>

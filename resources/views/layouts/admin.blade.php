@@ -12,6 +12,7 @@
     @include('tenant.admin.includes.sidebar')
     {{-- Alerts --}}
     <x-alert />
+    <x-image-upload />
     {{-- Main content --}}
     <main class="main-admin-content relative lg:ml-[260px]! p-4">
         @include('tenant.admin.includes.breadcrumb')
