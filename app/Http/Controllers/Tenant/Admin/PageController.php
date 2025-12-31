@@ -10,7 +10,7 @@ class PageController
 {
     public function index()
     {
-        $pages = Page::all();
+        $pages = Page::whereNotIn('slug', ['home', 'courses', 'view-course'])->get();
         return view('tenant.admin.pages.index', compact('pages'));
     }
 
@@ -49,7 +49,7 @@ class PageController
                 'string',
                 'max:255',
                 'regex:/^[a-z0-9\-]+$/', // sirf lowercase letters, numbers, aur dash
-                 Rule::unique('pages', 'slug')->ignore($page->id),
+                Rule::unique('pages', 'slug')->ignore($page->id),
             ],
         ]);
 
@@ -68,7 +68,7 @@ class PageController
     {
         $page = Page::findOrFail($pageId);
         $page->delete();
-        
+
         return back()->with('success', 'Page deleted successfully!');
     }
 }

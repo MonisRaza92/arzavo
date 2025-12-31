@@ -30,7 +30,7 @@ return [
                 'icon' => 'fa-school',
                 'text' => 'Academics',
                 'links' => [
-                    ['icon' => 'fa-book-open', 'text' => 'Courses / Subjects', 'route' => '#'],
+                    ['icon' => 'fa-book-open', 'text' => 'Courses', 'route' => 'admin.courses.index', 'active' => 'admin/courses'],
                     ['icon' => 'fa-clipboard-list', 'text' => 'Syllabus / Curriculum', 'route' => '#'],
                     ['icon' => 'fa-calendar-days', 'text' => 'Academic Calendar', 'route' => '#'],
                     ['icon' => 'fa-file-pen', 'text' => 'Exams', 'route' => '#'],

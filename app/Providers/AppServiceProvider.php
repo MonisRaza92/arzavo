@@ -45,8 +45,10 @@ class AppServiceProvider extends ServiceProvider
                 $teachers = \App\Models\Tenant\User::where('role', 'teacher')->get();
                 $staff = \App\Models\Tenant\User::where('role', 'staff')->get();
 
-                // $classCourse = \App\Models\Tenant\ClassCourse::all();
-                // $subject = \App\Models\Tenant\Subject::all();
+                $contents = \App\Models\Tenant\Content::all();
+
+                $classCourses = \App\Models\Tenant\ClassCourse::all();
+                $subjects = \App\Models\Tenant\Subject::all();
                 $courses = \App\Models\Tenant\Course::all();
 
                 return $view->with([
@@ -60,6 +62,9 @@ class AppServiceProvider extends ServiceProvider
                     'images'     => $images,
                     'colorSchemes'     => $colorSchemes,
                     'theme' => $theme,
+                    'classCourses' => $classCourses,
+                    'subjects' => $subjects,
+                    'contents' => $contents
                 ]);
             }
         });

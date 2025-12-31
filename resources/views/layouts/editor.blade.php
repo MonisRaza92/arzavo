@@ -8,6 +8,7 @@
 <body id="builder-editor-body">
     {{-- Alerts --}}
     <x-alert />
+    <x-content-model />
     {{-- Main content --}}
     @yield('content')
 </body>

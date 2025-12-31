@@ -12,7 +12,7 @@ class ContentController extends Controller
 {
     public function index()
     {
-        
+
         $contents = Content::all();
         return view('tenant.admin.contents.index', compact('contents'));
     }
@@ -22,11 +22,11 @@ class ContentController extends Controller
         // ✅ Validation
         $request->validate([
             'type'     => 'required|in:video,pdf,image,audio',
-            'filename' => 'required|string|max:255',
+            'filename' => 'nullable|string|max:255',
             'file'     => 'required|file',
         ]);
 
-        $file = $request->file('file'); // ✅ CORRECT
+        $file = $request->file('file');
 
         // ✅ Allowed mime types
         $allowedMimes = [
@@ -37,34 +37,62 @@ class ContentController extends Controller
         ];
 
         if (!in_array($file->getMimeType(), $allowedMimes[$request->type])) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid file type selected for ' . $request->type,
+                ], 422);
+            }
+
             return back()->withErrors([
                 'file' => 'Invalid file type selected for ' . $request->type
             ]);
         }
 
-        // ✅ Use default disk (local / s3)
+        // ✅ Disk
         $disk = config('filesystems.default');
 
-        // ✅ Store file (returns STRING path)
+        // ✅ Store file
         $storedPath = $file->store(
             'uploads/contents/' . $request->type,
             $disk
         );
 
-        // ✅ Public URL (S3 / local compatible)
+        // ✅ Public URL
         $publicPath = Storage::url($storedPath);
 
+        // ✅ Filename logic (IMPORTANT PART)
+        $filename = $request->filled('filename')
+            ? $request->filename
+            : pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
         // ✅ Save to DB
-        Content::create([
+        $content = Content::create([
             'type'      => $request->type,
-            'filename'  => $request->filename,
-            'filepath'  => $publicPath,   // 🔥 STRING, not array
-            'user_id'   => Auth::guard('tenant')->user()->id,  // 🔐 secure
+            'filename'  => $filename,
+            'filepath'  => $publicPath,
+            'user_id'   => Auth::guard('tenant')->user()->id,
             'is_active' => true,
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Content uploaded successfully',
+                'data'    => [
+                    'id'         => $content->id,
+                    'type'       => $content->type,
+                    'filename'   => $content->filename,
+                    'filepath'   => $content->filepath,
+                    'is_active'  => $content->is_active,
+                    'created_at' => $content->created_at->toDateTimeString(),
+                ]
+            ]);
+        }
+
         return back()->with('success', 'Content uploaded successfully');
     }
+
 
 
     public function updateContent(Request $request, $id)
@@ -139,5 +167,4 @@ class ContentController extends Controller
 
         return back()->with('success', 'Content deleted successfully');
     }
-
 }

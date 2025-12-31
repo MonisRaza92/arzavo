@@ -10,9 +10,14 @@ class Page extends Model
     protected $fillable = [
         'name',
         'slug',
+        'is_system_page',
         'meta_title',
         'meta_description',
-        'status',
+        'is_active',
+    ];
+    protected $casts = [
+        'is_system_page'=> 'boolean',
+        'is_active' => 'boolean',
     ];
 
     public function sections()

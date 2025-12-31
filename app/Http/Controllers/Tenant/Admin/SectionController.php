@@ -12,8 +12,7 @@ class SectionController
 {
     public function index(Request $request)
     {
-        $pageId = $request->input('page_id')
-            ?? Page::where('slug', 'home')->value('id');
+        $pageId = Page::where('slug', $request->input('page') ?? 'home')->value('id');
 
         if (!$pageId) {
             return redirect()->route('admin.pages.index')

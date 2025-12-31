@@ -46,16 +46,32 @@ class TenantSeeder extends Seeder
             'applied_at' => now(),
         ]);
         // Apply theme
-        
+
 
         DB::table('pages')->insert([
             [
                 'name' => 'Home',
                 'slug' => 'home',
-                'status' => true,
-                'created_at'=> now(),
+                'is_system_page' => true,
+                'is_active' => true,
+                'created_at' => now(),
+            ],
+            [
+                'name' => 'Courses',
+                'slug' => 'courses',
+                'is_system_page' => true,
+                'is_active' => true,
+                'created_at' => now(),
+            ],
+            [
+                'name' => 'View Course',
+                'slug' => 'view-course',
+                'is_system_page' => true,
+                'is_active' => true,
+                'created_at' => now(),
             ],
         ]);
+
 
         $controller = app(ThemeController::class);
         $controller->applyThemeInternal($theme);

@@ -7,7 +7,7 @@
     "category": "Header",
     "max_blocks": 2,
     "allowed_blocks": ["logo", "menu"],
-    "default_blocks": "",
+    "default_blocks": ["logo", "menu"],
     "moveable": "none",
     "fields": [
         {

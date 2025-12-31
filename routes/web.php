@@ -36,7 +36,7 @@ Route::domain(config('app.domain'))->group(function () {
     Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
-    
+
     //Auth Routes
     Route::prefix('auth')->group(function () {
         Route::get('/login', [LoginController::class, 'login'])->name('login.form');
@@ -45,12 +45,12 @@ Route::domain(config('app.domain'))->group(function () {
         Route::post('/register', [LoginController::class, 'registerHandle'])->name('register.handle');
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     });
-    
+
     //Admin Routes
     Route::middleware('auth:web')->group(function () {
         // Dashboard
         Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-        
+
         //Admin Tenant Routes
         Route::resource('tenants', TenantController::class);
         Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
@@ -63,9 +63,11 @@ function registerDomains($domain)
 
     Route::domain($domain)->middleware('tenant')->group(function () {
         //Tenant Auth Routes
-        Route::get('/', [TenantWebsiteController::class, 'index'])->name('tenant.home');
-        Route::get('/{slug}', [TenantWebsiteController::class, 'index'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('tenant.page');
-
+        Route::get('/', [TenantWebsiteController::class, 'home'])->name('tenant.home');
+        Route::get('/courses', [TenantWebsiteController::class, 'courses'])->name('tenant.courses');
+        Route::get('/view/course', [TenantWebsiteController::class, 'courses'])->name('tenant.view.course');
+        Route::get('/{slug}', [TenantWebsiteController::class, 'pages'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('tenant.pages');
+        
         Route::prefix('account')->group(function () {
             Route::get('/login', [TenantLoginController::class, 'login'])->name('tenant.login.form');
             Route::post('/login', [TenantLoginController::class, 'loginHandle'])->name('tenant.login.handle');
@@ -74,9 +76,11 @@ function registerDomains($domain)
             Route::get('/logout', [TenantLoginController::class, 'logout'])->name('tenant.logout');
         });
 
-
+        
         Route::middleware('auth:tenant')->group(function () {
             //Profile Routes
+            Route::get('/edit/{slug}', [TenantWebsiteController::class, 'preview'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('website.preview');
+
             Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
             Route::post('/profile/info/update', [ProfileController::class, 'profileInfoUpdate'])->name('profile-info-update');
             Route::post('/profile/banner/update', [ProfileController::class, 'profileBannerUpdate'])->name('profile-banner-update');
@@ -93,7 +97,6 @@ function registerDomains($domain)
 
             Route::prefix('admin')->middleware('role:admin')->as('admin.')->group(function () {
                 Route::resource('dashboard', AdminController::class);
-
                 //Admin Students Routes
                 Route::get('/students', [AdminStudentsController::class, 'adminStudents'])->name('admin-students');
                 Route::post('/update/student/role', [AdminStudentsController::class, 'updateStudentRole'])->name('update-student-role');
@@ -107,10 +110,6 @@ function registerDomains($domain)
                 Route::get('/staffs', [AdminController::class, 'staffs'])->name('admin-staffs');
                 Route::get('/classes', [AdminController::class, 'classes'])->name('admin-classes');
 
-
-                //Admin Contents Routes
-                Route::resource('contents', ContentController::class);
-
                 //Admin Subjects Routes
                 Route::get('/classes/courses', [ClassCourseController::class, 'index'])->name('classes.courses.index');
                 Route::post('/classes/courses', [ClassCourseController::class, 'store'])->name('classes.courses.store');
@@ -121,12 +120,12 @@ function registerDomains($domain)
                 Route::get('/subjects/{id}/get', [SubjectController::class, 'get'])->name('subjects.get');
                 Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update');
 
-                //Admin Courses Routes
-                Route::get('/courses', [CourseController::class, 'courses'])->name('admin-courses');
-                Route::post('/upload/course', [CourseController::class, 'uploadCourse'])->name('upload-course');
-                Route::put('/update/course', [CourseController::class, 'updateCourse'])->name('update-course');
-                Route::delete('/delete/course', [CourseController::class, 'deleteCourse'])->name('delete-course');
 
+                //Admin Contents Routes
+                Route::resource('contents', ContentController::class);
+
+                //Admin Courses Routes
+                Route::resource('courses', CourseController::class);
 
                 Route::get('/exams', [AdminController::class, 'exams'])->name('admin-exams');
                 Route::get('/results', [AdminController::class, 'results'])->name('admin-results');
@@ -148,7 +147,7 @@ function registerDomains($domain)
                 Route::post('/themes/apply/{id}', [ThemeController::class, 'apply'])->name('themes.apply');
                 Route::prefix('builder')->name('builder.')->group(function () {
                     Route::get('{theme}', [SectionController::class, 'index'])->name('index');
-                    
+
                     Route::prefix('sections')->name('sections.')->group(function () {
                         Route::post('/{pageId}', [SectionController::class, 'store'])->name('store');
                         Route::post('/{pageId}/template', [SectionController::class, 'storeTemplate'])->name('store.template');

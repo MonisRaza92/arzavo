@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['video', 'note', 'book', 'audio']);
+            $table->enum('type', ['video', 'pdf', 'image', 'audio']);
             $table->string('filename');
             $table->string('filepath');
             $table->boolean('is_active');

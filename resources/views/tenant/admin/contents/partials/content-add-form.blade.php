@@ -55,13 +55,12 @@
                 {{-- CUSTOM FILE NAME --}}
                 <div>
                     <label class="block text-tertiary text-xs mb-1">
-                        File Name <span class="text-accent">*</span>
+                        File Name
                     </label>
 
                     <input
                         type="text"
                         name="filename"
-                        required
                         placeholder="e.g. Algebra Introduction"
                         class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
                 </div>

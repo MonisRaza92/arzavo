@@ -5,16 +5,18 @@
     </button>
     <div id="logo-settings-menu" class="max-h-0 overflow-hidden transition-all duration-300">
         <div class="grid grid-cols-1 gap-4 p-4 border-top">
-            @foreach ([
+            @php
+            $items = [
             ['key' => 'logo', 'label' => 'Logo', 'icon' => 'fa-image', 'bg' => 'bg-primary'],
             ['key' => 'invert_logo', 'label' => 'Invert Logo', 'icon' => 'fa-adjust', 'bg' => 'bg-primary'],
             ['key' => 'favicon', 'label' => 'Favicon', 'icon' => 'fa-star', 'bg' => 'bg-primary'],
-            ] as $item)
+            ]
+            @endphp
+            @foreach ($items as $item)
             @php
             $key = $item['key'];
             $hasImage = !empty($customizes[$key] ?? null);
             @endphp
-
             <div class="image-field-{{ $key }} relative group border-primary border-rounded p-2 overflow-hidden">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="font-semibold text-primary text-sm flex items-center gap-2">
@@ -24,166 +26,66 @@
 
                     <!-- Delete Button - Always Visible -->
                     <button type="button"
-                        class="delete-image-btn text-teriary hover:text-zinc-800  border-rounded transition-all z-10 {{ $hasImage ? '' : 'opacity-50' }}"
-                        data-key="{{ $key }}"
-                        onclick="event.stopPropagation(); deleteCustomizeImage('{{ $key }}')">
+                        class="delete-image-btn text-teriary hover:text-zinc-800  border-rounded transition-all z-10"
+                        onclick="deleteLogoImage('{{ $key }}')">
                         <i class="fa-solid fa-trash text-sm"></i>
                     </button>
                 </div>
 
                 <!-- Upload Area -->
-                <label for="{{ $key }}Input" class="cursor-pointer block">
-                    <div id="{{ $key }}PreviewContainer"
-                        class="relative bg-secondary border-primary border-rounded cursor-pointer overflow-hidden"
-                        onclick="openImageMenu('{{ $key }}Input')">
-                        @if ($hasImage)
-                        <img id="{{ $key }}Preview"
-                            src="{{ asset($customizes[$key] ?? '') }}"
-                            alt="{{ $item['label'] }}"
-                            class="w-full object-contain p-4 aspect-video">
-                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition pointer-events-none">
-                            <span class="text-white text-sm bg-black/50 px-3 py-1 border-rounded">Change</span>
-                        </div>
-                        @else
-                        <div id="{{ $key }}Placeholder" class="flex flex-col items-center justify-center h-28 text-primary">
-                            <i class="fa-solid {{ $item['icon'] }} text-3xl mb-2 group-hover:scale-110 transition-transform"></i>
-                            <span class="text-sm">Upload {{ $item['label'] }}</span>
-                        </div>
-                        @endif
-                    </div>
+                <div data-content-wrapper>
+                    <input type="hidden" name="{{ $key }}" id="{{ $key }}" @if($customizes[$key] !==null) value="{{ $customizes[$key] }}" @endif>
 
-                    <input type="text"
-                        name="{{ $key }}"
-                        id="{{ $key }}Input"
-                        value="{{ $customizes[$key] ?? '' }}"
-                        class="hidden">
-                </label>
+                    <div class="border-primary border-rounded bg-secondary p-3 aspect-video cursor-pointer group relative overflow-hidden"
+                        onclick="openContentPicker('{{ $key }}', 'image')">
+
+                        <img data-content-preview @if($customizes[$key] !==null) src="{{ asset($customizes[$key]) }}" @endif
+                            class="{{ $customizes[$key] === null ? 'hidden' : '' }} w-full h-full object-contain border-rounded">
+
+                        <div data-content-placeholder
+                            class="flex flex-col items-center text-tertiary h-full justify-center">
+                            <i class="fa-solid {{$item['icon']}} text-3xl mb-2"></i>
+                            Upload {{ $item['label'] }}
+                        </div>
+                        <div class="{{ $customizes[$key] === null ? '' : 'hidden' }} flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100">
+                            <span class="px-4 py-2 bg-black/50 border-rounded text-xs text-invert">Upload/Change image</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             @endforeach
         </div>
     </div>
 </div>
-
 <script>
-    (function() {
-        'use strict';
+    function deleteLogoImage(key) {
 
-        // Handle image selection from media library
-        window.addEventListener('message', function(e) {
-            if (e.data && e.data.type === 'imageSelected') {
-                const fieldKey = e.data.fieldKey;
-                const imagePath = e.data.imagePath;
+        const wrapper = document.querySelector('.image-field-' + key);
+        if (!wrapper) return;
 
-                const input = document.getElementById(fieldKey + 'Input');
-                const container = document.getElementById(fieldKey + 'PreviewContainer');
-                const wrapper = document.querySelector('.image-field-' + fieldKey);
+        // Preview image
+        const preview = wrapper.querySelector('[data-content-preview]');
+        // Placeholder
+        const placeholder = wrapper.querySelector('[data-content-placeholder]');
+        // Hidden input
+        const input = wrapper.querySelector('input[name="' + key + '"]');
 
-                if (input && container) {
-                    // Update input value
-                    input.value = imagePath;
+        // 1️⃣ Hide preview
+        if (preview) {
+            preview.classList.add('hidden');
+            preview.removeAttribute('src');
+        }
 
-                    // Update preview container
-                    container.innerHTML = `
-                    <img id="${fieldKey}Preview"
-                         src="${imagePath}"
-                         alt="Preview"
-                         class="w-full object-contain p-4 aspect-video">
-                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition pointer-events-none">
-                        <span class="text-white text-sm bg-black/50 px-3 py-1 border-rounded">Change</span>
-                    </div>
-                `;
+        // 2️⃣ Show placeholder
+        if (placeholder) {
+            placeholder.classList.remove('hidden');
+        }
 
-                    // Add delete button if it doesn't exist
-                    if (wrapper) {
-                        let deleteBtn = wrapper.querySelector('.delete-image-btn');
-                        if (!deleteBtn) {
-                            const header = wrapper.querySelector('.flex.items-center.justify-between');
-                            if (header) {
-                                deleteBtn = document.createElement('button');
-                                deleteBtn.type = 'button';
-                                deleteBtn.className = 'delete-image-btn text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2 py-1 border-rounded transition-all z-10';
-                                deleteBtn.dataset.key = fieldKey;
-                                deleteBtn.onclick = function(e) {
-                                    e.stopPropagation();
-                                    deleteCustomizeImage(fieldKey);
-                                };
-                                deleteBtn.innerHTML = '<i class="fa-solid fa-trash text-xs"></i>';
-                                header.appendChild(deleteBtn);
-                            }
-                        }
-                    }
-
-                    // Submit form
-                    if (typeof submitCustomizesForm === 'function') {
-                        submitCustomizesForm();
-                    }
-                }
-            }
-        });
-
-        // Delete image function
-        window.deleteCustomizeImage = function(key) {
-            const input = document.getElementById(key + 'Input');
-            const container = document.getElementById(key + 'PreviewContainer');
-            const wrapper = document.querySelector('.image-field-' + key);
-            const deleteBtn = wrapper ? wrapper.querySelector('.delete-image-btn') : null;
-
-            if (!input || !container) {
-                console.error('Image elements not found for key:', key);
-                return;
-            }
-
-            // Clear input value
+        // 3️⃣ Set input value to null
+        if (input) {
             input.value = '';
+        }
 
-            // Get icon from original data
-            const iconMap = {
-                'logo': 'fa-image',
-                'invert_logo': 'fa-adjust',
-                'favicon': 'fa-star'
-            };
-            const icon = iconMap[key] || 'fa-image';
-
-            // Get label
-            const labelMap = {
-                'logo': 'Logo',
-                'invert_logo': 'Invert Logo',
-                'favicon': 'Favicon'
-            };
-            const label = labelMap[key] || 'Image';
-
-            // Replace with placeholder
-            container.innerHTML = `
-            <div id="${key}Placeholder" class="flex flex-col items-center justify-center h-28 text-primary">
-                <i class="fa-solid ${icon} text-3xl mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="text-sm">Upload ${label}</span>
-            </div>
-        `;
-
-            // Submit form to save changes
-            if (typeof submitCustomizesForm === 'function') {
-                submitCustomizesForm();
-            } else {
-                console.error('submitCustomizesForm function not found');
-            }
-        };
-
-    })();
+        submitCustomizesForm()
+    }
 </script>
-
-<style>
-    .image-field-logo:hover .delete-image-btn,
-    .image-field-invert_logo:hover .delete-image-btn,
-    .image-field-favicon:hover .delete-image-btn {
-        opacity: 1;
-    }
-
-    .delete-image-btn {
-        opacity: 0.7;
-        transition: opacity 0.2s ease;
-    }
-
-    .delete-image-btn:hover {
-        opacity: 1;
-    }
-</style>

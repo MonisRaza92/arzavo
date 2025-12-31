@@ -22,7 +22,7 @@
                     class="hidden absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded overflow-hidden shadow-lg">
                     @foreach($pages as $p)
                     <div class="dropdown-option flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
-                        data-value="{{ $p->id }}"
+                        data-value="{{ $p->slug }}"
                         onclick="document.getElementById('pageSelectForm').submit();">
                         <i class="fa-solid fa-window-restore"></i>
                         {{ $p->name }}
@@ -31,7 +31,7 @@
                 </div>
 
                 <!-- Hidden input to submit -->
-                <input type="hidden" name="page_id" id="pageInput" value="{{ $page->id }}">
+                <input type="hidden" name="page" id="pageInput" value="{{ $page->slug }}">
             </div>
         </form>
     </div>

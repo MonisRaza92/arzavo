@@ -118,4 +118,8 @@ class Course extends Model
             ->whereNull('course_module_id')
             ->orderBy('order');
     }
+    public function teacher()
+    {
+        return $this->hasOne(User::class, 'user_id');
+    }
 }
