@@ -304,25 +304,25 @@
                 @php
                 $hasImage = $block->settings[$field['key']] ?? null;
                 @endphp
-                <div class="media-field-{{ $field['key'] }}_{{ $$block->id }} relative group overflow-hidden">
+                <div class="media-field-{{ $field['key'] }}_{{ $block->id }} relative group overflow-hidden">
                     <!-- Delete Button - Always Visible -->
                     <button type="button"
                         class="delete-image-btn text-invert transition-all z-10 opacity-0 group-hover:opacity-100 absolute top-1 right-1"
-                        onclick="deleteBlockMedia('{{ $field['key'] }}_{{ $$block->id }}')">
+                        onclick="deleteBlockMedia('{{ $field['key'] }}_{{ $block->id }}')">
                         <i class="fa-solid fa-trash text-sm"></i>
                     </button>
 
                     <!-- Upload Area -->
                     <div data-content-wrapper>
                         <input type="hidden" name="settings[{{ $field['key'] }}]"
-                            id="{{ $field['key'] }}_{{ $$block->id }}"
+                            id="{{ $field['key'] }}_{{ $block->id }}"
                             @if($hasImage)
                             value="{{ $hasImage }}"
                             @endif>
 
                         <div class="border-primary border-rounded cursor-pointer group relative overflow-hidden"
                             style="border-style: dashed; border-width: 2px;"
-                            onclick="openContentPicker('{{ $field['key'] }}_{{ $$block->id }}', 'image')">
+                            onclick="openContentPicker('{{ $field['key'] }}_{{ $block->id }}', 'image')">
 
                             <img data-content-preview @if($hasImage !==null ) src="{{ asset($hasImage) }}" @endif
                                 class="{{ $hasImage === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded">
@@ -345,25 +345,25 @@
                 @php
                 $hasVideo = $block->settings[$field['key']] ?? null;
                 @endphp
-                <div class="media-field-{{ $field['key'] }}_{{ $$block->id }} relative group overflow-hidden">
+                <div class="media-field-{{ $field['key'] }}_{{ $block->id }} relative group overflow-hidden">
                     <!-- Delete Button - Always Visible -->
                     <button type="button"
                         class="delete-image-btn text-invert transition-all z-10 opacity-0 group-hover:opacity-100 absolute top-1 right-1"
-                        onclick="deleteBlockMedia('{{ $field['key'] }}_{{ $$block->id }}')">
+                        onclick="deleteBlockMedia('{{ $field['key'] }}_{{ $block->id }}')">
                         <i class="fa-solid fa-trash text-sm"></i>
                     </button>
 
                     <!-- Upload Area -->
                     <div data-content-wrapper>
                         <input type="hidden" name="settings[{{ $field['key'] }}]"
-                            id="{{ $field['key'] }}_{{ $$block->id }}"
+                            id="{{ $field['key'] }}_{{ $block->id }}"
                             @if($hasVideo)
                             value="{{ $hasVideo }}"
                             @endif>
 
                         <div class="border-primary border-rounded cursor-pointer group relative overflow-hidden"
                             style="border-style: dashed; border-width: 2px;"
-                            onclick="openContentPicker('{{ $field['key'] }}_{{ $$block->id }}', 'video')">
+                            onclick="openContentPicker('{{ $field['key'] }}_{{ $block->id }}', 'video')">
 
                             <video data-content-preview @if($hasVideo !==null ) src="{{ asset($hasVideo) }}" @endif
                                 class="{{ $hasVideo === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded"
