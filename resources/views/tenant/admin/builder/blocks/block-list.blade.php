@@ -1,6 +1,6 @@
 <li id="block-{{ $block->id }}" class="block-item"
     data-block-id="{{ $block->id }}">
-    <div class="bg-hover-secondary relative group border-rounded cursor-pointer select-none py-0.5 px-1 mt-1 flex justify-between items-center">
+    <div class="bg-hover-secondary relative group/block border-rounded cursor-pointer select-none py-0.5 px-1 mt-1 flex justify-between items-center">
 
         @php
         $blockRules = collect($availableBlocks)->mapWithKeys(function($block) {
@@ -28,7 +28,7 @@
             <span class="text-sm cursor-pointer block-open-btn w-full" data-block-id="{{ $block->id }}"><i class="fa-solid {{ $block->icon ?? 'fa-shapes' }} text-xs mr-2 text-tertiary"></i>{{ $block->name }}</span>
         </div>
 
-        <div class="flex items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
+        <div class="flex items-center opacity-0 pointer-events-none group-hover/block:opacity-100 group-hover/block:pointer-events-auto transition-all duration-200">
             @php
             $blockRule = $blockRules[$block->type] ?? null;
             $moveable = $blockRule['moveable'] ?? "allow";

@@ -6,10 +6,16 @@
     "Page": ["global"],
     "category": "Header",
     "max_blocks": 2,
+    "color_scheme_id": 1,
     "allowed_blocks": ["logo", "menu"],
     "default_blocks": ["logo", "menu"],
     "moveable": "none",
     "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "General"
+        },
         {
             "key": "color_scheme_id",
             "label": "Color Scheme",
@@ -17,103 +23,61 @@
         },
         {
             "key": "navbar_behavior",
-            "label": "Navbar Behavior",
+            "label": "Behavior",
             "type": "radio",
             "options": ["sticky", "scroll-up"],
             "default": "sticky"
         },
         {
+            "key": "transparent",
+            "label": "Transparent",
+            "type": "switch",
+            "default": "0",
+            "text": "Enable to make navbar transparent",
+            "conditional": {
+                "field": "navbar_behavior",
+                "value": "sticky"
+            }
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout"
+        },
+        {
             "key": "navbar_height",
-            "label": "Navbar Height",
+            "label": "Height",
             "type": "select",
             "options": ["compact", "standard", "spacious"],
             "default": "standard"
         },
         {
-            "key": "logo_size",
-            "label": "Logo Size",
-            "type": "range",
-            "default": 35,
-            "min": 20,
-            "max": 70,
-            "step": 1
-        },
-        {
-            "key": "divider",
-            "label": "Divider Bottom",
-            "type": "radio",
-            "default": "enable",
-            "options": ["enable", "disable"]
-        },
-        {
             "key": "links_position",
             "label": "Links Position",
             "type": "radio",
-            "options": ["left", "center", "right"],
-            "default": "left"
+            "options": ["left", "right"],
+            "default": "right"
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
         },
         {
-            "key": "links_spacing",
-            "label": "Links Spacing",
-            "type": "radio",
-            "default": "normal",
-            "options": ["narrow", "normal", "wide"]
-        },
-        {
-            "key": "font_size",
-            "label": "Font Size",
-            "type": "radio",
-            "options": ["small", "medium", "large"],
-            "default": "small"
-        },
-        {
-            "key": "font_weight",
-            "label": "Font Weight",
-            "type": "radio",
-            "options": ["normal", "medium", "bold"],
-            "default": "normal"
-        },
-        {
-            "key": "text_transform",
-            "label": "Text Transform",
-            "type": "radio",
-            "options": ["capitalize", "uppercase"],
-            "default": "capitalize"
+            "key": "divider",
+            "label": "Divider",
+            "type": "switch",
+            "default": "1",
+            "text": "Enable to add divider in bottom"
         },
         {
             "key": "icon_style",
             "label": "Icon Style",
             "type": "radio",
-            "options": ["regular", "solid"],
-            "default": "regular"
-        },
-        {
-            "key": "admission_form_icon",
-            "label": "Admission Form Icon",
-            "type": "radio",
-            "options": ["enable", "disable"],
-            "default": "enable"
-        },
-        {
-            "key": "mobile_menu",
-            "label": "Mobile Menu",
-            "type": "radio",
-            "options": ["enable", "disable"],
-            "default": "enable"
-        },
-        {
-            "key": "logo_position",
-            "label": "Logo Position (Mobile)",
-            "type": "radio",
-            "options": ["left", "center"],
-            "default": "left"
-        },
-        {
-            "key": "social_icons",
-            "label": "Social Icons (Mobile)",
-            "type": "radio",
-            "options": ["enable", "disable"],
-            "default": "enable"
+            "options": ["outline", "solid"],
+            "default": "outline"
         }
     ]
 }

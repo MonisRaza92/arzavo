@@ -227,7 +227,7 @@ return [
                 'icon' => 'fa-gear',
                 'text' => 'Settings',
                 'links' => [
-                    ['icon' => 'fa-sliders', 'text' => 'General Settings', 'route' => '#'],
+                    ['icon' => 'fa-sliders', 'text' => 'General Settings', 'route' => 'admin.settings.index', 'active' => 'admin/settings'],
                     ['icon' => 'fa-lock', 'text' => 'Roles & Permissions', 'route' => '#'],
                     ['icon' => 'fa-shield-halved', 'text' => 'Security', 'route' => '#'],
                     ['icon' => 'fa-globe', 'text' => 'Language', 'route' => '#'],

@@ -159,14 +159,40 @@
         closeContentPicker();
 
         // 3️⃣ 🔥 AUTO SUBMIT IF CUSTOMIZE FORM EXISTS
-        const customizeForm = document.getElementById('customize-form');
 
-        if (customizeForm && typeof submitCustomizesForm === 'function') {
+        if (typeof submitCustomizesForm === 'function') {
+            const form = document.getElementById('customize-form');
             // small delay so DOM fully update ho jaye
             setTimeout(() => {
-                submitCustomizesForm();
-            }, 100);
+                submitCustomizesForm(form);
+            }, 200);
         }
+        if (window.currentOpenSectionId !== null && typeof submitSectionForm === 'function') {
+
+            const id = window.currentOpenSectionId;
+            const form = document.querySelector('#edit-form-' + id + ' .editSectionForm');
+
+            if (!form) return;
+
+            // small delay so DOM update ho jaye
+            setTimeout(() => {
+                submitSectionForm(form);
+            }, 200);
+        }
+
+        if (window.currentOpenBlockId !== null && typeof submitBlockForm === 'function') {
+
+            const id = window.currentOpenBlockId;
+            const form = document.querySelector('#edit-block-form-' + id + ' .editBlockForm');
+
+            if (!form) return;
+
+            // small delay so DOM update ho jaye
+            setTimeout(() => {
+                window.submitBlockForm(form);
+            }, 200);
+        }
+
     }
 
     /* -----------------------------
@@ -222,13 +248,32 @@
         typeInput.value = currentAllowedType;
         fileInput.value = '';
 
+        // 🔥 IMPORTANT: accept attribute set karo
+        const acceptMap = {
+            image: 'image/*',
+            video: 'video/*',
+            audio: 'audio/*',
+            pdf: 'application/pdf'
+        };
+
+        fileInput.setAttribute('accept', acceptMap[currentAllowedType] || '*');
+
         fileInput.click();
 
         fileInput.onchange = function() {
 
             if (!fileInput.files.length) return;
 
-            // 🔥 UI: uploading state
+            const file = fileInput.files[0];
+
+            // 🔴 Safety check (extra guard)
+            if (!isValidFileType(file, currentAllowedType)) {
+                alert('Invalid file type selected');
+                fileInput.value = '';
+                return;
+            }
+
+            // UI: uploading state
             uploadBtnText.innerText = 'Uploading…';
             uploadBtn.disabled = true;
             uploadBtn.classList.add('opacity-70', 'cursor-not-allowed');
@@ -249,27 +294,22 @@
 
                     if (!res.success) throw res;
 
-                    // ✅ Add new content to grid
                     appendNewContent(res.data);
-
                     selectContent(res.data.filepath, res.data.type);
 
-                    // ✅ Reset button
                     uploadBtnText.innerText = 'Upload New';
                     uploadBtn.disabled = false;
                     uploadBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-
                 })
                 .catch(err => {
-                    console.error(err);
                     alert(err.message || 'Upload failed');
-
                     uploadBtnText.innerText = 'Upload New';
                     uploadBtn.disabled = false;
                     uploadBtn.classList.remove('opacity-70', 'cursor-not-allowed');
                 });
         };
     }
+
 
     function appendNewContent(content) {
 
@@ -320,5 +360,16 @@
 
         // 🔥 add to top
         grid.append(div);
+    }
+
+    function isValidFileType(file, type) {
+        const mime = file.type;
+
+        if (type === 'image') return mime.startsWith('image/');
+        if (type === 'video') return mime.startsWith('video/');
+        if (type === 'audio') return mime.startsWith('audio/');
+        if (type === 'pdf') return mime === 'application/pdf';
+
+        return false;
     }
 </script>

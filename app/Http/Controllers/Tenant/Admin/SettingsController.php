@@ -10,9 +10,7 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        return view('tenant.admin.settings', [
-            'settings' => Settings::all()
-        ]);
+        return view('tenant.admin.settings.index');
     }
 
     public function store(Request $request)

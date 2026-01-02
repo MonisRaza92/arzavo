@@ -10,7 +10,7 @@
 
         @php
         // FINAL CLEAN TYPE ARRAY
-        $buttonTypes = ['primary_button','secondary_button','link_button'];
+        $buttonTypes = ['primary_button','secondary_button'];
 
         // OPTIONS WITH LABEL + VALUE SUPPORT
         $buttonCustomizeOptions = [

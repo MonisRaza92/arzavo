@@ -183,14 +183,14 @@ button {
 .modal-show {
     opacity: 0;
     transform: scale(0.95);
-    animation: modalFadeIn 0.15s ease-out forwards;
+    animation: modalFadeIn 0.3s ease-out forwards;
 }
 
 /* Fade + Scale OUT */
 .modal-hide {
     opacity: 1;
     transform: scale(1);
-    animation: modalFadeOut 0.15s ease-in forwards;
+    animation: modalFadeOut 0.3s ease-in forwards;
 }
 
 @keyframes modalFadeIn {
@@ -253,10 +253,35 @@ button {
     pointer-events: none;
     z-index: 10;
 }
-
+.fixed {
+    position: fixed;
+}
+.sticky {
+    position: sticky;
+}
 
 /* ARZAVO THEME CLASSES */
 
+.arzavo-navbar {
+    will-change: background-color, backdrop-filter;
+}
+/* Default: navbar has background */
+.arzavo-navbar.arzavo-background .arzavo-logo-normal {
+    opacity: 1;
+}
+
+.arzavo-navbar.arzavo-background .arzavo-logo-invert {
+    opacity: 0;
+}
+
+/* Transparent navbar (no background) */
+.arzavo-navbar:not(.arzavo-background) .arzavo-logo-normal {
+    opacity: 0;
+}
+
+.arzavo-navbar:not(.arzavo-background) .arzavo-logo-invert {
+    opacity: 1;
+}
 .arzavo-background {
     background: var(--arzavo-background);
 }
@@ -345,6 +370,21 @@ button {
     font-size: var(--arzavo-secondary-text-font-size);
     text-transform: var(--arzavo-secondary-text-text-transform);
 }
+.arzavo-text {
+    color: var(--arzavo-paragraph-color);
+}
+.arzavo-link {
+    color: var(--arzavo-link-color);
+    font-family: var(--arzavo-link-font-family);
+    display: block;
+    transition: all 0.3s ease;
+    &:hover {
+        color: var(--arzavo-link-hover-color);
+    }
+}
+.arzavo-invert-text {
+    color: var(--arzavo-invert-text-color);
+}
 .arzavo-primary-btn {
     background: var(--arzavo-primary-btn-background);
     color: var(--arzavo-primary-btn-text);
@@ -381,19 +421,6 @@ button {
         background-color: var(--arzavo-secondary-btn-hover-background);
         color: var(--arzavo-secondary-btn-hover-text);
         border-color: var(--arzavo-secondary-btn-hover-border);
-    }
-}
-.arzavo-link-btn {
-    color: var(--arzavo-link-btn-text-color);
-    font-size: var(--arzavo-link-btn-font-size);
-    font-family: var(--arzavo-link-btn-font-family);
-    font-weight: var(--arzavo-link-btn-font-weight);
-    text-transform: var(--arzavo-link-btn-text-transform);
-    display: block;
-    transition: all 0.3s ease;
-    &:hover {
-        color: var(--arzavo-link-btn-hover-text-color);
-        text-decoration: underline;
     }
 }
 

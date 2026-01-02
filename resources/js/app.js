@@ -10,10 +10,29 @@ Alpine.start();
 // Color Picker
 window.Pickr = Pickr;
 
+function toggleModel(id) {
+    const model = document.getElementById(id);
+    if (!model) return;
+    model.classList.toggle("hidden");
+}
 
+function openModel(id) {
+    const model = document.getElementById(id);
+    if (!model) return;
+    model.classList.remove("hidden");
+}
+
+function closeModel(id) {
+    const model = document.getElementById(id);
+    if (!model) return;
+    model.classList.add("hidden");
+}
+
+window.toggleModel = toggleModel;
+window.openModel = openModel;
+window.closeModel = closeModel;
 
 window.openSectionEditor = function (sectionId) {
-
     // 🔴 FORCE CLOSE ALL BLOCKS (HARD RESET)
     document.querySelectorAll(".edit-block-form").forEach((f) => {
         f.classList.add("hidden");
@@ -67,6 +86,7 @@ window.openSectionEditor = function (sectionId) {
 };
 
 document.addEventListener("click", function (e) {
+    if (!window.ARZAVO_EDITOR_MODE) return;
     // ✅ IGNORE form elements (THIS IS THE FIX)
     if (e.target.closest("input, textarea, select, label, button")) {
         return;
@@ -83,6 +103,7 @@ document.addEventListener("click", function (e) {
 });
 
 document.addEventListener("mouseover", function (e) {
+    if (!window.ARZAVO_EDITOR_MODE) return;
     const header = e.target.closest(".section-items");
     if (!header) return;
 
@@ -104,6 +125,7 @@ document.addEventListener("mouseover", function (e) {
     previewSection.classList.add("preview-hover");
 });
 document.addEventListener("mouseout", function (e) {
+    if (!window.ARZAVO_EDITOR_MODE) return;
     const header = e.target.closest(".section-items");
     if (!header) return;
 
@@ -165,6 +187,7 @@ window.openBlockEditor = function (blockId) {
 };
 
 document.addEventListener("click", function (e) {
+    if (!window.ARZAVO_EDITOR_MODE) return;
     // ✅ IGNORE form elements inside block editor
     if (e.target.closest("input, textarea, select, label, button")) {
         return;
@@ -186,6 +209,7 @@ document.addEventListener("click", function (e) {
 });
 
 document.addEventListener("mouseover", function (e) {
+    if (!window.ARZAVO_EDITOR_MODE) return;
     const blockEl = e.target.closest(".block-item");
     if (!blockEl) return;
 
@@ -204,6 +228,7 @@ document.addEventListener("mouseover", function (e) {
     previewBlock.classList.add("preview-hover");
 });
 document.addEventListener("mouseout", function (e) {
+    if (!window.ARZAVO_EDITOR_MODE) return;
     const blockEl = e.target.closest(".block-item");
     if (!blockEl) return;
 
@@ -234,7 +259,6 @@ function clearPreviewHighlights() {
 }
 window.clearPreviewHighlights = clearPreviewHighlights;
 
-
 function reapplyPreviewSelection() {
     const iframe = document.getElementById("livePreviewContent");
     if (!iframe) return;
@@ -243,7 +267,7 @@ function reapplyPreviewSelection() {
     if (!previewDoc) return;
 
     // 🟦 Clear old states
-    previewDoc.querySelectorAll(".preview-active").forEach(el => {
+    previewDoc.querySelectorAll(".preview-active").forEach((el) => {
         el.classList.remove("preview-active");
     });
 
@@ -264,7 +288,6 @@ function reapplyPreviewSelection() {
     }
 }
 window.reapplyPreviewSelection = reapplyPreviewSelection;
-
 
 (function attachPreviewReloadHandler() {
     const iframe = document.getElementById("livePreviewContent");

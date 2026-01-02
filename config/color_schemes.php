@@ -9,6 +9,7 @@ return [
             ['key' => 'heading', 'label' => 'Heading', 'type' => 'color'],
             ['key' => 'paragraph', 'label' => 'Paragraph', 'type' => 'color'],
             ['key' => 'secondary_text', 'label' => 'Secondary Text', 'type' => 'color'],
+            ['key' => 'invert_text', 'label' => 'Invert Text', 'type' => 'color'],
             ['key' => 'link', 'label' => 'Link', 'type' => 'color'],
             ['key' => 'link_hover', 'label' => 'Link Hover', 'type' => 'color'],
             ['key' => 'border', 'label' => 'Border Color', 'type' => 'color'],
@@ -31,11 +32,6 @@ return [
             ['key' => 'hover_text', 'label' => 'Hover Text', 'type' => 'color'],
             ['key' => 'border', 'label' => 'Border Color', 'type' => 'color'],
             ['key' => 'hover_border', 'label' => 'Hover Border', 'type' => 'color'],
-        ],
-
-        'link_btn' => [
-            ['key' => 'text', 'label' => 'Text Color', 'type' => 'color'],
-            ['key' => 'hover_text', 'label' => 'Hover Text Color', 'type' => 'color'],
         ],
 
         'input' => [

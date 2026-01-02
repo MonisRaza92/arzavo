@@ -34,6 +34,13 @@ class TenantWebsiteController extends Controller
             'tenant.themes.pages.home'
         );
     }
+    public function about()
+    {
+        return $this->renderSystemPage(
+            'about',
+            'tenant.themes.pages.about'
+        );
+    }
 
     public function courses()
     {
@@ -80,6 +87,6 @@ class TenantWebsiteController extends Controller
             ->orderBy('order')
             ->get();
 
-        return view('tenant.themes.pages.pages', compact('page', 'sections'));
+        return view('tenant.themes.pages.preview', compact('page', 'sections'));
     }
 }

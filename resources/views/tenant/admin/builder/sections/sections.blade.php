@@ -73,7 +73,7 @@
                 @if(is_null($maxBlocks) || $currentBlockCount < $maxBlocks)
                     <button type="button"
                     class="text-blue-600 text-left text-sm bg-hover-secondary w-full mt-1 block p-2 border-rounded"
-                    onclick="document.getElementById('addBlockContainer{{ $section->id }}').classList.remove('hidden')">
+                    onclick="openAddBlock({{ $section->id }})">
                     <i class="fa-regular fa-square-plus mr-1 ml-6 text-[13px]"></i> Add Block
                     </button>
                     @endif
@@ -93,6 +93,10 @@
 </div>
 
 <script>
+    function openAddBlock(id){
+        const blockAddForm = document.getElementById('addBlockContainer' + id);
+        blockAddForm.classList.remove('hidden');
+    }
     window.csrfToken = "{{ csrf_token() }}";
     window.sectionReorderUrl = "{{ route('admin.builder.sections.reorder', $page->id) }}";
 

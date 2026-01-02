@@ -57,6 +57,13 @@ class TenantSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
+                'name' => 'About',
+                'slug' => 'about',
+                'is_system_page' => true,
+                'is_active' => true,
+                'created_at' => now(),
+            ],
+            [
                 'name' => 'Courses',
                 'slug' => 'courses',
                 'is_system_page' => true,
@@ -69,6 +76,34 @@ class TenantSeeder extends Seeder
                 'is_system_page' => true,
                 'is_active' => true,
                 'created_at' => now(),
+            ],
+        ]);
+
+        DB::table('menus')->insert([
+            [
+                'name'=> 'Header',
+                'slug' => 'header',
+                'location' => 'header',
+            ],
+        ]);
+        DB::table('menu_items')->insert([
+            [
+                'menu_id'=> 1,
+                'name'=> 'Home',
+                'link' => '',
+                'order' => 0,
+            ],
+            [
+                'menu_id'=> 1,
+                'name'=> 'About',
+                'link' => 'about',
+                'order' => 1,
+            ],
+            [
+                'menu_id'=> 1,
+                'name'=> 'Courses',
+                'link' => 'courses',
+                'order' => 2,
             ],
         ]);
 

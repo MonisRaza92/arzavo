@@ -11,6 +11,9 @@
     <x-content-model />
     {{-- Main content --}}
     @yield('content')
+    <script>
+        window.ARZAVO_EDITOR_MODE = true;
+    </script>
 </body>
 
 </html>

@@ -11,7 +11,6 @@
     "is_active": true,
     "preview_image": "/themes/nucleus/preview.jpg",
     "default_layout": [
-        { "type": "section", "key": "announcement_bar" },
         { "type": "section", "key": "navbar" },
         { "type": "template", "key": "hero_centered_large" },
         { "type": "template", "key": "stats_strip" },

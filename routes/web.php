@@ -64,9 +64,11 @@ function registerDomains($domain)
     Route::domain($domain)->middleware('tenant')->group(function () {
         //Tenant Auth Routes
         Route::get('/', [TenantWebsiteController::class, 'home'])->name('tenant.home');
+        Route::get('/about', [TenantWebsiteController::class, 'about'])->name('tenant.about');
         Route::get('/courses', [TenantWebsiteController::class, 'courses'])->name('tenant.courses');
         Route::get('/view/course', [TenantWebsiteController::class, 'courses'])->name('tenant.view.course');
         Route::get('/{slug}', [TenantWebsiteController::class, 'pages'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('tenant.pages');
+        Route::get('/edit/{slug}', [TenantWebsiteController::class, 'preview'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('website.preview');
         
         Route::prefix('account')->group(function () {
             Route::get('/login', [TenantLoginController::class, 'login'])->name('tenant.login.form');
@@ -79,7 +81,6 @@ function registerDomains($domain)
         
         Route::middleware('auth:tenant')->group(function () {
             //Profile Routes
-            Route::get('/edit/{slug}', [TenantWebsiteController::class, 'preview'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('website.preview');
 
             Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
             Route::post('/profile/info/update', [ProfileController::class, 'profileInfoUpdate'])->name('profile-info-update');

@@ -1,16 +1,115 @@
 @php
-$s = $block->settings ?? [];
+$settings = $block->settings ?? [];
 
-$gap = $s['gap'] ?? '16';
-$position = $s['position'] ?? 'right';
+$menuId = $settings['menu_id'] ?? 1;
+$separatorMobileMenu = $settings['separate_mobile_menu'] ?? 1;
+$mobileMenuId = $settings['mobile_menu_id'] ?? 1;
+$itemSpacing = $settings['item_spacing'] ?? 16;
+$fontSize = $settings['text_size'] ?? 'small';
+$dropdownStyle = $settings['dropdown_style'] ?? 'hover';
+$textTransform = $settings['text_transform'] ?? 'capitalize';
+$fontWeight = $settings['font_weight'] ?? 'normal';
+$pl = $settings['padding_left'] ?? '16';
+$pr = $settings['padding_right'] ?? '16';
 
-$justifyClasses = match($position) {
-'left' => 'justify-start',
-'center' => 'justify-center',
-'right' => 'justify-end'
+$menu = $menus->firstWhere('id', $menuId);
+if($separatorMobileMenu === "1"){
+$mobileMenu = $menus->firstWhere('id', $mobileMenuId);
+} else {
+$mobileMenu = $menu;
+}
+
+$size = match($fontSize) {
+'small' => 'text-sm',
+'medium' => 'text-base',
+'large' => 'text-lg'
 };
 
 @endphp
-<div class="links flex {{ $justifyClasses }} grow" style="gap: {{ $gap }}px;">
-    @include('tenant.themes.includes.nested-blocks')
+
+@if($menu)
+<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}">
+    <ul class="hidden md:flex
+    font-{{ $fontWeight }}"
+        style="text-transform: {{ $textTransform }}; gap: {{ $itemSpacing }}px; padding-left: {{ $pl }}px; padding-right: {{ $pr }}px;">
+
+        @foreach($menu->items as $item)
+        <li class="relative group">
+            <a href="{{ $item->link }}"
+                class="inline-flex items-center {{ $size }} arzavo-link arzavo-menu"
+                @if ($item->children->count())
+                onclick="event.preventDefault()"
+                @endif>
+                {{ $item->name }}
+            </a>
+
+            @if($item->children->count())
+            <ul class="absolute top-full left-0 hidden group-hover:block min-w-48 arzavo-border border-rounded mt-2"
+                style="background: var(--arzavo-background)">
+                @foreach($item->children->where('parent_id', $item->id) as $child)
+                <li>
+                    <a href="{{ $child->link }}"
+                        class="block px-4 py-2 arzavo-link">
+                        {{ $child->title }}
+                    </a>
+                </li>
+                @endforeach
+            </ul>
+            @endif
+        </li>
+        @endforeach
+    </ul>
+    <button class="text-2xl md:hidden" onclick="document.getElementById('mobileMenu').classList.remove('translate-x-full')"><i class="fa-solid fa-bars"></i></button>
+    <ul class="flex md:hidden flex-col fixed right-0 transform translate-x-full transition-all duration-300 top-0 w-3/4 h-full arzavo-background shadow-2xl z-30 overflow-y-auto scrollbar" id="mobileMenu">
+        <div class="header flex px-4 py-3.5 justify-between arzavo-border-bottom">
+            <img src="{{ asset($customizes['logo'] ?? '') }}" alt="logo" class="h-8 shrink-0">
+            <button class="text-2xl" onclick="document.getElementById('mobileMenu').classList.add('translate-x-full')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        @foreach($mobileMenu->items as $item)
+        <li class="relative group px-4 py-3 arzavo-border-bottom">
+            <a href="{{ $item->link }}"
+                class="inline-flex items-center arzavo-link {{ $size }}"
+                @if ($item->children->count())
+                onclick="event.preventDefault()"
+                @endif>
+                {{ $item->name }}
+            </a>
+
+            @if($item->children->count())
+            <ul class="absolute top-full left-0 hidden group-hover:block min-w-48 arzavo-border border-rounded mt-2"
+                style="background: var(--arzavo-background)">
+                @foreach($item->children->where('parent_id', $item->id) as $child)
+                <li>
+                    <a href="{{ $child->link }}"
+                        class="block px-4 py-2 arzavo-link">
+                        {{ $child->title }}
+                    </a>
+                </li>
+                @endforeach
+            </ul>
+            @endif
+        </li>
+        @endforeach
+        <div class="absolute p-4 arzavo-border-top bottom-0 left-0 w-full">
+            <div class="menu relative" $image>
+                <i class="fa-{{ $iconStyle }} fa-user text-xl" onclick="toggleModel('authMobileMenu')"></i>
+                <div class="auth-menu hidden absolute bottom-full right-0 arzavo-background border-rounded border-primary min-w-full" id="authMobileMenu">
+                    <div class=" user-info arzavo-border-bottom py-2 px-4 relative">
+                    <div class="content">
+                        <h4 class="text-base font-semibold">{{ $user->fname . ' ' . $user->lname }}</h4>
+                        <p class="text-xs">{{ $user->email }}</p>
+                    </div>
+                    <button class="text-lg absolute right-2 top-2" onclick="closeModel('authMobileMenu')"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="links py-2 px-4 space-y-2">
+                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-user"></i>Profile</a>
+                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-bars-progress"></i>Dashboard</a>
+                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-video"></i>Courses</a>
+                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-file-pdf"></i>Notes & Book</a>
+                    <a href="" class="flex gap-2 items-center text-red-500 arzavo-border-top pt-2"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </ul>
 </div>
+@endif

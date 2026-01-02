@@ -20,7 +20,7 @@
             <div class="image-field-{{ $key }} relative group border-primary border-rounded p-2 overflow-hidden">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="font-semibold text-primary text-sm flex items-center gap-2">
-                        <i class="fa-solid {{ $item['icon'] }} text-sm opacity-70"></i>
+                        <i class="fa-solid {{ $item['icon'] }} text-xs opacity-70"></i>
                         {{ $item['label'] }}
                     </h3>
 
@@ -43,11 +43,11 @@
                             class="{{ $customizes[$key] === null ? 'hidden' : '' }} w-full h-full object-contain border-rounded">
 
                         <div data-content-placeholder
-                            class="flex flex-col items-center text-tertiary h-full justify-center">
+                            class="flex flex-col items-center text-tertiary h-full justify-center {{ $customizes[$key] === null ? '' : 'hidden' }}">
                             <i class="fa-solid {{$item['icon']}} text-3xl mb-2"></i>
                             Upload {{ $item['label'] }}
                         </div>
-                        <div class="{{ $customizes[$key] === null ? '' : 'hidden' }} flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100">
+                        <div class="flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100">
                             <span class="px-4 py-2 bg-black/50 border-rounded text-xs text-invert">Upload/Change image</span>
                         </div>
                     </div>

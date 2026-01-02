@@ -42,6 +42,7 @@
         ['key'=>'heading_font_family','label'=>'Heading','type'=>'select','options'=>$fontFamilies,'value'=>'Arial, sans-serif'],
         ['key'=>'paragraph_font_family','label'=>'Paragraph','type'=>'select','options'=>$fontFamilies,'value'=>'Arial, sans-serif'],
         ['key'=>'secondary_text_font_family','label'=>'Body Text','type'=>'select','options'=>$fontFamilies,'value'=>'Arial, sans-serif'],
+        ['key'=>'link_font_family','label'=>'link','type'=>'select','options'=>$fontFamilies,'value'=>'Arial, sans-serif'],
         ],
 
         'Heading 1' => [

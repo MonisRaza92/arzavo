@@ -50,21 +50,23 @@ class AppServiceProvider extends ServiceProvider
                 $classCourses = \App\Models\Tenant\ClassCourse::all();
                 $subjects = \App\Models\Tenant\Subject::all();
                 $courses = \App\Models\Tenant\Course::all();
+                $menus = \App\Models\Tenant\Menu::all();
 
                 return $view->with([
-                    'user'       => $user,
-                    'settings'   => $settings,
-                    'customizes' => $customizes,
-                    'students'   => $students,
-                    'teachers'   => $teachers,
-                    'staff'      => $staff,
-                    'courses'    => $courses,
-                    'images'     => $images,
-                    'colorSchemes'     => $colorSchemes,
-                    'theme' => $theme,
-                    'classCourses' => $classCourses,
-                    'subjects' => $subjects,
-                    'contents' => $contents
+                    'user'          => $user,
+                    'settings'      => $settings,
+                    'customizes'    => $customizes,
+                    'students'      => $students,
+                    'teachers'      => $teachers,
+                    'staff'         => $staff,
+                    'courses'       => $courses,
+                    'images'        => $images,
+                    'colorSchemes'  => $colorSchemes,
+                    'theme'         => $theme,
+                    'classCourses'  => $classCourses,
+                    'subjects'      => $subjects,
+                    'contents'      => $contents,
+                    'menus'          => $menus,
                 ]);
             }
         });

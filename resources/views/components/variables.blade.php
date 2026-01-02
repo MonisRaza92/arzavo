@@ -3,6 +3,8 @@
         --container-width: {{ $customizes['container_width'] ?? '1400' }}px;
         --global-padding: {{ $customizes['global_padding'] ?? '16' }}px;
         --arzavo-background: #ffffff;
+        --arzavo-heading-color: #000000;
+        --arzavo-invert-text-color: #000000;
         --arzavo-border-color: #d4d4d4;
         --arzavo-shadow-color: #000000;
         --arzavo-shadow-spread: {{ $customizes['shadow_spread'] ?? '2px' }};
@@ -13,7 +15,6 @@
         --arzavo-paragraph-font-family: {{ $customizes['paragraph_font_family'] ?? '' }};
         --arzavo-secondary-text-font-family: {{ $customizes['secondary_text_font_family'] ?? '' }};
 
-        --arzavo-heading-color: #000000;
 
         /* ========================= */
         /*           H1              */
@@ -131,13 +132,7 @@
 
         --arzavo-link-color: #1d4ed8;
         --arzavo-link-hover-color: #2563eb;
-        --arzavo-link-btn-text-color: #1d4ed8;
-        --arzavo-link-btn-hover-text-color: #2563eb;
-        --arzavo-link-btn-font-size: {{ $customizes['link_button_font_size'] ?? '16px' }};
-        --arzavo-link-btn-font-family: {{ $customizes['link_button_font_family'] ?? 'Outfit' }};
-        --arzavo-link-btn-font-weight: {{ $customizes['link_button_font_weight'] ?? 'normal' }};
-        --arzavo-link-btn-text-transform: {{ $customizes['link_button_text_transform'] ?? 'default' }};
-        --arzavo-border-invert: #333333;
+        --arzavo-link-font-family: {{ $customizes['link_font_family'] ?? 'Outfit' }};
 
 
     }

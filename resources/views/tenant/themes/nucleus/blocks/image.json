@@ -12,14 +12,14 @@
             "key": "desktop_image",
             "label": "Desktop Image",
             "type": "image",
-            "default": "",
+            "default": null,
             "placeholder": "Upload image for desktop"
         },
         {
             "key": "mobile_image",
             "label": "Mobile Image",
             "type": "image",
-            "default": "",
+            "default": null,
             "placeholder": "Upload image for mobile (optional)"
         },
         {

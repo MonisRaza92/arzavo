@@ -1,28 +1,28 @@
 @php
-$s = $block->settings ?? [];
+$image = $block->settings ?? [];
 
-$desktopImage = $s['desktop_image'] ?? 'images/tenant/bg.jpg';
-$mobileImage = $s['mobile_image'] ?? '';
-$altText = $s['alt_text'] ?? '';
-$imageLink = $s['image_link'] ?? '';
-$openNewTab = $s['open_new_tab'] ?? 'no';
-$imageSize = $s['image_size'] ?? 'auto';
-$customWidth = $s['custom_width'] ?? 100;
-$customHeight = $s['custom_height'] ?? 300;
-$aspectRatio = $s['aspect_ratio'] ?? 'auto';
-$alignment = $s['alignment'] ?? 'center';
-$mAlignment = $s['mobile_alignment'] ?? 'center';
-$borderRadius = $s['border_radius'] ?? 0;
-$shadow = $s['shadow'] ?? 'none';
-$opacity = $s['opacity'] ?? 100;
-$hideDesktop = $s['hide_desktop'] ?? 'no';
-$hideMobile = $s['hide_mobile'] ?? 'no';
-$mt = $s['margin_top'] ?? 0;
-$mb = $s['margin_bottom'] ?? 0;
-$pt = $s['padding_top'] ?? 0;
-$pb = $s['padding_bottom'] ?? 0;
-$pl = $s['padding_left'] ?? 0;
-$pr = $s['padding_right'] ?? 0;
+$desktopImage = $image['desktop_image'] ?? 'images/tenant/bg.jpg';
+$mobileImage = $image['mobile_image'] ?? '';
+$altText = $image['alt_text'] ?? '';
+$imageLink = $image['image_link'] ?? '';
+$openNewTab = $image['open_new_tab'] ?? 'no';
+$imageSize = $image['image_size'] ?? 'auto';
+$customWidth = $image['custom_width'] ?? 100;
+$customHeight = $image['custom_height'] ?? 300;
+$aspectRatio = $image['aspect_ratio'] ?? 'auto';
+$alignment = $image['alignment'] ?? 'center';
+$mAlignment = $image['mobile_alignment'] ?? 'center';
+$borderRadius = $image['border_radius'] ?? 0;
+$imagehadow = $image['shadow'] ?? 'none';
+$opacity = $image['opacity'] ?? 100;
+$hideDesktop = $image['hide_desktop'] ?? 'no';
+$hideMobile = $image['hide_mobile'] ?? 'no';
+$mt = $image['margin_top'] ?? 0;
+$mb = $image['margin_bottom'] ?? 0;
+$pt = $image['padding_top'] ?? 0;
+$pb = $image['padding_bottom'] ?? 0;
+$pl = $image['padding_left'] ?? 0;
+$pr = $image['padding_right'] ?? 0;
 
 $alignmentClass = match($alignment) {
     'left' => 'md:justify-start',
@@ -38,7 +38,7 @@ $mAlignmentClass = match($mAlignment) {
     default => 'justify-center'
 };
 
-$shadowClass = match($shadow) {
+$imagehadowClass = match($imagehadow) {
     'small' => 'shadow-sm',
     'medium' => 'shadow-md',
     'large' => 'shadow-lg',
@@ -100,7 +100,7 @@ $imageToShow = $mobileImage ?: $desktopImage;
             class="
                 {{ $mobileImage ? 'hidden md:block' : 'block' }}
                 {{ $objectFitClass }}
-                {{ $shadowClass }}
+                {{ $imagehadowClass }}
                 w-full h-full
             "
             style="
@@ -122,7 +122,7 @@ $imageToShow = $mobileImage ?: $desktopImage;
             class="
                 block md:hidden
                 {{ $objectFitClass }}
-                {{ $shadowClass }}
+                {{ $imagehadowClass }}
                 w-full h-full
             "
             style="

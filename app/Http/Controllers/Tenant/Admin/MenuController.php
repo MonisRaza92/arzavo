@@ -11,9 +11,7 @@ class MenuController
 {
     public function index()
     {
-        $menus = Menu::orderBy('created_at')->get();
-
-        return view('tenant.admin.menus.index', compact('menus'));
+        return view('tenant.admin.menus.index');
     }
     public function store(Request $request)
     {

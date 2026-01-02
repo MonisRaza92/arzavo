@@ -43,13 +43,13 @@
         }
         @endphp
 
-        <div class="field-item flex justify-between items-center gap-4 border-bottom p-4 transition-all duration-300"
+        <div class="field-item flex justify-between items-center gap-4 p-4 transition-all duration-300 {{ $field['key'] === 'group' ? 'border-bottom border-top' : 'my-2' }}"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
             data-conditions='@json($field["conditional"])'
             @endif>
 
-            <label class="block text-xs font-semibold text-primary text-left w-1/3">
+            <label class="block text-primary text-left w-1/3 {{ $field['key'] === 'group' ? 'text-sm font-semibold' : 'text-[11px]' }}">
                 {{ $field['label'] ?? ucfirst($field['key']) }}
                 @if($field['required'] ?? false)
                 <span class="text-red-500">*</span>
@@ -59,11 +59,14 @@
             <div class="w-2/3">
                 @switch($field['type'])
 
+                @case('group')
+                @break
+
                 {{-- 🎨 Color Scheme Selector --}}
                 @case('color_scheme_selector')
-                <div class="color-scheme-selector">
+                <div class="color-scheme-selector border-primary border-rounded pr-1">
                     <select name="color_scheme_id"
-                        class="w-full p-2.5 border-primary border-rounded text-xs focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all">
+                        class="w-full p-2 text-xs focus:outline-none live-input transition-all">
                         @foreach($colorSchemes as $scheme)
                         <option value="{{ $scheme->id }}"
                             {{ $section->color_scheme_id == $scheme->id ? 'selected' : '' }}>
@@ -107,7 +110,7 @@
                 @case('select')
                 <select name="settings[{{ $field['key'] }}]"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full capitalize p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
+                    class="w-full capitalize p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
                     @foreach($field['options'] ?? [] as $value)
                     <option class="capitalize"
                         value="{{ $value }}"
@@ -169,9 +172,9 @@
                         value="1"
                         class="sr-only peer live-input"
                         {{ !empty($section->settings[$field['key']]) ? 'checked' : '' }}>
-                    <div class="w-11 h-6 bg-gray-300 border-rounded peer shrink-0 peer-checked:bg-black transition-all duration-300"></div>
-                    <div class="absolute left-0.5 top-1/2 transform -translate-y-1/2 bg-white w-5 h-5 shrink-0 border-rounded shadow-sm peer-checked:translate-x-5 transition-all duration-300"></div>
-                    <span class="ml-3 text-xs font-semibold text-primary group-hover:text-accent transition-colors">{{ $field['text'] ?? 'Enable' }}</span>
+                    <div class="w-11 h-6 bg-gray-300 rounded-full peer shrink-0 peer-checked:bg-black transition-all duration-300"></div>
+                    <div class="absolute left-0.75 top-1/2 transform -translate-y-1/2 bg-white w-5 h-5 shrink-0 rounded-full shadow-sm peer-checked:translate-x-4.75 transition-all duration-300"></div>
+                    <span class="ml-3 text-[11px] text-secondary group-hover:text-accent transition-colors">{{ $field['text'] ?? 'Enable' }}</span>
                 </label>
                 @break
 
@@ -183,7 +186,7 @@
                         <input type="color"
                             id="colorPicker-{{ $field['key'] }}"
                             value="{{ $section->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
-                            class="w-10 h-10.5 border-primary border-rounded cursor-pointer color-input live-input transition-all hover:scale-105"
+                            class="w-15 h-9.5 border-primary border-rounded cursor-pointer color-input live-input transition-all hover:scale-105"
                             oninput="document.getElementById('colorInput-{{ $field['key'] }}').value = this.value">
                         <div class="absolute inset-0 border-2 border-transparent group-hover:border-accent border-rounded pointer-events-none transition-all"></div>
                     </div>
@@ -195,7 +198,7 @@
                         value="{{ $section->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
                         maxlength="7"
                         pattern="^#[0-9A-Fa-f]{6}$"
-                        class="w-30 p-2.5 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
+                        class="w-25 p-2 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
                         oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('colorPicker-{{ $field['key'] }}').value = this.value">
                 </div>
                 @break
@@ -240,7 +243,7 @@
                             {{ ($section->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
                             class="sr-only peer live-input">
 
-                        <span class="block p-2.5 text-xs capitalize text-center
+                        <span class="block p-2 text-xs capitalize text-center
                          transition-all duration-200
                          peer-checked:bg-black
                          peer-checked:text-white
@@ -254,194 +257,151 @@
 
                 @break
 
-                {{-- 🖼️ Image Upload --}}
-                @case('image')
-                <div class="image-field-wrapper-{{ $field['key'] }} relative group border-primary border-rounded overflow-hidden bg-white hover:border-accent transition-all duration-300"
-                    style="border-style: dashed; border-width: 2px;">
-                    @php $hasImage = !empty($section->settings[$field['key']]) @endphp
+                @case('font_weight')
+                <div class="flex border-rounded border-primary overflow-hidden">
 
-                    <label for="{{ $field['key'] }}Input" class="cursor-pointer block relative">
-                        <!-- Upload / Preview Area -->
-                        <div id="{{ $field['key'] }}Container" class="relative bg-secondary cursor-pointer"
-                            onclick="openImageMenu('{{ $field['key'] }}Input')">
-
-                            @if ($hasImage)
-                            <!-- Image Preview -->
-                            <img id="{{ $field['key'] }}Preview"
-                                src="{{ asset($section->settings[$field['key']]) }}"
-                                alt="{{ $field['label'] ?? $field['key'] }}"
-                                class="w-full object-contain p-2 transition-all duration-300">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                                <div class="text-center">
-                                    <i class="fa-solid fa-camera text-white text-2xl mb-2"></i>
-                                    <span class="text-white text-sm bg-black/70 px-4 py-2 border-rounded block">Change Image</span>
-                                </div>
-                            </div>
-                            @else
-                            <!-- Upload Placeholder -->
-                            <div id="{{ $field['key'] }}Placeholder" class="flex flex-col items-center justify-center w-42 aspect-video text-primary/80 group-hover:text-accent transition-colors duration-300">
-                                <i class="fa-solid fa-cloud-arrow-up text-4xl mb-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="text-xs font-semibold">Upload {{ $field['label'] ?? $field['key'] }}</span>
-                                <span class="text-xs text-gray-400 mt-1">Click to browse</span>
-                            </div>
-                            @endif
-                        </div>
-
-                        <!-- Hidden Input -->
-                        <input type="text"
+                    @foreach(['normal' => 'font-normal', 'medium' => 'font-semibold', 'bold' => 'font-bold'] as $value => $class)
+                    <label class="flex-1 cursor-pointer relative group">
+                        <input type="radio"
                             name="settings[{{ $field['key'] }}]"
-                            id="{{ $field['key'] }}Input"
-                            value="{{ $section->settings[$field['key']] ?? '' }}"
-                            class="hidden">
+                            value="{{ $value }}"
+                            {{ ($section->settings[$field['key']] ?? $field['default']) === $value ? 'checked' : '' }}
+                            class="sr-only peer live-input">
+                        <span class="block p-1.5 text-center text-sm transition-all duration-200 {{ $class }} peer-checked:bg-black peer-checked:text-white hover:bg-gray-100 peer-checked:hover:bg-gray-900">
+                            Aa
+                        </span>
                     </label>
+                    @endforeach
 
-                    <!-- Delete Button (Outside Label) -->
-                    @if($hasImage)
-                    <button type="button"
-                        id="{{ $field['key'] }}DeleteBtn"
-                        class="absolute top-2 right-2 z-20 bg-red-500 text-white w-8 h-8 flex items-center justify-center border-rounded shadow-lg hover:bg-red-600 hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100"
-                        onclick="deleteImage('{{ $field['key'] }}')">
-                        <i class="fa-solid fa-trash text-xs"></i>
-                    </button>
-                    @endif
                 </div>
                 @break
 
-                {{-- ↔️ Alignment Buttons --}}
-                @case('alignment')
-                <div class="flex items-center gap-2">
-                    @foreach(['left'=>'fa-align-left','center'=>'fa-align-center','right'=>'fa-align-right'] as $align => $icon)
+
+                {{-- 🖼️ Image Upload --}}
+                @case('image')
+                @php
+                $hasImage = $section->settings[$field['key']] ?? null;
+                @endphp
+                <div class="media-field-{{ $field['key'] }}_{{ $section->id }} relative group overflow-hidden">
+                    <!-- Delete Button - Always Visible -->
                     <button type="button"
-                        class="flex-1 p-2.5 border-primary border-rounded hover:bg-accent hover:text-white transition-all duration-200 {{ ($section->settings[$field['key']] ?? 'left') === $align ? 'bg-accent text-white shadow-md' : 'hover:scale-105' }}"
-                        onclick="this.closest('.field-item').querySelector('input[name=\'settings[{{ $field['key'] }}]\']').value='{{ $align }}'; 
+                        class="delete-image-btn text-invert transition-all z-10 opacity-0 group-hover:opacity-100 absolute top-1 right-1"
+                        onclick="deleteSectionMedia('{{ $field['key'] }}_{{ $section->id }}')">
+                        <i class="fa-solid fa-trash text-sm"></i>
+                    </button>
+
+                    <!-- Upload Area -->
+                    <div data-content-wrapper>
+                        <input type="hidden" name="settings[{{ $field['key'] }}]"
+                            id="{{ $field['key'] }}_{{ $section->id }}"
+                            @if($hasImage)
+                            value="{{ $hasImage }}"
+                            @endif>
+
+                        <div class="border-primary border-rounded cursor-pointer group relative overflow-hidden"
+                            style="border-style: dashed; border-width: 2px;"
+                            onclick="openContentPicker('{{ $field['key'] }}_{{ $section->id }}', 'image')">
+
+                            <img data-content-preview @if($hasImage !==null ) src="{{ asset($hasImage) }}" @endif
+                                class="{{ $hasImage === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded">
+
+                            <div data-content-placeholder
+                                class="flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasImage === null ? '' : 'hidden' }}">
+                                <i class="fa-solid fa-image text-3xl mb-2"></i>
+                                Upload {{ $field['label'] }}
+                            </div>
+                            <div class="flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <span class="text-[12px] text-invert">Upload/Change image</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @break
+
+
+                @case('video')
+                @php
+                $hasVideo = $section->settings[$field['key']] ?? null;
+                @endphp
+                <div class="media-field-{{ $field['key'] }}_{{ $section->id }} relative group overflow-hidden">
+                    <!-- Delete Button - Always Visible -->
+                    <button type="button"
+                        class="delete-image-btn text-invert transition-all z-10 opacity-0 group-hover:opacity-100 absolute top-1 right-1"
+                        onclick="deleteSectionMedia('{{ $field['key'] }}_{{ $section->id }}')">
+                        <i class="fa-solid fa-trash text-sm"></i>
+                    </button>
+
+                    <!-- Upload Area -->
+                    <div data-content-wrapper>
+                        <input type="hidden" name="settings[{{ $field['key'] }}]"
+                            id="{{ $field['key'] }}_{{ $section->id }}"
+                            @if($hasVideo)
+                            value="{{ $hasVideo }}"
+                            @endif>
+
+                        <div class="border-primary border-rounded cursor-pointer group relative overflow-hidden"
+                            style="border-style: dashed; border-width: 2px;"
+                            onclick="openContentPicker('{{ $field['key'] }}_{{ $section->id }}', 'video')">
+
+                            <video data-content-preview @if($hasVideo !==null ) src="{{ asset($hasVideo) }}" @endif
+                                class="{{ $hasVideo === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded"
+                                muted autoplay loop preload=" metadata">
+                            </video>
+
+                            <div data-content-placeholder
+                                class=" flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasVideo === null ? '' : 'hidden' }}">
+                                <i class="fa-solid fa-video text-3xl mb-2"></i>
+                                Upload {{ $field['label'] }}
+                        </div>
+                        <div class="flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <span class="text-[12px] text-invert">Upload/Change Video</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @break
+
+            {{-- ↔️ Alignment Buttons --}}
+            @case('alignment')
+            <div class="flex items-center gap-2">
+                @foreach(['left'=>'fa-align-left','center'=>'fa-align-center','right'=>'fa-align-right'] as $align => $icon)
+                <button type="button"
+                    class="flex-1 p-2.5 border-primary border-rounded hover:bg-accent hover:text-white transition-all duration-200 {{ ($section->settings[$field['key']] ?? 'left') === $align ? 'bg-accent text-white shadow-md' : 'hover:scale-105' }}"
+                    onclick="this.closest('.field-item').querySelector('input[name=\'settings[{{ $field['key'] }}]\']').value='{{ $align }}'; 
                                         this.closest('.editSectionForm').dispatchEvent(new Event('input'));
                                         this.closest('.flex').querySelectorAll('button').forEach(b => b.classList.remove('bg-accent', 'text-white', 'shadow-md'));
                                         this.classList.add('bg-accent', 'text-white', 'shadow-md');">
-                        <i class="fa-solid {{ $icon }}"></i>
-                    </button>
-                    @endforeach
-                    <input type="hidden"
-                        name="settings[{{ $field['key'] }}]"
-                        value="{{ $section->settings[$field['key']] ?? 'left' }}">
-                </div>
-                @break
-
-                {{-- ❓ Default/Fallback --}}
-                @default
-                <input type="text"
+                    <i class="fa-solid {{ $icon }}"></i>
+                </button>
+                @endforeach
+                <input type="hidden"
                     name="settings[{{ $field['key'] }}]"
-                    value="{{ $section->settings[$field['key']] ?? '' }}"
-                    class="w-full p-2.5 border-primary border-rounded live-input text-sm focus:ring-2 focus:ring-accent focus:outline-none transition-all">
-                @endswitch
-
-                {{-- Help Text --}}
-                @if(isset($field['help']))
-                <p class="text-xs text-gray-500 mt-1.5 italic">
-                    <i class="fa-solid fa-circle-info mr-1"></i>{{ $field['help'] }}
-                </p>
-                @endif
+                    value="{{ $section->settings[$field['key']] ?? 'left' }}">
             </div>
+            @break
+
+            {{-- ❓ Default/Fallback --}}
+            @default
+            <input type="text"
+                name="settings[{{ $field['key'] }}]"
+                value="{{ $section->settings[$field['key']] ?? '' }}"
+                class="w-full p-2.5 border-primary border-rounded live-input text-sm focus:ring-2 focus:ring-accent focus:outline-none transition-all">
+            @endswitch
+
+            {{-- Help Text --}}
+            @if(isset($field['help']))
+            <p class="text-xs text-gray-500 mt-1.5 italic">
+                <i class="fa-solid fa-circle-info mr-1"></i>{{ $field['help'] }}
+            </p>
+            @endif
         </div>
-        @endforeach
-    </form>
-    @endif
+</div>
+@endforeach
+</form>
+@endif
 </div>
 
-{{-- Conditional Fields JavaScript --}}
 <script>
-    // Handle image selection from media library
-    window.addEventListener('message', function(e) {
-        if (e.data && e.data.type === 'imageSelected') {
-            const fieldKey = e.data.fieldKey;
-            const imagePath = e.data.imagePath;
-
-            const input = document.getElementById(fieldKey + 'Input');
-            const container = document.getElementById(fieldKey + 'Container');
-            const wrapper = document.querySelector('.image-field-wrapper-' + fieldKey);
-
-            if (input && container) {
-                input.value = imagePath;
-
-                // Update container with new image
-                container.innerHTML = `
-                    <img id="${fieldKey}Preview"
-                         src="${imagePath}"
-                         alt="Image Preview"
-                         class="w-full object-contain p-2 transition-all duration-300">
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                        <div class="text-center">
-                            <i class="fa-solid fa-camera text-white text-2xl mb-2"></i>
-                            <span class="text-white text-sm bg-black/70 px-4 py-2 border-rounded block">Change Image</span>
-                        </div>
-                    </div>
-                `;
-
-                // Add delete button if it doesn't exist
-                if (wrapper && !document.getElementById(fieldKey + 'DeleteBtn')) {
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.type = 'button';
-                    deleteBtn.id = fieldKey + 'DeleteBtn';
-                    deleteBtn.className = 'absolute top-2 right-2 z-20 bg-red-500 text-white w-8 h-8 flex items-center justify-center border-rounded shadow-lg hover:bg-red-600 hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100';
-                    deleteBtn.onclick = function() {
-                        deleteImage(fieldKey);
-                    };
-                    deleteBtn.innerHTML = '<i class="fa-solid fa-trash text-xs"></i>';
-                    wrapper.appendChild(deleteBtn);
-                }
-
-                // Submit form
-                const form = input.closest('.editSectionForm');
-                if (form) {
-                    handleFormChange({
-                        target: input
-                    });
-                }
-            }
-        }
-    });
-
-    // Delete Image Function
-    function deleteImage(fieldKey) {
-        event.stopPropagation();
-
-        const input = document.getElementById(fieldKey + 'Input');
-        const preview = document.getElementById(fieldKey + 'Preview');
-        const deleteBtn = document.getElementById(fieldKey + 'DeleteBtn');
-        const container = document.getElementById(fieldKey + 'Container');
-
-        // Clear input value
-        if (input) {
-            input.value = '';
-        }
-
-        // Remove preview image
-        if (preview) {
-            preview.remove();
-        }
-
-        // Remove delete button
-        if (deleteBtn) {
-            deleteBtn.remove();
-        }
-
-        // Add placeholder back
-        if (container) {
-            container.innerHTML = `
-                <div id="${fieldKey}Placeholder" class="flex flex-col items-center justify-center w-42 aspect-video text-primary/80 group-hover:text-accent transition-colors duration-300">
-                    <i class="fa-solid fa-cloud-arrow-up text-4xl mb-2 group-hover:scale-110 transition-transform duration-300"></i>
-                    <span class="text-xs font-semibold">Upload Image</span>
-                    <span class="text-xs text-gray-400 mt-1">Click to browse</span>
-                </div>
-            `;
-        }
-
-        // Submit form to update backend
-        const form = input.closest('.editSectionForm');
-        if (form) {
-            submitSectionForm(form);
-        }
-    }
-
     // Handle conditional field visibility
     document.addEventListener("turbo:load", function() {
         const form = document.querySelector(`#edit-form-{{ $section->id }} .editSectionForm`);
@@ -536,7 +496,7 @@
         // Wait 800ms after last input
         window.submitTimeout = setTimeout(() => {
             submitSectionForm(form);
-        }, 800);
+        }, 200);
     }
 
     function submitSectionForm(form) {
@@ -544,7 +504,7 @@
         const formData = new FormData(form);
 
         // Add empty string for empty image fields to ensure they get cleared
-        const imageInputs = form.querySelectorAll('input[type="text"][id$="Input"]');
+        const imageInputs = form.querySelectorAll('input[type="hidden"][id$="Input"]');
         imageInputs.forEach(input => {
             if (input.value === '') {
                 formData.set(input.name, '');
@@ -562,9 +522,6 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
-                    // Update delete buttons for image fields
-                    updateImageDeleteButtons(form);
-
                     const iframe = document.getElementById('livePreviewContent');
                     if (iframe) {
                         iframe.contentWindow.location.reload();
@@ -576,32 +533,38 @@
             .catch(err => console.error('Live update failed:', err));
     }
 
-    // Function to update delete buttons after image upload
-    function updateImageDeleteButtons(form) {
-        const imageInputs = form.querySelectorAll('input[type="text"][id$="Input"]');
+    function deleteSectionMedia(key) {
 
-        imageInputs.forEach(input => {
-            const fieldKey = input.id.replace('Input', '');
-            const hasImage = input.value && input.value.trim() !== '';
-            const wrapper = input.closest('.image-field-wrapper-' + fieldKey);
-            const existingDeleteBtn = document.getElementById(fieldKey + 'DeleteBtn');
+        const wrapper = document.querySelector('.media-field-' + key);
+        if (!wrapper) return;
 
-            if (hasImage && !existingDeleteBtn && wrapper) {
-                // Create delete button if image exists but button doesn't
-                const deleteBtn = document.createElement('button');
-                deleteBtn.type = 'button';
-                deleteBtn.id = fieldKey + 'DeleteBtn';
-                deleteBtn.className = 'absolute top-2 right-2 z-20 bg-red-500 text-white w-8 h-8 flex items-center justify-center border-rounded shadow-lg hover:bg-red-600 hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100';
-                deleteBtn.onclick = function() {
-                    deleteImage(fieldKey);
-                };
-                deleteBtn.innerHTML = '<i class="fa-solid fa-trash text-xs"></i>';
-                wrapper.appendChild(deleteBtn);
-            } else if (!hasImage && existingDeleteBtn) {
-                // Remove delete button if no image
-                existingDeleteBtn.remove();
-            }
-        });
+        // Preview image
+        const preview = wrapper.querySelector('[data-content-preview]');
+        // Placeholder
+        const placeholder = wrapper.querySelector('[data-content-placeholder]');
+        // Hidden input
+        const input = wrapper.querySelector('input');
+
+        // 1️⃣ Hide preview
+        if (preview) {
+            preview.classList.add('hidden');
+            preview.removeAttribute('src');
+        }
+
+        // 2️⃣ Show placeholder
+        if (placeholder) {
+            placeholder.classList.remove('hidden');
+        }
+
+        // 3️⃣ Set input value to null
+        if (input) {
+            input.value = '';
+        }
+        const id = window.currentOpenSectionId;
+        const form = document.querySelector('#edit-form-' + id + ' .editSectionForm');
+        if (!form) return;
+
+        submitSectionForm(form);
     }
 </script>
 

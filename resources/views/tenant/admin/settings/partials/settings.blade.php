@@ -1,9 +1,8 @@
 <form action="{{ route('admin.settings.store') }}" method="POST" enctype="multipart/form-data" class="my-4">
     @csrf
-
     <!-- General Settings -->
     <h2 class="text-lg font-semibold mb-2">General Settings</h2>
-    <div class="p-4 rounded-md shadow-sm" style="background-color: var(--secondary-background);">
+    <div class="p-4 border-rounded border-primary bg-primary">
         <div class="mb-3">
             <label class="block text-sm font-medium mb-2">Site Name</label>
             <input type="text" name="tenant_name" placeholder="Enter Your School/Coaching Name" value="{{ $settings['tenant_name'] ?? '' }}" class="w-full rounded-md p-2" style="background-color: var(--background-color);">
@@ -17,7 +16,7 @@
 
     <!-- SEO & Analytics -->
     <h2 class="text-lg font-semibold mb-2 mt-4">SEO & Analytics</h2>
-    <div class="p-4 rounded-md shadow-sm" style="background-color: var(--secondary-background);">
+    <div class="p-4 border-rounded border-primary bg-primary">
         <div class="mb-3">
             <label class="block text-sm font-medium mb-2">Meta Title</label>
             <input type="text" name="meta_title" placeholder="Enter Meta Title for SEO" value="{{ $settings['meta_title'] ?? '' }}" class="w-full rounded-md p-2" style="background-color: var(--background-color);">
@@ -38,7 +37,7 @@
 
     <!-- Contact Settings -->
     <h2 class="text-lg font-semibold mb-2 mt-4">Contact Information</h2>
-    <div class="p-4 rounded-md shadow-sm" style="background-color: var(--secondary-background);">
+    <div class="p-4 border-rounded border-primary bg-primary">
         <div class="mb-3">
             <label class="block text-sm font-medium mb-2">Phone</label>
             <input type="text" name="phone" placeholder="Enter Your School/Coaching Phone Number" value="{{ $settings['phone'] ?? '' }}" class="w-full rounded-md p-2" style="background-color: var(--background-color);">
@@ -59,7 +58,7 @@
 
     <!-- Social Media -->
     <h2 class="text-lg font-semibold mb-2 mt-4">Social Media</h2>
-    <div class="p-4 rounded-md shadow-sm" style="background-color: var(--secondary-background);">
+    <div class="p-4 border-rounded border-primary bg-primary">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             @php
             $socials = [
@@ -87,7 +86,7 @@
 
     <!-- Website Controls -->
     <h2 class="text-lg font-semibold mb-2 mt-4">Website Controls</h2>
-    <div class="p-4 rounded-md shadow-sm" style="background-color:var(--secondary-background);">
+    <div class="p-4 border-rounded border-primary bg-primary">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-700">
             @php
             $controls = [
@@ -127,7 +126,7 @@
 
 
     <h2 class="text-lg font-semibold mb-2 mt-4">Communication</h2>
-    <div class="p-4 rounded-md shadow-sm" style="background-color: var(--secondary-background);">
+    <div class="p-4 border-rounded border-primary bg-primary">
 
         <div class="mb-6">
             <h3 class="font-medium mb-2 pb-2" style="border-bottom: 2px solid var(--border-color);">Email (SMTP) Settings</h3>
@@ -255,7 +254,7 @@
 
     <!-- Payment Gateway Settings -->
     <h2 class="text-lg font-semibold mb-2 mt-4">Payment Gateway Settings</h2>
-    <div class="p-4 rounded-md shadow-sm" style="background-color: var(--secondary-background);">
+    <div class="p-4 border-rounded border-primary bg-primary">
 
         <!-- Payment Gateway Selection -->
         <div class="mb-3">
@@ -357,7 +356,7 @@
 
     <!-- Footer Settings -->
     <h2 class="text-lg font-semibold mb-2 mt-4">Footer Settings</h2>
-    <div class="p-4 rounded-md shadow-sm" style="background-color: var(--secondary-background);">
+    <div class="p-4 border-rounded border-primary bg-primary">
         <div class="mb-3">
             <label class="block text-sm font-medium mb-2">Footer Text</label>
             <input type="text" name="footer_text" placeholder="Enter Footer Text"

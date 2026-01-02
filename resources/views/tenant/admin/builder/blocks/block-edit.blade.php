@@ -1,6 +1,6 @@
 <div id="edit-block-form-{{ $block->id }}" class="edit-block-form hidden fixed top-0 left-0 bottom-0 w-[299px] pt-29 z-10 overflow-auto scrollbar bg-primary">
     <div class="flex items-center justify-between p-2 border-bottom sticky top-0 bg-primary z-10">
-        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center curser-pointer" id="blockFormClose">
+        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center curser-pointer" id="blockFormClose" onclick="document.getElementById('edit-block-form-{{ $block->id }}').classList.add('hidden'); clearPreviewHighlights();">
             <i class="fa-solid fa-arrow-left text-tertiary"></i> {{ $block->name }}
         </h2>
         <div class="flex items-center">
@@ -54,13 +54,13 @@
         @endphp
 
 
-        <div class="field-item flex justify-between items-center gap-4 border-bottom p-4 transition-all duration-300"
+        <div class="field-item flex justify-between items-center p-4 gap-4 {{ $field['key'] === 'group' ? 'border-bottom border-top' : 'my-2' }} transition-all duration-300"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
             data-conditions='@json($field["conditional"])'
             @endif>
 
-            <label class="block text-xs font-semibold text-primary text-left w-1/3">
+            <label class="block {{ $field['key'] === 'group' ? 'text-sm font-semibold' : 'text-[11px]' }} text-primary text-left w-1/3">
                 {{ $field['label'] ?? ucfirst($field['key']) }}
                 @if($field['required'] ?? false)
                 <span class="text-red-500">*</span>
@@ -70,10 +70,13 @@
             <div class="w-2/3">
                 @switch($field['type'])
 
+                @case('group')
+                @break
+
                 @case('color_scheme_selector')
-                <div class="color-scheme-selector">
+                <div class="color-scheme-selector border-primary border-rounded pr-1">
                     <select name="color_scheme_id"
-                        class="w-full p-2.5 border-primary border-rounded text-xs focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all">
+                        class="w-full p-2 text-xs focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all">
                         @foreach($colorSchemes as $scheme)
                         <option value="{{ $scheme->id }}"
                             {{ $block->color_scheme_id == $scheme->id ? 'selected' : '' }}>
@@ -83,6 +86,27 @@
                     </select>
                 </div>
                 @break
+                @case('menu')
+                <div class="border-primary border-rounded pr-1">
+                    <select name="settings[{{ $field['key'] }}]"
+                        class="w-full p-2 text-xs focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all"
+                        {{ ($field['required'] ?? false) ? 'required' : '' }}>
+                        @foreach($menus as $menu)
+                        <option value="{{ $menu->id }}"
+                            {{ ($block->settings[$field['key']] ?? $field['default'] ?? null) == $menu->id ? 'selected' : '' }}>
+                            {{ $menu->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                @if(empty($menus) || $menus->count() === 0)
+                <p class="text-xs text-red-500 mt-1">
+                    No menus found. Create a menu first.
+                </p>
+                @endif
+                @break
+
 
                 @case('text')
                 <input type="text"
@@ -113,7 +137,7 @@
                 @case('select')
                 <select name="settings[{{ $field['key'] }}]"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full capitalize p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
+                    class="w-full capitalize p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
                     @foreach($field['options'] ?? [] as $value)
                     <option class="capitalize"
                         value="{{ $value }}"
@@ -179,9 +203,9 @@
                         value="1"
                         class="sr-only peer live-input"
                         {{ !empty($block->settings[$field['key']]) ? 'checked' : '' }}>
-                    <div class="w-11 h-6 bg-gray-300 border-rounded shrink-0 peer peer-checked:bg-black transition-all duration-300"></div>
-                    <div class="absolute left-0.5 top-1/2 transform -translate-y-1/2 bg-white w-5 h-5 shrink-0 border-rounded shadow-sm peer-checked:translate-x-5 transition-all duration-300"></div>
-                    <span class="ml-3 text-xs font-semibold text-primary group-hover:text-accent transition-colors">{{ $field['text'] ?? 'Enable' }}</span>
+                    <div class="w-11 h-6 bg-gray-300 rounded-full shrink-0 peer peer-checked:bg-black transition-all duration-300"></div>
+                    <div class="absolute left-0.75 top-1/2 transform -translate-y-1/2 bg-white w-5 h-5 shrink-0 rounded-full shadow-sm peer-checked:translate-x-4.75 transition-all duration-300"></div>
+                    <span class="ml-3 text-[11px] font-semibold text-primary group-hover:text-accent transition-colors">{{ $field['text'] ?? 'Enable' }}</span>
                 </label>
                 @break
 
@@ -191,7 +215,7 @@
                         <input type="color"
                             id="colorPicker-block-{{ $block->id }}-{{ $field['key'] }}"
                             value="{{ $block->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
-                            class="w-10 h-10.5 border-primary color-input border-rounded cursor-pointer live-input transition-all hover:scale-105"
+                            class="w-15 h-9.5 border-primary color-input border-rounded cursor-pointer live-input transition-all hover:scale-105"
                             oninput="document.getElementById('colorInput-block-{{ $block->id }}-{{ $field['key'] }}').value = this.value">
                         <div class="absolute inset-0 border-2 border-transparent group-hover:border-accent border-rounded pointer-events-none transition-all"></div>
                     </div>
@@ -201,7 +225,7 @@
                         value="{{ $block->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
                         maxlength="7"
                         pattern="^#[0-9A-Fa-f]{6}$"
-                        class="w-30 p-2.5 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
+                        class="w-25 p-2 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
                         oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('colorPicker-block-{{ $block->id }}-{{ $field['key'] }}').value = this.value">
                 </div>
                 @break
@@ -243,7 +267,7 @@
                             {{ ($section->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
                             class="sr-only peer live-input">
 
-                        <span class="block p-2.5 text-xs capitalize text-center
+                        <span class="block p-2 text-xs capitalize text-center
                          transition-all duration-200
                          peer-checked:bg-black
                          peer-checked:text-white
@@ -256,50 +280,106 @@
                 </div>
                 @break
 
-                @case('image')
-                <div class="image-field-wrapper-block-{{ $block->id }}-{{ $field['key'] }} relative group border-primary border-rounded overflow-hidden bg-white hover:border-accent transition-all duration-300"
-                    style="border-style: dashed; border-width: 2px;">
-                    @php $hasImage = !empty($block->settings[$field['key']]) @endphp
+                @case('font_weight')
+                <div class="flex border-rounded border-primary overflow-hidden">
 
-                    <label for="block-{{ $block->id }}-{{ $field['key'] }}Input" class="cursor-pointer block relative">
-                        <div id="block-{{ $block->id }}-{{ $field['key'] }}Container" class="relative bg-secondary cursor-pointer"
-                            onclick="openImageMenu('block-{{ $block->id }}-{{ $field['key'] }}Input')">
-
-                            @if ($hasImage)
-                            <img id="block-{{ $block->id }}-{{ $field['key'] }}Preview"
-                                src="{{ asset($block->settings[$field['key']]) }}"
-                                alt="{{ $field['label'] ?? $field['key'] }}"
-                                class="w-full object-contain p-2 transition-all duration-300">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                                <div class="text-center">
-                                    <i class="fa-solid fa-camera text-white text-2xl mb-2"></i>
-                                    <span class="text-white text-sm bg-black/70 px-4 py-2 border-rounded block">Change Image</span>
-                                </div>
-                            </div>
-                            @else
-                            <div id="block-{{ $block->id }}-{{ $field['key'] }}Placeholder" class="flex flex-col items-center justify-center w-42 aspect-video text-primary/80 group-hover:text-accent transition-colors duration-300">
-                                <i class="fa-solid fa-cloud-arrow-up text-4xl mb-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="text-xs font-semibold">Upload {{ $field['label'] ?? $field['key'] }}</span>
-                                <span class="text-xs text-gray-400 mt-1">Click to browse</span>
-                            </div>
-                            @endif
-                        </div>
-
-                        <input type="text"
+                    @foreach(['normal' => 'font-normal', 'medium' => 'font-semibold', 'bold' => 'font-bold'] as $value => $class)
+                    <label class="flex-1 cursor-pointer relative group">
+                        <input type="radio"
                             name="settings[{{ $field['key'] }}]"
-                            id="block-{{ $block->id }}-{{ $field['key'] }}Input"
-                            value="{{ $block->settings[$field['key']] ?? '' }}"
-                            class="hidden">
+                            value="{{ $value }}"
+                            {{ ($section->settings[$field['key']] ?? $field['default']) === $value ? 'checked' : '' }}
+                            class="sr-only peer live-input">
+                        <span class="block p-1.5 text-center text-sm transition-all duration-200 {{ $class }} peer-checked:bg-black peer-checked:text-white hover:bg-gray-100 peer-checked:hover:bg-gray-900">
+                            Aa
+                        </span>
                     </label>
+                    @endforeach
 
-                    @if($hasImage)
+                </div>
+                @break
+
+                {{-- 🖼️ Image Upload --}}
+                @case('image')
+                @php
+                $hasImage = $block->settings[$field['key']] ?? null;
+                @endphp
+                <div class="media-field-{{ $field['key'] }}_{{ $$block->id }} relative group overflow-hidden">
+                    <!-- Delete Button - Always Visible -->
                     <button type="button"
-                        id="block-{{ $block->id }}-{{ $field['key'] }}DeleteBtn"
-                        class="absolute top-2 right-2 z-20 bg-red-500 text-white w-8 h-8 flex items-center justify-center border-rounded shadow-lg hover:bg-red-600 hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100"
-                        onclick="deleteBlockImage('block-{{ $block->id }}-{{ $field['key'] }}')">
-                        <i class="fa-solid fa-trash text-xs"></i>
+                        class="delete-image-btn text-invert transition-all z-10 opacity-0 group-hover:opacity-100 absolute top-1 right-1"
+                        onclick="deleteBlockMedia('{{ $field['key'] }}_{{ $$block->id }}')">
+                        <i class="fa-solid fa-trash text-sm"></i>
                     </button>
-                    @endif
+
+                    <!-- Upload Area -->
+                    <div data-content-wrapper>
+                        <input type="hidden" name="settings[{{ $field['key'] }}]"
+                            id="{{ $field['key'] }}_{{ $$block->id }}"
+                            @if($hasImage)
+                            value="{{ $hasImage }}"
+                            @endif>
+
+                        <div class="border-primary border-rounded cursor-pointer group relative overflow-hidden"
+                            style="border-style: dashed; border-width: 2px;"
+                            onclick="openContentPicker('{{ $field['key'] }}_{{ $$block->id }}', 'image')">
+
+                            <img data-content-preview @if($hasImage !==null ) src="{{ asset($hasImage) }}" @endif
+                                class="{{ $hasImage === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded">
+
+                            <div data-content-placeholder
+                                class="flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasImage === null ? '' : 'hidden' }}">
+                                <i class="fa-solid fa-image text-3xl mb-2"></i>
+                                Upload {{ $field['label'] }}
+                            </div>
+                            <div class="flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <span class="text-[12px] text-invert">Upload/Change image</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @break
+
+
+                @case('video')
+                @php
+                $hasVideo = $block->settings[$field['key']] ?? null;
+                @endphp
+                <div class="media-field-{{ $field['key'] }}_{{ $$block->id }} relative group overflow-hidden">
+                    <!-- Delete Button - Always Visible -->
+                    <button type="button"
+                        class="delete-image-btn text-invert transition-all z-10 opacity-0 group-hover:opacity-100 absolute top-1 right-1"
+                        onclick="deleteBlockMedia('{{ $field['key'] }}_{{ $$block->id }}')">
+                        <i class="fa-solid fa-trash text-sm"></i>
+                    </button>
+
+                    <!-- Upload Area -->
+                    <div data-content-wrapper>
+                        <input type="hidden" name="settings[{{ $field['key'] }}]"
+                            id="{{ $field['key'] }}_{{ $$block->id }}"
+                            @if($hasVideo)
+                            value="{{ $hasVideo }}"
+                            @endif>
+
+                        <div class="border-primary border-rounded cursor-pointer group relative overflow-hidden"
+                            style="border-style: dashed; border-width: 2px;"
+                            onclick="openContentPicker('{{ $field['key'] }}_{{ $$block->id }}', 'video')">
+
+                            <video data-content-preview @if($hasVideo !==null ) src="{{ asset($hasVideo) }}" @endif
+                                class="{{ $hasVideo === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded"
+                                muted autoplay loop preload=" metadata">
+                            </video>
+
+                            <div data-content-placeholder
+                                class=" flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasVideo === null ? '' : 'hidden' }}">
+                                <i class="fa-solid fa-video text-3xl mb-2"></i>
+                                Upload {{ $field['label'] }}
+                            </div>
+                            <div class="flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <span class="text-[12px] text-invert">Upload/Change Video</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 @break
 
@@ -340,260 +420,170 @@
     @endif
 </div>
 <script>
-    document.addEventListener("click", function (e) {
-    const closeBtn = e.target.closest("#blockFormClose");
-    if (!closeBtn) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    document.querySelectorAll(".edit-block-form").forEach(f => {
-        f.classList.add("hidden");
-    });
-
-    clearPreviewHighlights();
-    window.currentOpenBlockId = null;
-});
+    document.addEventListener("turbo:load", function() {
+        const form = document.querySelector(`#edit-block-form-{{ $block->id }} .editBlockForm`);
+        if (!form) return;
 
 
+        function getValue(input) {
+            if (!input) return null;
 
-    (function() {
-        const blockId = {{$block->id}};
-        let blockSubmitTimeout = null;
-
-        // ✅ GLOBALLY EXPOSE submitBlockForm
-        window.submitBlockForm = function(form) {
-            const formBlockId = form.dataset.blockId;
-            const formData = new FormData(form);
-
-            // Handle empty image fields
-            const imageInputs = form.querySelectorAll('input[type="text"][id$="Input"]');
-            imageInputs.forEach(input => {
-                if (input.value === '') {
-                    formData.set(input.name, '');
-                }
-            });
-
-            fetch(`/admin/builder/sections/blocks/${formBlockId}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': form.querySelector('[name=_token]').value,
-                        'X-HTTP-Method-Override': 'PUT'
-                    },
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        console.log('Block updated successfully');
-                        updateImageDeleteButtons(form);
-
-                        const iframe = document.getElementById('livePreviewContent');
-                        if (iframe) {
-                            iframe.contentWindow.location.reload();
-                        }
-                    } else {
-                        console.error('Update failed:', data.message || 'Unknown error');
-                    }
-                })
-                .catch(err => console.error('Live update failed:', err));
-        };
-
-        // Handle image selection from media library
-        window.addEventListener('message', function(e) {
-            if (e.data && e.data.type === 'imageSelected') {
-                const fieldKey = e.data.fieldKey;
-                const imagePath = e.data.imagePath;
-
-                const input = document.getElementById(fieldKey + 'Input');
-                const container = document.getElementById(fieldKey + 'Container');
-                const wrapper = document.querySelector('.image-field-wrapper-' + fieldKey);
-
-                if (input && container) {
-                    input.value = imagePath;
-
-                    container.innerHTML = `
-                    <img id="${fieldKey}Preview"
-                         src="${imagePath}"
-                         alt="Image Preview"
-                         class="w-full object-contain p-2 transition-all duration-300">
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                        <div class="text-center">
-                            <i class="fa-solid fa-camera text-white text-2xl mb-2"></i>
-                            <span class="text-white text-sm bg-black/70 px-4 py-2 border-rounded block">Change Image</span>
-                        </div>
-                    </div>
-                `;
-
-                    if (wrapper && !document.getElementById(fieldKey + 'DeleteBtn')) {
-                        const deleteBtn = document.createElement('button');
-                        deleteBtn.type = 'button';
-                        deleteBtn.id = fieldKey + 'DeleteBtn';
-                        deleteBtn.className = 'absolute top-2 right-2 z-20 bg-red-500 text-white w-8 h-8 flex items-center justify-center border-rounded shadow-lg hover:bg-red-600 hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100';
-                        deleteBtn.onclick = function() {
-                            deleteBlockImage(fieldKey);
-                        };
-                        deleteBtn.innerHTML = '<i class="fa-solid fa-trash text-xs"></i>';
-                        wrapper.appendChild(deleteBtn);
-                    }
-
-                    const form = input.closest('.editBlockForm');
-                    if (form) {
-                        handleBlockFormChange({
-                            target: input
-                        });
-                    }
-                }
+            if (input.type === "radio") {
+                const checked = form.querySelector(`input[name="${input.name}"]:checked`);
+                return checked ? checked.value : null;
             }
-        });
-
-        // Delete Image Function
-        window.deleteBlockImage = function(fieldKey) {
-            event.stopPropagation();
-
-            const input = document.getElementById(fieldKey + 'Input');
-            const preview = document.getElementById(fieldKey + 'Preview');
-            const deleteBtn = document.getElementById(fieldKey + 'DeleteBtn');
-            const container = document.getElementById(fieldKey + 'Container');
-
-            if (input) input.value = '';
-            if (preview) preview.remove();
-            if (deleteBtn) deleteBtn.remove();
-
-            if (container) {
-                container.innerHTML = `
-                <div id="${fieldKey}Placeholder" class="flex flex-col items-center justify-center w-42 aspect-video text-primary/80 group-hover:text-accent transition-colors duration-300">
-                    <i class="fa-solid fa-cloud-arrow-up text-4xl mb-2 group-hover:scale-110 transition-transform duration-300"></i>
-                    <span class="text-xs font-semibold">Upload Image</span>
-                    <span class="text-xs text-gray-400 mt-1">Click to browse</span>
-                </div>
-            `;
+            if (input.type === "checkbox") {
+                return input.checked ? input.value : "0";
             }
 
-            const form = input?.closest('.editBlockForm');
-            if (form) {
-                window.submitBlockForm(form); // ✅ Use global function
-            }
-        };
-
-        function initBlockConditional(blockId) {
-            const form = document.querySelector(`.editBlockForm[data-block-id="${blockId}"]`);
-            if (!form) return;
-
-            function getValue(input) {
-                if (!input) return null;
-
-                if (input.type === "radio") {
-                    const checked = form.querySelector(`input[name="${input.name}"]:checked`);
-                    return checked ? checked.value : null;
-                }
-                if (input.type === "checkbox") {
-                    return input.checked ? input.value : "0";
-                }
-
-                // for hidden input (ignore if checkbox exists)
-                if (input.type === "hidden") {
-                    const checkbox = form.querySelector(`input[type="checkbox"][name="${input.name}"]`);
-                    if (checkbox) {
-                        return checkbox.checked ? checkbox.value : "0";
-                    }
-                    return input.value;
+            // for hidden input (ignore if checkbox exists)
+            if (input.type === "hidden") {
+                const checkbox = form.querySelector(`input[type="checkbox"][name="${input.name}"]`);
+                if (checkbox) {
+                    return checkbox.checked ? checkbox.value : "0";
                 }
                 return input.value;
             }
+            return input.value;
+        }
 
-            function updateConditionalFields() {
-                const conditionalFields = form.querySelectorAll("[data-conditions]");
+        function updateConditionalFields() {
+            const conditionalFields = form.querySelectorAll("[data-conditions]");
 
-                conditionalFields.forEach((field) => {
-                    let conditions = JSON.parse(field.dataset.conditions);
+            conditionalFields.forEach((field) => {
+                let conditions = JSON.parse(field.dataset.conditions);
 
-                    // backward compatibility
-                    if (!Array.isArray(conditions)) {
-                        conditions = [conditions];
-                    }
+                // backward compatibility
+                if (!Array.isArray(conditions)) {
+                    conditions = [conditions];
+                }
 
-                    let shouldShow = true;
+                let shouldShow = true;
 
-                    conditions.forEach(cond => {
-                        const control = form.querySelector(
-                            `[name="settings[${cond.field}]"], [name="${cond.field}"]`
-                        );
+                conditions.forEach(cond => {
+                    const control = form.querySelector(
+                        `[name="settings[${cond.field}]"], [name="${cond.field}"]`
+                    );
 
-                        const value = getValue(control);
+                    const value = getValue(control);
 
-                        if (String(value) !== String(cond.value)) {
-                            shouldShow = false;
-                        }
-                    });
-
-                    if (shouldShow) {
-                        field.style.display = "flex";
-                        field.style.opacity = "1";
-                        field.querySelectorAll("input,select,textarea")
-                            .forEach(el => el.disabled = false);
-                    } else {
-                        field.style.display = "none";
-                        field.style.opacity = "0";
-                        field.querySelectorAll("input,select,textarea")
-                            .forEach(el => el.disabled = true);
+                    if (String(value) !== String(cond.value)) {
+                        shouldShow = false;
                     }
                 });
-            }
 
-
-
-            updateConditionalFields();
-
-            form.addEventListener("input", updateConditionalFields);
-            form.addEventListener("change", updateConditionalFields);
-        }
-
-        // Form change handler
-        function handleBlockFormChange(e) {
-            const form = e.target.closest('.editBlockForm');
-            if (!form || form.dataset.blockId != blockId) return;
-
-            clearTimeout(blockSubmitTimeout);
-            blockSubmitTimeout = setTimeout(() => {
-                window.submitBlockForm(form); // ✅ Use global function
-            }, 150);
-        }
-
-        // Update delete buttons
-        function updateImageDeleteButtons(form) {
-            const imageInputs = form.querySelectorAll('input[type="text"][id$="Input"]');
-
-            imageInputs.forEach(input => {
-                const fieldKey = input.id.replace('Input', '');
-                const hasImage = input.value && input.value.trim() !== '';
-                const wrapper = input.closest('[class*="image-field-wrapper-"]');
-                const existingDeleteBtn = document.getElementById(fieldKey + 'DeleteBtn');
-
-                if (hasImage && !existingDeleteBtn && wrapper) {
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.type = 'button';
-                    deleteBtn.id = fieldKey + 'DeleteBtn';
-                    deleteBtn.className = 'absolute top-2 right-2 z-20 bg-red-500 text-white w-8 h-8 flex items-center justify-center border-rounded shadow-lg hover:bg-red-600 hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100';
-                    deleteBtn.onclick = function() {
-                        deleteBlockImage(fieldKey);
-                    };
-                    deleteBtn.innerHTML = '<i class="fa-solid fa-trash text-xs"></i>';
-                    wrapper.appendChild(deleteBtn);
-                } else if (!hasImage && existingDeleteBtn) {
-                    existingDeleteBtn.remove();
+                if (shouldShow) {
+                    field.style.display = "flex";
+                    field.style.opacity = "1";
+                    field.querySelectorAll("input,select,textarea")
+                        .forEach(el => el.disabled = false);
+                } else {
+                    field.style.display = "none";
+                    field.style.opacity = "0";
+                    field.querySelectorAll("input,select,textarea")
+                        .forEach(el => el.disabled = true);
                 }
             });
         }
 
-        // Initialize on DOM load
-        document.addEventListener("turbo:load", function() {
-            initBlockConditional({{$block->id}});
-            const form = document.querySelector(`.editBlockForm[data-block-id="{{ $block->id }}"]`);
-            if (!form) return;
+        updateConditionalFields();
 
-            form.addEventListener("input", handleBlockFormChange);
-            form.addEventListener("change", handleBlockFormChange);
+        form.addEventListener("input", updateConditionalFields);
+        form.addEventListener("change", updateConditionalFields);
+    });
+
+
+    // Auto-submit form with debouncing
+    if (typeof submitTimeout === 'undefined') {
+        window.submitTimeout = null;
+    }
+
+    document.addEventListener('input', handleBlockFormChange);
+    document.addEventListener('change', handleBlockFormChange);
+
+    // Form change handler
+    function handleBlockFormChange(e) {
+        const form = e.target.closest('.editBlockForm');
+        if (!form) return;
+
+        // Clear old timeout (debounce)
+        clearTimeout(window.submitTimeout);
+
+        // Wait 800ms after last input
+        window.submitTimeout = setTimeout(() => {
+            submitBlockForm(form); // ✅ Use global function
+        }, 200);
+    }
+
+    // ✅ GLOBALLY EXPOSE submitBlockForm
+    function submitBlockForm(form) {
+
+        const formBlockId = form.dataset.blockId;
+        const formData = new FormData(form);
+
+        // Add empty string for empty image fields to ensure they get cleared
+        const imageInputs = form.querySelectorAll('input[type="hidden"][id$="Input"]');
+        imageInputs.forEach(input => {
+            if (input.value === '') {
+                formData.set(input.name, '');
+            }
         });
-    })();
+
+        fetch(`/admin/builder/sections/blocks/${formBlockId}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': form.querySelector('[name=_token]').value,
+                    'X-HTTP-Method-Override': 'PUT'
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+
+                    const iframe = document.getElementById('livePreviewContent');
+                    if (iframe) {
+                        iframe.contentWindow.location.reload();
+                    }
+                } else {
+                    console.error('Update failed:', data.message || 'Unknown error');
+                }
+            })
+            .catch(err => console.error('Live update failed:', err));
+    };
+
+
+    function deleteBlockMedia(key) {
+
+        const wrapper = document.querySelector('.media-field-' + key);
+        if (!wrapper) return;
+
+        // Preview image
+        const preview = wrapper.querySelector('[data-content-preview]');
+        // Placeholder
+        const placeholder = wrapper.querySelector('[data-content-placeholder]');
+        // Hidden input
+        const input = wrapper.querySelector('input');
+
+        // 1️⃣ Hide preview
+        if (preview) {
+            preview.classList.add('hidden');
+            preview.removeAttribute('src');
+        }
+
+        // 2️⃣ Show placeholder
+        if (placeholder) {
+            placeholder.classList.remove('hidden');
+        }
+
+        // 3️⃣ Set input value to null
+        if (input) {
+            input.value = '';
+        }
+        const id = window.currentOpenBlockId;
+        const form = document.querySelector('#edit-block-form-' + id + ' .editBlockForm');
+        if (!form) return;
+
+        submitBlockForm(form);
+    }
 </script>
