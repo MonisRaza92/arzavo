@@ -156,11 +156,12 @@ class ContentController extends Controller
     {
         $content = Content::findOrFail($id);
 
-        // File path stored in DB is already correct (images/xxx.png)
-        $path = $content->filepath ?? $content->path ?? null;
+        $path = ltrim($content->filepath ?? $content->path ?? '', '/');
 
-        if ($path && Storage::exists($path)) {
-            Storage::delete($path);
+        $disk = Storage::disk(config('filesystems.default'));
+
+        if ($path && $disk->exists($path)) {
+            $disk->delete($path);
         }
 
         $content->delete();
