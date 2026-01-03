@@ -95,7 +95,7 @@ $imageToShow = $mobileImage ?: $desktopImage;
         <!-- Desktop Image -->
         @if($desktopImage)
         <img 
-            src="{{ asset($desktopImage) }}" 
+            src="{{ media($desktopImage) }}" 
             alt="{{ $altText }}"
             class="
                 {{ $mobileImage ? 'hidden md:block' : 'block' }}
@@ -117,7 +117,7 @@ $imageToShow = $mobileImage ?: $desktopImage;
         <!-- Mobile Image -->
         @if($mobileImage)
         <img 
-            src="{{ asset($mobileImage) }}" 
+            src="{{ media($mobileImage) }}" 
             alt="{{ $altText }}"
             class="
                 block md:hidden

@@ -19,10 +19,18 @@
     "default_blocks": "",
     "fields": [
         {
+            "key": "group",
+            "type": "group",
+            "label": "Color Scheme"
+        },
+        {
             "key": "color_scheme",
             "label": "Color Scheme",
             "type": "radio",
-            "options": ["parent", "saparate"],
+            "options": [
+                "parent",
+                "saparate"
+            ],
             "default": "parent"
         },
         {
@@ -35,31 +43,121 @@
             }
         },
         {
-            "key": "background_image",
-            "label": "Background Image",
-            "type": "switch",
-            "default": "0",
-            "text": "Enable to add a background image"
+            "key": "group",
+            "type": "group",
+            "label": "Background"
         },
         {
-            "key": "background_image_group",
+            "key": "background_type",
+            "label": "Background Type",
+            "type": "radio",
+            "options": [
+                "color",
+                "media"
+            ],
+            "default": "color"
+        },
+        {
+            "key": "media_type",
+            "label": "Media Type",
+            "type": "radio",
+            "options": [
+                "image",
+                "video"
+            ],
+            "default": "image",
+            "conditional": {
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "background_image",
             "label": "Background Image",
             "type": "image",
             "default": "",
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "media"
+                },
+                {
+                    "field": "media_type",
+                    "value": "image"
+                }
+            ]
+        },
+        {
+            "key": "background_video",
+            "label": "Background Video",
+            "type": "video",
+            "default": "",
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "media"
+                },
+                {
+                    "field": "media_type",
+                    "value": "video"
+                }
+            ]
+        },
+        {
+            "key": "background_blur",
+            "label": "Background Blur",
+            "type": "switch",
+            "default": "0",
+            "text": "Enable blur effect on background",
             "conditional": {
-                "field": "background_image",
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "background_blur_intensity",
+            "label": "Blur Intensity",
+            "type": "range",
+            "default": "8",
+            "min": 0,
+            "max": 30,
+            "conditional": {
+                "field": "background_blur",
                 "value": "1"
             }
         },
         {
-            "key": "background_image_overlay",
-            "label": "Background Overlay",
-            "type": "switch",
-            "text": "Overlay for image background",
-            "default": "0",
+            "key": "background_attachment",
+            "label": "Background Scroll",
+            "type": "radio",
+            "options": [
+                "scroll",
+                "fixed"
+            ],
+            "default": "scroll",
             "conditional": {
-                "field": "background_image",
-                "value": "1"
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Overlay",
+            "conditional": {
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "background_overlay",
+            "label": "Enable Overlay",
+            "type": "switch",
+            "default": "0",
+            "text": "Overlay for media background",
+            "conditional": {
+                "field": "background_type",
+                "value": "media"
             }
         },
         {
@@ -67,10 +165,16 @@
             "label": "Overlay Color",
             "type": "color",
             "default": "#000000",
-            "conditional": {
-                "field": "background_image",
-                "value": "1"
-            }
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "media"
+                },
+                {
+                    "field": "background_overlay",
+                    "value": "1"
+                }
+            ]
         },
         {
             "key": "overlay_opacity",
@@ -79,16 +183,30 @@
             "default": "50",
             "min": 0,
             "max": 100,
-            "conditional": {
-                "field": "background_image",
-                "value": "1"
-            }
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "media"
+                },
+                {
+                    "field": "background_overlay",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout"
         },
         {
             "key": "direction",
             "label": "Direction",
             "type": "radio",
-            "options": ["vertical", "horizontal"],
+            "options": [
+                "vertical",
+                "horizontal"
+            ],
             "default": "vertical"
         },
         {
@@ -106,34 +224,51 @@
             "key": "alignment",
             "label": "Alignment",
             "type": "radio",
-            "options": ["start", "center", "end"],
+            "options": [
+                "start",
+                "center",
+                "end"
+            ],
             "default": "start"
         },
         {
             "key": "position",
-            "label": "Position",
+            "label": "Content Position",
             "type": "select",
-            "options": ["start", "center", "end", "between"],
+            "options": [
+                "start",
+                "center",
+                "end",
+                "between"
+            ],
             "default": "center"
         },
         {
             "key": "gap",
-            "label": "Gap",
+            "label": "Gap Between Blocks",
             "type": "range",
             "default": "16",
             "min": 0,
             "max": 100
         },
         {
+            "key": "group",
+            "type": "group",
+            "label": "Positioning"
+        },
+        {
             "key": "block_position",
             "label": "Block Position",
             "type": "radio",
-            "options": ["relative", "absolute"],
+            "options": [
+                "relative",
+                "absolute"
+            ],
             "default": "relative"
         },
         {
             "key": "top",
-            "label": "Vertical Position",
+            "label": "Top Offset",
             "type": "number",
             "default": "0",
             "min": -200,
@@ -145,7 +280,7 @@
         },
         {
             "key": "left",
-            "label": "Horizontal Position",
+            "label": "Left Offset",
             "type": "number",
             "default": "0",
             "min": -200,
@@ -156,20 +291,28 @@
             }
         },
         {
+            "key": "group",
+            "type": "group",
+            "label": "Size & Width"
+        },
+        {
             "key": "width",
             "label": "Width",
             "type": "radio",
-            "options": ["auto", "full", "custom"],
+            "options": [
+                "auto",
+                "full",
+                "custom"
+            ],
             "default": "auto"
         },
         {
-            "key": "custom_width",
-            "label": "Custom Block Width",
+            "key": "max_width",
+            "label": "Custom Width (%)",
             "type": "range",
             "default": "30",
             "min": 0,
             "max": 100,
-            "help": "Set width in percentage",
             "conditional": {
                 "field": "width",
                 "value": "custom"
@@ -179,55 +322,61 @@
             "key": "width_mobile",
             "label": "Width (Mobile)",
             "type": "radio",
-            "options": ["auto", "full", "custom"],
+            "options": [
+                "auto",
+                "full",
+                "custom"
+            ],
             "default": "auto"
         },
         {
-            "key": "custom_width_mobile",
-            "label": "Custom Block Width",
+            "key": "max_width_mobile",
+            "label": "Custom Width (%)",
             "type": "range",
             "default": "30",
             "min": 0,
             "max": 100,
-            "help": "Set width in percentage",
             "conditional": {
                 "field": "width_mobile",
                 "value": "custom"
             }
         },
         {
-            "key": "height",
-            "label": "Height",
-            "type": "radio",
-            "options": ["auto", "full", "custom"],
-            "default": "auto"
-        },
-        {
             "key": "custom_height",
-            "label": "Custom Height",
+            "label": "Custom Hieght (px)",
             "type": "range",
             "default": "30",
             "min": 0,
-            "max": 100,
-            "help": "Set height in percentage",
+            "max": 800,
             "conditional": {
-                "field": "height",
-                "value": "custom"
+                "field": "block_position",
+                "value": "absolute"
             }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Border"
         },
         {
             "key": "border",
             "label": "Border",
             "type": "radio",
-            "options": ["enable", "disable"],
+            "options": [
+                "enable",
+                "disable"
+            ],
             "default": "disable"
         },
         {
             "key": "custom_border_width",
-            "label": "Custom Border",
+            "label": "Custom Border Width",
             "type": "switch",
             "default": "0",
-            "text": "enable for custom border width"
+            "conditional": {
+                "field": "border",
+                "value": "enable"
+            }
         },
         {
             "key": "border_width",
@@ -242,18 +391,14 @@
             }
         },
         {
-            "key": "radius",
-            "label": "Border Radius",
-            "type": "radio",
-            "options": ["enable", "disable"],
-            "default": "disable"
-        },
-        {
             "key": "custom_border_radius",
-            "label": "Custom Radius",
+            "label": "Custom Border Radius",
             "type": "switch",
             "default": "0",
-            "text": "enable for custom border Roundness"
+            "conditional": {
+                "field": "border",
+                "value": "enable"
+            }
         },
         {
             "key": "border_radius",
@@ -268,18 +413,48 @@
             }
         },
         {
+            "key": "group",
+            "type": "group",
+            "label": "Visibility"
+        },
+        {
             "key": "hide_desktop",
-            "label": "Hide Desktop",
+            "label": "Hide on Desktop",
             "type": "switch",
-            "default": "0",
-            "text": "Hide Block in Desktop Screen"
+            "default": "0"
         },
         {
             "key": "hide_mobile",
-            "label": "Hide Mobile",
+            "label": "Hide on Mobile",
             "type": "switch",
-            "default": "0",
-            "text": "Hide Block in Mobile Screen"
+            "default": "0"
+        },
+        {
+            "key": "z_index",
+            "label": "Z Index",
+            "type": "number",
+            "default": "1",
+            "min": -10,
+            "max": 100,
+            "conditional": {
+                "field": "block_position",
+                "value": "absolute"
+            }
+        },
+        {
+            "key": "overflow",
+            "label": "Overflow",
+            "type": "radio",
+            "options": [
+                "visible",
+                "hidden"
+            ],
+            "default": "visible"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Padding"
         },
         {
             "key": "padding_top",

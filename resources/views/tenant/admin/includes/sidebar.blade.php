@@ -72,13 +72,13 @@
 
                 <i id="arrow-{{ $item['id'] }}"
                     class="fas fa-angle-right absolute right-2 top-1/2 transform
-                               -translate-y-1/2 transition-all duration-500 ease-in-out"></i>
+                               -translate-y-1/2 transition-all duration-200 ease-in-out"></i>
             </button>
 
             {{-- MENU LINKS --}}
             <ul id="{{ $item['id'] }}"
                 class="ml-4 pl-2 border-left overflow-hidden max-h-0
-                                   transition-all duration-500 ease-linear space-y-2">
+                                   transition-all duration-200 ease-linear space-y-2">
 
                 @foreach($item['links'] as $link)
 

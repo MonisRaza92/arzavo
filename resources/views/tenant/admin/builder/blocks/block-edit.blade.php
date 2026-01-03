@@ -54,13 +54,13 @@
         @endphp
 
 
-        <div class="field-item flex justify-between items-center p-4 gap-4 {{ $field['key'] === 'group' ? 'border-bottom border-top' : 'my-2' }} transition-all duration-300"
+        <div class="field-item flex justify-between items-center p-4 gap-4 {{ $field['key'] === 'group' ? 'border-bottom border-top' : '' }} transition-all duration-300"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
             data-conditions='@json($field["conditional"])'
             @endif>
 
-            <label class="block {{ $field['key'] === 'group' ? 'text-sm font-semibold' : 'text-[11px]' }} text-primary text-left w-1/3">
+            <label class="block text-[12px] {{ $field['key'] === 'group' ? 'font-semibold' : '' }} text-primary text-left w-1/3">
                 {{ $field['label'] ?? ucfirst($field['key']) }}
                 @if($field['required'] ?? false)
                 <span class="text-red-500">*</span>
@@ -114,7 +114,7 @@
                     value="{{ $block->settings[$field['key']] ?? $field['default'] ?? '' }}"
                     placeholder="{{ $field['placeholder'] ?? $field['default'] ?? 'Enter text...' }}"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm transition-all">
+                    class="w-full p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm transition-all">
                 @break
 
                 @case('link')
@@ -123,7 +123,7 @@
                     value="{{ $block->settings[$field['key']] ?? $field['default'] ?? '' }}"
                     placeholder="{{ $field['placeholder'] ?? $field['default'] ?? 'Enter text...' }}"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm transition-all">
+                    class="w-full p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm transition-all">
                 @break
 
                 @case('textarea')
@@ -131,7 +131,7 @@
                     rows="{{ $field['rows'] ?? 3 }}"
                     placeholder="{{ $field['placeholder'] ?? 'Write something...' }}"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs resize-none transition-all">{{ $block->settings[$field['key']] ?? $field['default'] ?? '' }}</textarea>
+                    class="w-full p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs resize-none transition-all">{{ $block->settings[$field['key']] ?? $field['default'] ?? '' }}</textarea>
                 @break
 
                 @case('select')
@@ -151,7 +151,7 @@
                 @case('icon')
                 <select name="settings[{{ $field['key'] }}]"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full capitalize p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
+                    class="w-full capitalize p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
 
                     @foreach(config('icons') as $icon)
                     <option value="{{ $icon }}"
@@ -264,7 +264,7 @@
                         <input type="radio"
                             name="settings[{{ $field['key'] }}]"
                             value="{{ $value }}"
-                            {{ ($section->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
+                            {{ ($block->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
                             class="sr-only peer live-input">
 
                         <span class="block p-2 text-xs capitalize text-center
@@ -288,7 +288,7 @@
                         <input type="radio"
                             name="settings[{{ $field['key'] }}]"
                             value="{{ $value }}"
-                            {{ ($section->settings[$field['key']] ?? $field['default']) === $value ? 'checked' : '' }}
+                            {{ ($block->settings[$field['key']] ?? $field['default']) === $value ? 'checked' : '' }}
                             class="sr-only peer live-input">
                         <span class="block p-1.5 text-center text-sm transition-all duration-200 {{ $class }} peer-checked:bg-black peer-checked:text-white hover:bg-gray-100 peer-checked:hover:bg-gray-900">
                             Aa
@@ -324,7 +324,7 @@
                             style="border-style: dashed; border-width: 2px;"
                             onclick="openContentPicker('{{ $field['key'] }}_{{ $block->id }}', 'image')">
 
-                            <img data-content-preview @if($hasImage !==null ) src="{{ asset($hasImage) }}" @endif
+                            <img data-content-preview @if($hasImage !==null ) src="{{ media($hasImage) }}" @endif
                                 class="{{ $hasImage === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded">
 
                             <div data-content-placeholder
@@ -365,7 +365,7 @@
                             style="border-style: dashed; border-width: 2px;"
                             onclick="openContentPicker('{{ $field['key'] }}_{{ $block->id }}', 'video')">
 
-                            <video data-content-preview @if($hasVideo !==null ) src="{{ asset($hasVideo) }}" @endif
+                            <video data-content-preview @if($hasVideo !==null ) src="{{ media($hasVideo) }}" @endif
                                 class="{{ $hasVideo === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded"
                                 muted autoplay loop preload=" metadata">
                             </video>
@@ -405,7 +405,7 @@
                 <input type="text"
                     name="settings[{{ $field['key'] }}]"
                     value="{{ $block->settings[$field['key']] ?? '' }}"
-                    class="w-full p-2.5 border-primary border-rounded live-input text-sm focus:ring-2 focus:ring-accent focus:outline-none transition-all">
+                    class="w-full p-2 border-primary border-rounded live-input text-sm focus:ring-2 focus:ring-accent focus:outline-none transition-all">
                 @endswitch
 
                 @if(isset($field['help']))

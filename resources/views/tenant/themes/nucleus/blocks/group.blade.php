@@ -1,115 +1,152 @@
 @php
 $s = $block->settings ?? [];
+$id = $block->id;
 
-$colorScheme = $s['color_scheme'] ?? 'parent';
+$colorScheme = $s['color_scheme'] ?? '';
+
+$bgType = $s['background_type'] ?? '';
+$mediaType = $s['media_type'] ?? '';
 $bgImage = $s['background_image'] ?? '';
-$image = $s['background_image_group'] ?? '';
-$overlay = $s['background_image_overlay'] ?? '';
-$overlayColor = $s['overlay_color'] ?? ''; 
-$overlayOpacity = $s['overlay_opacity'] ?? '50'; 
+$bgVideo = $s['background_video'] ?? '';
+
+$bgBlur = $s['background_blur'] ?? '';
+$bgBlurIntensity = $s['background_blur_intensity'] ?? '';
+$bgAttachment = $s['background_attachment'] ?? '';
+
+$overlay = $s['background_overlay'] ?? '';
+$overlayColor = $s['overlay_color'] ?? '';
+$overlayOpacity = $s['overlay_opacity'] ?? '';
+
 $direction = $s['direction'] ?? '';
 $mDirection = $s['mobile_direction'] ?? '';
-$alignment = $s['alignment'] ?? 'start';
-$position = $s['position'] ?? 'start';
-$gap = $s['gap'] ?? '0';
-$width = $s['width'] ?? 'auto';
-$customWidth = $s['custom_width'] ?? '';
-$widthM = $s['width_mobile'] ?? 'auto';
-$customWidthM = $s['custom_width_mobile'] ?? '';
-$height = $s['height'] ?? 'auto';
-$customHeight = $s['custom_height'] ?? '';
-$border = $s['border'] ?? 'enable';
-$customBorderWidth = $s['custom_border_width'] ?? '';
-$borderWidth = $s['border_width'] ?? '';
-$radius = $s['radius'] ?? 'enable';
-$customRadius = $s['custom_border_radius'] ?? '';
-$borderRadius = $s['border_radius'] ?? '';
-$pt = $s['padding_top'] ?? '0';
-$pr = $s['padding_right'] ?? '0';
-$pb = $s['padding_bottom'] ?? '0';
-$pl = $s['padding_left'] ?? '0';
-$blockPosition = $s['block_position'] ?? 'relative';
+
+$alignment = $s['alignment'] ?? '';
+$position = $s['position'] ?? '';
+$gap = $s['gap'] ?? '';
+
+$width = $s['width'] ?? '';
+$maxWidth = $s['max_width'] ?? '';
+$widthM = $s['width_mobile'] ?? '';
+$maxWidthM = $s['max_width_mobile'] ?? '';
+
+$blockPosition = $s['block_position'] ?? '';
 $top = $s['top'] ?? '';
 $left = $s['left'] ?? '';
-$mobile = $s['hide_mobile'] ?? '';
-$desktop = $s['hide_desktop'] ?? '';
+$zIndex = $s['z_index'] ?? '';
+$overflow = $s['overflow'] ?? '';
 
-if($colorScheme === 'saparate'){
-$colors = $block->colorScheme->scheme_colors;
-$primaryBtnColors = $block->colorScheme->primary_btn;
-$secondaryBtnColors = $block->colorScheme->secondary_btn;
-$linkBtnColors = $block->colorScheme->link_btn;
+$border = $s['border'] ?? '';
+$customBorderWidth = $s['custom_border_width'] ?? '';
+$borderWidth = $s['border_width'] ?? '';
+
+$customRadius = $s['custom_border_radius'] ?? '';
+$borderRadius = $s['border_radius'] ?? '';
+
+$pt = $s['padding_top'] ?? '';
+$pr = $s['padding_right'] ?? '';
+$pb = $s['padding_bottom'] ?? '';
+$pl = $s['padding_left'] ?? '';
+
+$hideMobile = $s['hide_mobile'] ?? '';
+$hideDesktop = $s['hide_desktop'] ?? '';
+
+if ($colorScheme === 'saparate' && $block->colorScheme) {
+$colors = $section->colorScheme->scheme_colors;
+$primaryBtn = $section->colorScheme->primary_btn;
+$secondaryBtn = $section->colorScheme->secondary_btn;
+$input = $section->colorScheme->input;
 }
 @endphp
+
 <style>
-    .group-s-{{ $block->id }} {
-        @if ($widthM === 'custom')
-        width: {{ $customWidthM }}%;
-        @endif
-    }
-    @media (min-width: 768px) {
-        .group-s-{{ $block->id }} {
+.group-s-{{ $id }} {
+    overflow: {{ $overflow }};
+    z-index: {{ $zIndex }};
+}
+
+.group-s-{{ $id }} {
+    @if ($widthM === 'custom')
+        width: {{ $maxWidthM }}%;
+    @endif
+}
+
+@media (min-width: 768px) {
+    .group-s-{{ $id }} {
         @if ($width === 'custom')
-        width: {{ $customWidth }}%;
+            width: {{ $maxWidth }}%;
         @endif
-        }
     }
+}
 </style>
-<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
+<div
+    data-block-id="{{ $id }}"
+    data-name="{{ $block->name }}"
     style="
-    --arzavo-background: {{ $colors->background ?? '' }};
-    --arzavo-border-color: {{ $colors->border ?? '' }};
-    --arzavo-heading-color: {{ $colors->heading ?? '' }};
-    --arzavo-paragraph-color: {{ $colors->paragraph ?? '' }};
-    --arzavo-secondary-text-color: {{ $colors->secondary_text ?? '' }};
-    --arzavo-link-color: {{ $colors->link ?? '' }};
-    --arzavo-link-hover-color: {{ $colors->link_hover ?? '' }};
+       {{ colors($colors, $primaryBtn, $secondaryBtn, $input) }}
         padding-top: {{ $pt }}px;
         padding-right: {{ $pr }}px;
         padding-bottom: {{ $pb }}px;
         padding-left: {{ $pl }}px;
         gap: {{ $gap }}px;
-        @if ($customRadius === '1')
-        border-radius: {{ $borderRadius . 'px' }};
-        @endif
+
         @if ($customBorderWidth === '1')
-        border-width: {{ $borderWidth . 'px' }};
+            border-width: {{ $borderWidth }}px;
         @endif
-        @if ($height === 'custom')
-        min-height: {{ $customHeight }}%;
+
+        @if ($customRadius === '1')
+            border-radius: {{ $borderRadius }}px;
         @endif
+
         @if ($colorScheme === 'saparate')
-        background: var(--arzavo-background);
+            background: {{ $colors->background ?? '' }};
         @endif
-        @if ($bgImage === '1' && $image !== null)
-        background-image: url('{{ asset($image) }}');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
+
+        @if ($bgType === 'media' && $mediaType === 'image' && $bgImage)
+            background-image: url('{{ asset($bgImage) }}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: {{ $bgAttachment }};
         @endif
+
         @if ($blockPosition === 'absolute')
-        top: {{ $top }}%;
-        left: {{ $left }}%;
+            top: {{ $top }}%;
+            left: {{ $left }}%;
         @endif
-        "
+    "
     class="
-    {{ $mobile === '0' ? 'flex' : 'hidden' }}
-    {{ $desktop === '0' ? 'md:flex' : 'md:hidden' }}
-    group-s-{{ $block->id }} 
-    s-component flex
-    {{ $widthM === 'full' ? 'w-full' : 'w-auto' }}
-    {{ $width === 'full' ? 'md:w-full' : 'md:w-auto' }}
-    {{ $blockPosition }} 
-    {{ $height === 'full' ? 'min-h-screen' : '' }}
-    {{ $direction === 'horizontal' ? 'md:flex-row' : 'md:flex-col' }} 
-    {{ $mDirection === '0' ? 'flex-row' : 'flex-col' }} 
-    {{ $border === 'enable' ? 'arzavo-border' : '' }} 
-    {{ $radius === 'enable' ? 'arzavo-border-rounded' : '' }}
-    items-{{ $alignment }}
-    justify-{{ $position }}
+        group-s-{{ $id }}
+        s-component flex
+        {{ $hideMobile === '1' ? 'hidden md:flex' : '' }}
+        {{ $hideDesktop === '1' ? 'md:hidden' : '' }}
+        {{ $widthM === 'full' ? 'w-full' : 'w-auto' }}
+        {{ $width === 'full' ? 'md:w-full' : 'md:w-auto' }}
+        {{ $blockPosition }}
+        {{ $direction === 'horizontal' ? 'md:flex-row' : 'md:flex-col' }}
+        {{ $mDirection === '0' ? 'flex-row' : 'flex-col' }}
+        {{ $border === 'enable' ? 'arzavo-border' : '' }}
+        {{ $customRadius === '1' ? 'arzavo-border-rounded' : '' }}
+        items-{{ $alignment }}
+        justify-{{ $position }}
     ">
-    @if ( $overlay === "1" && ($bgImage === '1' && $image) )
-    <div class="absolute top-0 bottom-0 left-0 right-0" style="background-color: {{ $overlayColor }}; opacity: {{ $overlayOpacity }}%;"></div>
+    @if ($bgType === 'media' && $mediaType === 'video' && $bgVideo)
+    <video
+        class="absolute inset-0 w-full h-full object-cover -z-10"
+        autoplay muted loop playsinline>
+        <source src="{{ asset($bgVideo) }}" type="video/mp4">
+    </video>
+    @endif
+    @if ($overlay === '1' && $bgType === 'media')
+    <div
+        class="absolute inset-0 pointer-events-none"
+        style="
+            background-color: {{ $overlayColor }};
+            opacity: {{ $overlayOpacity }}%;
+            @if ($bgBlur === '1')
+                backdrop-filter: blur({{ $bgBlurIntensity }}px);
+            @endif
+        ">
+    </div>
     @endif
     @include('tenant.themes.includes.nested-blocks')
 </div>

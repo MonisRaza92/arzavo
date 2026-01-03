@@ -253,7 +253,7 @@
         },
         {
             "key": "position",
-            "label": "Content Position",
+            "label": "Position",
             "type": "select",
             "options": [
                 "start",

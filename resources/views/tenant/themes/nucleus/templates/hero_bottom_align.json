@@ -4,17 +4,15 @@
     "icon": "fa-box",
     "order": 2,
     "category": "Hero",
-    "color_scheme_id": 1,
-    "max_blocks": 6,
-    "allowed_blocks": ["heading", "text", "button", "image", "group"],
+    "color_scheme_id": 2,
     "default_blocks": [
         {
             "type": "heading",
             "settings": {
-                "text": "Amazing Product Focus Experience",
+                "text": "Amazing Learning Focus Experience",
                 "heading_type": "heading-1",
-                "alignment": "center",
-                "mobile_alignment": "center"
+                "alignment": "left",
+                "mobile_alignment": "left"
             }
         },
         {
@@ -23,8 +21,8 @@
                 "text": "Create something extraordinary with our powerful platform designed for modern businesses and creative professionals.",
                 "text_type": "paragraph",
                 "font_size": "large",
-                "alignment": "center",
-                "mobile_alignment": "center"
+                "alignment": "left",
+                "mobile_alignment": "left"
             }
         },
         {
@@ -32,23 +30,22 @@
             "settings": {
                 "text": "Get Started Now",
                 "button_type": "primary",
-                "size": "large",
-                "alignment": "center",
                 "mobile_alignment": "center"
             }
         }
     ],
     "settings": {
-        "background_type": "color",
+        "background_type": "media",
+        "media_type": "image",
         "height": "full",
         "mobile_height": "1",
         "direction": "vertical",
-        "mobile_direction": "vertical",
-        "alignment": "center",
-        "position": "center",
-        "gap": 32,
-        "padding_top": 80,
-        "padding_bottom": 80
+        "mobile_direction": "1",
+        "alignment": "start",
+        "position": "end",
+        "gap": 16,
+        "padding_top": 0,
+        "padding_bottom": 32
     }
 }
 

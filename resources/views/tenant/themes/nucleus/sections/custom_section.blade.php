@@ -48,6 +48,9 @@ $wrapperClass = $contentWidth === 'full'
 
 /* colors */
 $colors = $section->colorScheme->scheme_colors;
+$primaryBtn = $section->colorScheme->primary_btn;
+$secondaryBtn = $section->colorScheme->secondary_btn;
+$input = $section->colorScheme->input;
 @endphp
 <div
     data-section-id="{{ $section->id }}"
@@ -59,12 +62,13 @@ $colors = $section->colorScheme->scheme_colors;
     "
 
     style="
+        {{ colors($colors, $primaryBtn, $secondaryBtn, $input) }}
         --arzavo-background: {{ $colors->background ?? '' }};
         --arzavo-heading-color: {{ $colors->heading ?? '' }};
         --arzavo-paragraph-color: {{ $colors->paragraph ?? '' }};
 
         @if ($bgType === 'media' && $mediaType === 'image' && $bgImage)
-            background-image: url('{{ asset($bgImage) }}');
+            background-image: url('{{ media($bgImage) }}');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -85,7 +89,7 @@ $colors = $section->colorScheme->scheme_colors;
         muted
         loop
         playsinline>
-        <source src="{{ asset($bgVideo) }}" type="video/mp4">
+        <source src="{{ media($bgVideo) }}" type="video/mp4">
     </video>
     @endif
 

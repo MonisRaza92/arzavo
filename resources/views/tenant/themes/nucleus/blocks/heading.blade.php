@@ -2,18 +2,20 @@
 $s = $block->settings ?? [];
 
 $heading = $s['text'] ?? '';
-$headingType = $s['heading_type'] ?? 'heading-2';
-$fontStyle = $s['font_style'] ?? 'normal';
-$textDecoration = $s['text_decoration'] ?? 'none';
-$width = $s['width'] ?? 'fit';
-$alignment = $s['alignment'] ?? 'left';
-$mAlignment = $s['mobile_alignment'] ?? 'left';
-$mt = $s['margin_top'] ?? 0;
-$mb = $s['margin_bottom'] ?? 0;
-$pt = $s['padding_top'] ?? 0;
-$pb = $s['padding_bottom'] ?? 0;
-$pl = $s['padding_left'] ?? 0;
-$pr = $s['padding_right'] ?? 0;
+$headingType = $s['heading_type'] ?? '';
+$fontStyle = $s['font_style'] ?? '';
+$textDecoration = $s['text_decoration'] ?? '';
+$width = $s['width'] ?? '100';
+$alignment = $s['alignment'] ?? '';
+$mAlignment = $s['mobile_alignment'] ?? '';
+$mt = $s['margin_top'] ?? '';
+$mb = $s['margin_bottom'] ?? '';
+$ml = $s['margin_left'] ?? '';
+$mr = $s['margin_right'] ?? '';
+$pt = $s['padding_top'] ?? '';
+$pb = $s['padding_bottom'] ?? '';
+$pl = $s['padding_left'] ?? '';
+$pr = $s['padding_right'] ?? '';
 
 $tag = match ($headingType) {
     'heading-1' => 'h1',
@@ -39,11 +41,20 @@ $mAlignmentClass = match($mAlignment) {
     default => 'text-left'
 };
 @endphp
+<style>
+    @media (min-width: 768px){
+        .heading-{{ $block->id }} {
+            max-width: {{ $width }}%;
+        }
+    }
+</style>
 
 <{{ $tag }} data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
     style="
         margin-top: {{ $mt }}px;
         margin-bottom: {{ $mb }}px;
+        margin-left: {{ $ml }}px;
+        margin-right: {{ $mr }}px;
         padding-top: {{ $pt }}px;
         padding-bottom: {{ $pb }}px;
         padding-left: {{ $pl }}px;
@@ -53,7 +64,7 @@ $mAlignmentClass = match($mAlignment) {
     "
     class="
         arzavo-{{ $headingType }}
-        {{ $width === 'full' ? 'w-full' : 'max-w-fit' }}
+        heading-{{ $block->id }}
         {{ $mAlignmentClass }}
         {{ $alignmentClass }}
     "

@@ -5,9 +5,12 @@
     "order": 3,
     "category": "Basic",
     "max_blocks": 0,
-    "allowed_blocks": "",
-    "default_blocks": "",
     "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content"
+        },
         {
             "key": "text",
             "label": "Button Text",
@@ -22,93 +25,102 @@
             "default": "#",
             "placeholder": "https://example.com"
         },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Type & Icon"
+        },
         {
             "key": "button_type",
             "label": "Button Type",
-            "type": "select",
-            "options": ["primary", "secondary", "link"],
+            "type": "radio",
+            "options": ["primary", "secondary"],
             "default": "primary"
         },
         {
             "key": "icon",
             "label": "Button Icon",
             "type": "icon",
-            "default": "none",
-            "placeholder": "fa-arrow-right"
+            "default": "none"
         },
         {
             "key": "icon_position",
             "label": "Icon Position",
             "type": "radio",
             "options": ["left", "right"],
-            "default": "right"
+            "default": "right",
+            "conditional": {
+                "field": "icon",
+                "value": "not:none"
+            }
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Size & Width"
         },
         {
             "key": "width_desktop",
             "label": "Desktop Width",
             "type": "radio",
-            "options": ["fit", "full", "custom"],
-            "default": "fit"
-        },
-        {
-            "key": "custom_width_desktop",
-            "label": "Custom Desktop Width (%)",
-            "type": "range",
-            "default": 50,
-            "min": 10,
-            "max": 100,
-            "conditional": {
-                "field": "width_desktop",
-                "value": "custom"
-            }
+            "options": ["theme", "full"],
+            "default": "theme"
         },
         {
             "key": "width_mobile",
             "label": "Mobile Width",
             "type": "radio",
-            "options": ["fit", "full", "custom"],
-            "default": "full"
+            "options": ["theme", "full"],
+            "default": "theme"
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Text Alignment"
         },
         {
-            "key": "custom_width_mobile",
-            "label": "Custom Mobile Width (%)",
-            "type": "range",
-            "default": 100,
-            "min": 10,
-            "max": 100,
+            "key": "text_align_desktop",
+            "label": "Text Align (Desktop)",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "center",
             "conditional": {
-                "field": "width_mobile",
-                "value": "custom"
+                "field": "width_desktop",
+                "value": "full"
             }
         },
         {
-            "key": "alignment",
-            "label": "Button Alignment",
+            "key": "text_align_mobile",
+            "label": "Text Align (Mobile)",
             "type": "radio",
             "options": ["left", "center", "right"],
-            "default": "left"
+            "default": "center",
+            "conditional": {
+                "field": "width_mobile",
+                "value": "full"
+            }
         },
+
         {
-            "key": "mobile_alignment",
-            "label": "Mobile Alignment",
-            "type": "radio",
-            "options": ["left", "center", "right"],
-            "default": "center"
-        },
-        {
-            "key": "border_radius",
-            "label": "Border Radius",
-            "type": "range",
-            "min": 0,
-            "max": 50,
-            "default": 6
+            "key": "group",
+            "type": "group",
+            "label": "Link Behavior"
         },
         {
             "key": "open_new_tab",
             "label": "Open in New Tab",
             "type": "radio",
-            "options": ["yes", "no"],
-            "default": "no"
+            "options": ["enable", "disable"],
+            "default": "disable"
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
         },
         {
             "key": "margin_top",

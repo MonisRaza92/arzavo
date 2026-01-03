@@ -59,10 +59,10 @@ $size = match($fontSize) {
         </li>
         @endforeach
     </ul>
-    <button class="text-2xl md:hidden" onclick="document.getElementById('mobileMenu').classList.remove('translate-x-full')"><i class="fa-solid fa-bars"></i></button>
-    <ul class="flex md:hidden flex-col fixed right-0 transform translate-x-full transition-all duration-300 top-0 w-3/4 h-full arzavo-background shadow-2xl z-30 overflow-y-auto scrollbar" id="mobileMenu">
+    <button class="text-xl md:hidden" onclick="document.getElementById('mobileMenu').classList.remove('translate-x-full')"><i class="fa-solid fa-bars"></i></button>
+    <ul class="flex md:hidden flex-col fixed right-0 transform translate-x-full transition-all duration-300 top-0 w-3/4 h-dvh arzavo-background shadow-2xl z-30 overflow-y-auto scrollbar" id="mobileMenu">
         <div class="header flex px-4 py-3.5 justify-between arzavo-border-bottom">
-            <img src="{{ asset($customizes['logo'] ?? '') }}" alt="logo" class="h-8 shrink-0">
+            <img src="{{ media($customizes['logo'] ?? '') }}" alt="logo" class="h-8 shrink-0">
             <button class="text-2xl" onclick="document.getElementById('mobileMenu').classList.add('translate-x-full')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         @foreach($mobileMenu->items as $item)

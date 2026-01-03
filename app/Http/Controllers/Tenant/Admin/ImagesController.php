@@ -17,44 +17,39 @@ class ImagesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|max:5120', // 5MB max
+            'image' => 'required|image|max:5120',
         ]);
 
-        // Default disk (local OR s3 automatically)
-        $disk = Storage::disk(config('filesystems.default'));
+        // store file → RETURNS PATH
+        $path = $request->file('image')->store('images');
 
-        // Upload to storage
-        $filePath = $request->file('image')->store('images');
-
-        // Generate FULL URL (local or s3)
-        $fullUrl = Storage::url($filePath);
-
-        // Save to DB
+        // ✅ DB me sirf path save karo
         $image = Images::create([
             'filename' => $request->file('image')->getClientOriginalName(),
-            'filepath' => $fullUrl,    // 👈 अब यहीं full URL save होगा
+            'filepath' => $path, // ✅ CORRECT
         ]);
 
         if ($request->ajax()) {
             return response()->json([
-                'url' => $fullUrl,
+                'path' => $path,
+                'url'  => Storage::url($path), // frontend ke liye
                 'message' => 'Image uploaded successfully'
             ]);
         }
 
-        return back()->with('success', 'Selected Image added successfully');
+        return back()->with('success', 'Image uploaded successfully');
     }
-
 
     public function destroy($id)
     {
         $image = Images::findOrFail($id);
 
-        // File path stored in DB is already correct (images/xxx.png)
-        $path = $image->filepath ?? $image->path ?? null;
+        $path = $image->filepath;
 
-        if ($path && Storage::exists($path)) {
-            Storage::delete($path);
+        $disk = Storage::disk(config('filesystems.default'));
+
+        if ($path && $disk->exists($path)) {
+            $disk->delete($path);
         }
 
         $image->delete();

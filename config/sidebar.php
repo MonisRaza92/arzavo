@@ -208,7 +208,6 @@ return [
                     ['icon' => 'fa-pen-nib', 'text' => 'Themes', 'route' => 'admin.themes.index', 'active' => 'admin/themes'],
                     ['icon' => 'fa-link', 'text' => 'Menu', 'route' => 'admin.menus.index', 'active' => 'admin/menus'],
                     ['icon' => 'fa-window-restore', 'text' => 'Pages', 'route' => 'admin.pages.index', 'active' => 'admin/pages'],
-                    ['icon' => 'fa-image', 'text' => 'Media Library', 'route' => 'admin.images.index', 'active' => 'admin/images'],
                 ],
             ],
         ],

@@ -15,14 +15,12 @@
 
             <div class="flex items-center justify-between px-4 py-1 my-4">
                 <label class="text-xs">{{ $item['label'] }}</label>
-                <div class="flex items-center gap-1">
-                    <div class="h-8 w-8 border-rounded border-primary overflow-hidden">
-                        <div id="colorPicker{{ $id }}" class="h-full w-full cursor-pointer"></div>
-                    </div>
-                    <input type="text"
-                        id="{{ $id }}Code"
+                <div class="overflow-hidden border-rounded border-primary p-1">
+                    <input
+                        type="text"
                         name="colors[0][{{ $schemeKey }}][{{ $item['key'] }}]"
-                        class="h-8 w-24 ml-2 p-2 border-rounded border-primary auto-save">
+                        class="h-8 w-32 auto-save color-input outline-0 active:outline-0 focus:outline-0    "
+                        data-coloris>
                 </div>
             </div>
             @endforeach
@@ -44,100 +42,10 @@
 <script>
     function openColorSchemeModal() {
         document.getElementById("colorSchemeModal").classList.remove("hidden");
-        setTimeout(initPickers, 50); // delay so DOM is visible
     }
-    
+
 
     function closeColorSchemeModal() {
         document.getElementById("colorSchemeModal").classList.add("hidden");
-    }
-
-    let pickrInstances = [];
-
-    function initPickers() {
-
-        if (pickrInstances.length) return; // prevent duplicate init
-
-        const schemeConfigs = {
-            @foreach(config('color_schemes.color_schemes') as $schemeKey => $items)
-            @foreach($items as $item)
-            @php $id = $schemeKey.
-            '_'.$item['key'];@endphp '{{ $id }}': {
-                el: '#colorPicker{{ $id }}',
-                inputId: '{{ $id }}Code'
-            },
-            @endforeach
-            @endforeach
-        };
-
-        Object.entries(schemeConfigs).forEach(([id, config]) => {
-            const instance = Pickr.create({
-                el: config.el,
-                theme: 'monolith',
-                default: document.getElementById(config.inputId).value || '',
-                comparison: true,
-                swatches: [
-                    '#920000',
-                    '#F44336',
-                    '#E91E63',
-                    '#9C27B0',
-                    '#673AB7',
-                    '#3F51B5',
-                    '#2196F3',
-                    '#03A9F4',
-                    '#00BCD4',
-                    '#009688',
-                    '#4CAF50',
-                    '#8BC34A',
-                    '#FFEB3B',
-                    '#FFC107',
-                    '#FF9800',
-                    '#FF5722',
-                    '#795548',
-                    '#9E9E9E',
-                    '#607D8B',
-                    '#000000',
-                    '#FFFFFF'
-                ],
-                components: {
-                    preview: true,
-                    opacity: true,
-                    hue: true,
-                    interaction: {
-                        hex: true,
-                        rgba: true,
-                        input: true,
-                        cancel: true,
-                        save: true
-                    }
-                }
-            });
-
-            document.getElementById(config.inputId).addEventListener('input', (e) => {
-                setTimeout(() => {
-                    if (e.target.value) {
-                        instance.setColor(e.target.value);
-                    } else {
-                        instance.setColor(null);
-                    }
-                }, 1000);
-            });
-            instance.on('save', (color) => {
-                const value = color.toHEXA().toString();
-                document.getElementById(config.inputId).value = value;
-                pickrInstances.forEach(p => p.hide());
-            });
-            // instance.on('change', (color) => {
-            //     const value = color.toHEXA().toString();
-            //     document.getElementById(config.inputId).value = value;
-            // });
-            instance.on('cancel', () => {
-                const value = document.getElementById(config.inputId).value = '';
-                instance.setColor(null);
-                pickrInstances.forEach(p => p.hide());
-            });
-
-            pickrInstances.push(instance);
-        });
     }
 </script>

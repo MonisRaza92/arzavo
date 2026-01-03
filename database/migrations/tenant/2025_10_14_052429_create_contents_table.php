@@ -16,6 +16,7 @@ return new class extends Migration
             $table->enum('type', ['video', 'pdf', 'image', 'audio']);
             $table->string('filename');
             $table->string('filepath');
+            $table->unsignedBigInteger('size')->nullable();
             $table->boolean('is_active');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();

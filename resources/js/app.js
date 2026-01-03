@@ -1,14 +1,51 @@
 import "./bootstrap";
 import Alpine from "alpinejs";
-import Pickr from "@simonwep/pickr";
 import "@hotwired/turbo";
-import "@simonwep/pickr/dist/themes/monolith.min.css";
+import Coloris from "@melloware/coloris";
+import "@melloware/coloris/dist/coloris.css";
 
 window.Alpine = Alpine;
 Alpine.start();
 
-// Color Picker
-window.Pickr = Pickr;
+// expose for debug (optional)
+window.Coloris = Coloris;
+
+document.addEventListener("DOMContentLoaded", () => {
+    Coloris.init({
+        theme: "large",
+        themeMode: "light",
+
+        format: "auto", // 👈 VERY IMPORTANT
+        formatToggle: true, // 👈 allows solid ↔ gradient
+        alpha: true,
+
+        swatches: [
+            "#000000",
+            "#ffffff",
+            "#F44336",
+            "#E91E63",
+            "#9C27B0",
+            "#3F51B5",
+            "#2196F3",
+            "#00BCD4",
+            "#009688",
+            "#4CAF50",
+            "#FFEB3B",
+            "#FF9800",
+        ],
+
+        clearButton: true,
+        closeButton: true,
+        closeOnScroll: true,
+    });
+});
+
+// ✅ Turbo navigations → ONLY re-scan
+document.addEventListener("turbo:load", () => {
+    if (window.Coloris) {
+        window.Coloris.init();
+    }
+});
 
 function toggleModel(id) {
     const model = document.getElementById(id);
@@ -33,6 +70,8 @@ window.openModel = openModel;
 window.closeModel = closeModel;
 
 window.openSectionEditor = function (sectionId) {
+    openEditorTab("sections");
+
     // 🔴 FORCE CLOSE ALL BLOCKS (HARD RESET)
     document.querySelectorAll(".edit-block-form").forEach((f) => {
         f.classList.add("hidden");
@@ -78,7 +117,10 @@ window.openSectionEditor = function (sectionId) {
             `[data-section-id="${sectionId}"]`
         );
 
-    previewSection?.classList.add("preview-active");
+    if (previewSection) {
+        previewSection.classList.add("preview-active");
+        scrollPreviewIntoView(previewSection, "center"); // 🔥 ADD THIS
+    }
 
     // 🔹 6. Save blocks state
     blocksState[sectionId] = true;
@@ -123,6 +165,7 @@ document.addEventListener("mouseover", function (e) {
 
     // same class
     previewSection.classList.add("preview-hover");
+    scrollPreviewIntoView(previewSection, "nearest");
 });
 document.addEventListener("mouseout", function (e) {
     if (!window.ARZAVO_EDITOR_MODE) return;
@@ -155,6 +198,8 @@ if (savedState) {
 }
 
 window.openBlockEditor = function (blockId) {
+    openEditorTab("sections");
+
     // close sections
     document.querySelectorAll(".section-edit-form").forEach((f) => {
         f.classList.add("hidden");
@@ -179,9 +224,14 @@ window.openBlockEditor = function (blockId) {
     const previewDoc =
         document.getElementById("livePreviewContent")?.contentWindow?.document;
 
-    previewDoc
-        ?.querySelector(`[data-block-id="${blockId}"]`)
-        ?.classList.add("preview-active");
+    const previewBlock = previewDoc?.querySelector(
+        `[data-block-id="${blockId}"]`
+    );
+
+    if (previewBlock) {
+        previewBlock.classList.add("preview-active");
+        scrollPreviewIntoView(previewBlock, "center"); // 🔥
+    }
 
     window.currentOpenBlockId = blockId;
 };
@@ -226,6 +276,7 @@ document.addEventListener("mouseover", function (e) {
 
     // same class
     previewBlock.classList.add("preview-hover");
+    scrollPreviewIntoView(previewBlock, "nearest");
 });
 document.addEventListener("mouseout", function (e) {
     if (!window.ARZAVO_EDITOR_MODE) return;
@@ -304,3 +355,37 @@ window.reapplyPreviewSelection = reapplyPreviewSelection;
         }, 50);
     });
 })();
+
+function scrollPreviewIntoView(element, mode = "center") {
+    if (!element) return;
+
+    element.scrollIntoView({
+        behavior: "smooth",
+        block: mode === "center" ? "center" : "nearest",
+        inline: "nearest",
+    });
+}
+window.scrollPreviewIntoView = scrollPreviewIntoView;
+
+document.addEventListener("turbo:click", (e) => {
+    const btn = e.target.closest("[data-loading]");
+    if (!btn) return;
+
+    // store full HTML once
+    if (!btn.dataset.originalHtml) {
+        btn.dataset.originalHtml = btn.innerHTML;
+    }
+
+    btn.classList.add("opacity-80", "pointer-events-none");
+    btn.innerHTML = "Loading...";
+});
+
+document.addEventListener("turbo:before-cache", () => {
+    document.querySelectorAll("[data-loading]").forEach((btn) => {
+        if (btn.dataset.originalHtml) {
+            btn.innerHTML = btn.dataset.originalHtml;
+        }
+
+        btn.classList.remove("opacity-80", "pointer-events-none");
+    });
+});

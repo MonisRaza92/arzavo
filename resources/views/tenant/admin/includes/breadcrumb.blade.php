@@ -32,47 +32,60 @@
     </div>
 </div>
 <script>
-    function updateClock() {
-        const now = new Date();
+    (function() {
 
-        // 24-hour format
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
+        const clockEl = document.getElementById("clock");
+        const dateEl = document.getElementById("date");
+        const greetingEl = document.getElementById("greeting-text");
 
-        const pad = n => (n < 10 ? "0" + n : n);
-        document.getElementById("clock").textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        // 🚨 Agar clock layout hi nahi hai, to JS run hi mat karo
+        if (!clockEl || !dateEl || !greetingEl) return;
 
-        // Date
-        const options = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        };
-        document.getElementById("date").textContent = now.toLocaleDateString("en-US", options);
+        function updateClock() {
+            const now = new Date();
 
-        // Dynamic Greeting
-        let greeting = "";
-        let icon = "";
-        if (hours >= 5 && hours < 12) {
-            greeting = "Good Morning!";
-            icon = "fa-sun";
-        } else if (hours >= 12 && hours < 17) {
-            greeting = "Good Afternoon!";
-            icon = "fa-cloud-sun";
-        } else if (hours >= 17 && hours < 21) {
-            greeting = "Good Evening!";
-            icon = "fa-moon";
-        } else {
-            greeting = "Good Night!";
-            icon = "fa-star";
+            // Time (24h)
+            const pad = n => (n < 10 ? "0" + n : n);
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            clockEl.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+
+            // Date
+            dateEl.textContent = now.toLocaleDateString("en-US", {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Greeting
+            let greeting = "";
+            let icon = "";
+
+            if (hours >= 5 && hours < 12) {
+                greeting = "Good Morning!";
+                icon = "fa-sun";
+            } else if (hours >= 12 && hours < 17) {
+                greeting = "Good Afternoon!";
+                icon = "fa-cloud-sun";
+            } else if (hours >= 17 && hours < 21) {
+                greeting = "Good Evening!";
+                icon = "fa-moon";
+            } else {
+                greeting = "Good Night!";
+                icon = "fa-star";
+            }
+
+            greetingEl.innerHTML = `
+            <i class="fas ${icon} text-yellow-400"></i>
+            <span>${greeting}</span>
+        `;
         }
 
-        const greetingEl = document.getElementById("greeting-text");
-        greetingEl.innerHTML = `<i class="fas ${icon} text-yellow-400"></i> <span>${greeting}</span>`;
-    }
+        updateClock();
+        setInterval(updateClock, 1000);
 
-    setInterval(updateClock, 1000);
-    updateClock();
+    })();
 </script>

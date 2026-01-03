@@ -9,6 +9,11 @@
     "default_blocks": "",
     "fields": [
         {
+            "key": "group",
+            "label": "Content",
+            "type": "group"
+        },
+        {
             "key": "text",
             "label": "Heading Text",
             "type": "text",
@@ -30,6 +35,11 @@
             "default": "heading-2"
         },
         {
+            "key": "group",
+            "label": "Appearence",
+            "type": "group"
+        },
+        {
             "key": "font_style",
             "label": "Font Style",
             "type": "radio",
@@ -44,18 +54,24 @@
             "default": "none"
         },
         {
-            "key": "width",
-            "label": "Width",
-            "type": "radio",
-            "options": ["fit", "full"],
-            "default": "fit"
+            "key": "group",
+            "label": "Layout",
+            "type": "group"
         },
         {
             "key": "alignment",
-            "label": "Text Alignment",
+            "label": "Desktop Alignment",
             "type": "radio",
             "options": ["left", "center", "right"],
             "default": "left"
+        },
+        {
+            "key": "width",
+            "label": "Width",
+            "type": "range",
+            "default": "100",
+            "min": 0,
+            "max": 100
         },
         {
             "key": "mobile_alignment",
@@ -63,6 +79,11 @@
             "type": "radio",
             "options": ["left", "center", "right"],
             "default": "left"
+        },
+        {
+            "key": "group",
+            "label": "Spacing",
+            "type": "group"
         },
         {
             "key": "margin_top",
@@ -79,6 +100,27 @@
             "min": 0,
             "max": 100,
             "default": 0
+        },
+        {
+            "key": "margin_left",
+            "label": "Margin Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "margin_right",
+            "label": "Margin Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "group",
+            "label": "Padding",
+            "type": "group"
         },
         {
             "key": "padding_top",

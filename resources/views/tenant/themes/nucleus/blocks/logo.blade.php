@@ -21,7 +21,7 @@ $invertLogo = $customizes['invert_logo'] ?? $logo;
 
         @if($logo)
             <img
-                src="{{ asset($logo) }}"
+                src="{{ media($logo) }}"
                 alt="Logo"
                 class="arzavo-logo-normal w-auto transition-opacity duration-300"
                 style="height: {{ $logoSize }}px;"
@@ -30,7 +30,7 @@ $invertLogo = $customizes['invert_logo'] ?? $logo;
 
         @if($invertLogo)
             <img
-                src="{{ asset($invertLogo) }}"
+                src="{{ media($invertLogo) }}"
                 alt="Invert Logo"
                 class="arzavo-logo-invert w-auto absolute top-0 left-0 transition-opacity duration-300 opacity-0"
                 style="height: {{ $logoSize }}px;"

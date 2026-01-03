@@ -253,11 +253,11 @@ button {
     pointer-events: none;
     z-index: 10;
 }
-.fixed {
-    position: fixed;
-}
 .sticky {
     position: sticky;
+}
+.fixed {
+    position: fixed;
 }
 
 /* ARZAVO THEME CLASSES */
@@ -446,6 +446,8 @@ button {
     -webkit-appearance: none;
     padding: 0; /* remove extra padding */
     cursor: pointer;
+    color: #111 !important;
+    background-color: #fff !important;
 }
 
 /* Chrome / Edge / Safari */

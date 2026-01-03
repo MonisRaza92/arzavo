@@ -36,11 +36,12 @@
                 <div data-content-wrapper>
                     <input type="hidden" name="{{ $key }}" id="{{ $key }}" @if($customizes[$key] !==null) value="{{ $customizes[$key] }}" @endif>
 
-                    <div class="border-primary border-rounded bg-secondary p-3 aspect-video cursor-pointer group relative overflow-hidden"
+                    <div class="border-primary border-rounded px-2 bg-secondary flex flex-col justify-center items-center aspect-video cursor-pointer group relative overflow-hidden"
+                       style="border-width: 2px; border-style: dashed;"
                         onclick="openContentPicker('{{ $key }}', 'image')">
 
-                        <img data-content-preview @if($customizes[$key] !==null) src="{{ asset($customizes[$key]) }}" @endif
-                            class="{{ $customizes[$key] === null ? 'hidden' : '' }} w-full h-full object-contain border-rounded">
+                        <img data-content-preview @if($customizes[$key] !==null) src="{{ media($customizes[$key]) }}" @endif
+                            class="{{ $customizes[$key] === null ? 'hidden' : '' }} object-contain border-rounded">
 
                         <div data-content-placeholder
                             class="flex flex-col items-center text-tertiary h-full justify-center {{ $customizes[$key] === null ? '' : 'hidden' }}">

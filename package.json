@@ -16,6 +16,8 @@
     },
     "dependencies": {
         "@hotwired/turbo": "^8.0.20",
+        "@jaames/iro": "^5.5.2",
+        "@melloware/coloris": "^0.25.0",
         "@simonwep/pickr": "^1.9.1",
         "alpinejs": "^3.14.9"
     }

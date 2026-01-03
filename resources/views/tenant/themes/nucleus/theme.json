@@ -12,7 +12,7 @@
     "preview_image": "/themes/nucleus/preview.jpg",
     "default_layout": [
         { "type": "section", "key": "navbar" },
-        { "type": "template", "key": "hero_centered_large" },
+        { "type": "template", "key": "hero_bottom_align" },
         { "type": "template", "key": "stats_strip" },
         { "type": "template", "key": "features_3_column" },
         { "type": "template", "key": "testimonial_3_cards" },
@@ -34,7 +34,7 @@
         "heading_1_font_size_mobile": 36,
         "heading_1_line_height": "1.2",
         "heading_1_text_transform": "default",
-        "heading_1_text_weight": "700",
+        "heading_1_text_weight": "900",
         "heading_2_font_size": 36,
         "heading_2_font_size_tablet": 32,
         "heading_2_font_size_mobile": 28,

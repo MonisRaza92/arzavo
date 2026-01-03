@@ -11,47 +11,42 @@ class ColorSchemeController
     {
         $request->validate([
             'colors' => 'required|array',
-            'colors.*' => 'array'
+            'colors.0' => 'required|array',
         ]);
 
         ColorScheme::create([
             'colors' => $request->colors
         ]);
 
-
         return back()->with('success', 'Color Scheme Added Successfully');
     }
 
+
     public function get($id)
     {
-        $scheme = ColorScheme::find($id);
-
-        if (!$scheme) {
-            return response()->json(['error' => 'Scheme not found'], 404);
-        }
+        $scheme = ColorScheme::findOrFail($id);
 
         return response()->json([
             'id' => $scheme->id,
-            'colors' => $scheme->colors, // already array/object
+            'colors' => $scheme->colors ?? [],
         ]);
     }
+
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'colors' => 'required|array',
-            'colors.*' => 'array'
+            'colors.0' => 'required|array',
         ]);
 
-        ColorScheme::where('id', $id)->update([
-            'colors' => $request->colors
-        ]);
+        $scheme = ColorScheme::findOrFail($id);
+        $scheme->colors = $request->colors;
+        $scheme->save();
 
-    
         if ($request->ajax()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Section updated successfully',
+                'status' => 'success'
             ]);
         }
 

@@ -83,7 +83,7 @@
         // Wait 800ms after last input
         customizeSubmitTimeout = setTimeout(() => {
             submitCustomizesForm(form);
-        }, 800);
+        }, 200);
     }
 
     // Global function (can be called from buttons too)
@@ -161,4 +161,30 @@
             }
         }
     });
+
+    function openEditorTab(tabName) {
+        // Remove active from all buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('bg-invert', 'text-invert');
+        });
+
+        // Hide all contents
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.add('hidden');
+        });
+
+        // Activate target
+        const btn = document.querySelector(`.tab-btn[data-target="${tabName}"]`);
+        const content = document.querySelector(`.tab-content[data-content="${tabName}"]`);
+
+        if (btn && content) {
+            btn.classList.add('bg-invert', 'text-invert');
+            content.classList.remove('hidden');
+
+            // persist
+            localStorage.setItem('activeTab', tabName);
+        }
+    }
+
+    window.openEditorTab = openEditorTab;
 </script>

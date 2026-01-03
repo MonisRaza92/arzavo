@@ -43,13 +43,13 @@
         }
         @endphp
 
-        <div class="field-item flex justify-between items-center gap-4 p-4 transition-all duration-300 {{ $field['key'] === 'group' ? 'border-bottom border-top' : 'my-2' }}"
+        <div class="field-item flex justify-between items-center gap-4 p-4 transition-all duration-300 {{ $field['key'] === 'group' ? 'border-bottom border-top' : '' }}"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
             data-conditions='@json($field["conditional"])'
             @endif>
 
-            <label class="block text-primary text-left w-1/3 {{ $field['key'] === 'group' ? 'text-sm font-semibold' : 'text-[11px]' }}">
+            <label class="block text-primary text-left w-1/3 text-[12px] {{ $field['key'] === 'group' ? 'font-semibold' : '' }}">
                 {{ $field['label'] ?? ucfirst($field['key']) }}
                 @if($field['required'] ?? false)
                 <span class="text-red-500">*</span>
@@ -302,7 +302,7 @@
                             style="border-style: dashed; border-width: 2px;"
                             onclick="openContentPicker('{{ $field['key'] }}_{{ $section->id }}', 'image')">
 
-                            <img data-content-preview @if($hasImage !==null ) src="{{ asset($hasImage) }}" @endif
+                            <img data-content-preview @if($hasImage !==null ) src="{{ media($hasImage) }}" @endif
                                 class="{{ $hasImage === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded">
 
                             <div data-content-placeholder
@@ -343,7 +343,7 @@
                             style="border-style: dashed; border-width: 2px;"
                             onclick="openContentPicker('{{ $field['key'] }}_{{ $section->id }}', 'video')">
 
-                            <video data-content-preview @if($hasVideo !==null ) src="{{ asset($hasVideo) }}" @endif
+                            <video data-content-preview @if($hasVideo !==null ) src="{{ media($hasVideo) }}" @endif
                                 class="{{ $hasVideo === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded"
                                 muted autoplay loop preload=" metadata">
                             </video>

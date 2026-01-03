@@ -19,18 +19,18 @@
             <div
                 class="content-item group border-primary border-rounded overflow-hidden cursor-pointer bg-primary hover-primary transition"
                 data-type="{{ $content->type }}"
-                onclick="selectContent('{{ asset($content->filepath) }}', '{{ $content->type }}')">
+                onclick="selectContent('{{ $content->filepath }}', '{{ $content->type }}')">
 
                 {{-- Preview --}}
                 <div class="relative bg-secondary overflow-hidden" title="{{ $content->filename }}">
 
                     @if($content->type === 'image')
-                    <img src="{{ asset($content->filepath) }}"
+                    <img src="{{ media($content->filepath) }}"
                         class="w-full h-auto object-contain transition group-hover:scale-105">
 
                     @elseif($content->type === 'video')
                     <video
-                        src="{{ asset($content->filepath) }}"
+                        src="{{ media($content->filepath) }}"
                         muted
                         preload="metadata"
                         class="w-full h-auto object-cover"
@@ -70,7 +70,7 @@
             </a>
 
             <div class="flex gap-2">
-                <button class="px-4 py-2 text-sm border-rounded border-primary bg-hover-tertiary">Close</button>
+                <button class="px-4 py-2 text-sm border-rounded border-primary bg-hover-tertiary" onclick="closeContentPicker()">Close</button>
                 {{-- Upload New --}}
                 <button type="button"
                     id="uploadNewBtn"
@@ -97,8 +97,12 @@
 
 </form>
 <script>
-    let currentTargetInput = null;
-    let currentAllowedType = null;
+    window.currentTargetInput ??= null;
+    window.currentAllowedType ??= null;
+    window.mediaUrl = function(path) {
+        if (!path) return '';
+        return "{{ rtrim(Storage::url(''), '/') }}/" + path.replace(/^\/+/, '');
+    };
 
     /* -----------------------------
        OPEN MODAL
@@ -163,7 +167,8 @@
         if (typeof submitCustomizesForm === 'function') {
             const form = document.getElementById('customize-form');
             // small delay so DOM fully update ho jaye
-            setTimeout(() => {
+            clearTimeout(customizeSubmitTimeout)
+            customizeSubmitTimeout = setTimeout(() => {
                 submitCustomizesForm(form);
             }, 200);
         }
@@ -212,9 +217,9 @@
         preview.classList.remove('hidden');
 
         if (type === 'image') {
-            preview.src = path;
+            preview.src = mediaUrl(path);
         } else if (type === 'video') {
-            preview.src = path;
+            preview.src = mediaUrl(path);
         } else {
             preview.innerHTML = `
             <i class="fa-solid fa-circle-check text-3xl mb-1"></i>
@@ -332,10 +337,10 @@
         let previewHTML = '';
 
         if (content.type === 'image') {
-            previewHTML = `<img src="${content.filepath}" class="w-full h-auto object-contain">`;
+            previewHTML = `<img src="${mediaUrl(content.filepath)}" class="w-full h-auto object-contain">`;
         } else if (content.type === 'video') {
             previewHTML = `
-        <video src="${content.filepath}"
+        <video src="${mediaUrl(content.filepath)}"
             muted preload="metadata"
             class="w-full h-auto object-cover"></video>`;
         } else {

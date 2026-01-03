@@ -50,6 +50,7 @@
 
                 @if($isActive)
                 <a href="{{ route('admin.builder.index') }}"
+                    data-loading
                     class="flex-1 text-center px-4 py-2 text-sm border-rounded
                                       bg-black text-white hover:bg-gray-800 transition">
                     Customize

@@ -36,6 +36,7 @@
         {{-- RIGHT: ACTION --}}
         <div class="flex items-center gap-3">
             <a href="{{ route('admin.builder.index', $theme->theme_slug) }}"
+              data-loading
                class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md
                       bg-black text-white hover:bg-gray-800 transition">
                 <i class="fa-solid fa-pen-to-square text-xs"></i>

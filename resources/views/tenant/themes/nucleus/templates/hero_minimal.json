@@ -5,37 +5,57 @@
     "order": 0,
     "category": "Hero",
     "color_scheme_id": 1,
-    "max_blocks": 5,
-    "allowed_blocks": ["heading", "text", "button", "spacer", "divider"],
     "default_blocks": [
         {
             "type": "heading",
             "settings": {
-                "text": "Welcome to Our Platform",
+                "text": "Committed to Academic Excellence, Skill Development, and Student Success.",
                 "heading_type": "heading-1",
                 "alignment": "center",
-                "mobile_alignment": "center"
+                "mobile_alignment": "left",
+                "margin_bottom": "16"
             }
         },
         {
             "type": "text",
             "settings": {
-                "text": "Discover amazing features that will transform your business and help you achieve your goals.",
+                "text": "We are committed to providing quality education in a supportive and structured environment, where students can learn effectively, grow with confidence, and build a strong foundation for their academic and professional future.",
                 "text_type": "paragraph",
                 "font_size": "large",
                 "alignment": "center",
-                "mobile_alignment": "center"
+                "mobile_alignment": "left",
+                "padding_bottom": "16",
+                "width": "90"
             }
         },
         {
-            "type": "button",
+            "type": "group",
             "settings": {
-                "text": "Get Started",
-                "button_type": "primary",
-                "size": "large",
-                "alignment": "center",
-                "mobile_alignment": "center"
-            }
+                "direction": "horizontal",
+                "width_mobile": "full",
+                "padding_top": "0",
+                "padding_left": "0",
+                "padding_right": "0",
+                "padding_bottom": "0"
+            },
+            "default_blocks": [
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Get Started",
+                        "button_type": "primary",
+                        "width_mobile": "full"
+                    }
+                },
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Contact Us",
+                        "button_type": "secondary",
+                        "width_mobile": "full"
+                    }
+                }
+            ]
         }
     ],
     "settings": {
@@ -43,11 +63,11 @@
         "height": "full",
         "mobile_height": "1",
         "direction": "vertical",
-        "mobile_direction": "vertical",
+        "mobile_direction": "1",
         "alignment": "center",
         "position": "center",
-        "gap": 24,
-        "padding_top": 80,
-        "padding_bottom": 80
+        "gap": "24",
+        "padding_top": "0",
+        "padding_bottom": "0"
     }
 }

@@ -9,6 +9,11 @@
     "default_blocks": "",
     "fields": [
         {
+            "key": "group",
+            "label": "Content",
+            "type": "group"
+        },
+        {
             "key": "text",
             "label": "Text Content",
             "type": "textarea",
@@ -30,39 +35,36 @@
             "default": "normal"
         },
         {
-            "key": "text_decoration",
-            "label": "Text Decoration",
-            "type": "select",
-            "options": ["none", "underline", "line-through"],
-            "default": "none"
-        },
-        {
-            "key": "line_height",
-            "label": "Line Height",
-            "type": "select",
-            "options": ["tight", "normal", "relaxed", "loose"],
-            "default": "normal"
-        },
-        {
-            "key": "width",
-            "label": "Width",
-            "type": "radio",
-            "options": ["fit", "full"],
-            "default": "fit"
+            "key": "group",
+            "label": "Layout",
+            "type": "group"
         },
         {
             "key": "alignment",
             "label": "Text Alignment",
-            "type": "select",
-            "options": ["left", "center", "right", "justify"],
+            "type": "radio",
+            "options": ["left", "center", "right"],
             "default": "left"
+        },
+        {
+            "key": "width",
+            "label": "Width",
+            "type": "range",
+            "default": "100",
+            "min": 0,
+            "max": 100
         },
         {
             "key": "mobile_alignment",
             "label": "Mobile Alignment",
-            "type": "select",
-            "options": ["left", "center", "right", "justify"],
+            "type": "radio",
+            "options": ["left", "center", "right"],
             "default": "left"
+        },
+        {
+            "key": "group",
+            "label": "Spacing",
+            "type": "group"
         },
         {
             "key": "padding_top",
@@ -70,7 +72,7 @@
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": 0
+            "default": "0"
         },
         {
             "key": "padding_bottom",
@@ -78,7 +80,7 @@
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": 0
+            "default": "0"
         },
         {
             "key": "padding_left",
@@ -86,7 +88,7 @@
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": 0
+            "default": "0"
         },
         {
             "key": "padding_right",
@@ -94,7 +96,7 @@
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": 0
+            "default": "0"
         }
     ]
 }
