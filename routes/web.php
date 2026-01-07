@@ -34,6 +34,7 @@ Route::domain(config('app.domain'))->group(function () {
     Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
     Route::get('/docs', [HomeController::class, 'documentation'])->name('docs');
     Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
+    Route::get('/features', [HomeController::class, 'features'])->name('features');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
 

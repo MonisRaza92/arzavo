@@ -1,0 +1,118 @@
+{
+    "type": "contact_form",
+    "name": "Contact Form",
+    "icon": "fa-envelope",
+    "order": 11,
+    "page": ["contact", "home"],
+    "category": "Forms",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "form_title",
+            "label": "Form Title",
+            "type": "text",
+            "default": "Get in Touch",
+            "placeholder": "Enter form title"
+        },
+        {
+            "key": "form_subtitle",
+            "label": "Form Subtitle",
+            "type": "textarea",
+            "default": "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+            "placeholder": "Enter form subtitle"
+        },
+        {
+            "key": "layout_style",
+            "label": "Layout Style",
+            "type": "select",
+            "options": ["form_only", "form_with_info", "split_layout"],
+            "default": "form_with_info"
+        },
+        {
+            "key": "show_name_field",
+            "label": "Show Name Field",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "show_phone_field",
+            "label": "Show Phone Field",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "show_company_field",
+            "label": "Show Company Field",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "no"
+        },
+        {
+            "key": "show_subject_field",
+            "label": "Show Subject Field",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "button_text",
+            "label": "Button Text",
+            "type": "text",
+            "default": "Send Message",
+            "placeholder": "Button text"
+        },
+        {
+            "key": "contact_email",
+            "label": "Contact Email",
+            "type": "text",
+            "default": "contact@yourcompany.com",
+            "placeholder": "Email address"
+        },
+        {
+            "key": "contact_phone",
+            "label": "Contact Phone",
+            "type": "text",
+            "default": "+1 (555) 123-4567",
+            "placeholder": "Phone number"
+        },
+        {
+            "key": "contact_address",
+            "label": "Contact Address",
+            "type": "textarea",
+            "default": "123 Business Street\nCity, State 12345\nCountry",
+            "placeholder": "Full address"
+        },
+        {
+            "key": "show_social_links",
+            "label": "Show Social Links",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 60
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 60
+        }
+    ]
+}

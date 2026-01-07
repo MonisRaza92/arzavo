@@ -4,103 +4,94 @@
     "icon": "fa-image",
     "order": 4,
     "category": "Basic",
-    "max_blocks": 0,
-    "allowed_blocks": "",
-    "default_blocks": "",
     "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Image"
+        },
         {
             "key": "desktop_image",
             "label": "Desktop Image",
             "type": "image",
-            "default": null,
-            "placeholder": "Upload image for desktop"
+            "default": null
         },
         {
             "key": "mobile_image",
             "label": "Mobile Image",
             "type": "image",
             "default": null,
-            "placeholder": "Upload image for mobile (optional)"
+            "help": "Optional image for mobile devices"
         },
         {
             "key": "alt_text",
             "label": "Alt Text",
             "type": "text",
             "default": "",
-            "placeholder": "Describe the image for accessibility"
+            "placeholder": "Describe the image (SEO & accessibility)"
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Link"
         },
         {
             "key": "image_link",
-            "label": "Image Link",
+            "label": "Link URL",
             "type": "text",
-            "default": "",
-            "placeholder": "https://example.com (optional)"
+            "default": ""
         },
         {
             "key": "open_new_tab",
-            "label": "Open Link in New Tab",
-            "type": "radio",
-            "options": ["yes", "no"],
-            "default": "no"
+            "label": "Open in New Tab",
+            "type": "switch",
+            "default": 0,
+            "conditional": {
+                "field": "image_link",
+                "operator": "!=",
+                "value": ""
+            }
         },
+
         {
-            "key": "image_size",
-            "label": "Image Size",
-            "type": "select",
-            "options": ["auto", "cover", "contain", "custom"],
-            "default": "auto"
-        },
-        {
-            "key": "custom_width",
-            "label": "Custom Width (%)",
-            "type": "range",
-            "min": 10,
-            "max": 100,
-            "default": 100
-        },
-        {
-            "key": "custom_height",
-            "label": "Custom Height (px)",
-            "type": "range",
-            "min": 50,
-            "max": 800,
-            "default": 300
+            "key": "group",
+            "type": "group",
+            "label": "Style"
         },
         {
             "key": "aspect_ratio",
-            "label": "Aspect Ratio",
+            "label": "Aspect Radio",
             "type": "select",
-            "options": ["auto", "square", "portrait", "landscape", "wide"],
-            "default": "auto"
+            "default": "auto",
+            "options": ["auto", "sqaure", "portrait", "landscape", "wide"]
         },
         {
-            "key": "alignment",
-            "label": "Image Alignment",
-            "type": "select",
-            "options": ["left", "center", "right"],
-            "default": "center"
-        },
-        {
-            "key": "mobile_alignment",
-            "label": "Mobile Alignment",
-            "type": "select",
-            "options": ["left", "center", "right"],
-            "default": "center"
+            "key": "image_fit",
+            "label": "Image Fit",
+            "type": "radio",
+            "options": ["cover", "contain"],
+            "default": "auto",
+             "conditional": {
+                "field": "aspect_ratio",
+                "operator": "!=",
+                "value": "auto"
+            }
         },
         {
             "key": "border_radius",
             "label": "Border Radius",
+            "type": "radio",
+            "default": "enable",
+            "options": ["enable", "disable", "custom"]
+        },
+        {
+            "key": "custom_border_radius",
+            "label": "Border Radius (%)",
             "type": "range",
             "min": 0,
             "max": 50,
-            "default": 0
-        },
-        {
-            "key": "shadow",
-            "label": "Shadow",
-            "type": "select",
-            "options": ["none", "small", "medium", "large"],
-            "default": "none"
+            "default": "0"
         },
         {
             "key": "opacity",
@@ -108,21 +99,19 @@
             "type": "range",
             "min": 10,
             "max": 100,
-            "default": 100
+            "default": "100"
         },
         {
-            "key": "hide_desktop",
-            "label": "Hide on Desktop",
-            "type": "radio",
-            "options": ["yes", "no"],
-            "default": "no"
+            "key": "lazy_load",
+            "label": "Lazy Load",
+            "type": "switch",
+            "default": "1"
         },
+
         {
-            "key": "hide_mobile",
-            "label": "Hide on Mobile",
-            "type": "radio",
-            "options": ["yes", "no"],
-            "default": "no"
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
         },
         {
             "key": "margin_top",
@@ -130,7 +119,7 @@
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": 0
+            "default": "0"
         },
         {
             "key": "margin_bottom",
@@ -138,39 +127,41 @@
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": 0
+            "default": "0"
         },
         {
-            "key": "padding_top",
-            "label": "Padding Top",
+            "key": "margin_left",
+            "label": "Margin Top",
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": 0
+            "default": "0"
         },
         {
-            "key": "padding_bottom",
-            "label": "Padding Bottom",
+            "key": "margin_right",
+            "label": "Margin Bottom",
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": 0
+            "default": "0"
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Responsive"
         },
         {
-            "key": "padding_left",
-            "label": "Padding Left",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
+            "key": "hide_desktop",
+            "label": "Hide on Desktop",
+            "type": "switch",
+            "default": "0"
         },
         {
-            "key": "padding_right",
-            "label": "Padding Right",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
+            "key": "hide_mobile",
+            "label": "Hide on Mobile",
+            "type": "switch",
+            "default": "0"
         }
     ]
 }

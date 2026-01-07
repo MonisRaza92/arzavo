@@ -1,7 +1,7 @@
-<div id="edit-block-form-{{ $block->id }}" class="edit-block-form hidden fixed top-0 left-0 bottom-0 w-[299px] pt-29 z-10 overflow-auto scrollbar bg-primary">
-    <div class="flex items-center justify-between p-2 border-bottom sticky top-0 bg-primary z-10">
-        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center curser-pointer" id="blockFormClose" onclick="document.getElementById('edit-block-form-{{ $block->id }}').classList.add('hidden'); clearPreviewHighlights();">
-            <i class="fa-solid fa-arrow-left text-tertiary"></i> {{ $block->name }}
+<div id="edit-block-form-{{ $block->id }}" class="edit-block-form hidden fixed top-0 left-0 bottom-0 w-[299px] z-30 overflow-auto scrollbar bg-primary">
+    <div class="flex items-center justify-between p-2 border-bottom sticky top-15.5 bg-primary z-10">
+        <h2 class="text-sm font-semibold text-primary px-2 py-2.25 group bg-hover-primary border-rounded flex gap-2 items-center curser-pointer" id="blockFormClose" onclick="document.getElementById('edit-block-form-{{ $block->id }}').classList.add('hidden'); clearPreviewHighlights();">
+            <i class="fa-solid fa-arrow-left text-tertiary group-hover:-translate-x-1 duration-200"></i> {{ $block->name }}
         </h2>
         <div class="flex items-center">
             {{-- ACTIVE/INACTIVE --}}
@@ -36,7 +36,7 @@
     @endphp
 
     @if(count($fields) > 0)
-    <form class="editBlockForm" data-block-id="{{ $block->id }}" enctype="multipart/form-data">
+    <form class="editBlockForm px-4 pt-14" data-block-id="{{ $block->id }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -54,20 +54,20 @@
         @endphp
 
 
-        <div class="field-item flex justify-between items-center p-4 gap-4 {{ $field['key'] === 'group' ? 'border-bottom border-top' : '' }} transition-all duration-300"
+        <div class="field-item p-3 transition-all duration-300 mb-2 bg-hover-secondary {{ $field['key'] === 'group' ? 'border-rounded border-primary mt-6' : 'border-rounded border-primary' }}"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
             data-conditions='@json($field["conditional"])'
             @endif>
 
-            <label class="block text-[12px] {{ $field['key'] === 'group' ? 'font-semibold' : '' }} text-primary text-left w-1/3">
+            <label class="block text-left {{ $field['key'] === 'group' ? 'font-semibold text-primary text-base py-1 flex items-center justify-between' : 'text-xs uppercase text-tertiary font-semibold mb-2' }}">
                 {{ $field['label'] ?? ucfirst($field['key']) }}
-                @if($field['required'] ?? false)
-                <span class="text-red-500">*</span>
+                @if($field['key'] === 'group')
+                <i class="fa-solid {{ $field['icon'] ?? 'fa-layer-group'}}"></i>
                 @endif
             </label>
 
-            <div class="w-2/3">
+            <div class="w-full">
                 @switch($field['type'])
 
                 @case('group')
@@ -76,7 +76,7 @@
                 @case('color_scheme_selector')
                 <div class="color-scheme-selector border-primary border-rounded pr-1">
                     <select name="color_scheme_id"
-                        class="w-full p-2 text-xs focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all">
+                        class="w-full p-2 text-sm focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all">
                         @foreach($colorSchemes as $scheme)
                         <option value="{{ $scheme->id }}"
                             {{ $block->color_scheme_id == $scheme->id ? 'selected' : '' }}>
@@ -89,7 +89,7 @@
                 @case('menu')
                 <div class="border-primary border-rounded pr-1">
                     <select name="settings[{{ $field['key'] }}]"
-                        class="w-full p-2 text-xs focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all"
+                        class="w-full p-2 text-sm focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all"
                         {{ ($field['required'] ?? false) ? 'required' : '' }}>
                         @foreach($menus as $menu)
                         <option value="{{ $menu->id }}"
@@ -101,7 +101,7 @@
                 </div>
 
                 @if(empty($menus) || $menus->count() === 0)
-                <p class="text-xs text-red-500 mt-1">
+                <p class="text-sm text-red-500 mt-1">
                     No menus found. Create a menu first.
                 </p>
                 @endif
@@ -131,27 +131,44 @@
                     rows="{{ $field['rows'] ?? 3 }}"
                     placeholder="{{ $field['placeholder'] ?? 'Write something...' }}"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs resize-none transition-all">{{ $block->settings[$field['key']] ?? $field['default'] ?? '' }}</textarea>
+                    class="w-full p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm resize-none transition-all">{{ $block->settings[$field['key']] ?? $field['default'] ?? '' }}</textarea>
                 @break
 
                 @case('select')
                 <select name="settings[{{ $field['key'] }}]"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full capitalize p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
-                    @foreach($field['options'] ?? [] as $value)
-                    <option class="capitalize"
-                        value="{{ $value }}"
-                        {{ ($block->settings[$field['key']] ?? $field['default'] ?? '') === $value ? 'selected' : '' }}>
-                        {{ ucfirst(str_replace(['_', '-'], ' ', $value)) }}
+                    class="w-full p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm transition-all">
+
+                    @foreach($field['options'] ?? [] as $option)
+                    @php
+                    // Check if the option is an array (Has label/value) or a simple string
+                    if (is_array($option)) {
+                    $value = $option['value'];
+                    $label = $option['label'] ?? $value; // Fallback to value if label is missing
+                    } else {
+                    $value = $option;
+                    // Format simple string for display (remove _, - and capitalize)
+                    $label = ucfirst(str_replace(['_', '-'], ' ', $option));
+                    }
+
+                    // Check if this option is currently selected
+                    $currentSetting = $block->settings[$field['key']] ?? $field['default'] ?? '';
+                    // Convert both to string for safe comparison
+                    $isSelected = (string)$currentSetting === (string)$value;
+                    @endphp
+
+                    <option value="{{ $value }}" {{ $isSelected ? 'selected' : '' }}>
+                        {{ $label }}
                     </option>
                     @endforeach
+
                 </select>
                 @break
 
                 @case('icon')
                 <select name="settings[{{ $field['key'] }}]"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full capitalize p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
+                    class="w-full capitalize p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm transition-all">
 
                     @foreach(config('icons') as $icon)
                     <option value="{{ $icon }}"
@@ -194,18 +211,13 @@
 
 
                 @case('switch')
-                <label class="relative inline-flex items-center cursor-pointer group">
-                    <input type="hidden"
-                        name="settings[{{ $field['key'] }}]"
-                        value="0">
-                    <input type="checkbox"
-                        name="settings[{{ $field['key'] }}]"
-                        value="1"
-                        class="sr-only peer live-input"
-                        {{ !empty($block->settings[$field['key']]) ? 'checked' : '' }}>
-                    <div class="w-11 h-6 bg-gray-300 rounded-full shrink-0 peer peer-checked:bg-black transition-all duration-300"></div>
-                    <div class="absolute left-0.75 top-1/2 transform -translate-y-1/2 bg-white w-5 h-5 shrink-0 rounded-full shadow-sm peer-checked:translate-x-4.75 transition-all duration-300"></div>
-                    <span class="ml-3 text-[11px] font-semibold text-primary group-hover:text-accent transition-colors">{{ $field['text'] ?? 'Enable' }}</span>
+                <label class="flex items-center justify-between p-2 bg-primary border-primary border-rounded cursor-pointer transition-all">
+                    <span class="text-xs text-gray-700 font-medium">{{ $field['text'] ?? 'Enable' }}</span>
+                    <div class="relative inline-flex items-center cursor-pointer">
+                        <input type="hidden" name="settings[{{ $field['key'] }}]" value="0">
+                        <input type="checkbox" name="settings[{{ $field['key'] }}]" value="1" class="sr-only peer live-input" {{ !empty($block->settings[$field['key']]) ? 'checked' : '' }}>
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-900"></div>
+                    </div>
                 </label>
                 @break
 
@@ -225,7 +237,7 @@
                         value="{{ $block->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
                         maxlength="7"
                         pattern="^#[0-9A-Fa-f]{6}$"
-                        class="w-25 p-2 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
+                        class="w-full p-2 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
                         oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('colorPicker-block-{{ $block->id }}-{{ $field['key'] }}').value = this.value">
                 </div>
                 @break
@@ -267,7 +279,7 @@
                             {{ ($block->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
                             class="sr-only peer live-input">
 
-                        <span class="block p-2 text-xs capitalize text-center
+                        <span class="block p-2 text-sm capitalize text-center
                          transition-all duration-200
                          peer-checked:bg-black
                          peer-checked:text-white
@@ -409,7 +421,7 @@
                 @endswitch
 
                 @if(isset($field['help']))
-                <p class="text-xs text-gray-500 mt-1.5 italic">
+                <p class="text-sm text-gray-500 mt-1.5 italic">
                     <i class="fa-solid fa-circle-info mr-1"></i>{{ $field['help'] }}
                 </p>
                 @endif
@@ -447,40 +459,78 @@
             return input.value;
         }
 
+        function evaluateCondition(controlValue, operator, expected) {
+            switch (operator) {
+                case '==':
+                case '=':
+                    return String(controlValue) === String(expected);
+
+                case '!=':
+                    return String(controlValue) !== String(expected);
+
+                case 'in':
+                    return Array.isArray(expected) && expected.includes(controlValue);
+
+                case 'not_in':
+                    return Array.isArray(expected) && !expected.includes(controlValue);
+
+                default:
+                    return String(controlValue) === String(expected);
+            }
+        }
+
         function updateConditionalFields() {
-            const conditionalFields = form.querySelectorAll("[data-conditions]");
+            const conditionalFields = form.querySelectorAll('[data-conditions]');
 
-            conditionalFields.forEach((field) => {
+            conditionalFields.forEach(field => {
                 let conditions = JSON.parse(field.dataset.conditions);
-
-                // backward compatibility
-                if (!Array.isArray(conditions)) {
-                    conditions = [conditions];
-                }
-
                 let shouldShow = true;
 
-                conditions.forEach(cond => {
-                    const control = form.querySelector(
-                        `[name="settings[${cond.field}]"], [name="${cond.field}"]`
-                    );
+                // 🔁 OR condition support
+                if (conditions.operator === 'or' && Array.isArray(conditions.rules)) {
+                    shouldShow = false;
 
-                    const value = getValue(control);
+                    conditions.rules.forEach(rule => {
+                        const control = form.querySelector(
+                            `[name="settings[${rule.field}]"], [name="${rule.field}"]`
+                        );
 
-                    if (String(value) !== String(cond.value)) {
-                        shouldShow = false;
+                        const value = getValue(control);
+                        if (evaluateCondition(value, rule.operator ?? '==', rule.value)) {
+                            shouldShow = true;
+                        }
+                    });
+
+                } else {
+                    // 🔁 AND condition (default)
+                    if (!Array.isArray(conditions)) {
+                        conditions = [conditions];
                     }
-                });
 
+                    conditions.forEach(cond => {
+                        const control = form.querySelector(
+                            `[name="settings[${cond.field}]"], [name="${cond.field}"]`
+                        );
+
+                        const value = getValue(control);
+                        const operator = cond.operator ?? '==';
+
+                        if (!evaluateCondition(value, operator, cond.value)) {
+                            shouldShow = false;
+                        }
+                    });
+                }
+
+                // 🎯 Apply result
                 if (shouldShow) {
-                    field.style.display = "flex";
-                    field.style.opacity = "1";
-                    field.querySelectorAll("input,select,textarea")
+                    field.style.display = 'block';
+                    field.style.opacity = '1';
+                    field.querySelectorAll('input,select,textarea')
                         .forEach(el => el.disabled = false);
                 } else {
-                    field.style.display = "none";
-                    field.style.opacity = "0";
-                    field.querySelectorAll("input,select,textarea")
+                    field.style.display = 'none';
+                    field.style.opacity = '0';
+                    field.querySelectorAll('input,select,textarea')
                         .forEach(el => el.disabled = true);
                 }
             });

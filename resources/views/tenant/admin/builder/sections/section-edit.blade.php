@@ -1,7 +1,7 @@
-<div id="edit-form-{{ $section->id }}" class="section-edit-form hidden edit-form fixed top-0 left-0 bottom-0 w-[299px] pt-29 overflow-auto scrollbar bg-primary z-9">
-    <div class="flex items-center justify-between p-2 border-bottom sticky top-0 bg-primary z-10">
-        <h2 class="text-sm font-semibold text-primary p-2 bg-hover-primary border-rounded flex gap-2 items-center" onclick="document.getElementById('edit-form-{{ $section->id }}').classList.add('hidden'); clearPreviewHighlights();" id="sectionFormClose">
-            <i class="fa-solid fa-arrow-left text-tertiary"></i> {{ $section->name }}
+<div id="edit-form-{{ $section->id }}" class="section-edit-form hidden edit-form fixed top-0 left-0 bottom-0 w-[299px] overflow-auto scrollbar bg-primary z-30">
+    <div class="flex items-center justify-between p-2 border-bottom sticky top-15.5 bg-primary z-10">
+        <h2 class="text-sm font-semibold text-primary px-2 py-2.25 bg-hover-primary group border-rounded flex gap-2 items-center" onclick="document.getElementById('edit-form-{{ $section->id }}').classList.add('hidden'); clearPreviewHighlights();" id="sectionFormClose">
+            <i class="fa-solid fa-arrow-left text-tertiary group-hover:-translate-x-1 duration-200"></i> {{ $section->name }}
         </h2>
         <div class="flex items-center">
             <button type="button" class="toggle-active-btn text-tertiary text-sm bg-hover-secondary p-1 border-rounded" data-section-id="{{ $section->id }}">
@@ -26,7 +26,7 @@
     @endphp
 
     @if(count($fields) > 0)
-    <form class="editSectionForm" data-section-id="{{ $section->id }}" enctype="multipart/form-data">
+    <form class="editSectionForm px-4 pt-14" data-section-id="{{ $section->id }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -43,20 +43,20 @@
         }
         @endphp
 
-        <div class="field-item flex justify-between items-center gap-4 p-4 transition-all duration-300 {{ $field['key'] === 'group' ? 'border-bottom border-top' : '' }}"
+        <div class="field-item p-3 transition-all duration-300 mb-2 bg-hover-secondary {{ $field['key'] === 'group' ? 'border-rounded border-primary mt-6' : 'border-rounded border-primary' }}"
             data-field-key="{{ $field['key'] }}"
             @if(isset($field['conditional']))
             data-conditions='@json($field["conditional"])'
             @endif>
 
-            <label class="block text-primary text-left w-1/3 text-[12px] {{ $field['key'] === 'group' ? 'font-semibold' : '' }}">
+            <label class="block text-left {{ $field['key'] === 'group' ? 'font-semibold text-primary text-base py-1 flex justify-between items-center' : 'text-xs font-semibold text-tertiary mb-2 uppercase' }}">
                 {{ $field['label'] ?? ucfirst($field['key']) }}
-                @if($field['required'] ?? false)
-                <span class="text-red-500">*</span>
+                @if($field['key'] === 'group')
+                <i class="fa-solid {{ $field['icon'] ?? 'fa-layer-group' }}"></i>
                 @endif
             </label>
 
-            <div class="w-2/3">
+            <div class="w-full">
                 @switch($field['type'])
 
                 @case('group')
@@ -66,7 +66,7 @@
                 @case('color_scheme_selector')
                 <div class="color-scheme-selector border-primary border-rounded pr-1">
                     <select name="color_scheme_id"
-                        class="w-full p-2 text-xs focus:outline-none live-input transition-all">
+                        class="w-full p-2 text-sm focus:outline-none live-input transition-all">
                         @foreach($colorSchemes as $scheme)
                         <option value="{{ $scheme->id }}"
                             {{ $section->color_scheme_id == $scheme->id ? 'selected' : '' }}>
@@ -103,21 +103,38 @@
                     rows="{{ $field['rows'] ?? 3 }}"
                     placeholder="{{ $field['placeholder'] ?? 'Write something...' }}"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs resize-none transition-all">{{ $section->settings[$field['key']] ?? $field['default'] ?? '' }}</textarea>
+                    class="w-full p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm resize-none transition-all">{{ $section->settings[$field['key']] ?? $field['default'] ?? '' }}</textarea>
                 @break
 
                 {{-- 📋 Select Dropdown --}}
                 @case('select')
                 <select name="settings[{{ $field['key'] }}]"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full capitalize p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-xs transition-all">
-                    @foreach($field['options'] ?? [] as $value)
-                    <option class="capitalize"
-                        value="{{ $value }}"
-                        {{ ($section->settings[$field['key']] ?? $field['default'] ?? '') === $value ? 'selected' : '' }}>
-                        {{ ucfirst(str_replace(['_', '-'], ' ', $value)) }}
+                    class="w-full p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm transition-all">
+
+                    @foreach($field['options'] ?? [] as $option)
+                    @php
+                    // Check if the option is an array (Has label/value) or a simple string
+                    if (is_array($option)) {
+                    $value = $option['value'];
+                    $label = $option['label'] ?? $value; // Fallback to value if label is missing
+                    } else {
+                    $value = $option;
+                    // Format simple string for display (remove _, - and capitalize)
+                    $label = ucfirst(str_replace(['_', '-'], ' ', $option));
+                    }
+
+                    // Check if this option is currently selected
+                    $currentSetting = $section->settings[$field['key']] ?? $field['default'] ?? '';
+                    // Convert both to string for safe comparison
+                    $isSelected = (string)$currentSetting === (string)$value;
+                    @endphp
+
+                    <option value="{{ $value }}" {{ $isSelected ? 'selected' : '' }}>
+                        {{ $label }}
                     </option>
                     @endforeach
+
                 </select>
                 @break
 
@@ -138,14 +155,14 @@
                         </option>
                         @endforeach
                     </select>
-                    <p class="text-xs text-gray-500 mt-1">
-                        Hold <kbd class="px-1.5 py-0.5 bg-gray-200 border-rounded text-xs">Ctrl</kbd> (or <kbd class="px-1.5 py-0.5 bg-gray-200 border-rounded text-xs">Cmd</kbd>) to select multiple.
+                    <p class="text-sm text-gray-500 mt-1">
+                        Hold <kbd class="px-1.5 py-0.5 bg-gray-200 border-rounded text-sm">Ctrl</kbd> (or <kbd class="px-1.5 py-0.5 bg-gray-200 border-rounded text-sm">Cmd</kbd>) to select multiple.
                     </p>
                 </div>
                 @else
                 <textarea name="settings[{{ $field['key'] }}]"
                     rows="4"
-                    class="border-primary border-rounded w-full p-2.5 text-xs bg-gray-50 focus:ring-2 focus:ring-accent focus:outline-none font-mono transition-all">{{ json_encode($section->settings[$field['key']] ?? $field['value'] ?? '', JSON_PRETTY_PRINT) }}</textarea>
+                    class="border-primary border-rounded w-full p-2.5 text-sm bg-gray-50 focus:ring-2 focus:ring-accent focus:outline-none font-mono transition-all">{{ json_encode($section->settings[$field['key']] ?? $field['value'] ?? '', JSON_PRETTY_PRINT) }}</textarea>
                 @endif
                 @break
 
@@ -163,18 +180,13 @@
 
                 {{-- 🔘 Toggle Switch --}}
                 @case('switch')
-                <label class="relative inline-flex items-center cursor-pointer group">
-                    <input type="hidden"
-                        name="settings[{{ $field['key'] }}]"
-                        value="0">
-                    <input type="checkbox"
-                        name="settings[{{ $field['key'] }}]"
-                        value="1"
-                        class="sr-only peer live-input"
-                        {{ !empty($section->settings[$field['key']]) ? 'checked' : '' }}>
-                    <div class="w-11 h-6 bg-gray-300 rounded-full peer shrink-0 peer-checked:bg-black transition-all duration-300"></div>
-                    <div class="absolute left-0.75 top-1/2 transform -translate-y-1/2 bg-white w-5 h-5 shrink-0 rounded-full shadow-sm peer-checked:translate-x-4.75 transition-all duration-300"></div>
-                    <span class="ml-3 text-[11px] text-secondary group-hover:text-accent transition-colors">{{ $field['text'] ?? 'Enable' }}</span>
+                <label class="flex items-center justify-between p-2 bg-primary border-primary border-rounded cursor-pointer transition-all">
+                    <span class="text-xs text-gray-700 font-medium">{{ $field['text'] ?? 'Enable' }}</span>
+                    <div class="relative inline-flex items-center cursor-pointer">
+                        <input type="hidden" name="settings[{{ $field['key'] }}]" value="0">
+                        <input type="checkbox" name="settings[{{ $field['key'] }}]" value="1" class="sr-only peer live-input" {{ !empty($section->settings[$field['key']]) ? 'checked' : '' }}>
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-900"></div>
+                    </div>
                 </label>
                 @break
 
@@ -198,7 +210,7 @@
                         value="{{ $section->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
                         maxlength="7"
                         pattern="^#[0-9A-Fa-f]{6}$"
-                        class="w-25 p-2 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
+                        class="w-full p-2 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
                         oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('colorPicker-{{ $field['key'] }}').value = this.value">
                 </div>
                 @break
@@ -243,7 +255,7 @@
                             {{ ($section->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
                             class="sr-only peer live-input">
 
-                        <span class="block p-2 text-xs capitalize text-center
+                        <span class="block p-2 text-sm capitalize text-center
                          transition-all duration-200
                          peer-checked:bg-black
                          peer-checked:text-white
@@ -352,53 +364,53 @@
                                 class=" flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasVideo === null ? '' : 'hidden' }}">
                                 <i class="fa-solid fa-video text-3xl mb-2"></i>
                                 Upload {{ $field['label'] }}
-                        </div>
-                        <div class="flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                            <span class="text-[12px] text-invert">Upload/Change Video</span>
+                            </div>
+                            <div class="flex w-full h-full absolute left-0 top-0 items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <span class="text-[12px] text-invert">Upload/Change Video</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            @break
+                @break
 
-            {{-- ↔️ Alignment Buttons --}}
-            @case('alignment')
-            <div class="flex items-center gap-2">
-                @foreach(['left'=>'fa-align-left','center'=>'fa-align-center','right'=>'fa-align-right'] as $align => $icon)
-                <button type="button"
-                    class="flex-1 p-2.5 border-primary border-rounded hover:bg-accent hover:text-white transition-all duration-200 {{ ($section->settings[$field['key']] ?? 'left') === $align ? 'bg-accent text-white shadow-md' : 'hover:scale-105' }}"
-                    onclick="this.closest('.field-item').querySelector('input[name=\'settings[{{ $field['key'] }}]\']').value='{{ $align }}'; 
+                {{-- ↔️ Alignment Buttons --}}
+                @case('alignment')
+                <div class="flex items-center gap-2">
+                    @foreach(['left'=>'fa-align-left','center'=>'fa-align-center','right'=>'fa-align-right'] as $align => $icon)
+                    <button type="button"
+                        class="flex-1 p-2.5 border-primary border-rounded hover:bg-accent hover:text-white transition-all duration-200 {{ ($section->settings[$field['key']] ?? 'left') === $align ? 'bg-accent text-white shadow-md' : 'hover:scale-105' }}"
+                        onclick="this.closest('.field-item').querySelector('input[name=\'settings[{{ $field['key'] }}]\']').value='{{ $align }}'; 
                                         this.closest('.editSectionForm').dispatchEvent(new Event('input'));
                                         this.closest('.flex').querySelectorAll('button').forEach(b => b.classList.remove('bg-accent', 'text-white', 'shadow-md'));
                                         this.classList.add('bg-accent', 'text-white', 'shadow-md');">
-                    <i class="fa-solid {{ $icon }}"></i>
-                </button>
-                @endforeach
-                <input type="hidden"
+                        <i class="fa-solid {{ $icon }}"></i>
+                    </button>
+                    @endforeach
+                    <input type="hidden"
+                        name="settings[{{ $field['key'] }}]"
+                        value="{{ $section->settings[$field['key']] ?? 'left' }}">
+                </div>
+                @break
+
+                {{-- ❓ Default/Fallback --}}
+                @default
+                <input type="text"
                     name="settings[{{ $field['key'] }}]"
-                    value="{{ $section->settings[$field['key']] ?? 'left' }}">
+                    value="{{ $section->settings[$field['key']] ?? '' }}"
+                    class="w-full p-2.5 border-primary border-rounded live-input text-sm focus:ring-2 focus:ring-accent focus:outline-none transition-all">
+                @endswitch
+
+                {{-- Help Text --}}
+                @if(isset($field['help']))
+                <p class="text-sm text-gray-500 mt-1.5 italic">
+                    <i class="fa-solid fa-circle-info mr-1"></i>{{ $field['help'] }}
+                </p>
+                @endif
             </div>
-            @break
-
-            {{-- ❓ Default/Fallback --}}
-            @default
-            <input type="text"
-                name="settings[{{ $field['key'] }}]"
-                value="{{ $section->settings[$field['key']] ?? '' }}"
-                class="w-full p-2.5 border-primary border-rounded live-input text-sm focus:ring-2 focus:ring-accent focus:outline-none transition-all">
-            @endswitch
-
-            {{-- Help Text --}}
-            @if(isset($field['help']))
-            <p class="text-xs text-gray-500 mt-1.5 italic">
-                <i class="fa-solid fa-circle-info mr-1"></i>{{ $field['help'] }}
-            </p>
-            @endif
         </div>
-</div>
-@endforeach
-</form>
-@endif
+        @endforeach
+    </form>
+    @endif
 </div>
 
 <script>
@@ -429,46 +441,82 @@
             return input.value;
         }
 
+        function evaluateCondition(controlValue, operator, expected) {
+            switch (operator) {
+                case '==':
+                case '=':
+                    return String(controlValue) === String(expected);
+
+                case '!=':
+                    return String(controlValue) !== String(expected);
+
+                case 'in':
+                    return Array.isArray(expected) && expected.includes(controlValue);
+
+                case 'not_in':
+                    return Array.isArray(expected) && !expected.includes(controlValue);
+
+                default:
+                    return String(controlValue) === String(expected);
+            }
+        }
+
         function updateConditionalFields() {
-            const conditionalFields = form.querySelectorAll("[data-conditions]");
+            const conditionalFields = form.querySelectorAll('[data-conditions]');
 
-            conditionalFields.forEach((field) => {
+            conditionalFields.forEach(field => {
                 let conditions = JSON.parse(field.dataset.conditions);
-
-                // backward compatibility
-                if (!Array.isArray(conditions)) {
-                    conditions = [conditions];
-                }
-
                 let shouldShow = true;
 
-                conditions.forEach(cond => {
-                    const control = form.querySelector(
-                        `[name="settings[${cond.field}]"], [name="${cond.field}"]`
-                    );
+                // 🔁 OR condition support
+                if (conditions.operator === 'or' && Array.isArray(conditions.rules)) {
+                    shouldShow = false;
 
-                    const value = getValue(control);
+                    conditions.rules.forEach(rule => {
+                        const control = form.querySelector(
+                            `[name="settings[${rule.field}]"], [name="${rule.field}"]`
+                        );
 
-                    if (String(value) !== String(cond.value)) {
-                        shouldShow = false;
+                        const value = getValue(control);
+                        if (evaluateCondition(value, rule.operator ?? '==', rule.value)) {
+                            shouldShow = true;
+                        }
+                    });
+
+                } else {
+                    // 🔁 AND condition (default)
+                    if (!Array.isArray(conditions)) {
+                        conditions = [conditions];
                     }
-                });
 
+                    conditions.forEach(cond => {
+                        const control = form.querySelector(
+                            `[name="settings[${cond.field}]"], [name="${cond.field}"]`
+                        );
+
+                        const value = getValue(control);
+                        const operator = cond.operator ?? '==';
+
+                        if (!evaluateCondition(value, operator, cond.value)) {
+                            shouldShow = false;
+                        }
+                    });
+                }
+
+                // 🎯 Apply result
                 if (shouldShow) {
-                    field.style.display = "flex";
-                    field.style.opacity = "1";
-                    field.querySelectorAll("input,select,textarea")
+                    field.style.display = 'block';
+                    field.style.opacity = '1';
+                    field.querySelectorAll('input,select,textarea')
                         .forEach(el => el.disabled = false);
                 } else {
-                    field.style.display = "none";
-                    field.style.opacity = "0";
-                    field.querySelectorAll("input,select,textarea")
+                    field.style.display = 'none';
+                    field.style.opacity = '0';
+                    field.querySelectorAll('input,select,textarea')
                         .forEach(el => el.disabled = true);
                 }
             });
         }
-
-
         // First load
         updateConditionalFields();
 

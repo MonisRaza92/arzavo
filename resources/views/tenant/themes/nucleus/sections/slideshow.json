@@ -1,0 +1,144 @@
+{
+    "type": "slideshow",
+    "name": "Hero: Slideshow",
+    "icon": "fa-images",
+    "order": 8,
+    "category": "Hero",
+    "color_scheme_id": 1,
+    "max_blocks": 10,
+    "allowed_blocks": ["slideshow_image"],
+    "default_blocks": ["slideshow_image", "slideshow_image", "slideshow_image"],
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Background",
+            "icon": "fa-layer-group"
+        },
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Size & Width"
+        },
+        {
+            "key": "content_width",
+            "label": "Content Width",
+            "type": "radio",
+            "options": ["container", "full"],
+            "default": "container"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Slider Behavior",
+            "icon": "fa-sliders"
+        },
+        {
+            "key": "autoplay",
+            "label": "Autoplay",
+            "type": "switch",
+            "default": "1",
+            "text": "Automatically change slides"
+        },
+        {
+            "key": "autoplay_delay",
+            "label": "Autoplay Delay (s)",
+            "type": "range",
+            "default": "3",
+            "min": 1,
+            "max": 10,
+            "conditional": {
+                "field": "autoplay",
+                "value": "1"
+            }
+        },
+        {
+            "key": "show_arrows",
+            "label": "Navigation Arrows",
+            "type": "switch",
+            "default": "1",
+            "text": "Show previous / next arrows"
+        },
+        {
+            "key": "show_dots",
+            "label": "Pagination Dots",
+            "type": "switch",
+            "default": "1",
+            "text": "Show slide indicators"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top (px)",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom (px)",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
+        {
+            "key": "border",
+            "label": "Border",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "radio",
+            "default": "enable",
+            "options": ["enable", "disable", "custom"]
+        },
+        {
+            "key": "custom_border_radius",
+            "label": "Border Radius (%)",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": "0",
+            "conditional": {
+                "field": "border_radius",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Responsive Visibility"
+        },
+        {
+            "key": "hide_desktop",
+            "label": "Hide on Desktop",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "hide_mobile",
+            "label": "Hide on Mobile",
+            "type": "switch",
+            "default": "0"
+        }
+    ]
+}

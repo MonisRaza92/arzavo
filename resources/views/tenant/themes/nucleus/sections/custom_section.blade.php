@@ -2,8 +2,7 @@
 $s = $section->settings ?? [];
 
 $bgType = $s['background_type'] ?? 'color';
-$mediaType = $s['media_type'] ?? '';
-$bgImage = $s['background_image'] ?? 'images/tenant/bg.jpg';
+$bgImage = $s['background_image'] ?? '';
 $bgVideo = $s['background_video'] ?? '';
 
 $bgBlur = $s['background_blur'] ?? '0';
@@ -60,15 +59,10 @@ $input = $section->colorScheme->input;
         {{ $hideDesktop === '1' ? 'hidden md:block' : '' }}
         {{ $hideMobile === '1' ? 'block md:hidden' : '' }}
     "
-
     style="
         {{ colors($colors, $primaryBtn, $secondaryBtn, $input) }}
-        --arzavo-background: {{ $colors->background ?? '' }};
-        --arzavo-heading-color: {{ $colors->heading ?? '' }};
-        --arzavo-paragraph-color: {{ $colors->paragraph ?? '' }};
-
-        @if ($bgType === 'media' && $mediaType === 'image' && $bgImage)
-            background-image: url('{{ media($bgImage) }}');
+        @if ($bgType === 'image')
+            background-image: url('{{ media($bgImage) ?? asset('images/tenant/bg.jpg') }}');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -82,7 +76,7 @@ $input = $section->colorScheme->input;
         margin-top: {{ $mt }}px;
         margin-bottom: {{ $mb }}px;
     ">
-    @if ($bgType === 'media' && $mediaType === 'video' && $bgVideo)
+    @if ($bgType === 'video')
     <video
         class="absolute inset-0 w-full h-full object-cover z-0"
         autoplay
@@ -93,14 +87,14 @@ $input = $section->colorScheme->input;
     </video>
     @endif
 
-    @if ($bgType === 'media' && $bgBlur === '1')
+    @if ($bgType !== 'color' && $bgBlur === '1')
     <div
         class="absolute inset-0 pointer-events-none z-10"
         style="backdrop-filter: blur({{ $bgBlurIntensity }}px); -webkit-backdrop-filter: blur({{ $bgBlurIntensity }}px);">
     </div>
     @endif
 
-    @if ($overlay === '1' && $bgType === 'media')
+    @if ($overlay === '1' && $bgType !== 'color')
     <div
         class="absolute inset-0 z-0"
         style="background-color: {{ $overlayColor }}; opacity: {{ $overlayOpacity }}%;"></div>

@@ -1,188 +1,105 @@
-<!-- Testimonials Section -->
-<section class="bg-secondary py-20">
+<section id="testimonials" class="py-24 relative overflow-hidden section-padding">
     <div class="container">
         <!-- Section Header -->
-        <div class="text-center mb-16">
-            <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
-                What Our Customers Say
-            </h2>
-            <p class="text-xl text-secondary max-w-3xl mx-auto">
-                Join thousands of educational institutions who trust Arzavo to power their online learning platforms.
-            </p>
+        <div class="text-center max-w-3xl mx-auto mb-24 reveal-on-scroll">
+            <h2 class="text-xs font-black uppercase tracking-[0.4em] text-accent mb-6">Social Proof</h2>
+            <h3 class="text-4xl md:text-6xl font-black outfit-font tracking-tight leading-tight">
+                Trusted by <br/>
+                <span class="text-gradient-red">Modern Educators.</span>
+            </h3>
         </div>
 
-        <!-- Testimonials Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <!-- Testimonials Grid (V4) -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Testimonial 1 -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300">
-                <div class="flex items-center mb-6">
-                    <div class="flex text-accent">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
+            <div class="p-10 bg-white/40 backdrop-blur-md border-rounded-xl border-primary hover:bg-white hover:shadow-2xl transition-all duration-700 group reveal-on-scroll stagger-1">
+                <div class="flex text-accent mb-8 gap-1 group-hover:animate-pulse">
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
                 </div>
-                <p class="text-secondary mb-6 italic">
-                    "Arzavo transformed our coaching institute completely. The multi-tenant architecture allowed us to manage multiple branches seamlessly. Student enrollment increased by 300% in just 6 months!"
+                <p class="text-lg font-bold text-primary mb-10 leading-relaxed italic">
+                    "Arzavo transformed our institute. The multi-tenant architecture is a game-changer for branch management. Enrollment grew by 3x."
                 </p>
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-accent border-rounded flex items-center justify-center mr-4">
-                        <span class="text-invert font-bold">RS</span>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-invert font-black outfit-font group-hover:scale-110 transition-transform">
+                        RS
                     </div>
                     <div>
-                        <h4 class="font-semibold text-primary">Rajesh Sharma</h4>
-                        <p class="text-tertiary text-sm">Director, Excellence Coaching Institute</p>
+                        <h4 class="text-sm font-black uppercase tracking-widest text-primary">Rajesh Sharma</h4>
+                        <p class="text-[10px] font-black uppercase tracking-tighter text-tertiary">Director, Excellence Academy</p>
                     </div>
                 </div>
             </div>
 
             <!-- Testimonial 2 -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300">
-                <div class="flex items-center mb-6">
-                    <div class="flex text-accent">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
+            <div class="p-10 bg-white/40 backdrop-blur-md border-rounded-xl border-primary hover:bg-white hover:shadow-2xl transition-all duration-700 group reveal-on-scroll stagger-2">
+                <div class="flex text-accent mb-8 gap-1 group-hover:animate-pulse">
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
                 </div>
-                <p class="text-secondary mb-6 italic">
-                    "The page builder is incredibly intuitive. We customized our entire website without any technical help. The payment integration made fee collection so much easier for our school."
+                <p class="text-lg font-bold text-primary mb-10 leading-relaxed italic">
+                    "The zero-code builder is magic. We customized our entire school portal in a weekend. Fee collection is now fully automated."
                 </p>
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-accent border-rounded flex items-center justify-center mr-4">
-                        <span class="text-invert font-bold">PK</span>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-accent-secondary rounded-full flex items-center justify-center text-invert font-black outfit-font group-hover:scale-110 transition-transform">
+                        PK
                     </div>
                     <div>
-                        <h4 class="font-semibold text-primary">Priya Kapoor</h4>
-                        <p class="text-tertiary text-sm">Principal, Green Valley School</p>
+                        <h4 class="text-sm font-black uppercase tracking-widest text-primary">Priya Kapoor</h4>
+                        <p class="text-[10px] font-black uppercase tracking-tighter text-tertiary">Principal, Green Valley</p>
                     </div>
                 </div>
             </div>
 
             <!-- Testimonial 3 -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300">
-                <div class="flex items-center mb-6">
-                    <div class="flex text-accent">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
+            <div class="p-10 bg-white/40 backdrop-blur-md border-rounded-xl border-primary hover:bg-white hover:shadow-2xl transition-all duration-700 group reveal-on-scroll stagger-3">
+                <div class="flex text-accent mb-8 gap-1 group-hover:animate-pulse">
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <i class="fa-solid fa-star text-xs"></i>
                 </div>
-                <p class="text-secondary mb-6 italic">
-                    "Amazing support team! They helped us migrate from our old system seamlessly. The role-based access control is perfect for managing our 50+ teachers and 2000+ students."
+                <p class="text-lg font-bold text-primary mb-10 leading-relaxed italic">
+                    "Exceptional support. Migration was seamless, and the role-based security gives us total peace of mind for our 50+ staff."
                 </p>
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-accent border-rounded flex items-center justify-center mr-4">
-                        <span class="text-invert font-bold">AM</span>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-invert font-black outfit-font group-hover:scale-110 transition-transform">
+                        AM
                     </div>
                     <div>
-                        <h4 class="font-semibold text-primary">Amit Mehta</h4>
-                        <p class="text-tertiary text-sm">IT Head, Sunrise University</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Testimonial 4 -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300">
-                <div class="flex items-center mb-6">
-                    <div class="flex text-accent">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <p class="text-secondary mb-6 italic">
-                    "The custom domain feature gave us complete branding control. Our students love the modern interface and the mobile-responsive design works perfectly on all devices."
-                </p>
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-accent border-rounded flex items-center justify-center mr-4">
-                        <span class="text-invert font-bold">SG</span>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-primary">Sneha Gupta</h4>
-                        <p class="text-tertiary text-sm">Founder, Digital Learning Hub</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Testimonial 5 -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300">
-                <div class="flex items-center mb-6">
-                    <div class="flex text-accent">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <p class="text-secondary mb-6 italic">
-                    "Course management has never been easier. We can track student progress, manage assignments, and handle payments all in one place. Highly recommended!"
-                </p>
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-accent border-rounded flex items-center justify-center mr-4">
-                        <span class="text-invert font-bold">VT</span>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-primary">Vikram Thakur</h4>
-                        <p class="text-tertiary text-sm">Director, Tech Academy</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Testimonial 6 -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300">
-                <div class="flex items-center mb-6">
-                    <div class="flex text-accent">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <p class="text-secondary mb-6 italic">
-                    "The analytics dashboard gives us incredible insights into student performance and engagement. We've improved our teaching methods based on the data provided."
-                </p>
-                <div class="flex items-center">
-                    <div class="w-12 h-12 bg-accent border-rounded flex items-center justify-center mr-4">
-                        <span class="text-invert font-bold">NK</span>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-primary">Neha Kulkarni</h4>
-                        <p class="text-tertiary text-sm">Academic Head, Smart Classes</p>
+                        <h4 class="text-sm font-black uppercase tracking-widest text-primary">Amit Mehta</h4>
+                        <p class="text-[10px] font-black uppercase tracking-tighter text-tertiary">IT Head, Sunrise University</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Stats Section -->
-        <div class="bg-primary border-primary border-rounded p-12">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                    <div class="text-4xl font-bold text-accent mb-2">500+</div>
-                    <div class="text-secondary">Happy Institutions</div>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-accent mb-2">50K+</div>
-                    <div class="text-secondary">Active Students</div>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-accent mb-2">99.9%</div>
-                    <div class="text-secondary">Uptime</div>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-accent mb-2">4.9/5</div>
-                    <div class="text-secondary">Customer Rating</div>
-                </div>
+        <!-- Metric Cards (V4) -->
+        <div class="mt-24 grid grid-cols-2 lg:grid-cols-4 gap-8 reveal-on-scroll">
+            <div class="p-10 border-rounded-xl border-primary text-center hover-lift transition-all bg-white/50 backdrop-blur-sm group">
+                <div class="text-5xl font-black outfit-font text-primary mb-2 group-hover:text-accent transition-colors">500+</div>
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-tertiary">Institutions</div>
+            </div>
+            <div class="p-10 border-rounded-xl border-primary text-center hover-lift transition-all bg-accent relative overflow-hidden group">
+                <div class="absolute inset-0 animate-shimmer opacity-20 pointer-events-none"></div>
+                <div class="text-5xl font-black outfit-font text-invert mb-2">50K+</div>
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-invert opacity-70">Students</div>
+            </div>
+            <div class="p-10 border-rounded-xl border-primary text-center hover-lift transition-all bg-white/50 backdrop-blur-sm group">
+                <div class="text-5xl font-black outfit-font text-primary mb-2 group-hover:text-accent-secondary transition-colors">99.9%</div>
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-tertiary">Uptime</div>
+            </div>
+            <div class="p-10 border-rounded-xl border-primary text-center hover-lift transition-all bg-invert relative overflow-hidden group">
+                <div class="absolute inset-0 animate-shimmer opacity-10 pointer-events-none"></div>
+                <div class="text-5xl font-black outfit-font text-invert mb-2">4.9/5</div>
+                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-invert opacity-60">Rating</div>
             </div>
         </div>
     </div>

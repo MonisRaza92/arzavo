@@ -35,8 +35,7 @@
         }
     ],
     "settings": {
-        "background_type": "media",
-        "media_type": "image",
+        "background_type": "image",
         "height": "full",
         "mobile_height": "1",
         "direction": "vertical",

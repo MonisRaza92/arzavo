@@ -10,7 +10,7 @@
         --arzavo-shadow-spread: {{ $customizes['shadow_spread'] ?? '2px' }};
         --arzavo-shadow-blur: {{ $customizes['shadow_blur'] ?? '10px' }};
         --arzavo-border-width: {{ $customizes['border_width'] ?? '1px' }};
-        --arzavo-border-radius: {{ $customizes['border_radius']  ?? '0' }}px;
+        --arzavo-border-radius: {{ $customizes['border_radius']  ?? '0' }};
         --arzavo-heading-font-family: {{ $customizes['heading_font_family'] ?? '' }};
         --arzavo-paragraph-font-family: {{ $customizes['paragraph_font_family'] ?? '' }};
         --arzavo-secondary-text-font-family: {{ $customizes['secondary_text_font_family'] ?? '' }};

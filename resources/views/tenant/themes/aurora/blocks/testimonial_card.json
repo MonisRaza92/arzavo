@@ -1,0 +1,172 @@
+{
+    "type": "testimonial_card",
+    "name": "Testimonial Card",
+    "icon": "fa-comment",
+    "order": 14,
+    "category": "Testimonials",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "customer_name",
+            "label": "Customer Name",
+            "type": "text",
+            "default": "Sarah Johnson",
+            "placeholder": "Enter customer name"
+        },
+        {
+            "key": "customer_position",
+            "label": "Position/Title",
+            "type": "text",
+            "default": "Marketing Director",
+            "placeholder": "Job title or position"
+        },
+        {
+            "key": "customer_company",
+            "label": "Company",
+            "type": "text",
+            "default": "Digital Solutions Inc",
+            "placeholder": "Company name"
+        },
+        {
+            "key": "customer_avatar",
+            "label": "Customer Avatar",
+            "type": "image",
+            "default": "",
+            "placeholder": "Upload customer photo"
+        },
+        {
+            "key": "testimonial_text",
+            "label": "Testimonial Text",
+            "type": "textarea",
+            "default": "Outstanding service and incredible results. Our conversion rate increased by 300% within the first month!",
+            "placeholder": "Enter testimonial content"
+        },
+        {
+            "key": "rating",
+            "label": "Rating (1-5)",
+            "type": "range",
+            "default": 5,
+            "min": 1,
+            "max": 5
+        },
+        {
+            "key": "show_rating",
+            "label": "Show Rating",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "rating_style",
+            "label": "Rating Style",
+            "type": "select",
+            "options": ["stars", "numbers", "both"],
+            "default": "stars"
+        },
+        {
+            "key": "card_style",
+            "label": "Card Style",
+            "type": "select",
+            "options": ["minimal", "bordered", "shadow", "elevated", "quote_style"],
+            "default": "shadow"
+        },
+        {
+            "key": "show_quotes",
+            "label": "Show Quote Icons",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "quote_style",
+            "label": "Quote Icon Style",
+            "type": "select",
+            "options": ["large_background", "small_inline", "decorative"],
+            "default": "large_background"
+        },
+        {
+            "key": "avatar_style",
+            "label": "Avatar Style",
+            "type": "select",
+            "options": ["circle", "square", "rounded"],
+            "default": "circle"
+        },
+        {
+            "key": "avatar_size",
+            "label": "Avatar Size",
+            "type": "select",
+            "options": ["small", "medium", "large"],
+            "default": "medium"
+        },
+        {
+            "key": "layout_style",
+            "label": "Layout Style",
+            "type": "select",
+            "options": ["avatar_top", "avatar_left", "avatar_bottom"],
+            "default": "avatar_bottom"
+        },
+        {
+            "key": "text_alignment",
+            "label": "Text Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "hover_effect",
+            "label": "Hover Effect",
+            "type": "select",
+            "options": ["none", "lift", "scale", "glow"],
+            "default": "lift"
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "min": 0,
+            "max": 24,
+            "default": 12
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 24
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 24
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 24
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 24
+        }
+    ]
+}

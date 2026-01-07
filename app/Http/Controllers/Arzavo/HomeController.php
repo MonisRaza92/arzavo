@@ -24,12 +24,17 @@ class HomeController
 
     public function pricing()
     {
-        return redirect('/#pricing');
+        return view('arzavo.pricing.index');
+    }
+
+    public function features()
+    {
+        return view('arzavo.features.index');
     }
 
     public function contact()
     {
-        return redirect('/#contact');
+        return view('arzavo.contact.index');
     }
 
     public function dashboard()

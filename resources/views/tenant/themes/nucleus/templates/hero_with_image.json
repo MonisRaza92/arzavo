@@ -1,7 +1,7 @@
 {
     "type": "custom_section",
     "name": "Hero: With Image",
-    "icon": "fa-image",
+    "icon": "fa-align-left",
     "order": 2,
     "category": "Hero",
     "color_scheme_id": 1,
@@ -50,7 +50,9 @@
                         "position": "start",
                         "gap": 16,
                         "width": "fit",
-                        "height": "auto"
+                        "height": "auto",
+                        "padding_left": "0",
+                        "padding_right": "0"
                     },
                     "default_blocks": [
                         {

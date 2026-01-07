@@ -14,9 +14,24 @@ class ColorSchemeController
             'colors.0' => 'required|array',
         ]);
 
-        ColorScheme::create([
-            'colors' => $request->colors
+        // Ensure colors is in array format [0] = {...}
+        $colors = $request->colors;
+        if (!isset($colors[0])) {
+            $colors = [0 => $colors];
+        }
+
+        $scheme = ColorScheme::create([
+            'colors' => $colors
         ]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'id' => $scheme->id,
+                'scheme' => $scheme,
+                'message' => 'Color Scheme Added Successfully'
+            ]);
+        }
 
         return back()->with('success', 'Color Scheme Added Successfully');
     }
@@ -26,9 +41,18 @@ class ColorSchemeController
     {
         $scheme = ColorScheme::findOrFail($id);
 
+        // Ensure colors is always returned as array format
+        $colors = $scheme->colors ?? [];
+        if (empty($colors)) {
+            $colors = [];
+        } elseif (!isset($colors[0])) {
+            // If colors is object, wrap in array
+            $colors = [0 => $colors];
+        }
+
         return response()->json([
             'id' => $scheme->id,
-            'colors' => $scheme->colors ?? [],
+            'colors' => $colors,
         ]);
     }
 
@@ -40,13 +64,20 @@ class ColorSchemeController
             'colors.0' => 'required|array',
         ]);
 
+        // Ensure colors is in array format [0] = {...}
+        $colors = $request->colors;
+        if (!isset($colors[0])) {
+            $colors = [0 => $colors];
+        }
+
         $scheme = ColorScheme::findOrFail($id);
-        $scheme->colors = $request->colors;
+        $scheme->colors = $colors;
         $scheme->save();
 
         if ($request->ajax()) {
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
+                'message' => 'Color Scheme Updated Successfully'
             ]);
         }
 

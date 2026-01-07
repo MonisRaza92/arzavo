@@ -28,7 +28,8 @@
         {
             "key": "group",
             "type": "group",
-            "label": "Background"
+            "label": "Background",
+            "icon": "fa-layer-group"
         },
         {
             "key": "color_scheme_id",
@@ -39,57 +40,28 @@
             "key": "background_type",
             "label": "Background Type",
             "type": "radio",
-            "options": [
-                "color",
-                "media"
-            ],
+            "options": ["color", "image", "video"],
             "default": "color"
-        },
-        {
-            "key": "media_type",
-            "label": "Media Type",
-            "type": "radio",
-            "options": [
-                "image",
-                "video"
-            ],
-            "default": "image",
-            "conditional": {
-                "field": "background_type",
-                "value": "media"
-            }
         },
         {
             "key": "background_image",
             "label": "Background Image",
             "type": "image",
             "default": "",
-            "conditional": [
-                {
-                    "field": "background_type",
-                    "value": "media"
-                },
-                {
-                    "field": "media_type",
-                    "value": "image"
-                }
-            ]
+            "conditional": {
+                "field": "background_type",
+                "value": "image"
+            }
         },
         {
             "key": "background_video",
             "label": "Background Video",
             "type": "video",
             "default": "",
-            "conditional": [
-                {
-                    "field": "background_type",
-                    "value": "media"
-                },
-                {
-                    "field": "media_type",
-                    "value": "video"
-                }
-            ]
+            "conditional": {
+                "field": "background_type",
+                "value": "video"
+            }
         },
         {
             "key": "background_blur",
@@ -99,7 +71,8 @@
             "text": "Enable blur effect on background",
             "conditional": {
                 "field": "background_type",
-                "value": "media"
+                "operator": "!=",
+                "value": "color"
             }
         },
         {
@@ -118,14 +91,11 @@
             "key": "background_attachment",
             "label": "Background Scroll",
             "type": "radio",
-            "options": [
-                "scroll",
-                "fixed"
-            ],
+            "options": ["scroll", "fixed"],
             "default": "scroll",
             "conditional": {
                 "field": "background_type",
-                "value": "media"
+                "value": "image"
             }
         },
         {
@@ -134,7 +104,8 @@
             "label": "Overlay",
             "conditional": {
                 "field": "background_type",
-                "value": "media"
+                "operator": "!=",
+                "value": "color"
             }
         },
         {
@@ -145,7 +116,8 @@
             "text": "Overlay for media background",
             "conditional": {
                 "field": "background_type",
-                "value": "media"
+                "operator": "!=",
+                "value": "color"
             }
         },
         {
@@ -156,7 +128,8 @@
             "conditional": [
                 {
                     "field": "background_type",
-                    "value": "media"
+                    "operator": "!=",
+                    "value": "color"
                 },
                 {
                     "field": "background_overlay",
@@ -174,7 +147,8 @@
             "conditional": [
                 {
                     "field": "background_type",
-                    "value": "media"
+                    "operator": "!=",
+                    "value": "color"
                 },
                 {
                     "field": "background_overlay",
@@ -191,20 +165,14 @@
             "key": "content_width",
             "label": "Content Width",
             "type": "radio",
-            "options": [
-                "container",
-                "full"
-            ],
+            "options": ["container", "full"],
             "default": "container"
         },
         {
             "key": "height",
             "label": "Section Height",
             "type": "radio",
-            "options": [
-                "fit",
-                "full"
-            ],
+            "options": ["fit", "full"],
             "default": "fit"
         },
         {
@@ -223,10 +191,7 @@
             "key": "direction",
             "label": "Direction",
             "type": "radio",
-            "options": [
-                "vertical",
-                "horizontal"
-            ],
+            "options": ["vertical", "horizontal"],
             "default": "vertical"
         },
         {
@@ -244,23 +209,14 @@
             "key": "alignment",
             "label": "Alignment",
             "type": "radio",
-            "options": [
-                "start",
-                "center",
-                "end"
-            ],
+            "options": ["start", "center", "end"],
             "default": "center"
         },
         {
             "key": "position",
             "label": "Position",
             "type": "select",
-            "options": [
-                "start",
-                "center",
-                "end",
-                "between"
-            ],
+            "options": ["start", "center", "end", "between"],
             "default": "between"
         },
         {

@@ -4,11 +4,14 @@
     "icon": "fa-images",
     "order": 2,
     "category": "Gallery",
-    "page": "home",
     "max_blocks": 0,
-    "allowed_blocks": "",
-    "default_blocks": "",
+    "page": "home",
     "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Appearance"
+        },
         {
             "key": "color_scheme_id",
             "label": "Color Scheme",
@@ -18,9 +21,15 @@
             "key": "section_padding",
             "label": "Section Padding (Top & Bottom)",
             "type": "range",
-            "default": "4",
+            "default": "6",
             "min": 0,
             "max": 20
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Images"
         },
         {
             "key": "grid_image_1",
@@ -37,29 +46,25 @@
             "label": "Small Image 2",
             "type": "image"
         },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
         {
             "key": "image_border",
             "label": "Image Border",
             "type": "radio",
             "options": ["enable", "disable"],
-            "default": "disable",
-            "help": "For change the border width go to settings > border & Shadow, and for the color change color scheme"
+            "default": "disable"
         },
         {
             "key": "image_border_radius",
             "label": "Border Radius",
             "type": "radio",
             "options": ["enable", "disable"],
-            "default": "enable",
-            "help": "For change the roundness value go to settings > border & Shadow"
-        },
-        {
-            "key": "shadow",
-            "label": "Shadow",
-            "type": "radio",
-            "options": ["enable", "disable"],
-            "default": "disable",
-            "help": "For change the shadow value go to settings > border & Shadow"
+            "default": "disable"
         }
     ]
 }

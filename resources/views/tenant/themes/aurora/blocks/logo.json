@@ -1,0 +1,62 @@
+{
+    "type": "logo",
+    "name": "Logo",
+    "icon": "fa-shield-alt",
+    "order": 6,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "General"
+        },
+        {
+            "key": "logo_size",
+            "label": "Logo Size",
+            "type": "range",
+            "default": "35",
+            "min": 10,
+            "max": 100
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_left",
+            "label": "Margin Left",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_right",
+            "label": "Margin Right",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        }
+    ]
+}

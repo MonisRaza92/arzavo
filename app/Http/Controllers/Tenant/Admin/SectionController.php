@@ -45,7 +45,7 @@ class SectionController
             ->map(function ($file) {
                 $data = json_decode(file_get_contents($file), true);
                 return [
-                    'type' => basename($file, '.json'),
+                    'type' => $data['type'] ?? basename($file, '.json'),
                     'name' => $data['name'] ?? basename($file, '.json'),
                     'icon' => $data['icon'] ?? 'fa-code',
                     'fields' => $data['fields'] ?? [],
@@ -62,7 +62,7 @@ class SectionController
                 $data = json_decode(file_get_contents($file), true);
 
                 return [
-                    'type' => basename($file, '.json'),
+                    'type' => $data['type'] ?? basename($file, '.json'),
                     'name' => $data['name'] ?? basename($file, '.json'),
                     'icon' => $data['icon'] ?? 'fa-code',
                     'fields' => $data['fields'] ?? [],
@@ -175,6 +175,7 @@ class SectionController
             $blockJsonPath = resource_path("views/tenant/themes/{$theme}/blocks/{$blockType}.json");
             $blockDefaultSettings = [];
 
+
             if (file_exists($blockJsonPath)) {
                 $blockJson = json_decode(file_get_contents($blockJsonPath), true);
 
@@ -188,6 +189,12 @@ class SectionController
                         }
                     }
                 }
+                if (isset($blockJson['color_scheme_id'])) {
+                    $blockSchemeId = $blockJson['color_scheme_id'];
+                }
+                if (isset($blockJson['name'])){
+                    $blockName = $blockJson['name'];
+                }
                 if (isset($blockJson['icon'])) {
                     $blockIcon = $blockJson['icon'];
                 }
@@ -195,10 +202,11 @@ class SectionController
 
             Block::create([
                 'section_id' => $section->id,
-                'name' => ucfirst($blockType),
+                'name' => $blockName ?? ucfirst($blockType),
                 'type' => $blockType,
                 'icon' => $blockIcon ?? 'fa-shapes',
                 'settings' => $blockDefaultSettings,
+                'color_scheme_id' => $blockSchemeId ?? null,
                 'order' => $blockOrder++
             ]);
         }

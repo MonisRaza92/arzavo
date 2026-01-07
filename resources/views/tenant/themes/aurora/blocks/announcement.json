@@ -1,0 +1,26 @@
+{
+    "type": "announcement",
+    "name": "Announcement",
+    "icon": "fa-bell",
+    "order": 1,
+    "category": "Header",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "moveable": "none",
+    "fields": [
+        {
+            "key": "announcement",
+            "label": "Announcement Text",
+            "type": "text",
+            "default": "Welcome to our website!"
+        },
+        {
+            "key": "text_type",
+            "label": "Text Type",
+            "type": "select",
+            "options": ["heading-1", "heading-2", "heading-3", "heading-4", "heading-5", "heading-6", "paragraph", "secondary-text"],
+            "default": "paragraph"
+        }
+    ]
+}

@@ -1,0 +1,98 @@
+{
+    "type": "menu",
+    "name": "Menu: Links",
+    "icon": "fa-arrow-up-right-from-square",
+    "order": 7,
+    "category": "Basic",
+    "max_blocks": 10,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Menu Source"
+        },
+        {
+            "key": "menu_id",
+            "label": "Select Menu",
+            "type": "menu",
+            "default": "1"
+        },
+        {
+            "key": "separate_mobile_menu",
+            "label": "Separate Mobile Menu",
+            "type": "switch",
+            "default": "0",
+            "text": "To use different menu on mobile"
+        },
+        {
+            "key": "mobile_menu_id",
+            "label": "Select Mobile Menu",
+            "type": "menu",
+            "default": "1",
+            "conditional": {
+                "field": "separate_mobile_menu",
+                "value": "1"
+            }
+        },
+
+        
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Typography"
+        },
+        {
+            "key": "text_size",
+            "label": "Text Size",
+            "type": "radio",
+            "options": ["small", "medium", "large"],
+            "default": "medium"
+        },
+        {
+            "key": "text_transform",
+            "label": "Text Transform",
+            "type": "radio",
+            "options": ["capitalize", "uppercase"],
+            "default": "capitalize"
+        },
+        {
+            "key": "font_weight",
+            "label": "Font Weight",
+            "type": "font_weight",
+            "default": "normal"
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
+        },
+        {
+            "key": "item_spacing",
+            "label": "Item Spacing",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "16"
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        }
+    ]
+}

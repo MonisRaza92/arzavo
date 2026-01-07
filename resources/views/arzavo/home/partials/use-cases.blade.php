@@ -1,234 +1,93 @@
-<!-- Use Cases Section -->
-<section class="bg-primary py-20 relative overflow-hidden">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-3">
-        <div class="absolute top-20 left-20 w-24 h-24 bg-accent border-rounded transform rotate-12"></div>
-        <div class="absolute top-48 right-24 w-18 h-18 bg-accent-secondary border-rounded transform -rotate-12"></div>
-        <div class="absolute bottom-32 left-1/4 w-16 h-16 bg-accent border-rounded transform rotate-45"></div>
-        <div class="absolute bottom-16 right-20 w-20 h-20 bg-accent-secondary border-rounded transform -rotate-30"></div>
-    </div>
-    
-    <div class="container relative z-10">
+<section id="solutions" class="py-24 relative overflow-hidden section-padding">
+    <div class="container">
         <!-- Section Header -->
-        <div class="text-center mb-16">
-            <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
-                Perfect for Every Educational Institution
-            </h2>
-            <p class="text-xl text-secondary max-w-3xl mx-auto">
-                From small coaching centers to large universities, Arzavo adapts to your unique needs and scales with your growth.
-            </p>
+        <div class="max-w-4xl mb-24 reveal-on-scroll">
+            <h2 class="text-xs font-black uppercase tracking-[0.4em] text-accent mb-6">Verticals</h2>
+            <h3 class="text-4xl md:text-6xl font-black outfit-font tracking-tight leading-tight">
+                Architected for <br/>
+                <span class="text-gradient-red">Every Scale.</span>
+            </h3>
         </div>
 
-        <!-- Use Cases Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid lg:grid-cols-3 gap-8">
             <!-- Schools -->
-            <div class="bg-secondary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-school text-2xl"></i>
+            <div class="group relative bg-white/50 backdrop-blur-sm border-rounded-xl p-10 border-primary shadow-premium hover:shadow-2xl transition-all duration-700 hover:-translate-y-4 overflow-hidden reveal-on-scroll stagger-1">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-accent/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-700"></div>
+                <div class="mb-12">
+                    <div class="w-16 h-16 bg-accent border-rounded-lg flex items-center justify-center text-invert text-2xl shadow-xl mb-8 group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-school"></i>
+                    </div>
+                    <h4 class="text-2xl font-black outfit-font mb-4 uppercase tracking-tighter">Schools & K-12</h4>
+                    <p class="text-secondary font-medium leading-relaxed">
+                        Enterprise management for traditional schools. Handle admissions, grades, and parent synergy flawlessly.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Schools & K-12</h3>
-                <p class="text-secondary mb-6">
-                    Comprehensive platform for primary and secondary schools to manage students, curriculum, and parent communication.
-                </p>
-                <ul class="space-y-2 text-tertiary mb-6">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Student information system
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Grade & attendance tracking
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Parent portal access
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Assignment management
-                    </li>
+                <ul class="space-y-4 text-xs font-black uppercase tracking-widest text-tertiary">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> Academic Calendars</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> Report Engine</li>
                 </ul>
-                <div class="text-accent font-semibold bg-accent-subtle px-3 py-2 border-rounded">
-                    <i class="fa-solid fa-users mr-2"></i>
-                    Perfect for 100-2000 students
-                </div>
             </div>
 
             <!-- Coaching Centers -->
-            <div class="bg-secondary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-chalkboard-teacher text-2xl"></i>
+            <div class="group relative bg-white/50 backdrop-blur-sm border-rounded-xl p-10 border-primary shadow-premium hover:shadow-2xl transition-all duration-700 hover:-translate-y-4 overflow-hidden lg:mt-12 reveal-on-scroll stagger-2">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-accent-secondary/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-700"></div>
+                <div class="mb-12">
+                    <div class="w-16 h-16 bg-accent-secondary border-rounded-lg flex items-center justify-center text-invert text-2xl shadow-lg mb-8 group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <h4 class="text-2xl font-black outfit-font mb-4 uppercase tracking-tighter">Coaching Institutes</h4>
+                    <p class="text-secondary font-medium leading-relaxed">
+                        Optimized for results. Manage batches, mock exams, and instant performance feedback at scale.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Coaching Centers</h3>
-                <p class="text-secondary mb-6">
-                    Specialized features for competitive exam preparation and skill-based training institutes.
-                </p>
-                <ul class="space-y-2 text-tertiary mb-6">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Batch management system
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Mock test platform
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Performance analytics
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Fee collection system
-                    </li>
+                <ul class="space-y-4 text-xs font-black uppercase tracking-widest text-tertiary">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent-secondary"></i> Batch Cycles</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent-secondary"></i> Fee Logistics</li>
                 </ul>
-                <div class="text-accent font-semibold bg-accent-subtle px-3 py-2 border-rounded">
-                    <i class="fa-solid fa-users mr-2"></i>
-                    Perfect for 50-1000 students
-                </div>
-            </div>
-
-            <!-- Universities -->
-            <div class="bg-secondary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-university text-2xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Universities & Colleges</h3>
-                <p class="text-secondary mb-6">
-                    Enterprise-grade solution for higher education institutions with complex requirements.
-                </p>
-                <ul class="space-y-2 text-tertiary mb-6">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Multi-department management
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Research project tracking
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Faculty management
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Alumni network
-                    </li>
-                </ul>
-                <div class="text-accent font-semibold bg-accent-subtle px-3 py-2 border-rounded">
-                    <i class="fa-solid fa-users mr-2"></i>
-                    Perfect for 1000+ students
-                </div>
             </div>
 
             <!-- Online Academies -->
-            <div class="bg-secondary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-laptop text-2xl"></i>
+            <div class="group relative bg-white/50 backdrop-blur-sm border-rounded-xl p-10 border-primary shadow-premium hover:shadow-2xl transition-all duration-700 hover:-translate-y-4 overflow-hidden reveal-on-scroll stagger-3">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-accent/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-700"></div>
+                <div class="mb-12">
+                    <div class="w-16 h-16 bg-accent border-rounded-lg flex items-center justify-center text-invert text-2xl shadow-xl mb-8 group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <h4 class="text-2xl font-black outfit-font mb-4 uppercase tracking-tighter">Digital Creators</h4>
+                    <p class="text-secondary font-medium leading-relaxed">
+                        Your branded "Netflix for Education". Sell recorded content and host live sessions globally.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Online Academies</h3>
-                <p class="text-secondary mb-6">
-                    Digital-first platform for online course creators and e-learning businesses.
-                </p>
-                <ul class="space-y-2 text-tertiary mb-6">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Video streaming platform
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Interactive assessments
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Certificate generation
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Global payment support
-                    </li>
+                <ul class="space-y-4 text-xs font-black uppercase tracking-widest text-tertiary">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> Global Gateway</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-accent"></i> Core Protection</li>
                 </ul>
-                <div class="text-accent font-semibold bg-accent-subtle px-3 py-2 border-rounded">
-                    <i class="fa-solid fa-globe mr-2"></i>
-                    Unlimited global reach
-                </div>
-            </div>
-
-            <!-- Training Institutes -->
-            <div class="bg-secondary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-tools text-2xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Training Institutes</h3>
-                <p class="text-secondary mb-6">
-                    Specialized platform for vocational training and professional skill development.
-                </p>
-                <ul class="space-y-2 text-tertiary mb-6">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Skill assessment tools
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Industry partnerships
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Placement tracking
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Certification management
-                    </li>
-                </ul>
-                <div class="text-accent font-semibold bg-accent-subtle px-3 py-2 border-rounded">
-                    <i class="fa-solid fa-users mr-2"></i>
-                    Perfect for 200-1500 trainees
-                </div>
-            </div>
-
-            <!-- Tutoring Services -->
-            <div class="bg-secondary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-user-graduate text-2xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Tutoring Services</h3>
-                <p class="text-secondary mb-6">
-                    Perfect for individual tutors and small tutoring businesses to manage students and sessions.
-                </p>
-                <ul class="space-y-2 text-tertiary mb-6">
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Session scheduling
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Progress tracking
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Parent communication
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fa-solid fa-check text-accent mr-2"></i>
-                        Payment management
-                    </li>
-                </ul>
-                <div class="text-accent font-semibold bg-accent-subtle px-3 py-2 border-rounded">
-                    <i class="fa-solid fa-users mr-2"></i>
-                    Perfect for 10-200 students
-                </div>
             </div>
         </div>
 
-        <!-- CTA -->
-        <div class="text-center mt-16">
-            <div class="bg-secondary border-primary border-rounded p-8 shadow-xl">
-                <h3 class="text-2xl font-bold text-primary mb-4">Ready to Transform Your Institution?</h3>
-                <p class="text-secondary mb-8">Join thousands of educators who trust Arzavo for their digital transformation</p>
-                <a href="{{ route('register.form') }}" class="bg-accent text-invert px-8 py-4 border-rounded font-semibold hover-invert transition-all duration-300 text-lg inline-block shadow-lg transform hover:scale-105">
-                    <i class="fa-solid fa-rocket mr-2"></i>
-                    Start Your Free Trial
-                </a>
+        <!-- Marquee / Social Proof Section (V4) -->
+        <div class="mt-32 pt-20 reveal-on-scroll">
+            <p class="text-center text-[10px] uppercase tracking-[0.4em] font-black text-tertiary mb-12">Trusted by global pioneers</p>
+            <div class="overflow-hidden relative">
+                <!-- V4 Shimmer Gradient Overlay -->
+                <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+                <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
+                
+                <div class="animate-marquee flex gap-16 items-center">
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">STANFORD EDU</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">GLOBAL ACADEMY</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">PRIME COACHING</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">SKILL SHARE</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">EDU NEXUS</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">MODERN SCHOOL</span>
+                    <!-- Repeat for smooth loop -->
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">STANFORD EDU</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">GLOBAL ACADEMY</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">PRIME COACHING</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">SKILL SHARE</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">EDU NEXUS</span>
+                    <span class="text-2xl font-black text-primary/20 outfit-font italic">MODERN SCHOOL</span>
+                </div>
             </div>
         </div>
     </div>

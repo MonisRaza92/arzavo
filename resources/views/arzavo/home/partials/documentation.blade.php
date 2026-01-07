@@ -1,310 +1,101 @@
-<!-- Documentation Section -->
-<section id="docs" class="bg-secondary py-20 relative overflow-hidden">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-3">
-        <div class="absolute top-16 left-16 w-28 h-28 bg-accent border-rounded transform rotate-12"></div>
-        <div class="absolute top-40 right-24 w-20 h-20 bg-accent-secondary border-rounded transform -rotate-12"></div>
-        <div class="absolute bottom-24 left-1/4 w-16 h-16 bg-accent border-rounded transform rotate-45"></div>
-        <div class="absolute bottom-48 right-16 w-24 h-24 bg-accent-secondary border-rounded transform -rotate-30"></div>
-    </div>
-    
+<section id="docs" class="py-24 relative overflow-hidden section-padding">
+    <!-- Sophisticated Background Glow -->
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/3 rounded-full blur-[120px] pointer-events-none"></div>
+
     <div class="container relative z-10">
         <!-- Section Header -->
-        <div class="text-center mb-16">
-            <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
-                Complete Documentation & Support
-            </h2>
-            <p class="text-xl text-secondary max-w-3xl mx-auto">
-                Everything you need to get started with Arzavo. From quick setup guides to advanced customization tutorials.
-            </p>
+        <div class="max-w-4xl mb-24 reveal-on-scroll">
+            <h2 class="text-xs font-black uppercase tracking-[0.4em] text-accent mb-6">Resource Center</h2>
+            <h3 class="text-4xl md:text-6xl font-black outfit-font tracking-tight leading-tight">
+                Everything you need <br/>
+                <span class="text-gradient-red">to Scale.</span>
+            </h3>
         </div>
 
-        <!-- Documentation Categories -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <!-- Getting Started -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-rocket text-2xl"></i>
+        <!-- Documentation Categories (V4) -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Category 1 -->
+            <div class="p-10 bg-white/40 backdrop-blur-md border border-primary border-rounded-xl shadow-premium hover:shadow-2xl transition-all duration-700 group reveal-on-scroll stagger-1">
+                <div class="w-14 h-14 bg-accent/5 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent group-hover:text-invert transition-all group-hover:rotate-6">
+                    <i class="fa-solid fa-rocket text-xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Getting Started</h3>
-                <p class="text-secondary mb-6">
-                    Quick setup guide to get your educational platform up and running in minutes.
-                </p>
-                <ul class="space-y-3 mb-6">
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Account setup & verification
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Domain configuration
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Initial customization
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        First course creation
-                    </li>
-                </ul>
-                <a href="#" class="text-accent font-semibold hover:underline transition-all duration-300">
-                    Read Guide <i class="fa-solid fa-arrow-right ml-2"></i>
+                <h4 class="text-xl font-black outfit-font mb-4 uppercase tracking-tighter">Quick Start</h4>
+                <div class="space-y-4 mb-10">
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent group-hover:animate-ping"></span> Account Provisioning
+                    </p>
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Domain Binding
+                    </p>
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Branding Setup
+                    </p>
+                </div>
+                <a href="{{ route('documentation') }}" class="text-[10px] font-black uppercase tracking-widest text-accent hover:text-primary transition-all flex items-center gap-3 group/link">
+                    Explore Guide <i class="fa-solid fa-arrow-right-long group-hover/link:translate-x-2 transition-transform"></i>
                 </a>
             </div>
 
-            <!-- User Management -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-users text-2xl"></i>
+            <!-- Category 2 -->
+            <div class="p-10 bg-white/40 backdrop-blur-md border border-primary border-rounded-xl shadow-premium hover:shadow-2xl transition-all duration-700 group reveal-on-scroll stagger-2">
+                <div class="w-14 h-14 bg-accent-secondary/5 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent-secondary group-hover:text-invert transition-all group-hover:rotate-6">
+                    <i class="fa-solid fa-users text-xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">User Management</h3>
-                <p class="text-secondary mb-6">
-                    Learn how to manage students, teachers, and staff with role-based permissions.
-                </p>
-                <ul class="space-y-3 mb-6">
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        User roles & permissions
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Bulk user import
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Profile management
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Authentication setup
-                    </li>
-                </ul>
-                <a href="#" class="text-accent font-semibold hover:underline transition-all duration-300">
-                    Read Guide <i class="fa-solid fa-arrow-right ml-2"></i>
+                <h4 class="text-xl font-black outfit-font mb-4 uppercase tracking-tighter">Governance</h4>
+                <div class="space-y-4 mb-10">
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-secondary group-hover:animate-ping"></span> Roles & Permissions
+                    </p>
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-secondary"></span> Staff Lifecycle
+                    </p>
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-secondary"></span> Student Dynamics
+                    </p>
+                </div>
+                <a href="{{ route('documentation') }}" class="text-[10px] font-black uppercase tracking-widest text-accent-secondary hover:text-primary transition-all flex items-center gap-3 group/link">
+                    Explore Guide <i class="fa-solid fa-arrow-right-long group-hover/link:translate-x-2 transition-transform"></i>
                 </a>
             </div>
 
-            <!-- Course Creation -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-graduation-cap text-2xl"></i>
+            <!-- Category 3 -->
+            <div class="p-10 bg-white/40 backdrop-blur-md border border-primary border-rounded-xl shadow-premium hover:shadow-2xl transition-all duration-700 group reveal-on-scroll stagger-3">
+                <div class="w-14 h-14 bg-accent/5 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent group-hover:text-invert transition-all group-hover:rotate-6">
+                    <i class="fa-solid fa-code text-xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Course Creation</h3>
-                <p class="text-secondary mb-6">
-                    Step-by-step guide to creating engaging courses with multimedia content.
-                </p>
-                <ul class="space-y-3 mb-6">
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Course structure planning
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Content upload & organization
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Pricing & enrollment setup
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Progress tracking
-                    </li>
-                </ul>
-                <a href="#" class="text-accent font-semibold hover:underline transition-all duration-300">
-                    Read Guide <i class="fa-solid fa-arrow-right ml-2"></i>
-                </a>
-            </div>
-
-            <!-- Customization -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-palette text-2xl"></i>
+                <h4 class="text-xl font-black outfit-font mb-4 uppercase tracking-tighter">API Hub</h4>
+                <div class="space-y-4 mb-10">
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent group-hover:animate-ping"></span> Webhook Integration
+                    </p>
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> custom SaaS API
+                    </p>
+                    <p class="text-sm font-bold text-secondary flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Student Sync
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Customization</h3>
-                <p class="text-secondary mb-6">
-                    Make your platform unique with advanced customization options and branding.
-                </p>
-                <ul class="space-y-3 mb-6">
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Theme & color schemes
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Logo & branding setup
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Page builder usage
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Custom CSS & fonts
-                    </li>
-                </ul>
-                <a href="#" class="text-accent font-semibold hover:underline transition-all duration-300">
-                    Read Guide <i class="fa-solid fa-arrow-right ml-2"></i>
-                </a>
-            </div>
-
-            <!-- Payment Setup -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-credit-card text-2xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">Payment Setup</h3>
-                <p class="text-secondary mb-6">
-                    Configure payment gateways and manage student fees and course payments.
-                </p>
-                <ul class="space-y-3 mb-6">
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Payment gateway integration
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Fee structure setup
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Automated billing
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Payment tracking
-                    </li>
-                </ul>
-                <a href="#" class="text-accent font-semibold hover:underline transition-all duration-300">
-                    Read Guide <i class="fa-solid fa-arrow-right ml-2"></i>
-                </a>
-            </div>
-
-            <!-- API Documentation -->
-            <div class="bg-primary border-primary border-rounded p-8 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fa-solid fa-code text-2xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-primary mb-4">API Documentation</h3>
-                <p class="text-secondary mb-6">
-                    Integrate with external systems using our comprehensive REST API.
-                </p>
-                <ul class="space-y-3 mb-6">
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Authentication & security
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        User management APIs
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Course & content APIs
-                    </li>
-                    <li class="flex items-center text-tertiary">
-                        <i class="fa-solid fa-check text-accent mr-3"></i>
-                        Webhook integration
-                    </li>
-                </ul>
-                <a href="#" class="text-accent font-semibold hover:underline transition-all duration-300">
-                    Read Guide <i class="fa-solid fa-arrow-right ml-2"></i>
+                <a href="{{ route('documentation') }}" class="text-[10px] font-black uppercase tracking-widest text-accent hover:text-primary transition-all flex items-center gap-3 group/link">
+                    Explore Guide <i class="fa-solid fa-arrow-right-long group-hover/link:translate-x-2 transition-transform"></i>
                 </a>
             </div>
         </div>
 
-        <!-- Support Options -->
-        <div class="bg-primary border-primary border-rounded p-4 md:p-10 shadow-xl">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold text-primary mb-4">Need Help? We're Here for You</h3>
-                <p class="text-xl text-secondary max-w-2xl mx-auto">
-                    Our support team is ready to help you succeed with Arzavo. Choose the support option that works best for you.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Knowledge Base -->
-                <div class="text-center border-rounded border-primary p-6 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                    <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
-                        <i class="fa-solid fa-book text-3xl"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-primary mb-4">Knowledge Base</h4>
-                    <p class="text-secondary mb-6">
-                        Search our comprehensive knowledge base with step-by-step tutorials and FAQs.
-                    </p>
-                    <a href="#" class="bg-secondary text-primary px-6 py-3 border-rounded font-semibold hover-primary transition-all duration-300 inline-block shadow-lg transform hover:scale-105">
-                        Browse Articles
-                    </a>
+        <!-- Help Banner (V4) -->
+        <div class="mt-20 p-8 glass flex flex-col md:flex-row items-center justify-between gap-8 border-rounded-xl border-accent/20 reveal-on-scroll relative overflow-hidden group">
+            <div class="absolute inset-0 animate-shimmer opacity-5 pointer-events-none"></div>
+            <div class="flex items-center gap-6 relative z-10">
+                <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-invert shadow-xl group-hover:scale-110 transition-transform glow-pulse">
+                    <i class="fa-solid fa-headset text-2xl"></i>
                 </div>
-
-                <!-- Live Chat -->
-                <div class="text-center border-rounded border-primary p-6 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                    <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
-                        <i class="fa-solid fa-comments text-3xl"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-primary mb-4">Live Chat</h4>
-                    <p class="text-secondary mb-6">
-                        Get instant help from our support team through live chat during business hours.
-                    </p>
-                    <a href="#" class="bg-accent text-invert px-6 py-3 border-rounded font-semibold hover-invert transition-all duration-300 inline-block shadow-lg transform hover:scale-105">
-                        Start Chat
-                    </a>
-                </div>
-
-                <!-- Email Support -->
-                <div class="text-center border-rounded border-primary p-6 hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                    <div class="bg-accent text-invert w-20 h-20 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
-                        <i class="fa-solid fa-envelope text-3xl"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-primary mb-4">Email Support</h4>
-                    <p class="text-secondary mb-6">
-                        Send us detailed questions and get comprehensive answers within 24 hours.
-                    </p>
-                    <a href="mailto:support@arzavo.in" class="bg-secondary text-primary px-6 py-3 border-rounded font-semibold hover-primary transition-all duration-300 inline-block shadow-lg transform hover:scale-105">
-                        Send Email
-                    </a>
+                <div>
+                    <h4 class="text-xl font-black outfit-font uppercase tracking-tighter">Need human assistance?</h4>
+                    <p class="text-sm text-secondary font-medium">Our success partners are available 24/7 via live chat.</p>
                 </div>
             </div>
+            <a href="{{ route('contact') }}" class="px-10 py-4 bg-invert text-invert text-xs font-black uppercase tracking-widest border-rounded-lg hover-lift transition-all shadow-xl relative z-10">
+                Start Chat
+            </a>
         </div>
-
-        <!-- Video Tutorials -->
-        <!-- <div class="mt-16 text-center">
-            <h3 class="text-3xl font-bold text-primary mb-8">Video Tutorials</h3>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-primary border-primary border-rounded overflow-hidden hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                    <div class="bg-accent h-48 flex items-center justify-center">
-                        <i class="fa-solid fa-play text-invert text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-semibold text-primary mb-2">Platform Setup</h4>
-                        <p class="text-secondary text-sm mb-4">Learn how to set up your Arzavo platform from scratch</p>
-                        <span class="text-tertiary text-xs bg-accent-subtle px-2 py-1 border-rounded">Duration: 15 minutes</span>
-                    </div>
-                </div>
-
-                <div class="bg-primary border-primary border-rounded overflow-hidden hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                    <div class="bg-accent h-48 flex items-center justify-center">
-                        <i class="fa-solid fa-play text-invert text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-semibold text-primary mb-2">Course Creation</h4>
-                        <p class="text-secondary text-sm mb-4">Step-by-step guide to creating your first course</p>
-                        <span class="text-tertiary text-xs bg-accent-subtle px-2 py-1 border-rounded">Duration: 20 minutes</span>
-                    </div>
-                </div>
-
-                <div class="bg-primary border-primary border-rounded overflow-hidden hover-primary transition-all duration-300 shadow-lg transform hover:scale-105">
-                    <div class="bg-accent h-48 flex items-center justify-center">
-                        <i class="fa-solid fa-play text-invert text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-semibold text-primary mb-2">Customization</h4>
-                        <p class="text-secondary text-sm mb-4">Customize your platform's look and feel</p>
-                        <span class="text-tertiary text-xs bg-accent-subtle px-2 py-1 border-rounded">Duration: 25 minutes</span>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </div>
 </section>

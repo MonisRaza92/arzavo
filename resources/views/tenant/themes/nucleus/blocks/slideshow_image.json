@@ -1,0 +1,50 @@
+{
+    "type": "slideshow_image",
+    "name": "Slideshow",
+    "icon": "fa-image",
+    "order": 4,
+    "category": "Basic",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Image"
+        },
+        {
+            "key": "image",
+            "label": "Image",
+            "type": "image",
+            "default": null
+        },
+        {
+            "key": "alt_text",
+            "label": "Alt Text",
+            "type": "text",
+            "default": "",
+            "placeholder": "Describe the image (SEO & accessibility)"
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Link"
+        },
+        {
+            "key": "image_link",
+            "label": "Link URL",
+            "type": "text",
+            "default": ""
+        },
+        {
+            "key": "open_new_tab",
+            "label": "Open in New Tab",
+            "type": "switch",
+            "default": 0,
+            "conditional": {
+                "field": "image_link",
+                "operator": "!=",
+                "value": ""
+            }
+        }
+    ]
+}

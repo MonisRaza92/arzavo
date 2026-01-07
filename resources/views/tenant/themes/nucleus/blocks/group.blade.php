@@ -1,6 +1,5 @@
 @php
 $s = $block->settings ?? [];
-$id = $block->id;
 
 $colorScheme = $s['color_scheme'] ?? '';
 
@@ -59,19 +58,19 @@ $input = $section->colorScheme->input;
 @endphp
 
 <style>
-.group-s-{{ $id }} {
+.group-s-{{ $block->id }} {
     overflow: {{ $overflow }};
     z-index: {{ $zIndex }};
 }
 
-.group-s-{{ $id }} {
+.group-s-{{ $block->id }} {
     @if ($widthM === 'custom')
         width: {{ $maxWidthM }}%;
     @endif
 }
 
 @media (min-width: 768px) {
-    .group-s-{{ $id }} {
+    .group-s-{{ $block->id }} {
         @if ($width === 'custom')
             width: {{ $maxWidth }}%;
         @endif
@@ -79,7 +78,7 @@ $input = $section->colorScheme->input;
 }
 </style>
 <div
-    data-block-id="{{ $id }}"
+    data-block-id="{{ $block->id }}"
     data-name="{{ $block->name }}"
     style="
        {{ colors($colors, $primaryBtn, $secondaryBtn, $input) }}
@@ -102,7 +101,7 @@ $input = $section->colorScheme->input;
         @endif
 
         @if ($bgType === 'media' && $mediaType === 'image' && $bgImage)
-            background-image: url('{{ asset($bgImage) }}');
+            background-image: url('{{ media($bgImage) }}');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -115,8 +114,8 @@ $input = $section->colorScheme->input;
         @endif
     "
     class="
-        group-s-{{ $id }}
-        s-component flex
+        group-s-{{ $block->id }}
+        s-component flex flex-1
         {{ $hideMobile === '1' ? 'hidden md:flex' : '' }}
         {{ $hideDesktop === '1' ? 'md:hidden' : '' }}
         {{ $widthM === 'full' ? 'w-full' : 'w-auto' }}
@@ -133,7 +132,7 @@ $input = $section->colorScheme->input;
     <video
         class="absolute inset-0 w-full h-full object-cover -z-10"
         autoplay muted loop playsinline>
-        <source src="{{ asset($bgVideo) }}" type="video/mp4">
+        <source src="{{ media($bgVideo) }}" type="video/mp4">
     </video>
     @endif
     @if ($overlay === '1' && $bgType === 'media')

@@ -1,32 +1,106 @@
 @php
-$singleImage = $section->settings ?? [];
+$image = $section->settings ?? [];
 
-$imageSize = $singleImage['image_size'] ?? 'full';
-$desktopImage = $singleImage['desktop_image'] ?? 'images/vertical.jpg';
-$mobileImage = $singleImage['mobile_image'] ?? null; // null if not uploaded
-$borderRadius = $singleImage['border_radius'] ?? 'none'; // null if not uploaded
-$imageLink = $singleImage['image_link'] ?? '#';
-$pt = $singleImage['padding_top'] ?? '0';
-$pb = $singleImage['padding_bottom'] ?? '0';
-$linkOpen = $singleImage['link_open_page'] ?? 'same';
+$desktopImage = $image['desktop_image'] ?? '';
+$mobileImage = $image['mobile_image'] ?? $desktopImage;
+$imageLink = $image['image_link'] ?? '';
+$openNewTab = $image['open_new_tab'] ?? 'no';
+$imageSize = $image['image_fit'] ?? 'auto';
+$aspectRatio = $image['aspect_ratio'] ?? 'auto';
+$borderRadius = $image['border_radius'] ?? 'enable';
+$cBorderRadius = $image['custom_border_radius'] ?? '0';
+$imagehadow = $image['shadow'] ?? 'none';
+$opacity = $image['opacity'] ?? 100;
+$hideDesktop = $image['hide_desktop'] ?? 'no';
+$hideMobile = $image['hide_mobile'] ?? 'no';
+$containerWidth = $image['container_width'] ?? '';
+$mt = $image['margin_top'] ?? 0;
+$mb = $image['margin_bottom'] ?? 0;
+$ml = $image['margin_left'] ?? 0;
+$mr = $image['margin_right'] ?? 0;
+
+$aspectRatioClass = match($aspectRatio) {
+'square' => 'aspect-square',
+'portrait' => 'aspect-[3/4]',
+'landscape' => 'aspect-[4/3]',
+'wide' => 'aspect-[16/9]',
+'auto' => '',
+default => ''
+};
+
+$objectFitClass = match($imageSize) {
+'cover' => 'object-cover',
+'contain' => 'object-contain',
+'auto' => 'object-cover',
+default => 'object-cover'
+};
+
+$visibilityClass = '';
+if ($hideDesktop === '1' && $hideMobile === '1') {
+$visibilityClass = 'hidden';
+} elseif ($hideDesktop === '1') {
+$visibilityClass = 'hidden md:hidden';
+} elseif ($hideMobile === '1') {
+$visibilityClass = 'md:block hidden';
+}
+
+$colors = $section->colorScheme->scheme_colors;
 @endphp
 
-<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" class="{{ $imageSize }} w-full" style="padding-top: {{ $pt }}px; padding-bottom: {{ $pb }}px;">
-    @if($imageLink !== '#')
-    <a href="{{ $imageLink }}" @if($linkOpen==='new' ) target="_blank" @endif>
-        <!-- Desktop Image (default hidden on mobile if mobile image exists) -->
-        <img src="{{ asset($desktopImage) }}" alt="" class="w-full rounded-{{ $borderRadius }} {{ $mobileImage ? 'hidden md:block' : 'block' }}">
-        <!-- Mobile Image (shown only if uploaded) -->
-        @if($mobileImage)
-        <img src="{{ asset($mobileImage) }}" alt="" class="w-full rounded-{{ $borderRadius }} block md:hidden">
+<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}"
+    style="
+    --arzavo-background: {{ $colors->background ?? '' }};
+    margin-top: {{ $mt }}px;
+    margin-bottom: {{ $mb }}px;
+    margin-left: {{ $ml }}px;
+    margin-right: {{ $mr }}px; "
+    class="{{ $visibilityClass }}
+    {{ $aspectRatioClass }} flex-1 arzavo-background">
+    @if ($containerWidth === 'container')
+    <div class=" container">
         @endif
-    </a>
-    @else
-    <!-- Desktop Image (default hidden on mobile if mobile image exists) -->
-    <img src="{{ asset($desktopImage) }}" alt="" class="w-full rounded-{{ $borderRadius }} {{ $mobileImage ? 'hidden md:block' : 'block' }}">
-    <!-- Mobile Image (shown only if uploaded) -->
-    @if($mobileImage)
-    <img src="{{ asset($mobileImage) }}" alt="" class="w-full rounded-{{ $borderRadius }} block md:hidden">
-    @endif
+        @if($imageLink)
+        <a href="{{ $imageLink }}" {{ $openNewTab === '1' ? 'target="_blank"' : '' }}>
+            @endif
+            <!-- Desktop Image -->
+            <img
+                src="{{ media($desktopImage) ?? asset('images/tenant/bg.jpg') }}"
+                class="
+                {{ $mobileImage ? 'hidden md:block' : 'block' }}
+                {{ $aspectRatioClass !== 'auto' ? $objectFitClass : '' }}
+                {{ $visibilityClass }}
+                {{ $imageSize }}
+                {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }}
+                w-full h-full
+            "
+                style="
+                opacity: {{ $opacity / 100 }};
+                @if($borderRadius === 'custom')
+                border-radius: {{ $cBorderRadius }}%;
+                @endif
+            " />
+
+            <!-- Mobile Image -->
+            <img
+                src="{{ media($mobileImage) ?? asset('images/tenant/bg.jpg') }}"
+                class="
+                block md:hidden
+                {{ $aspectRatioClass !== 'auto' ? $objectFitClass : '' }}
+                {{ $visibilityClass }}
+                {{ $imageSize }}
+                {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }}
+                w-full h-full
+            "
+                style="
+                opacity: {{ $opacity / 100 }};
+                @if($borderRadius === 'custom')
+                border-radius: {{ $cBorderRadius }}%;
+                @endif
+            " />
+            @if($imageLink)
+        </a>
+        @endif
+        @if ($containerWidth === 'container')
+    </div>
     @endif
 </div>

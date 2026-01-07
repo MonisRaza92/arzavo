@@ -1,0 +1,89 @@
+{
+    "type": "custom_section",
+    "name": "Gallery: Image Grid",
+    "icon": "fa-th",
+    "order": 17,
+    "category": "Gallery",
+    "color_scheme_id": 1,
+    "max_blocks": 12,
+    "allowed_blocks": ["heading", "text", "image", "group"],
+    "default_blocks": [
+        {
+            "type": "heading",
+            "settings": {
+                "text": "Our Work",
+                "heading_type": "heading-2",
+                "alignment": "center",
+                "mobile_alignment": "center"
+            }
+        },
+        {
+            "type": "group",
+            "settings": {
+                "background_type": "none",
+                "direction": "horizontal",
+                "mobile_direction": "vertical",
+                "alignment": "start",
+                "position": "between",
+                "gap": 24,
+                "width": "full",
+                "height": "auto",
+                "padding_top": 40
+            },
+            "default_blocks": [
+                {
+                    "type": "image",
+                    "settings": {
+                        "desktop_image": "",
+                        "alt_text": "Gallery Image 1",
+                        "aspect_ratio": "square",
+                        "border_radius": 8,
+                        "shadow": "medium"
+                    }
+                },
+                {
+                    "type": "image",
+                    "settings": {
+                        "desktop_image": "",
+                        "alt_text": "Gallery Image 2",
+                        "aspect_ratio": "square",
+                        "border_radius": 8,
+                        "shadow": "medium"
+                    }
+                },
+                {
+                    "type": "image",
+                    "settings": {
+                        "desktop_image": "",
+                        "alt_text": "Gallery Image 3",
+                        "aspect_ratio": "square",
+                        "border_radius": 8,
+                        "shadow": "medium"
+                    }
+                },
+                {
+                    "type": "image",
+                    "settings": {
+                        "desktop_image": "",
+                        "alt_text": "Gallery Image 4",
+                        "aspect_ratio": "square",
+                        "border_radius": 8,
+                        "shadow": "medium"
+                    }
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "background_type": "color",
+        "height": "auto",
+        "mobile_height": "0",
+        "direction": "vertical",
+        "mobile_direction": "vertical",
+        "alignment": "center",
+        "position": "start",
+        "gap": 32,
+        "padding_top": 60,
+        "padding_bottom": 60
+    }
+}

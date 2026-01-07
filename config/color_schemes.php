@@ -5,8 +5,9 @@ return [
     'color_schemes' => [
 
         'scheme_colors' => [
-            ['key' => 'background', 'label' => 'Background', 'type' => 'color'],
+            ['key' => 'background', 'label' => 'Background', 'type' => 'gradient'],
             ['key' => 'heading', 'label' => 'Heading', 'type' => 'color'],
+            ['key' => 'subheading', 'label' => 'Subheading', 'type' => 'color'],
             ['key' => 'paragraph', 'label' => 'Paragraph', 'type' => 'color'],
             ['key' => 'secondary_text', 'label' => 'Secondary Text', 'type' => 'color'],
             ['key' => 'invert_text', 'label' => 'Invert Text', 'type' => 'color'],
@@ -17,18 +18,18 @@ return [
         ],
 
         'primary_btn' => [
-            ['key' => 'background', 'label' => 'Background', 'type' => 'color'],
+            ['key' => 'background', 'label' => 'Background', 'type' => 'gradient'],
             ['key' => 'text', 'label' => 'Text Color', 'type' => 'color'],
-            ['key' => 'hover_background', 'label' => 'Hover Background', 'type' => 'color'],
+            ['key' => 'hover_background', 'label' => 'Hover Background', 'type' => 'gradient'],
             ['key' => 'hover_text', 'label' => 'Hover Text Color', 'type' => 'color'],
             ['key' => 'border', 'label' => 'Border Color', 'type' => 'color'],
             ['key' => 'hover_border', 'label' => 'Hover Border', 'type' => 'color'],
         ],
 
         'secondary_btn' => [
-            ['key' => 'background', 'label' => 'Background', 'type' => 'color'],
+            ['key' => 'background', 'label' => 'Background', 'type' => 'gradient'],
             ['key' => 'text', 'label' => 'Text Color', 'type' => 'color'],
-            ['key' => 'hover_background', 'label' => 'Hover Background', 'type' => 'color'],
+            ['key' => 'hover_background', 'label' => 'Hover Background', 'type' => 'gradient'],
             ['key' => 'hover_text', 'label' => 'Hover Text', 'type' => 'color'],
             ['key' => 'border', 'label' => 'Border Color', 'type' => 'color'],
             ['key' => 'hover_border', 'label' => 'Hover Border', 'type' => 'color'],

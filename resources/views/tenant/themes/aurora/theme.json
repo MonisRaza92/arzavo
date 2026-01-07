@@ -1,0 +1,198 @@
+{
+    "name": "Aurora",
+    "folder": "aurora",
+    "version": "1.1.0",
+    "author": "Arzavo",
+    "description": "A premium, vibrant theme with glassmorphism, modern gradients, and smooth animations.",
+    "category": "creative",
+    "is_paid": false,
+    "price": 0,
+    "source": "system",
+    "is_active": true,
+    "preview_image": "/themes/aurora/preview.jpg",
+    "default_layout": [
+        { "type": "section", "key": "navbar" },
+        { "type": "template", "key": "hero_centered_large" },
+        { "type": "template", "key": "features_3_column" },
+        { "type": "template", "key": "testimonial_3_cards" },
+        { "type": "template", "key": "cta_simple" },
+        { "type": "template", "key": "footer_simple" }
+    ],
+    "customizations": {
+        "logo": null,
+        "invert_logo": null,
+        "favicon": null,
+        "logo_size": "45px",
+        "logo_position": "left",
+        "heading_font_family": "Outfit, sans-serif",
+        "paragraph_font_family": "Inter, sans-serif",
+        "secondary_text_font_family": "Inter, sans-serif",
+        "heading_1_font_size": 64,
+        "heading_1_font_size_tablet": 48,
+        "heading_1_font_size_mobile": 38,
+        "heading_1_line_height": "1.1",
+        "heading_1_text_transform": "default",
+        "heading_1_text_weight": "800",
+        "heading_2_font_size": 48,
+        "heading_2_font_size_tablet": 38,
+        "heading_2_font_size_mobile": 32,
+        "heading_2_line_height": "1.2",
+        "heading_2_text_transform": "default",
+        "heading_2_text_weight": "700",
+        "heading_3_font_size": 32,
+        "heading_3_font_size_tablet": 28,
+        "heading_3_font_size_mobile": 24,
+        "heading_3_line_height": "1.3",
+        "heading_3_text_transform": "default",
+        "heading_3_text_weight": "600",
+        "paragraph_font_size": 18,
+        "paragraph_font_size_mobile": 16,
+        "paragraph_text_transform": "default",
+        "paragraph_text_weight": 400,
+        "primary_button_shape": "12px",
+        "primary_button_size": "16px 36px",
+        "primary_button_font_size": "16px",
+        "primary_button_font_weight": 600,
+        "primary_button_text_transform": "default",
+        "primary_button_border_width": "0px",
+        "secondary_button_shape": "12px",
+        "secondary_button_size": "16px 36px",
+        "secondary_button_font_size": "16px",
+        "secondary_button_font_weight": 600,
+        "secondary_button_text_transform": "default",
+        "secondary_button_border_width": "2px",
+        "container_width": 1400,
+        "global_padding": 24,
+        "right_click": "enable",
+        "copy_content": "enable",
+        "inspect_element": "allow"
+    },
+    "color_schemes": [
+        {
+            "id": 1,
+            "name": "Aurora Crystal",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#ffffff",
+                        "heading": "#0f172a",
+                        "subheading": "#334155",
+                        "paragraph": "#475569",
+                        "secondary_text": "#64748b",
+                        "invert_text": "#ffffff",
+                        "link": "#6366f1",
+                        "link_hover": "#4f46e5",
+                        "border": "#f1f5f9",
+                        "shadow": "rgba(99, 102, 241, 0.08)"
+                    },
+                    "primary_btn": {
+                        "background": "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                        "text": "#ffffff",
+                        "hover_background": "linear-gradient(135deg, #4f46e5 0%, #9333ea 100%)",
+                        "hover_text": "#ffffff",
+                        "border": "transparent",
+                        "hover_border": "transparent"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#6366f1",
+                        "hover_background": "#f8fafc",
+                        "hover_text": "#4f46e5",
+                        "border": "#e2e8f0",
+                        "hover_border": "#6366f1"
+                    },
+                    "input": {
+                        "background": "#ffffff",
+                        "text": "#0f172a",
+                        "border": "#e2e8f0",
+                        "focus_border": "#6366f1"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Aurora Night",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#020617",
+                        "heading": "#f8fafc",
+                        "subheading": "#e2e8f0",
+                        "paragraph": "#94a3b8",
+                        "secondary_text": "#64748b",
+                        "invert_text": "#020617",
+                        "link": "#818cf8",
+                        "link_hover": "#6366f1",
+                        "border": "rgba(30, 41, 59, 0.5)",
+                        "shadow": "rgba(0, 0, 0, 0.5)"
+                    },
+                    "primary_btn": {
+                        "background": "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
+                        "text": "#ffffff",
+                        "hover_background": "linear-gradient(135deg, #4f46e5 0%, #9333ea 100%)",
+                        "hover_text": "#ffffff",
+                        "border": "transparent",
+                        "hover_border": "transparent"
+                    },
+                    "secondary_btn": {
+                        "background": "rgba(255, 255, 255, 0.05)",
+                        "text": "#f8fafc",
+                        "hover_background": "rgba(255, 255, 255, 0.1)",
+                        "hover_text": "#ffffff",
+                        "border": "rgba(255, 255, 255, 0.1)",
+                        "hover_border": "rgba(255, 255, 255, 0.2)"
+                    },
+                    "input": {
+                        "background": "rgba(15, 23, 42, 0.5)",
+                        "text": "#f8fafc",
+                        "border": "rgba(255, 255, 255, 0.1)",
+                        "focus_border": "#6366f1"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Ocean Glass",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)",
+                        "heading": "#ffffff",
+                        "subheading": "#f0f9ff",
+                        "paragraph": "#e0f2fe",
+                        "secondary_text": "#bae6fd",
+                        "invert_text": "#0c4a6e",
+                        "link": "#ffffff",
+                        "link_hover": "#f0f9ff",
+                        "border": "rgba(255, 255, 255, 0.2)",
+                        "shadow": "rgba(0, 0, 0, 0.2)"
+                    },
+                    "primary_btn": {
+                        "background": "#ffffff",
+                        "text": "#0284c7",
+                        "hover_background": "#f0f9ff",
+                        "hover_text": "#0369a1",
+                        "border": "transparent",
+                        "hover_border": "transparent"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#ffffff",
+                        "hover_background": "rgba(255, 255, 255, 0.1)",
+                        "hover_text": "#ffffff",
+                        "border": "rgba(255, 255, 255, 0.4)",
+                        "hover_border": "#ffffff"
+                    },
+                    "input": {
+                        "background": "rgba(255, 255, 255, 0.1)",
+                        "text": "#ffffff",
+                        "border": "rgba(255, 255, 255, 0.2)",
+                        "focus_border": "#ffffff"
+                    }
+                }
+            ]
+        }
+    ]
+}

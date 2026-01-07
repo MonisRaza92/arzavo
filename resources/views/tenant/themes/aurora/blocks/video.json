@@ -1,0 +1,126 @@
+{
+    "type": "video",
+    "name": "Video",
+    "icon": "fa-play-circle",
+    "order": 8,
+    "category": "Media",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "video_type",
+            "label": "Video Type",
+            "type": "select",
+            "options": ["youtube", "vimeo", "upload"],
+            "default": "youtube"
+        },
+        {
+            "key": "youtube_url",
+            "label": "YouTube URL",
+            "type": "text",
+            "default": "",
+            "placeholder": "https://www.youtube.com/watch?v=..."
+        },
+        {
+            "key": "vimeo_url",
+            "label": "Vimeo URL",
+            "type": "text",
+            "default": "",
+            "placeholder": "https://vimeo.com/..."
+        },
+        {
+            "key": "video_file",
+            "label": "Video File",
+            "type": "file",
+            "default": ""
+        },
+        {
+            "key": "video_poster",
+            "label": "Video Poster/Thumbnail",
+            "type": "image",
+            "default": ""
+        },
+        {
+            "key": "aspect_ratio",
+            "label": "Aspect Ratio",
+            "type": "select",
+            "options": ["16:9", "4:3", "1:1", "21:9"],
+            "default": "16:9"
+        },
+        {
+            "key": "video_width",
+            "label": "Video Width",
+            "type": "select",
+            "options": ["full", "container", "custom"],
+            "default": "full"
+        },
+        {
+            "key": "custom_width",
+            "label": "Custom Width (%)",
+            "type": "range",
+            "default": 80,
+            "min": 20,
+            "max": 100
+        },
+        {
+            "key": "alignment",
+            "label": "Video Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "autoplay",
+            "label": "Autoplay",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "no"
+        },
+        {
+            "key": "muted",
+            "label": "Muted",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "controls",
+            "label": "Show Controls",
+            "type": "radio",
+            "options": ["yes", "no"],
+            "default": "yes"
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 8
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        }
+    ]
+}

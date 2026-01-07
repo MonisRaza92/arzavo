@@ -1,0 +1,393 @@
+{
+    "type": "custom_section",
+    "name": "Custom Section",
+    "icon": "fa-shapes",
+    "order": 3,
+    "category": "Layout",
+    "color_scheme_id": 1,
+    "max_blocks": 5,
+    "allowed_blocks": [
+        "heading",
+        "text",
+        "image",
+        "button",
+        "divider",
+        "logo",
+        "group",
+        "icon",
+        "accordion",
+        "card",
+        "countdown",
+        "pricing_card",
+        "social_links",
+        "spacer",
+        "video"
+    ],
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Background"
+        },
+        {
+            "key": "color_scheme_id",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "background_type",
+            "label": "Background Type",
+            "type": "radio",
+            "options": [
+                "color",
+                "media"
+            ],
+            "default": "color"
+        },
+        {
+            "key": "media_type",
+            "label": "Media Type",
+            "type": "radio",
+            "options": [
+                "image",
+                "video"
+            ],
+            "default": "image",
+            "conditional": {
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "background_image",
+            "label": "Background Image",
+            "type": "image",
+            "default": "",
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "media"
+                },
+                {
+                    "field": "media_type",
+                    "value": "image"
+                }
+            ]
+        },
+        {
+            "key": "background_video",
+            "label": "Background Video",
+            "type": "video",
+            "default": "",
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "media"
+                },
+                {
+                    "field": "media_type",
+                    "value": "video"
+                }
+            ]
+        },
+        {
+            "key": "background_blur",
+            "label": "Background Blur",
+            "type": "switch",
+            "default": "0",
+            "text": "Enable blur effect on background",
+            "conditional": {
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "background_blur_intensity",
+            "label": "Blur Intensity",
+            "type": "range",
+            "default": "8",
+            "min": 0,
+            "max": 30,
+            "conditional": {
+                "field": "background_blur",
+                "value": "1"
+            }
+        },
+        {
+            "key": "background_attachment",
+            "label": "Background Scroll",
+            "type": "radio",
+            "options": [
+                "scroll",
+                "fixed"
+            ],
+            "default": "scroll",
+            "conditional": {
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Overlay",
+            "conditional": {
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "background_overlay",
+            "label": "Enable Overlay",
+            "type": "switch",
+            "default": "0",
+            "text": "Overlay for media background",
+            "conditional": {
+                "field": "background_type",
+                "value": "media"
+            }
+        },
+        {
+            "key": "overlay_color",
+            "label": "Overlay Color",
+            "type": "color",
+            "default": "#000000",
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "media"
+                },
+                {
+                    "field": "background_overlay",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "key": "overlay_opacity",
+            "label": "Overlay Opacity",
+            "type": "range",
+            "default": "50",
+            "min": 0,
+            "max": 100,
+            "conditional": [
+                {
+                    "field": "background_type",
+                    "value": "media"
+                },
+                {
+                    "field": "background_overlay",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Size & Width"
+        },
+        {
+            "key": "content_width",
+            "label": "Content Width",
+            "type": "radio",
+            "options": [
+                "container",
+                "full"
+            ],
+            "default": "container"
+        },
+        {
+            "key": "height",
+            "label": "Section Height",
+            "type": "radio",
+            "options": [
+                "fit",
+                "full"
+            ],
+            "default": "fit"
+        },
+        {
+            "key": "mobile_height",
+            "label": "Mobile Height",
+            "type": "switch",
+            "default": "1",
+            "text": "Full screen height on mobile"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout"
+        },
+        {
+            "key": "direction",
+            "label": "Direction",
+            "type": "radio",
+            "options": [
+                "vertical",
+                "horizontal"
+            ],
+            "default": "vertical"
+        },
+        {
+            "key": "mobile_direction",
+            "label": "Mobile Direction",
+            "type": "switch",
+            "default": "1",
+            "text": "Vertical layout on mobile",
+            "conditional": {
+                "field": "direction",
+                "value": "horizontal"
+            }
+        },
+        {
+            "key": "alignment",
+            "label": "Alignment",
+            "type": "radio",
+            "options": [
+                "start",
+                "center",
+                "end"
+            ],
+            "default": "center"
+        },
+        {
+            "key": "position",
+            "label": "Position",
+            "type": "select",
+            "options": [
+                "start",
+                "center",
+                "end",
+                "between"
+            ],
+            "default": "between"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
+        },
+        {
+            "key": "gap",
+            "label": "Gap",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "enable_mobile_spacing",
+            "label": "Mobile Spacing",
+            "type": "switch",
+            "default": "0",
+            "text": "Custom spacing for mobile"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Mobile",
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
+        {
+            "key": "mobile_padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100,
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
+        {
+            "key": "mobile_padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100,
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
+        {
+            "key": "mobile_margin_top",
+            "label": "Margin top",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100,
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
+        {
+            "key": "mobile_margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100,
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Responsive"
+        },
+        {
+            "key": "hide_desktop",
+            "label": "Hide on Desktop",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "hide_mobile",
+            "label": "Hide on Mobile",
+            "type": "switch",
+            "default": "0"
+        }
+    ]
+}

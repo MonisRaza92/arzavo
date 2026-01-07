@@ -1,148 +1,74 @@
-<!-- How Arzavo Works -->
-<section class="bg-primary py-20 relative overflow-hidden">
-
-    <!-- Soft Background -->
-    <div class="absolute inset-0 hidden sm:block opacity-5">
-        <div class="absolute -top-20 -left-20 w-64 h-64 bg-accent border-rounded rotate-12"></div>
-        <div class="absolute bottom-0 right-0 w-80 h-80 bg-accent-secondary border-rounded -rotate-12"></div>
-    </div>
-
-    <div class="container relative z-10">
-
-        <!-- Header -->
-        <div class="text-center mx-auto mb-16 lg:mb-24 px-2">
-            <div class="inline-flex items-center bg-accent-subtle text-accent px-5 py-2 border-rounded text-sm font-semibold mb-6">
-                <i class="fa-solid fa-lightbulb mr-2"></i>
-                How It Works
-            </div>
-
-            <h2 class="text-4xl sm:text-4xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
-                From Signup to
-                <span class="text-accent relative">
-                    Your Own Website
-                </span>
-            </h2>
-
-            <p class="text-base sm:text-lg lg:text-xl text-secondary leading-relaxed">
-                Arzavo automatically creates a <strong>separate website, admin panel, and database</strong>
-                for every institute — no technical setup required.
-            </p>
-        </div>
-
-        <!-- Steps -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 mb-20">
-
-            <!-- Step 1 -->
-            <div class="bg-secondary border-primary border-rounded p-6 lg:p-8 text-center shadow-xl hover-primary transition-all transform lg:hover:-translate-y-2">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <i class="fa-solid fa-user-plus text-xl"></i>
-                </div>
-                <span class="text-accent text-sm font-bold">STEP 1</span>
-                <h3 class="text-xl font-bold text-primary mt-2 mb-3">
-                    Sign Up & Choose Domain
-                </h3>
-                <p class="text-secondary text-sm leading-relaxed">
-                    Create your account and choose a subdomain or connect your own custom domain.
-                </p>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="bg-secondary border-primary border-rounded p-6 lg:p-8 text-center shadow-xl hover-primary transition-all transform lg:hover:-translate-y-2">
-                <div class="bg-accent-secondary text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <i class="fa-solid fa-building text-xl"></i>
-                </div>
-                <span class="text-accent-secondary text-sm font-bold">STEP 2</span>
-                <h3 class="text-xl font-bold text-primary mt-2 mb-3">
-                    Institute Setup
-                </h3>
-                <p class="text-secondary text-sm leading-relaxed">
-                    Add institute details, logo, roles, and settings. Arzavo creates an isolated system instantly.
-                </p>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="bg-secondary border-primary border-rounded p-6 lg:p-8 text-center shadow-xl hover-primary transition-all transform lg:hover:-translate-y-2">
-                <div class="bg-accent text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <i class="fa-solid fa-palette text-xl"></i>
-                </div>
-                <span class="text-accent text-sm font-bold">STEP 3</span>
-                <h3 class="text-xl font-bold text-primary mt-2 mb-3">
-                    Build Your Website
-                </h3>
-                <p class="text-secondary text-sm leading-relaxed">
-                    Design pages using the drag-and-drop builder. Customize colors, fonts, and sections.
-                </p>
-            </div>
-
-            <!-- Step 4 -->
-            <div class="bg-secondary border-primary border-rounded p-6 lg:p-8 text-center shadow-xl hover-primary transition-all transform lg:hover:-translate-y-2">
-                <div class="bg-accent-secondary text-invert w-16 h-16 border-rounded flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <i class="fa-solid fa-rocket text-xl"></i>
-                </div>
-                <span class="text-accent-secondary text-sm font-bold">STEP 4</span>
-                <h3 class="text-xl font-bold text-primary mt-2 mb-3">
-                    Launch & Scale
-                </h3>
-                <p class="text-secondary text-sm leading-relaxed">
-                    Start enrolling students, managing courses, fees, staff, and grow without limits.
-                </p>
-            </div>
-
-        </div>
-
-        <!-- IMAGE SLOT -->
-        <!-- IMAGE SLOT: How Arzavo Creates Separate Websites (AI Illustration / Dashboard Flow) -->
-
-        <!-- Key Guarantees -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-10 mb-20">
-            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg">
-                <i class="fa-solid fa-database text-accent text-3xl mb-4"></i>
-                <h4 class="text-lg font-bold text-primary mb-2">Fully Isolated Data</h4>
-                <p class="text-tertiary text-sm">
-                    Every institute runs on its own database with complete data privacy.
-                </p>
-            </div>
-            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg">
-                <i class="fa-solid fa-globe text-accent text-3xl mb-4"></i>
-                <h4 class="text-lg font-bold text-primary mb-2">Separate Public Website</h4>
-                <p class="text-tertiary text-sm">
-                    Each user gets a standalone website — not a shared page or sub-panel.
-                </p>
-            </div>
-            <div class="bg-secondary border-primary border-rounded p-6 text-center shadow-lg">
-                <i class="fa-solid fa-shield-halved text-accent text-3xl mb-4"></i>
-                <h4 class="text-lg font-bold text-primary mb-2">Secure by Design</h4>
-                <p class="text-tertiary text-sm">
-                    Role-based access, session isolation, and secure authentication.
-                </p>
-            </div>
-        </div>
-
-        <!-- Demo / CTA -->
-        <div class="bg-secondary border-primary border-rounded p-8 sm:p-12 text-center shadow-xl">
-            <h3 class="text-2xl sm:text-3xl font-bold text-primary mb-4">
-                See How Arzavo Builds a Website for You
+<section class="py-24 relative overflow-hidden section-padding">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="max-w-4xl mb-24 reveal-on-scroll">
+            <h2 class="text-xs font-black uppercase tracking-[0.4em] text-accent mb-6">Workflow</h2>
+            <h3 class="text-4xl md:text-6xl font-black outfit-font tracking-tight leading-tight">
+                Launch in Three <br/>
+                <span class="text-gradient-red">Perfect Steps.</span>
             </h3>
-            <p class="text-secondary max-w-2xl mx-auto mb-8">
-                Watch how a new institute gets its own website and system in minutes.
-            </p>
+        </div>
 
-            <!-- VIDEO / IMAGE SLOT -->
-            <!-- IMAGE / VIDEO SLOT: Arzavo Demo -->
+        <div class="relative">
+            <!-- Connector Line (Desktop) - Animated Shimmer Extension -->
+            <div class="hidden lg:block absolute top-[40%] left-0 w-full h-[1px] bg-primary z-0 opacity-20"></div>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-                <a href="{{ route('register.form') }}"
-                   class="bg-accent text-invert px-8 py-4 border-rounded font-bold hover-invert transition-all shadow-lg">
-                    <i class="fa-solid fa-rocket mr-2"></i>
-                    Start Free Trial
-                </a>
-                <a href="{{ route('documentation') }}"
-                   class="bg-primary text-primary border-primary px-8 py-4 border-rounded font-bold hover-primary transition-all shadow-lg">
-                    <i class="fa-solid fa-book mr-2"></i>
-                    Read Docs
-                </a>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 relative z-10">
+                <!-- Step 1 -->
+                <div class="group reveal-on-scroll stagger-1">
+                    <div class="w-16 h-16 bg-white border border-primary border-rounded-lg flex items-center justify-center mb-10 shadow-premium transition-all duration-700 group-hover:bg-accent group-hover:text-invert group-hover:scale-110 glow-pulse">
+                        <span class="text-xl font-black outfit-font">01</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4 outfit-font uppercase tracking-tighter">Branding</h3>
+                    <p class="text-secondary font-medium leading-relaxed">
+                        Claim your unique identity with a custom subdomain or connect your own brand instantly.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="group reveal-on-scroll stagger-2">
+                    <div class="w-16 h-16 bg-white border border-primary border-rounded-lg flex items-center justify-center mb-10 shadow-premium transition-all duration-700 group-hover:bg-accent-secondary group-hover:text-invert group-hover:scale-110">
+                        <span class="text-xl font-black outfit-font">02</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4 outfit-font uppercase tracking-tighter">Curation</h3>
+                    <p class="text-secondary font-medium leading-relaxed">
+                        Design your vision with our zero-code builder. Set your rules, fees, and aesthetics.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="group reveal-on-scroll stagger-3">
+                    <div class="w-16 h-16 bg-white border border-primary border-rounded-lg flex items-center justify-center mb-10 shadow-premium transition-all duration-700 group-hover:bg-accent group-hover:text-invert group-hover:scale-110">
+                        <span class="text-xl font-black outfit-font">03</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4 outfit-font uppercase tracking-tighter">Scaling</h3>
+                    <p class="text-secondary font-medium leading-relaxed">
+                        Go live and manage everything from a single command center. Grow without limits.
+                    </p>
+                </div>
             </div>
         </div>
 
+        <!-- Secondary Trust Banner (V4) -->
+        <div class="mt-32 pt-16 border-t border-primary/20 grid grid-cols-1 md:grid-cols-2 gap-12 reveal-on-scroll">
+            <div class="flex gap-6 items-center group">
+                <div class="w-14 h-14 rounded-full bg-accent/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-invert transition-all">
+                    <i class="fa-solid fa-bolt-lightning text-xl group-hover:animate-pulse"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-black uppercase tracking-widest mb-1">Zero Latency Launch</h4>
+                    <p class="text-xs text-secondary font-medium">Your platform is provisioned and global in under 60 seconds.</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-center group">
+                <div class="w-14 h-14 rounded-full bg-accent-secondary/5 flex items-center justify-center text-accent-secondary group-hover:bg-accent-secondary group-hover:text-invert transition-all">
+                    <i class="fa-solid fa-shield-halved text-xl group-hover:animate-pulse"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-black uppercase tracking-widest mb-1">Architectural Security</h4>
+                    <p class="text-xs text-secondary font-medium">Bank-grade encryption and isolated data tenants for every client.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
