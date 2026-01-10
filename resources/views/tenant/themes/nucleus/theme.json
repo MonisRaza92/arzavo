@@ -15,6 +15,9 @@
         { "type": "template", "key": "hero_with_image" }
     ],
     "customizations": {
+        "logo": null,
+        "invert_logo": null,
+        "favicon": null,
         "heading_font_family": "Inter, sans-serif",
         "subheading_font_family": "Inter, sans-serif",
         "paragraph_font_family": "Inter, sans-serif",
