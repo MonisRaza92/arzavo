@@ -18,13 +18,13 @@ $colors = $section->colorScheme->scheme_colors;
     --arzavo-border-color: {{ $colors->border ?? '' }};
     --arzavo-shadow-color: {{ $colors->shadow ?? '' }};"
     class="py-{{ $sectionPadding }} flex w-full arzavo-background">
-    <div class="container grid grid-cols-3 gap-4">
-        <div class="col-span-2">
+    <div class="container grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="lg:col-span-2">
             <img src="{{ media($img_1) ?? asset('images/tenant/bg.jpg') }}" alt="hero image" class="h-full object-cover {{ $imgRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $imgBorder === 'enable' ? 'arzavo-border' : '' }}">
         </div>
-        <div class="flex scrollbar lg:flex-col gap-4 col-span-1">
-            <img src="{{ media($img_2) ?? asset('images/tenant/bg.jpg') }}" alt="hero image" class="w-full object-cover {{ $imgRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $imgBorder === 'enable' ? 'arzavo-border' : '' }}">
-            <img src="{{ media($img_3) ?? asset('images/tenant/bg.jpg') }}" alt="hero image" class="w-full object-cover {{ $imgRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $imgBorder === 'enable' ? 'arzavo-border' : '' }}">
+        <div class="flex scrollbar lg:flex-col gap-4 lg:col-span-1 overflow-auto scrollbar">
+            <img src="{{ media($img_2) ?? asset('images/tenant/bg.jpg') }}" alt="hero image" class="w-11/12 lg:w-full object-cover {{ $imgRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $imgBorder === 'enable' ? 'arzavo-border' : '' }}">
+            <img src="{{ media($img_3) ?? asset('images/tenant/bg.jpg') }}" alt="hero image" class="w-11/12 lg:w-full object-cover {{ $imgRadius === 'enable' ? 'arzavo-border-rounded' : '' }} {{ $imgBorder === 'enable' ? 'arzavo-border' : '' }}">
         </div>
     </div>
 </div>
