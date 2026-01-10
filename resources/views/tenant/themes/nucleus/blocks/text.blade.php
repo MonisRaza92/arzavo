@@ -70,5 +70,5 @@ $mAlignmentClass = match($mAlignment) {
         {{ $alignmentClass }}
     "
 >
-    {!! nl2br(e($text)) !!}
+    {!!$text !!}
 </p>

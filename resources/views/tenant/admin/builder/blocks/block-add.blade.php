@@ -1,4 +1,4 @@
-<div id="addBlockContainer{{ $section->id }}" class="hidden z-20 fixed top-0 left-0 bottom-0 w-[299px] pt-29 bg-primary inset-0 overflow-y-auto scrollbar">
+<div id="addBlockContainer{{ $section->id }}" class="hidden z-40 fixed top-16 left-0 bottom-0 w-[299px] bg-primary inset-0 overflow-y-auto scrollbar">
 
     <h3 class="flex text-sm justify-between items-center font-bold p-4 text-primary border-bottom">
         <span>Available Blocks</span>
@@ -41,7 +41,7 @@
                     <input type="hidden" name="block_name" value="{{ $s['name'] }}">
 
                     <button type="button"
-                        class="blockAddBtn w-full font-semibold text-xs text-left p-4 border-top bg-hover-secondary flex items-center gap-2">
+                        class="blockAddBtn w-full font-semibold text-xs text-left p-4 pl-8 border-top bg-hover-secondary flex items-center gap-2">
                         <i class="fa-solid {{ $s['icon'] }}"></i>
                         {{ $s['name'] }}
                     </button>

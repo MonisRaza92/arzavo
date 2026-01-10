@@ -50,10 +50,10 @@ $hideMobile = $s['hide_mobile'] ?? '';
 $hideDesktop = $s['hide_desktop'] ?? '';
 
 if ($colorScheme === 'saparate' && $block->colorScheme) {
-$colors = $section->colorScheme->scheme_colors;
-$primaryBtn = $section->colorScheme->primary_btn;
-$secondaryBtn = $section->colorScheme->secondary_btn;
-$input = $section->colorScheme->input;
+    $colors = $block->colorScheme->scheme_colors;
+    $primaryBtn = $block->colorScheme->primary_btn;
+    $secondaryBtn = $block->colorScheme->secondary_btn;
+    $input = $block->colorScheme->input;
 }
 @endphp
 
@@ -140,7 +140,7 @@ $input = $section->colorScheme->input;
         class="absolute inset-0 pointer-events-none"
         style="
             background-color: {{ $overlayColor }};
-            opacity: {{ $overlayOpacity }}%;
+            opacity: {{ $overlayOpacity / 100 }};
             @if ($bgBlur === '1')
                 backdrop-filter: blur({{ $bgBlurIntensity }}px);
             @endif

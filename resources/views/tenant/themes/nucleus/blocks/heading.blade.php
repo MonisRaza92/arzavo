@@ -69,5 +69,5 @@ $mAlignmentClass = match($mAlignment) {
         {{ $alignmentClass }}
     "
 >
-    {!! nl2br(e($heading)) !!}
+    {!! $heading !!}
 </{{ $tag }}>

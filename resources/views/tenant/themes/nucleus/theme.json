@@ -12,21 +12,11 @@
     "preview_image": "/themes/nucleus/preview.jpg",
     "default_layout": [
         { "type": "section", "key": "navbar" },
-        { "type": "template", "key": "hero_with_image" },
-        { "type": "template", "key": "stats_strip" },
-        { "type": "template", "key": "features_3_column" },
-        { "type": "template", "key": "testimonial_3_cards" },
-        { "type": "template", "key": "pricing_comparison" },
-        { "type": "template", "key": "cta_simple" },
-        { "type": "template", "key": "footer_simple" }
+        { "type": "template", "key": "hero_with_image" }
     ],
     "customizations": {
-        "logo": null,
-        "invert_logo": null,
-        "favicon": null,
-        "logo_size": "50px",
-        "logo_position": "left",
         "heading_font_family": "Inter, sans-serif",
+        "subheading_font_family": "Inter, sans-serif",
         "paragraph_font_family": "Inter, sans-serif",
         "secondary_text_font_family": "Inter, sans-serif",
         "heading_1_font_size": 48,

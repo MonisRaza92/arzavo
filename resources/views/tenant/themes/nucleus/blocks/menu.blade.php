@@ -96,7 +96,7 @@ $size = match($fontSize) {
                 <div class="auth-menu hidden absolute bottom-full right-0 arzavo-background border-rounded border-primary min-w-full" id="authMobileMenu">
                     <div class=" user-info arzavo-border-bottom py-2 px-4 relative">
                     <div class="content">
-                        <h4 class="text-base font-semibold">{{ $user->fname . ' ' . $user->lname }}</h4>
+                        <h4 class="text-base font-semibold">{{ $user->fname . ' ' . $user->lname ?? 'N/A' }}</h4>
                         <p class="text-xs">{{ $user->email }}</p>
                     </div>
                     <button class="text-lg absolute right-2 top-2" onclick="closeModel('authMobileMenu')"><i class="fa-solid fa-xmark"></i></button>

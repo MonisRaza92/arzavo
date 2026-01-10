@@ -60,8 +60,7 @@ $visibilityClass = 'md:block hidden';
         <!-- Desktop Image -->
         <img
             src="{{ media($desktopImage) ?? asset('images/tenant/bg.jpg') }}"
-            class="
-                {{ $mobileImage ? 'hidden md:block' : 'block' }}
+            class=" hidden md:block
                 {{ $aspectRatioClass !== 'auto' ? $objectFitClass : '' }}
                 {{ $visibilityClass }}
                 {{ $imageSize }}

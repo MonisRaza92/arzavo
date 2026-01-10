@@ -17,7 +17,7 @@
 
     <!-- Global V4 Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('turbo:load', () => {
             const observerOptions = {
                 threshold: 0.1
             };

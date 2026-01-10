@@ -10,7 +10,6 @@
         </div>
     </div>
 </div>
-<x-image-upload />
 <script>
     function selectCustomizeOption(key, value) {
         // Reset all options for that key

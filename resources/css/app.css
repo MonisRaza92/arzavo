@@ -22,8 +22,8 @@
 
 :root {
     --bg-primary: #ffffff;
-    --bg-secondary: #fdfdfd;
-    --bg-tertiary: #f5f5f5;
+    --bg-secondary: #f1f1f1;
+    --bg-tertiary: #ededed;
     --bg-accent: #920000;
     --bg-accent-subtle: #92000011;
     --bg-accent-secondary: #c58400;
@@ -36,10 +36,10 @@
     --text-accent-secondary: #c58400;
     --text-invert: #ffffff;
     --text-invert-secondary: #f5f5f5;
-    --border-primary: #e5e5e5;
+    --border-primary: #e0e0e0;
     --border-invert: #000000;
     --border-width: 1px;
-    --border-rounded: 12px;
+    --border-rounded: 6px;
     --logo-size: 40px;
     --container-width: 1280px;
     --global-padding: 2rem;
@@ -57,7 +57,7 @@ html {
 
 body {
     box-sizing: border-box;
-    background: var(--bg-primary) !important;
+    background: var(--bg-secondary) !important;
     font-family: Outfit, sans-serif;
     color: var(--text-primary);
     width: 100% !important;
@@ -659,7 +659,7 @@ button {
     transition: all 0.3s ease;
 
     &:hover {
-        background-color: var(--arzavo-primary-btn-hover-background);
+        background : var(--arzavo-primary-btn-hover-background);
         color: var(--arzavo-primary-btn-hover-text);
         border-color: var(--arzavo-primary-btn-hover-border);
     }
@@ -679,7 +679,7 @@ button {
     transition: all 0.3s ease;
 
     &:hover {
-        background-color: var(--arzavo-secondary-btn-hover-background);
+        background: var(--arzavo-secondary-btn-hover-background);
         color: var(--arzavo-secondary-btn-hover-text);
         border-color: var(--arzavo-secondary-btn-hover-border);
     }
@@ -794,6 +794,27 @@ button {
 .gradient-picker-popup button:hover {
     opacity: 0.9;
 }
+.tiptap-editor {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+.tiptap-editor:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+.tiptap-editor *:focus {
+  outline: none;
+  box-shadow: none;
+}
+.tiptap-editor[contenteditable="true"] {
+  outline: none !important;
+  -webkit-user-modify: read-write-plaintext-only;
+}
+
 
 @keyframes smooth-shake {
     0% {

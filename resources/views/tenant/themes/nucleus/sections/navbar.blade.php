@@ -47,7 +47,7 @@ $iconStyle = match($iconS) {
                 <i class="fa-{{ $iconStyle }} fa-user text-xl"></i>
                 <div class="auth-menu hidden absolute top-full right-0 border-rounded border-primary min-w-50" id="authMenu" style="background: {{ $colors->background ?? '#ffffff' }};"">
                     <div class=" user-info arzavo-border-bottom py-2 px-4">
-                    <h4 class="text-base font-semibold">{{ $user->fname . ' ' . $user->lname }}</h4>
+                    <h4 class="text-base font-semibold">{{ $user->fname . ' ' . $user->lname ?? 'N/A' }}</h4>
                     <p class="text-xs">{{ $user->email }}</p>
                 </div>
                 <div class="links py-2 px-4 space-y-2">

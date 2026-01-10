@@ -152,26 +152,6 @@
             localStorage.setItem("nestedBlocksState", JSON.stringify(nestedBlocksState));
         });
         
-        // ---------------------------------------------
-        // TOGGLE NESTED BLOCK LIST
-        // ---------------------------------------------
-        document.addEventListener("click", function(e) {
-            const btn = e.target.closest(".toggle-block-btn");
-            if (btn) {
-                e.stopPropagation();
-
-                const blockId = btn.dataset.id;
-                const list = document.getElementById(`block-children-${blockId}`);
-                const arrow = document.getElementById(`block-arrow-${blockId}`);
-
-                if (list) {
-                    list.classList.toggle("hidden");
-                    if (arrow) {
-                        arrow.classList.toggle("rotate-90");
-                    }
-                }
-            }
-        });
 
         // -----------------------------------------
         // BLOCK SORTING (Handle-based drag only)

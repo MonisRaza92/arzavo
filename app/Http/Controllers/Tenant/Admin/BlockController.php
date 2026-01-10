@@ -116,10 +116,9 @@ class BlockController
         $order = ($parentBlock->children()->max('order') ?? 0) + 1;
 
         // 1️⃣ JSON FILE READ
-        $jsonPath = resource_path("views/tenant/themes/{$theme}blocks/{$request->block_type}.json");
+        $jsonPath = resource_path("views/tenant/themes/{$theme}/blocks/{$request->block_type}.json");
 
         $defaultSettings = [];
-        $blockIcon = 'fa-puzzle-piece';
 
         if (file_exists($jsonPath)) {
             $json = json_decode(file_get_contents($jsonPath), true);

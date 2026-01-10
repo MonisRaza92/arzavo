@@ -19,6 +19,10 @@
         "@jaames/iro": "^5.5.2",
         "@melloware/coloris": "^0.25.0",
         "@simonwep/pickr": "^1.9.1",
+        "@tiptap/extension-color": "^3.15.3",
+        "@tiptap/extension-link": "^3.15.3",
+        "@tiptap/starter-kit": "^3.15.3",
+        "@tiptap/vue-3": "^3.15.3",
         "alpinejs": "^3.14.9"
     }
 }

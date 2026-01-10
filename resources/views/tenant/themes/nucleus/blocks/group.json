@@ -460,7 +460,7 @@
             "key": "padding_top",
             "label": "Padding Top",
             "type": "range",
-            "default": "16",
+            "default": "0",
             "min": 0,
             "max": 100
         },
@@ -468,7 +468,7 @@
             "key": "padding_right",
             "label": "Padding Right",
             "type": "range",
-            "default": "16",
+            "default": "0",
             "min": 0,
             "max": 100
         },
@@ -476,7 +476,7 @@
             "key": "padding_bottom",
             "label": "Padding Bottom",
             "type": "range",
-            "default": "16",
+            "default": "0",
             "min": 0,
             "max": 100
         },
@@ -484,7 +484,7 @@
             "key": "padding_left",
             "label": "Padding Left",
             "type": "range",
-            "default": "16",
+            "default": "0",
             "min": 0,
             "max": 100
         }

@@ -1,0 +1,34 @@
+{
+    "type": "stat",
+    "name": "Stat",
+    "icon": "fa-chart-simple",
+    "category": "Basic",
+    "fields": [
+        {
+            "key": "number",
+            "label": "Number",
+            "type": "text",
+            "default": "100+"
+        },
+        {
+            "key": "label",
+            "label": "Label",
+            "type": "text",
+            "default": "Happy Students"
+        },
+        {
+            "key": "alignment",
+            "label": "Desktop Alignment",
+            "type": "radio",
+            "options": ["left", "center"],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "radio",
+            "options": ["left", "center"],
+            "default": "left"
+        }
+    ]
+}

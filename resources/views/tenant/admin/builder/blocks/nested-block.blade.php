@@ -1,6 +1,6 @@
 <li id="block-{{ $block->id }}" class="block-item"
     data-block-id="{{ $block->id }}">
-    <div class="relative group bg-hover-secondary border-rounded cursor-pointer select-none py-0.5 pl-2 pr-1 my-1 flex justify-between items-center">
+    <div class="relative group/nested bg-hover-secondary border-rounded cursor-pointer select-none py-0.5 pl-2 pr-1 my-1 flex justify-between items-center">
 
         <div class="flex items-center grow">
             @if (!empty($blockRules[$block->type]['allowed_blocks']))
@@ -10,13 +10,13 @@
                 <i id="block-btn-arrow-{{ $block->id }}" class="fa-solid fa-chevron-right text-[10px]"></i>
             </button>
             @else
-            <span class="w-8"></span>
+            <span class="w-8.75"></span>
             @endif
             <i class="fa-solid {{ $block->icon ?? 'fa-cube' }} text-xs mr-2 text-tertiary"></i>
             <span class="text-sm cursor-pointer block-open-btn w-full" data-block-id="{{ $block->id }}">{{ $block->name }}</span>
         </div>
 
-        <div class="flex items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200">
+        <div class="flex items-center opacity-0 pointer-events-none group-hover/nested:opacity-100 group-hover/nested:pointer-events-auto transition-all duration-200">
             <button class="cursor-drag text-hover-primary text-tertiary text-xs py-2 px-1 border-rounded nested-block-drag-handle">
                 <i class="fa-solid fa-up-down"></i>
             </button>

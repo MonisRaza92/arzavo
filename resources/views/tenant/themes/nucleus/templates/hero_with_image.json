@@ -5,8 +5,6 @@
     "order": 2,
     "category": "Hero",
     "color_scheme_id": 1,
-    "max_blocks": 8,
-    "allowed_blocks": ["heading", "text", "button", "image", "spacer", "divider", "group"],
     "default_blocks": [
         {
             "type": "group",
@@ -24,7 +22,7 @@
                 {
                     "type": "heading",
                     "settings": {
-                        "text": "Transform Your Business Today",
+                        "text": "Built for Institutions That Want to Grow",
                         "heading_type": "heading-1",
                         "alignment": "left",
                         "mobile_alignment": "center"
@@ -33,7 +31,7 @@
                 {
                     "type": "text",
                     "settings": {
-                        "text": "Join thousands of satisfied customers who have revolutionized their workflow with our innovative solutions.",
+                        "text": "Whether you run a small coaching center or a large educational organization, Arzavo adapts to your scale. Automate operations, track performance, and make data-driven decisions with a system designed for long-term growth.",
                         "text_type": "paragraph",
                         "font_size": "large",
                         "alignment": "left",
@@ -78,11 +76,11 @@
         {
             "type": "image",
             "settings": {
-                "desktop_image": "",
+                "desktop_image": null,
+                "mobile_image": null,
                 "alt_text": "Hero Image",
                 "aspect_ratio": "landscape",
-                "border_radius": 12,
-                "shadow": "medium"
+                "border_radius": "enable"
             }
         }
     ],

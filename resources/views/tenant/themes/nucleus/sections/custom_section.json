@@ -21,7 +21,8 @@
         "pricing_card",
         "social_links",
         "spacer",
-        "video"
+        "video",
+        "header"
     ],
     "default_blocks": "",
     "fields": [
@@ -264,70 +265,7 @@
             "min": 0,
             "max": 100
         },
-        {
-            "key": "enable_mobile_spacing",
-            "label": "Mobile Spacing",
-            "type": "switch",
-            "default": "0",
-            "text": "Custom spacing for mobile"
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Mobile",
-            "conditional": {
-                "field": "enable_mobile_spacing",
-                "value": "1"
-            }
-        },
-        {
-            "key": "mobile_padding_top",
-            "label": "Padding Top",
-            "type": "range",
-            "default": "16",
-            "min": 0,
-            "max": 100,
-            "conditional": {
-                "field": "enable_mobile_spacing",
-                "value": "1"
-            }
-        },
-        {
-            "key": "mobile_padding_bottom",
-            "label": "Padding Bottom",
-            "type": "range",
-            "default": "16",
-            "min": 0,
-            "max": 100,
-            "conditional": {
-                "field": "enable_mobile_spacing",
-                "value": "1"
-            }
-        },
-        {
-            "key": "mobile_margin_top",
-            "label": "Margin top",
-            "type": "range",
-            "default": "0",
-            "min": 0,
-            "max": 100,
-            "conditional": {
-                "field": "enable_mobile_spacing",
-                "value": "1"
-            }
-        },
-        {
-            "key": "mobile_margin_bottom",
-            "label": "Margin Bottom",
-            "type": "range",
-            "default": "0",
-            "min": 0,
-            "max": 100,
-            "conditional": {
-                "field": "enable_mobile_spacing",
-                "value": "1"
-            }
-        },
+        
         {
             "key": "group",
             "type": "group",

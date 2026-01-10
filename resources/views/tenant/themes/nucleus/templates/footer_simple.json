@@ -2,7 +2,7 @@
     "type": "custom_section",
     "name": "Footer: Simple",
     "icon": "fa-window-minimize",
-    "order": 15,
+    "order": 2,
     "category": "Footer",
     "color_scheme_id": 1,
     "max_blocks": 8,
