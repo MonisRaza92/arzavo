@@ -40,9 +40,6 @@
     --border-invert: #000000;
     --border-width: 1px;
     --border-rounded: 6px;
-    --logo-size: 40px;
-    --container-width: 1280px;
-    --global-padding: 2rem;
 }
 
 html {
