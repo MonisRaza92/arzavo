@@ -23,7 +23,7 @@ $slides = $section->blocks;
 
 <div
     data-section-id="{{ $section->id }}" data-name="{{ $section->name }}"
-    class="relative {{ $contentWidth === 'full' ? 'w-full' : 'container'}} group
+    class="relative group
         {{ $hideDesktop === '1' ? 'md:hidden block' : '' }}
         {{ $hideMobile === '1' ? 'md:block hidden' : '' }}
     "
@@ -35,34 +35,36 @@ $slides = $section->blocks;
     padding-top: {{ $mt }}px; padding-bottom: {{ $mb }}px;
     background: var(--arzavo-background);
     ">
+    <div class="{{ $contentWidth === 'full' ? 'w-full' : 'container'}}">
 
-    <div class="relative w-full h-full overflow-hidden">
+        <div class="relative w-full h-full overflow-hidden">
 
-        <div class="slider-track flex h-full w-full transition-transform duration-500 ease-out will-change-transform">
-            @foreach($slides as $block)
-            <div class="w-full h-full shrink-0 grow-0 relative {{ $border === '1' ? 'arzavo-border' : '' }}{{ $borderRadius === 'enable' ? ' arzavo-border-rounded' : ''}} overflow-hidden" @if($borderRadius==='custom' ) style="border-radius: {{ $customBR }}px;" @endif>
-                @include('tenant.themes.' . $theme->theme_slug .'.blocks.slideshow_image')
+            <div class="slider-track flex h-full w-full transition-transform duration-500 ease-out will-change-transform">
+                @foreach($slides as $block)
+                <div class="w-full h-full shrink-0 grow-0 relative {{ $border === '1' ? 'arzavo-border' : '' }}{{ $borderRadius === 'enable' ? ' arzavo-border-rounded' : ''}} overflow-hidden" @if($borderRadius==='custom' ) style="border-radius: {{ $customBR }}px;" @endif>
+                    @include('tenant.themes.' . $theme->theme_slug .'.blocks.slideshow_image')
+                </div>
+                @endforeach
             </div>
-            @endforeach
-        </div>
 
-        @if($showArrows === '1')
-        <button class="slider-prev absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 disabled:opacity-30">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-        </button>
-        <button class="slider-next absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 disabled:opacity-30">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-        </button>
-        @endif
+            @if($showArrows === '1')
+            <button class="slider-prev absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 disabled:opacity-30">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            <button class="slider-next absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 disabled:opacity-30">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+            @endif
 
-        @if($showDots === '1')
-        <div class="slider-dots absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+            @if($showDots === '1')
+            <div class="slider-dots absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+            </div>
+            @endif
         </div>
-        @endif
     </div>
 </div>
 <script>
