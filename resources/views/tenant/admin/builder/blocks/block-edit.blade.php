@@ -273,7 +273,7 @@
                         step="{{ $field['step'] ?? 1 }}"
                         value="{{ $block->settings[$field['key']] ?? $field['default'] ?? 50 }}"
                         name="settings[{{ $field['key'] }}]"
-                        class="w-full range-black live-input range-slider transition-all"
+                        class="w-full range-black live-input range-slider transition-all accent-black"
                         oninput="this.nextElementSibling.textContent = this.value">
                     <span class="text-sm font-semibold w-12 text-right range-value bg-gray-100 px-2 py-1 border-rounded">
                         {{ $block->settings[$field['key']] ?? $field['default'] ?? 50 }}

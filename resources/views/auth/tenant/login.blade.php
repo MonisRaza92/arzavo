@@ -4,7 +4,7 @@
 @section('content')
 <div class="auth-container container p-4 flex justify-center items-center h-dvh">
     <div class="auth-form w-full md:w-auto h-auto border-primary bg-primary border-rounded p-4">
-        <img src="{{ asset($customizes['logo'] ?? 'images/logo/arzavo-dark.png') }}" alt="Arzavo Logo" class="mb-4 logo">
+        <img src="{{ media($customizes['logo'] ?? 'images/logo/arzavo-dark.png') }}" alt="Arzavo Logo" class="mb-4 logo">
         <form action="{{ route('tenant.login.handle') }}" method="POST">
             @csrf
             <h2 class="text-3xl font-bold mb-4">Welcome Back!</h2>
@@ -28,7 +28,7 @@
             </div>
             <button type="submit" class="w-full font-bold py-2 bg-invert text-invert border-rounded">Login</button>
             <div class="mt-4 text-center">
-                <a href="{{ route('tenant.register.form') }}" class="text-blue-600 hover:text-blue-500">Don't have an account? Register</a>
+                <a href="{{ route('tenant.register') }}" class="text-blue-600 hover:text-blue-500">Don't have an account? Register</a>
             </div>
         </form>
     </div>

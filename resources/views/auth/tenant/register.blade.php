@@ -4,7 +4,7 @@
 @section('content')
 <div class="auth-container flex justify-center items-center min-h-dvh">
     <div class="auth-form border-primary border-rounded p-4 bg-primary h-auto w-full md:w-auto">
-        <img src="{{ asset($customizes['logo'] ?? 'images/logo/arzavo-dark.png') }}" alt="Arzavo Logo" class="mb-4 logo">
+        <img src="{{ media($customizes['logo'] ?? 'images/logo/arzavo-dark.png') }}" alt="Arzavo Logo" class="mb-4 logo">
         <form action="{{ route('tenant.register.handle') }}" method="POST">
             @csrf
             <h2 class="text-3xl font-bold mb-4">Create Account!</h2>
@@ -41,7 +41,7 @@
             <button type="submit" class="w-full font-bold py-2 bg-invert text-invert border-rounded">Create Now</button>
 
             <div class="mt-4 text-center">
-                <a href="{{ route('tenant.login.form') }}" class="text-blue-600 hover:text-blue-500">Already have an account? Login</a>
+                <a href="{{ route('tenant.login') }}" class="text-blue-600 hover:text-blue-500">Already have an account? Login</a>
             </div>
         </form>
     </div>

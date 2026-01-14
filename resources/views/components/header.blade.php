@@ -6,7 +6,7 @@
 <meta name="description" content="Your go-to platform for NEET and JEE preparation with comprehensive resources, expert guidance, and a community of learners.">
 <meta name="author" content="Monis Raza Khan">
 <meta name="robots" content="index, follow">
-<link rel="icon" type="image/x-icon" href="{{ media($customizes['favicon']) ?? asset('images/favicon.ico') }}">
+<link rel="icon" type="image/x-icon" href="{{ media($customizes['favicon'] ?? 'images/favicon.ico') }}">
 <title>@yield('title', 'Arzavo')</title>
 <x-variables :customizes="$customizes" />
 @vite(['resources/css/app.css', 'resources/js/app.js'])

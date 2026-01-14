@@ -140,7 +140,7 @@
                             name="{{ $key }}"
                             value="{{ $value }}"
                             oninput="this.nextElementSibling.textContent = this.value"
-                            class="w-full cursor-pointer">
+                            class="w-full cursor-pointer accent-black">
 
                         <span class="text-xs border-rounded text-center p-1 w-8 bg-secondary font-semibold">
                             {{ $value }}

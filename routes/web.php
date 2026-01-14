@@ -72,9 +72,9 @@ function registerDomains($domain)
         Route::get('/edit/{slug}', [TenantWebsiteController::class, 'preview'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('website.preview');
         
         Route::prefix('account')->group(function () {
-            Route::get('/login', [TenantLoginController::class, 'login'])->name('tenant.login.form');
+            Route::get('/login', [TenantLoginController::class, 'login'])->name('tenant.login');
             Route::post('/login', [TenantLoginController::class, 'loginHandle'])->name('tenant.login.handle');
-            Route::get('/register', [TenantLoginController::class, 'register'])->name('tenant.register.form');
+            Route::get('/register', [TenantLoginController::class, 'register'])->name('tenant.register');
             Route::post('/register', [TenantLoginController::class, 'registerHandle'])->name('tenant.register.handle');
             Route::get('/logout', [TenantLoginController::class, 'logout'])->name('tenant.logout');
         });

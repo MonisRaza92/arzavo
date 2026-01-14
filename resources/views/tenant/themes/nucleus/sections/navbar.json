@@ -3,12 +3,20 @@
     "name": "Header: Navbar",
     "icon": "fa-bars",
     "order": 1,
-    "Page": ["global"],
+    "Page": [
+        "global"
+    ],
     "category": "Header",
     "max_blocks": 2,
     "color_scheme_id": 1,
-    "allowed_blocks": ["logo", "menu"],
-    "default_blocks": ["logo", "menu"],
+    "allowed_blocks": [
+        "logo",
+        "menu"
+    ],
+    "default_blocks": [
+        "logo",
+        "menu"
+    ],
     "moveable": "none",
     "fields": [
         {
@@ -25,7 +33,10 @@
             "key": "navbar_behavior",
             "label": "Behavior",
             "type": "radio",
-            "options": ["sticky", "scroll-up"],
+            "options": [
+                "sticky",
+                "scroll-up"
+            ],
             "default": "sticky"
         },
         {
@@ -39,7 +50,6 @@
                 "value": "sticky"
             }
         },
-
         {
             "key": "group",
             "type": "group",
@@ -49,17 +59,23 @@
             "key": "navbar_height",
             "label": "Height",
             "type": "select",
-            "options": ["compact", "standard", "spacious"],
+            "options": [
+                "compact",
+                "standard",
+                "spacious"
+            ],
             "default": "standard"
         },
         {
             "key": "links_position",
             "label": "Links Position",
             "type": "radio",
-            "options": ["left", "right"],
+            "options": [
+                "left",
+                "right"
+            ],
             "default": "right"
         },
-
         {
             "key": "group",
             "type": "group",
@@ -76,7 +92,10 @@
             "key": "icon_style",
             "label": "Icon Style",
             "type": "radio",
-            "options": ["outline", "solid"],
+            "options": [
+                "outline",
+                "solid"
+            ],
             "default": "outline"
         }
     ]

@@ -1,8 +1,6 @@
 @php
-// Example JSON data (usually DB se load hoga)
 $navbar = $section->settings ?? [];
 $colors = $section->colorScheme->scheme_colors;
-
 
 $behavior = $navbar['navbar_behavior'] ?? 'sticky';
 $border = $navbar['divider'] ?? 1;
@@ -13,52 +11,62 @@ $iconS = $navbar['icon_style'] ?? 'outline';
 
 $mobileMenu = $navbar['mobile_menu'] ?? 'enable';
 
-$linkPositionClass = match($linkPosition){
+$linkPositionClass = match ($linkPosition) {
 'left' => 'justify-start',
-'right' => 'justify-between'
+'right' => 'justify-between',
 };
 
-$iconStyle = match($iconS) {
+$iconStyle = match ($iconS) {
 'outline' => 'regular',
-'solid' => 'solid'
+'solid' => 'solid',
 };
-
 
 @endphp
 <nav style="
-    --arzavo-background : {{ $colors->background ?? '#ffffff' }} ;
+    --arzavo-background : {{ $colors->background ?? '#ffffff' }};
     --arzavo-border: {{ $colors->border ?? '#d4d4d4d' }};
-    --arzavo-paragraph-color: {{ $colors->paragraph ?? "#111111" }};
-    --arzavo-invert-text-color: {{ $colors->invert_text ?? "#ffffff" }};
-    --arzavo-link-color: {{ $colors->link ?? "#111111" }};
-    --arzavo-link-hover-color: {{ $colors->link_hover ?? "#111111" }};"
-    data-section-id="{{ $section->id }}"
-    data-name="{{ $section->name }}"
+    --arzavo-paragraph-color: {{ $colors->paragraph ?? '#111111' }};
+    --arzavo-invert-text-color: {{ $colors->invert_text ?? '#ffffff' }};
+    --arzavo-link-color: {{ $colors->link ?? '#111111' }};
+    --arzavo-link-hover-color: {{ $colors->link_hover ?? '#111111' }};"
+    data-section-id="{{ $section->id }}" data-name="{{ $section->name }}"
     class="py-0 z-20 w-full arzavo-navbar transition-all duration-300 ease-out
-    {{ $transparent === "0" ? 'arzavo-background' : 'bg-transparent' }} 
-    {{ $behavior === 'sticky' ? ($transparent === "1" ? 'fixed top-0 left-0' : 'sticky top-0 left-0') : '' }}
-    {{ $border === "1" ? 'arzavo-border-bottom' : '' }}">
-    <div class="container navbar flex gap-8 justify-between items-center w-full {{ $navHeight === 'compact' ? 'py-2' : ($navHeight === 'standard' ? 'py-3' : 'py-4') }}">
-        <div class="flex items-center {{$linkPositionClass}} w-full">
+    {{ $transparent === '0' ? 'arzavo-background' : 'bg-transparent' }} 
+    {{ $behavior === 'sticky' ? ($transparent === '1' ? 'fixed top-0 left-0' : 'sticky top-0 left-0') : '' }}
+    {{ $border === '1' ? 'arzavo-border-bottom' : '' }}">
+    <div
+        class="container navbar flex gap-8 justify-between items-center w-full {{ $navHeight === 'compact' ? 'py-2' : ($navHeight === 'standard' ? 'py-3' : 'py-4') }}">
+        <div class="flex items-center {{ $linkPositionClass }} grow">
             @include('tenant.themes.includes.blocks')
         </div>
-        <div class="right-menu hidden md:flex items-center gap-4 md:gap-6 arzavo-icons">
+        <div class="right-menu hidden md:flex items-center gap-4 arzavo-icons">
+            @if (!Auth::guard('tenant')->check())
+            <a href="{{ route('tenant.login') }}"><i class="fa-{{ $iconStyle }} fa-user text-xl"></i></a>
+            @else
             <div class="menu relative" onclick="document.getElementById('authMenu').classList.toggle('hidden')">
                 <i class="fa-{{ $iconStyle }} fa-user text-xl"></i>
-                <div class="auth-menu hidden absolute top-full right-0 border-rounded border-primary min-w-50" id="authMenu" style="background: {{ $colors->background ?? '#ffffff' }};"">
-                    <div class=" user-info arzavo-border-bottom py-2 px-4">
-                    <h4 class="text-base font-semibold">{{ $user->fname ?? 'N/A' }} {{ $user->lname ?? '' }}</h4>
+                <div class="auth-menu hidden absolute top-full right-0 border-rounded border-primary min-w-50"
+                    id="authMenu" style="background: {{ $colors->background ?? '#ffffff' }};"">
+                        <div class=" user-info arzavo-border-bottom py-2 px-4">
+                    <h4 class="text-base font-semibold">{{ $user->fname ?? 'Guest' }} {{ $user->lname ?? '' }}
+                    </h4>
                     <p class="text-xs">{{ $user->email ?? 'N/A' }}</p>
                 </div>
                 <div class="links py-2 px-4 space-y-2">
-                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-user"></i>Profile</a>
-                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-bars-progress"></i>Dashboard</a>
-                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-video"></i>Courses</a>
-                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-file-pdf"></i>Notes & Book</a>
-                    <a href="" class="flex gap-2 items-center text-red-500 arzavo-border-top pt-2"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                    <a href="" class="flex gap-2 items-center"><i
+                            class="fa-solid fa-user"></i>Profile</a>
+                    <a href="" class="flex gap-2 items-center"><i
+                            class="fa-solid fa-bars-progress"></i>Dashboard</a>
+                    <a href="" class="flex gap-2 items-center"><i
+                            class="fa-solid fa-video"></i>Courses</a>
+                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-file-pdf"></i>Notes
+                        & Book</a>
+                    <a href="" class="flex gap-2 items-center text-red-500 arzavo-border-top pt-2"><i
+                            class="fa-solid fa-right-from-bracket"></i>Logout</a>
                 </div>
             </div>
         </div>
+        @endif
     </div>
     </div>
 </nav>

@@ -59,11 +59,11 @@ $size = match($fontSize) {
         </li>
         @endforeach
     </ul>
-    <button class="text-xl md:hidden" onclick="document.getElementById('mobileMenu').classList.remove('translate-x-full')"><i class="fa-solid fa-bars"></i></button>
+    <button class="text-xl md:hidden" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></button>
     <ul class="flex md:hidden flex-col fixed right-0 transform translate-x-full transition-all duration-300 top-0 w-3/4 h-dvh arzavo-background z-30 overflow-y-auto scrollbar" id="mobileMenu">
         <div class="header flex px-4 py-3.5 justify-between arzavo-border-bottom">
             <img src="{{ media($customizes['logo'] ?? '') }}" alt="logo" class="h-8 shrink-0">
-            <button class="text-2xl" onclick="document.getElementById('mobileMenu').classList.add('translate-x-full')"><i class="fa-solid fa-xmark"></i></button>
+            <button class="text-2xl" onclick="toggleMobileMenu()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         @foreach($mobileMenu->items as $item)
         <li class="relative group px-4 py-3 arzavo-border-bottom">
@@ -91,25 +91,61 @@ $size = match($fontSize) {
         </li>
         @endforeach
         <div class="absolute p-4 arzavo-border-top bottom-0 left-0 w-full">
-            <div class="menu relative" $image>
-                <i class="fa-{{ $iconStyle }} fa-user text-xl" onclick="toggleModel('authMobileMenu')"></i>
-                <div class="auth-menu hidden absolute bottom-full right-0 arzavo-background border-rounded border-primary min-w-full" id="authMobileMenu">
-                    <div class=" user-info arzavo-border-bottom py-2 px-4 relative">
-                    <div class="content">
-                        <h4 class="text-base font-semibold">{{ $user->fname ?? 'N/A' }} {{ $user->lname ?? '' }}</h4>
-                        <p class="text-xs">{{ $user->email ?? 'N/A' }}</p>
-                    </div>
-                    <button class="text-lg absolute right-2 top-2" onclick="closeModel('authMobileMenu')"><i class="fa-solid fa-xmark"></i></button>
+            @if (!Auth::guard('tenant')->check())
+            <a href="{{ route('tenant.login') }}"><i class="fa-{{ $iconStyle }} fa-user text-xl"></i></a>
+            @else
+            <div class="menu relative" onclick="document.getElementById('authMenu').classList.toggle('hidden')">
+                <i class="fa-{{ $iconStyle }} fa-user text-xl"></i>
+                <div class="auth-menu hidden absolute bottom-full left-0 border-rounded border-primary min-w-50"
+                    id="authMenu" style="background: {{ $colors->background ?? '#ffffff' }};"">
+                        <div class=" user-info arzavo-border-bottom py-2 px-4">
+                    <h4 class="text-base font-semibold">{{ $user->fname ?? 'Guest' }} {{ $user->lname ?? '' }}
+                    </h4>
+                    <p class="text-xs">{{ $user->email ?? 'N/A' }}</p>
                 </div>
                 <div class="links py-2 px-4 space-y-2">
-                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-user"></i>Profile</a>
-                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-bars-progress"></i>Dashboard</a>
-                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-video"></i>Courses</a>
-                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-file-pdf"></i>Notes & Book</a>
-                    <a href="" class="flex gap-2 items-center text-red-500 arzavo-border-top pt-2"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                    <a href="" class="flex gap-2 items-center"><i
+                            class="fa-solid fa-user"></i>Profile</a>
+                    <a href="" class="flex gap-2 items-center"><i
+                            class="fa-solid fa-bars-progress"></i>Dashboard</a>
+                    <a href="" class="flex gap-2 items-center"><i
+                            class="fa-solid fa-video"></i>Courses</a>
+                    <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-file-pdf"></i>Notes
+                        & Book</a>
+                    <a href="" class="flex gap-2 items-center text-red-500 arzavo-border-top pt-2"><i
+                            class="fa-solid fa-right-from-bracket"></i>Logout</a>
                 </div>
             </div>
         </div>
-    </ul>
+        @endif
+</div>
+</ul>
 </div>
 @endif
+<script>
+function toggleMobileMenu() {
+    const menu = document.getElementById("mobileMenu");
+
+    if (menu.classList.contains("hidden")) {
+        // Show
+        menu.classList.remove("hidden");
+
+        // force reflow so transition works
+        menu.offsetHeight;
+
+        menu.classList.remove("translate-x-full");
+        menu.classList.add("translate-x-0");
+        menu.classList.add("shadow-2xl");
+    } else {
+        // Hide
+        menu.classList.add("translate-x-full");
+        menu.classList.remove("shadow-2xl");
+
+        // after animation, hide
+        setTimeout(() => {
+            menu.classList.add("hidden");
+            menu.classList.remove("translate-x-0");
+        }, 300); // must match transition duration
+    }
+}
+</script>

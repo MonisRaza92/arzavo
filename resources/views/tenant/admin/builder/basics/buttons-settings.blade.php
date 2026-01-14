@@ -16,46 +16,25 @@
         $buttonCustomizeOptions = [
 
         [
-        'key'=>'shape','label'=>'Shape','type'=>'select',
-        'options'=>[
-        ['label' => 'Sharp', 'value' => '0px'],
-        ['label' => 'Slight Rounded', 'value' => '4px'],
-        ['label' => 'Rounded', 'value' => '8px'],
-        ['label' => 'Medium Rounded', 'value' => '12px'],
-        ['label' => 'Soft Rounded', 'value' => '16px'],
-        ['label' => 'Extra Rounded', 'value' => '20px'],
-        ['label' => 'Ultra Rounded', 'value' => '24px'],
-        ['label' => 'Full Rounded', 'value' => '32px'],
-        ],
-        'value'=>'0px'
+        'key'=>'shape','label'=>'Roundness','type'=>'range',
+        'min'=>0,'max'=>50,'step'=>2,'unit'=>'px',
+        'value'=>0
         ],
 
-        [
-        'key'=>'size','label'=>'Size','type'=>'select',
-        'options'=>[
-        ['label'=>'Small','value'=>'8px 12px'],
-        ['label'=>'Medium','value'=>'12px 16px'],
-        ['label'=>'Large','value'=>'12px 24px'],
-        ['label'=>'Extra Large','value'=>'12px 32px'],
-        ['label'=>'huge','value'=>'12px 36px'],
-        ['label'=>'Giantic','value'=>'12px 40px'],
-        ],
-        'value'=>'12px 16px'
-        ],
 
         [
-        'key'=>'font_size','label'=>'Font Size','type'=>'select',
-        'options'=>[
-        ['label'=>'Extra Small','value'=>'12px'],
-        ['label'=>'Small','value'=>'14px'],
-        ['label'=>'Medium','value'=>'16px'],
-        ['label'=>'Large','value'=>'18px'],
-        ['label'=>'Extra Large','value'=>'20px'],
-        ['label'=>'Huge','value'=>'22px'],
-        ['label'=>'Giantic','value'=>'24px'],
+        'key'=>'size','label'=>'Size','type'=>'range',
+        'min'=>8,'max'=>80,'step'=>2,'unit'=>'px',
+        'value'=>16
         ],
-        'value'=>'16px'
+
+
+        [
+        'key'=>'font_size','label'=>'Font Size','type'=>'range',
+        'min'=>12,'max'=>32,'step'=>1,'unit'=>'px',
+        'value'=>16
         ],
+
 
         [
         'key'=>'font_weight','label'=>'Font Weight','type'=>'select',
@@ -83,16 +62,11 @@
         ],
 
         [
-        'key'=>'border_width','label'=>'Border Width','type'=>'select',
-        'options'=>[
-        ['label'=>'None','value'=>'0px'],
-        ['label'=>'Thin','value'=>'1px'],
-        ['label'=>'Medium','value'=>'2px'],
-        ['label'=>'Thick','value'=>'3px'],
-        ['label'=>'Extra Thick','value'=>'4px'],
+        'key'=>'border_width','label'=>'Border Width','type'=>'range',
+        'min'=>0,'max'=>4,'step'=>1,'unit'=>'px',
+        'value'=>1
         ],
-        'value'=>'1px'
-        ],
+
         [
         'key'=>'font_family','label'=>'Font Family','type'=>'select',
         'options'=>[
@@ -154,10 +128,26 @@
                             @endforeach
 
                         </div>
+                        {{-- RANGE --}}
+                        @elseif($item['type'] === 'range')
+                        <div class="flex items-center w-43 gap-2 px-2 py-3">
+                            <input type="range"
+                                name="{{ $key }}"
+                                min="{{ $item['min'] }}"
+                                max="{{ $item['max'] }}"
+                                step="{{ $item['step'] }}"
+                                value="{{ $value }}"
+                                class="w-full accent-black"
+                                oninput="this.nextElementSibling.innerText = this.value + '{{ $item['unit'] }}'">
+
+                            <span class="text-xs text-primary min-w-10 text-right">
+                                {{ $value }}{{ $item['unit'] }}
+                            </span>
+                        </div>
 
                         {{-- SELECT --}}
                         @elseif($item['type'] === 'select')
-                        <select name="{{ $key }}" class="focus:ring-0 w-43 p-2 text-sm">
+                        <select name="{{ $key }}" class="focus:ring-0 w-43 p-2.5 text-sm">
                             @foreach($item['options'] as $option)
                             <option value="{{ $option['value'] }}" {{ $value == $option['value'] ? 'selected' : '' }}>
                                 {{ $option['label'] }}

@@ -40,6 +40,7 @@
     --border-invert: #000000;
     --border-width: 1px;
     --border-rounded: 6px;
+    --logo-size: 40px;
 }
 
 html {
@@ -652,7 +653,7 @@ button {
     font-weight: var(--arzavo-primary-btn-font-weight);
     text-transform: var(--arzavo-primary-btn-text-transform);
     display: block;
-    padding: var(--arzavo-primary-btn-size);
+    padding: 8px var(--arzavo-primary-btn-size);
     transition: all 0.3s ease;
 
     &:hover {
@@ -672,7 +673,7 @@ button {
     font-weight: var(--arzavo-secondary-btn-font-weight);
     text-transform: var(--arzavo-secondary-btn-text-transform);
     display: block;
-    padding: var(--arzavo-secondary-btn-size);
+    padding: 8px var(--arzavo-secondary-btn-size);
     transition: all 0.3s ease;
 
     &:hover {
