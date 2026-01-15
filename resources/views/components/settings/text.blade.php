@@ -1,0 +1,22 @@
+@props([
+'name',
+'label' => '',
+'value' => '',
+'placeholder' => '',
+'disabled' => false,
+'readonly' => false,
+'class' => ''
+])
+
+<x-settings.wrapper :label="$label">
+    <input
+        type="text"
+        name="{{ $name }}"
+        value="{{ $value }}"
+        placeholder="{{ $placeholder }}"
+        @disabled($disabled)
+        @readonly($readonly)
+        {{ $attributes->merge([
+            'class' => "w-full p-2 rounded-md border border-primary bg-transparent $class"
+        ]) }}>
+</x-settings.wrapper>

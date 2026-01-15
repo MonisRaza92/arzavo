@@ -10,7 +10,8 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        return view('tenant.admin.settings.index');
+        $settingsConfig = config('settings');
+        return view('tenant.admin.settings.index', compact('settingsConfig'));
     }
 
     public function store(Request $request)

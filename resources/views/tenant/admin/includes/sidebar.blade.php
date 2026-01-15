@@ -1,5 +1,5 @@
 <div id="adminMobileMenu"
-    class="admin-sidebar -translate-x-full lg:-translate-x-0 transition-all duration-300 ease-in-out
+    class="admin-sidebar -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out
      w-[260px] h-full fixed top-0 left-0 overflow-y-auto p-4 pt-0 pb-10 z-9 scrollbar bg-primary border-right"
     style="margin-top: calc(var(--logo-size) + 14px);">
 

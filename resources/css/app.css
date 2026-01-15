@@ -4,6 +4,11 @@
     --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
+    --color-background: var(--background-color);
+    --color-forground: var(--forground-color);
+    --color-primary: var(--primary-color);
+    --color-tertiary: var(--tertiary-color);
+    --color-accent: var(--accent-color);
 }
 
 .container {
@@ -21,6 +26,13 @@
 }
 
 :root {
+    --background-color: #f1f1f1;
+    --forground-color: #ffffff;
+    --primary-color: #920000;
+    --tertiary-color: #ededed;
+    --accent-secondary: #c58400;
+
+
     --bg-primary: #ffffff;
     --bg-secondary: #f1f1f1;
     --bg-tertiary: #ededed;
