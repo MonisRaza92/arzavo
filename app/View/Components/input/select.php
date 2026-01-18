@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\settings;
+namespace App\View\Components\input;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class range extends Component
+class select extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class range extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.settings.range');
+        return view('components.input.select');
     }
 }

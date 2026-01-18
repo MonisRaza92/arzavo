@@ -3,18 +3,20 @@
 'label' => '',
 'value' => '',
 'placeholder' => '',
-'class' => '',
-'disabled' => false
+'disabled' => false,
+'readonly' => false,
+'class' => ''
 ])
 
-<x-settings.wrapper :label="$label">
+<x-input.wrapper :label="$label">
     <input
-        type="email"
+        type="text"
         name="{{ $name }}"
         value="{{ $value }}"
         placeholder="{{ $placeholder }}"
         @disabled($disabled)
+        @readonly($readonly)
         {{ $attributes->merge([
             'class' => "w-full p-2 rounded-md border border-primary bg-transparent $class"
         ]) }}>
-</x-settings.wrapper>
+</x-input.wrapper>

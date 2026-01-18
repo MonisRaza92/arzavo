@@ -2,17 +2,15 @@
 'name',
 'label' => '',
 'value' => '',
-'placeholder' => '',
+'rows' => 5,
 'class' => ''
 ])
 
-<x-settings.wrapper :label="$label">
-    <input
-        type="url"
+<x-input.wrapper :label="$label">
+    <textarea
         name="{{ $name }}"
-        value="{{ $value }}"
-        placeholder="{{ $placeholder }}"
+        rows="{{ $rows }}"
         {{ $attributes->merge([
             'class' => "w-full p-2 rounded-md border border-primary bg-transparent $class"
-        ]) }}>
-</x-settings.wrapper>
+        ]) }}>{{ $value }}</textarea>
+</x-input.wrapper>

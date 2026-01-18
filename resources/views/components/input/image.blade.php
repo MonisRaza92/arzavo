@@ -11,7 +11,7 @@
 $hasImage = !empty($value);
 @endphp
 
-<x-settings.wrapper :label="$label">
+<x-input.wrapper :label="$label">
 
     <div class="image-field-{{ $name }} relative group border-primary border-rounded p-2 overflow-hidden">
 
@@ -58,7 +58,7 @@ $hasImage = !empty($value);
         </div>
     </div>
 
-</x-settings.wrapper>
+</x-input.wrapper>
 <script>
     function deleteSettingsImage(key) {
 

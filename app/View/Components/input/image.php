@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\settings;
+namespace App\View\Components\input;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -21,6 +21,6 @@ class image extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.settings.image');
+        return view('components.input.image');
     }
 }

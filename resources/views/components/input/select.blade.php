@@ -6,7 +6,7 @@
 'class' => ''
 ])
 
-<x-settings.wrapper :label="$label">
+<x-input.wrapper :label="$label">
 
     <select
         name="{{ $name }}"
@@ -33,4 +33,4 @@
 
     </select>
 
-</x-settings.wrapper>
+</x-input.wrapper>

@@ -23,31 +23,31 @@
             @switch($type)
 
             @case('text')
-            <x-settings.text :name="$key" :label="$label" :value="$value" />
+            <x-input.text :name="$key" :label="$label" :value="$value" />
             @break
 
             @case('email')
-            <x-settings.email :name="$key" :label="$label" :value="$value" />
+            <x-input.email :name="$key" :label="$label" :value="$value" />
             @break
 
             @case('url')
-            <x-settings.url :name="$key" :label="$label" :value="$value" />
+            <x-input.url :name="$key" :label="$label" :value="$value" />
             @break
 
             @case('number')
-            <x-settings.number :name="$key" :label="$label" :value="$value" />
+            <x-input.number :name="$key" :label="$label" :value="$value" />
             @break
 
             @case('password')
-            <x-settings.password :name="$key" :label="$label" :value="$value" />
+            <x-input.password :name="$key" :label="$label" :value="$value" />
             @break
 
             @case('textarea')
-            <x-settings.textarea :name="$key" :label="$label" :value="$value" />
+            <x-input.textarea :name="$key" :label="$label" :value="$value" />
             @break
 
             @case('select')
-            <x-settings.select
+            <x-input.select
                 :name="$key"
                 :label="$label"
                 :value="$value"
@@ -55,15 +55,15 @@
             @break
 
             @case('toggle')
-            <x-settings.toggle :name="$key" :label="$label" :value="$value" />
+            <x-input.toggle :name="$key" :label="$label" :value="$value" />
             @break
 
             @case('image')
-            <x-settings.image :name="$key" :label="$label" :value="$value" />
+            <x-input.image :name="$key" :label="$label" :value="$value" />
             @break
 
             @case('color')
-            <x-settings.color :name="$key" :label="$label" :value="$value" />
+            <x-input.color :name="$key" :label="$label" :value="$value" />
             @break
 
             @endswitch

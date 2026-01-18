@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\settings;
+namespace App\View\Components\input;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class url extends Component
+class password extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class url extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.settings.url');
+        return view('components.input.password');
     }
 }

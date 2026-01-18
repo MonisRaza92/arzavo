@@ -5,7 +5,7 @@
 'disabled' => false
 ])
 
-<x-settings.wrapper :label="$label">
+<x-input.wrapper :label="$label">
     <div class="flex justify-end">
         <div class="relative">
 
@@ -23,4 +23,4 @@
 
         </div>
     </div>
-</x-settings.wrapper>
+</x-input.wrapper>

@@ -7,7 +7,7 @@
 'class' => ''
 ])
 
-<x-settings.wrapper :label="$label">
+<x-input.wrapper :label="$label">
     <input
         type="number"
         name="{{ $name }}"
@@ -17,4 +17,4 @@
         {{ $attributes->merge([
             'class' => "w-full p-2 rounded-md border border-primary bg-transparent $class"
         ]) }}>
-</x-settings.wrapper>
+</x-input.wrapper>

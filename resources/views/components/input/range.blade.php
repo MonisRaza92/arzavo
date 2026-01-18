@@ -9,7 +9,7 @@
 'class' => ''
 ])
 
-<x-settings.wrapper :label="$label">
+<x-input.wrapper :label="$label">
 
     <div class="flex items-center gap-4">
 
@@ -29,4 +29,4 @@
 
     </div>
 
-</x-settings.wrapper>
+</x-input.wrapper>

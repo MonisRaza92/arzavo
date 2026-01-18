@@ -5,7 +5,7 @@
     'class' => ''
 ])
 
-<x-settings.wrapper :label="$label">
+<x-input.wrapper :label="$label">
 
     <div class="relative">
         <input
@@ -21,7 +21,7 @@
         </button>
     </div>
 
-</x-settings.wrapper>
+</x-input.wrapper>
 
 <script>
 function togglePassword(btn) {
