@@ -8,7 +8,7 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://arzavo.com/">
 <link rel="icon" type="image/x-icon" href="{{ media($customizes['favicon'] ?? 'images/favicon.ico') }}">
-<title>@yield('title', 'Arzavo – School, College & Coaching Institute Management Software')</title>
+<title>@yield('title', $settings['meta_title'] ?? 'Arzavo – School, College & Coaching Institute Management Software')</title>
 <x-variables :customizes="$customizes" />
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <!-- fontAwesome -->
