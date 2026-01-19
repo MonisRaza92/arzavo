@@ -21,7 +21,7 @@
         {
             "key": "url",
             "label": "Button URL",
-            "type": "text",
+            "type": "url",
             "default": "#",
             "placeholder": "https://example.com"
         },

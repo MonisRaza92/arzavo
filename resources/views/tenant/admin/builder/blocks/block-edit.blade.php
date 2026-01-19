@@ -140,14 +140,15 @@
 
 
 
-                @case('link')
-                <input type="text"
-                    name="settings[{{ $field['key'] }}]"
-                    value="{{ $block->settings[$field['key']] ?? $field['default'] ?? '' }}"
-                    placeholder="{{ $field['placeholder'] ?? $field['default'] ?? 'Enter text...' }}"
-                    {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full p-2 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm transition-all">
+                @case('url')
+                <x-input.url
+                    :name="'settings[' . $field['key'] . ']'"
+                    :label="$field['label'] ?? 'Link'"
+                    :value="$block->settings[$field['key']] ?? $field['default'] ?? ''"
+                    :placeholder="$field['placeholder'] ?? 'Type or select page/course'"
+                    :required="($field['required'] ?? false) ? 'required' : ''" />
                 @break
+
 
                 @case('textarea')
                 <textarea name="settings[{{ $field['key'] }}]"

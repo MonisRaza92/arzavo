@@ -18,14 +18,14 @@
         {
             "key": "youtube_url",
             "label": "YouTube URL",
-            "type": "text",
+            "type": "url",
             "default": "",
             "placeholder": "https://www.youtube.com/watch?v=..."
         },
         {
             "key": "vimeo_url",
             "label": "Vimeo URL",
-            "type": "text",
+            "type": "url",
             "default": "",
             "placeholder": "https://vimeo.com/..."
         },

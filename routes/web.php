@@ -24,6 +24,9 @@ use App\Http\Controllers\Tenant\Admin\ClassCourseController;
 use App\Http\Controllers\Tenant\Admin\SubjectController;
 use App\Http\Controllers\Tenant\Admin\MenuController;
 use App\Http\Controllers\Tenant\Admin\MenuItemController;
+use App\Http\Controllers\Tenant\Admin\CourseBuilderController;
+use App\Http\Controllers\Tenant\Admin\CourseModuleController;
+use App\Http\Controllers\Tenant\Admin\CourseLessonController;
 use App\Http\Controllers\Tenant\User\UserController;
 use App\Http\Controllers\Tenant\Students\StudentsController;
 use App\Http\Controllers\Tenant\Teachers\TeachersController;
@@ -70,7 +73,7 @@ function registerDomains($domain)
         Route::get('/view/course', [TenantWebsiteController::class, 'courses'])->name('tenant.view.course');
         Route::get('/{slug}', [TenantWebsiteController::class, 'pages'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('tenant.pages');
         Route::get('/edit/{slug}', [TenantWebsiteController::class, 'preview'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('website.preview');
-        
+
         Route::prefix('account')->group(function () {
             Route::get('/login', [TenantLoginController::class, 'login'])->name('tenant.login');
             Route::post('/login', [TenantLoginController::class, 'loginHandle'])->name('tenant.login.handle');
@@ -79,7 +82,7 @@ function registerDomains($domain)
             Route::get('/logout', [TenantLoginController::class, 'logout'])->name('tenant.logout');
         });
 
-        
+
         Route::middleware('auth:tenant')->group(function () {
             //Profile Routes
 
@@ -128,6 +131,19 @@ function registerDomains($domain)
 
                 //Admin Courses Routes
                 Route::resource('courses', CourseController::class);
+
+                // Course Builder Routes
+                Route::get('/courses/{course}/builder', [CourseBuilderController::class, 'index'])->name('courses.builder');
+                Route::post('/courses/{course}/modules', [CourseBuilderController::class, 'storeModule'])->name('courses.modules.store');
+                Route::put('/courses/modules/{module}', [CourseBuilderController::class, 'updateModule'])->name('courses.modules.update');
+                Route::delete('/courses/modules/{module}', [CourseBuilderController::class, 'deleteModule'])->name('courses.modules.destroy');
+                Route::post('/courses/{course}/lessons', [CourseBuilderController::class, 'storeLesson'])->name('courses.lessons.store');
+                Route::put('/courses/lessons/{lesson}', [CourseBuilderController::class, 'updateLesson'])->name('courses.lessons.update');
+                Route::delete('/courses/lessons/{lesson}', [CourseBuilderController::class, 'deleteLesson'])->name('courses.lessons.destroy');
+                Route::post('/courses/modules/reorder', [CourseBuilderController::class, 'reorderModules'])->name('courses.modules.reorder');
+                Route::post('/courses/lessons/reorder', [CourseBuilderController::class, 'reorderLessons'])->name('courses.lessons.reorder');
+                Route::post('/courses/{course}/settings', [CourseBuilderController::class, 'updateSettings'])->name('courses.settings.update');
+                Route::post('/courses/{course}/pricing', [CourseBuilderController::class, 'updatePricing'])->name('courses.pricing.update');
 
                 Route::get('/exams', [AdminController::class, 'exams'])->name('admin-exams');
                 Route::get('/results', [AdminController::class, 'results'])->name('admin-results');

@@ -17,6 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth'   => \App\Http\Middleware\Authenticate::class,
             'role'   => \App\Http\Middleware\RoleMiddleware::class,
         ]);
+
+        $middleware->priority([
+            \App\Http\Middleware\TenantMiddleware::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

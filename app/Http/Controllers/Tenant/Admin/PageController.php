@@ -32,6 +32,7 @@ class PageController
             'name' => $request->name,
             'slug' => $request->slug,
             'meta_title' => $request->meta_title,
+            'is_system_page' => 0,
             'meta_description' => $request->meta_description,
             'status' => $request->status ? 1 : 0,
         ]);

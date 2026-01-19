@@ -117,7 +117,8 @@ class CourseController extends Controller
         // ----------------------------
         // DONE
         // ----------------------------
-        return back()->with('success', 'Course created successfully');
+        return redirect()->route('admin.courses.builder', $course->id)
+            ->with('success', 'Course created successfully. Now add curriculum.');
     }
 
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->boolean('is_system_page');
+            $table->boolean('is_system_page')->default(0);
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->boolean('is_active')->default(true);

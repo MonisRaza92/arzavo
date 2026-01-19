@@ -1,4 +1,4 @@
-<div class="chart-container border-top bg-primary">
+<div class="chart-container border-primary mb-4 bg-primary border-rounded">
     <div class="data grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
 
         {{-- LEFT : COURSE STATS --}}

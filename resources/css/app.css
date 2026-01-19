@@ -184,7 +184,7 @@ button {
 }
 
 .border-invert {
-    border: 2px solid var(--bg-invert);
+    border: 1px solid var(--bg-invert);
 }
 
 .input-focus:focus {

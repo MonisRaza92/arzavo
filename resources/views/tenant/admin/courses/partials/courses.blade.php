@@ -7,7 +7,7 @@
         {{-- THUMBNAIL --}}
         <div class="relative">
             <img
-                src="{{ $course->thumbnail ?? asset($course->thumbnail) }}"
+                src="{{ media($course->thumbnail) }}"
                 class="w-full aspect-video object-cover border-bottom"
                 alt="{{ $course->title }}">
 
@@ -108,6 +108,10 @@
                     <a href="{{ route('admin.courses.edit', $course->id) }}"
                         class="flex-1 text-center py-2 bg-invert text-invert border-rounded font-semibold">
                         Edit
+                    </a>    
+                    <a href="{{ route('admin.courses.builder', $course->id) }}"
+                        class="flex-1 text-center py-2 border-invert border-rounded font-semibold bg-primary hover-secondary">
+                        <i class="fa-solid fa-layer-group"></i> Builder
                     </a>
 
                     <form method="POST"

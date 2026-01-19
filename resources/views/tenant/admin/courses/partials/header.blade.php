@@ -36,5 +36,4 @@
             </button>
         </div>
     </div>
-    @include('tenant.admin.courses.partials.courses-stats')
 </div>

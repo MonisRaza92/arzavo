@@ -1,5 +1,5 @@
 <div class="hidden fixed z-100 top-0 left-0 w-full h-full bg-black/80 flex justify-center items-center" id="courseAddPopup">
-    <div class="bg-primary border-primary border-rounded overflow-auto scrollbar h-11/12 max-w-2xl">
+    <div class="bg-primary border-primary border-rounded overflow-auto scrollbar h-full md:h-11/12 w-full md:max-w-2xl">
         {{-- Header --}}
         <div class="flex justify-between items-center p-4 border-bottom sticky top-0 bg-primary z-101">
             <h3 class="text-lg font-bold text-primary">

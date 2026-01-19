@@ -39,7 +39,7 @@
         {
             "key": "image_link",
             "label": "Link URL",
-            "type": "text",
+            "type": "url",
             "default": ""
         },
         {
