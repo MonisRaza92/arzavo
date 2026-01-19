@@ -3,7 +3,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="keywords" content="school management software, coaching institute management software, institute management system, school ERP, coaching class software, student management system, fees management software, education management platform, online school software, institute ERP">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{ $customizes['meta_description'] ?? 'Run your school or coaching institute smarter with Arzavo. Manage admissions, fees, staff, students, online classes, reports & more in one simple platform' }}">
+<meta name="description" content="{{ $settings['meta_description'] ?? 'Run your school or coaching institute smarter with Arzavo. Manage admissions, fees, staff, students, online classes, reports & more in one simple platform' }}">
 <meta name="author" content="Monis Raza Khan">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://arzavo.com/">
