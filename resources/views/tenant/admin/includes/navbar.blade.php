@@ -1,6 +1,6 @@
 <div class="admin-navbar w-full sticky top-0 right-0 z-99 flex items-center justify-between px-4 py-3 bg-primary border-bottom">
     <a href="{{ route('tenant.home') }}">
-        <img id="logo" src="{{ media($customizes['logo']) ?? asset('images/logo/arzavo-dark.png') }}" alt="Logo" class="logo">
+        <img id="logo" src="{{ media($customizes['logo'] ?? 'images/logo/arzavo-dark.png') }}" alt="Logo" class="logo">
     </a>
     <div class="search-bar relative hidden md:block text-sm lg:w-1/2">
         <input type="text" placeholder="Search..." class="search-input w-full border-rounded px-3 py-2 input-focus bg-primary border-primary">
@@ -17,7 +17,7 @@
                     @csrf
                 </form>
             </div>
-            <button id="adminSidebarToggle" class="lg:hidden bg-invert text-invert text-xl aspect-square border-rounded flex items-center justify-center p-1.25" onclick="document.getElementById('adminMobileMenu').classList.toggle('-translate-x-full')"><i class="fa-solid fa-bars"></i></button>
+            <button id="adminSidebarToggle" class="lg:hidden bg-invert text-invert text-xl aspect-square border-rounded flex items-center justify-center p-2" onclick="document.getElementById('adminMobileMenu').classList.toggle('-translate-x-full')"><i class="fa-solid fa-bars"></i></button>
         </div>
     </div>
 </div>
