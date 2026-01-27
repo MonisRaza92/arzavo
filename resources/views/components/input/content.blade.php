@@ -5,18 +5,19 @@
 'icon' => 'fa-image',
 'aspect' => 'aspect-video',
 'bg' => 'bg-secondary',
+'type' => 'image',
 ])
 
 @php
-$hasImage = !empty($value);
+$hasContent = !empty($value);
 @endphp
 
 <x-input.wrapper :label="$label">
 
-    <div class="image-field-{{ $name }} relative group border-primary border-rounded overflow-hidden">
+    <div class="content-field-{{ $name }} relative group border-primary border-rounded overflow-hidden">
         <button type="button"
             class="text-invert transition absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100"
-            onclick="deleteSettingsImage('{{ $name }}')">
+            onclick="deleteSettingsContent('{{ $name }}')">
             <i class="fa-solid fa-trash text-sm"></i>
         </button>
 
@@ -26,16 +27,16 @@ $hasImage = !empty($value);
             <div
                 class="border-primary border-rounded {{ $bg }} flex flex-col justify-center items-center {{ $aspect }} cursor-pointer group relative overflow-hidden"
                 style="border-width:2px;border-style:dashed"
-                onclick="openContentPicker('{{ $name }}','image')">
+                onclick="openContentPicker('{{ $name }}','{{ $type }}')">
 
                 <img
                     data-content-preview
-                    @if($hasImage) src="{{ media($value) }}" @endif
-                    class="{{ $hasImage ? '' : 'hidden' }} object-contain border-rounded">
+                    @if($hasContent) src="{{ media($value) }}" @endif
+                    class="{{ $hasContent ? '' : 'hidden' }} object-contain border-rounded">
 
                 <div
                     data-content-placeholder
-                    class="flex flex-col items-center text-tertiary h-full justify-center {{ $hasImage ? 'hidden' : '' }}">
+                    class="flex flex-col items-center text-tertiary h-full justify-center {{ $hasContent ? 'hidden' : '' }}">
                     <i class="fa-solid {{ $icon }} text-3xl mb-2"></i>
                     Upload {{ $label }}
                 </div>
@@ -51,9 +52,9 @@ $hasImage = !empty($value);
 
 </x-input.wrapper>
 <script>
-    function deleteSettingsImage(key) {
+    function deleteSettingsContent(key) {
 
-        const wrapper = document.querySelector('.image-field-' + key);
+        const wrapper = document.querySelector('.content-field-' + key);
         if (!wrapper) return;
 
         const preview = wrapper.querySelector('[data-content-preview]');

@@ -58,22 +58,20 @@
             </div>
 
             {{-- TITLE --}}
-            <h3 class="text-lg font-bold text-primary leading-tight mb-3">
+            <h3 class="text-lg font-bold text-primary leading-tight mb-6 mt-4">
                 {{ Str::limit($course->title, 45) }}
             </h3>
 
             {{-- AUTHOR --}}
-            <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-2">
-                    <img src=""
-                        class="w-8 h-8 rounded-full"
-                        alt="">
+                    <x-profile-image :user="$course->author" />
                     <div>
                         <p class="text-sm font-semibold text-primary">
-                            {{ $course->author->name ?? 'Instructor' }}
+                            {{ $course->author->fname }} {{ $course->author->lname }}
                         </p>
                         <p class="text-xs text-tertiary">
-                            Instructor
+                            {{ $course->author->email }}
                         </p>
                     </div>
                 </div>
@@ -105,17 +103,12 @@
 
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">
-                    <a href="{{ route('admin.courses.edit', $course->id) }}"
+                    <a href="{{ route('admin.courses.edit', $course) }}"
                         class="flex-1 text-center py-2 bg-invert text-invert border-rounded font-semibold">
                         Edit
                     </a>    
-                    <a href="{{ route('admin.courses.builder', $course->id) }}"
-                        class="flex-1 text-center py-2 border-invert border-rounded font-semibold bg-primary hover-secondary">
-                        <i class="fa-solid fa-layer-group"></i> Builder
-                    </a>
-
                     <form method="POST"
-                        action="{{ route('admin.courses.destroy', $course->id) }}"
+                        action="{{ route('admin.courses.destroy', $course) }}"
                         onsubmit="return confirm('Delete this course?')">
                         @csrf
                         @method('DELETE')

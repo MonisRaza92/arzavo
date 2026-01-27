@@ -109,8 +109,15 @@ document.addEventListener("turbo:before-cache", () => {
     });
 });
 
+import "alpine-turbo-drive-adapter";
 window.Alpine = Alpine;
 Alpine.start();
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js");
+    });
+}
 
 function toggleModel(id) {
     const model = document.getElementById(id);
@@ -179,7 +186,7 @@ window.openSectionEditor = function (sectionId) {
     const previewSection = document
         .getElementById("livePreviewContent")
         ?.contentWindow?.document?.querySelector(
-            `[data-section-id="${sectionId}"]`
+            `[data-section-id="${sectionId}"]`,
         );
 
     if (previewSection) {
@@ -223,7 +230,7 @@ document.addEventListener("mouseover", function (e) {
         document.getElementById("livePreviewContent")?.contentWindow?.document;
 
     const previewSection = previewDoc?.querySelector(
-        `[data-section-id="${sectionId}"]`
+        `[data-section-id="${sectionId}"]`,
     );
 
     if (!previewSection) return;
@@ -246,7 +253,7 @@ document.addEventListener("mouseout", function (e) {
         document.getElementById("livePreviewContent")?.contentWindow?.document;
 
     const previewSection = previewDoc?.querySelector(
-        `[data-section-id="${sectionId}"]`
+        `[data-section-id="${sectionId}"]`,
     );
 
     if (!previewSection) return;
@@ -291,7 +298,7 @@ window.openBlockEditor = function (blockId) {
         document.getElementById("livePreviewContent")?.contentWindow?.document;
 
     const previewBlock = previewDoc?.querySelector(
-        `[data-block-id="${blockId}"]`
+        `[data-block-id="${blockId}"]`,
     );
 
     if (previewBlock) {
@@ -340,10 +347,10 @@ function openParentNestedBlocks(blockId) {
         const parentBlockId = parentBlockLi.dataset.blockId;
 
         const container = document.getElementById(
-            `nested-blocks-${parentBlockId}`
+            `nested-blocks-${parentBlockId}`,
         );
         const arrow = document.getElementById(
-            `block-btn-arrow-${parentBlockId}`
+            `block-btn-arrow-${parentBlockId}`,
         );
 
         if (container && container.classList.contains("hidden")) {
@@ -352,7 +359,7 @@ function openParentNestedBlocks(blockId) {
 
             // save state
             const state = JSON.parse(
-                localStorage.getItem("nestedBlocksState") || "{}"
+                localStorage.getItem("nestedBlocksState") || "{}",
             );
             state[parentBlockId] = true;
             localStorage.setItem("nestedBlocksState", JSON.stringify(state));
@@ -374,7 +381,7 @@ document.addEventListener("mouseover", function (e) {
         document.getElementById("livePreviewContent")?.contentWindow?.document;
 
     const previewBlock = previewDoc?.querySelector(
-        `[data-block-id="${blockId}"]`
+        `[data-block-id="${blockId}"]`,
     );
 
     if (!previewBlock) return;
@@ -394,7 +401,7 @@ document.addEventListener("mouseout", function (e) {
         document.getElementById("livePreviewContent")?.contentWindow?.document;
 
     const previewBlock = previewDoc?.querySelector(
-        `[data-block-id="${blockId}"]`
+        `[data-block-id="${blockId}"]`,
     );
 
     if (!previewBlock) return;
@@ -430,7 +437,7 @@ function reapplyPreviewSelection() {
     // 🟩 SECTION ACTIVE
     if (window.currentOpenSectionId) {
         const sectionEl = previewDoc.querySelector(
-            `[data-section-id="${window.currentOpenSectionId}"]`
+            `[data-section-id="${window.currentOpenSectionId}"]`,
         );
         sectionEl?.classList.add("preview-active");
     }
@@ -438,7 +445,7 @@ function reapplyPreviewSelection() {
     // 🟧 BLOCK ACTIVE (block overrides section)
     if (window.currentOpenBlockId) {
         const blockEl = previewDoc.querySelector(
-            `[data-block-id="${window.currentOpenBlockId}"]`
+            `[data-block-id="${window.currentOpenBlockId}"]`,
         );
         blockEl?.classList.add("preview-active");
     }
@@ -715,7 +722,7 @@ class GradientPicker {
                 <div class="pgp-row" style="margin-top: 16px;">
                     <span class="pgp-label">Select Color</span>
                     <input type="color" value="${this.hexToRgbInput(
-                        this.state.solidColor
+                        this.state.solidColor,
                     )}" data-action="solid-input" style="width: 100%; height: 40px; cursor: pointer;">
                 </div>
                 <div class="pgp-row">
@@ -747,7 +754,7 @@ class GradientPicker {
             div.className = "pgp-stop-item";
             div.innerHTML = `
                 <input type="color" class="pgp-color-input" value="${this.hexToRgbInput(
-                    stop.color
+                    stop.color,
                 )}" data-index="${index}">
                 <input type="range" class="pgp-slider" min="0" max="100" value="${
                     stop.position
@@ -762,7 +769,7 @@ class GradientPicker {
                 }
             `;
             div.querySelectorAll("input").forEach((inp) =>
-                inp.addEventListener("click", (e) => e.stopPropagation())
+                inp.addEventListener("click", (e) => e.stopPropagation()),
             );
             container.appendChild(div);
         });
@@ -783,13 +790,12 @@ class GradientPicker {
 
             if (action === "angle") {
                 this.state.angle = parseInt(target.value);
-                this.popup.querySelector(
-                    ".pgp-label"
-                ).textContent = `Angle: ${this.state.angle}°`;
+                this.popup.querySelector(".pgp-label").textContent =
+                    `Angle: ${this.state.angle}°`;
             } else if (action === "solid-input") {
                 this.state.solidColor = target.value;
                 const textInput = this.popup.querySelector(
-                    '[data-action="solid-text"]'
+                    '[data-action="solid-text"]',
                 );
                 if (textInput) textInput.value = target.value;
             } else if (index !== undefined) {
@@ -839,7 +845,7 @@ class GradientPicker {
         });
 
         const solidText = this.popup.querySelector(
-            '[data-action="solid-text"]'
+            '[data-action="solid-text"]',
         );
         if (solidText) {
             solidText.addEventListener("change", (e) => {
@@ -857,7 +863,7 @@ class GradientPicker {
     getGradientString() {
         if (this.state.mode === "solid") return this.state.solidColor;
         const sorted = [...this.state.stops].sort(
-            (a, b) => a.position - b.position
+            (a, b) => a.position - b.position,
         );
         return `linear-gradient(${this.state.angle}deg, ${sorted
             .map((s) => `${s.color} ${s.position}%`)
@@ -869,7 +875,7 @@ class GradientPicker {
         if (value.includes("gradient")) {
             this.state.mode = "gradient";
             const gradientMatch = value.match(
-                /linear-gradient\(([^,]+)deg,\s*(.+)\)/
+                /linear-gradient\(([^,]+)deg,\s*(.+)\)/,
             );
             if (gradientMatch) {
                 this.state.angle = parseInt(gradientMatch[1]) || 90;

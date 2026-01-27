@@ -1,8 +1,10 @@
 @props([
 'name',
 'label' => '',
-'value' => '',
+'value' => null,
 'options' => [],
+'optionLabel' => null,
+'optionValue' => null,
 'class' => ''
 ])
 
@@ -17,15 +19,31 @@
         @foreach($options as $key => $opt)
 
         @php
-        // Support both formats:
-        // 1) ["razorpay","stripe"]
-        // 2) ["razorpay"=>"Razorpay","stripe"=>"Stripe"]
+        // Case 1: Collection / Object
+        if (is_object($opt)) {
+        $optionValue = $optionValue
+        ? data_get($opt, $optionValue)
+        : $opt->id;
 
-        $optionValue = is_string($key) ? $key : $opt;
-        $optionLabel = is_string($key) ? $opt : ucfirst($opt);
+        $optionLabel = $optionLabel
+        ? data_get($opt, $optionLabel)
+        : ($opt->title ?? $opt->name ?? $optionValue);
+        }
+        // Case 2: Associative array
+        elseif (is_string($key)) {
+        $optionValue = $key;
+        $optionLabel = $opt;
+        }
+        // Case 3: Simple array
+        else {
+        $optionValue = $opt;
+        $optionLabel = ucfirst($opt);
+        }
         @endphp
 
-        <option value="{{ $optionValue }}" @selected($optionValue==$value)>
+        <option
+            value="{{ $optionValue }}"
+            @selected((string)$optionValue===(string)$value)>
             {{ $optionLabel }}
         </option>
 

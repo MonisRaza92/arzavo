@@ -29,8 +29,7 @@ class CourseController extends Controller
             'title'                 => 'required|string|max:255',
             'language'              => 'required|string|max:50',
 
-            'classes'               => 'required|array|min:1',
-            'classes.*'             => 'exists:class_courses,id',
+            'class'               => 'required|array|min:1',
 
             'subjects'              => 'required|array|min:1',
             'subjects.*'            => 'exists:subjects,id',
@@ -121,33 +120,50 @@ class CourseController extends Controller
             ->with('success', 'Course created successfully. Now add curriculum.');
     }
 
-
-    public function deleteCourse(Request $request)
+    public function edit(Course $course)
     {
-        $request->validate([
-            'id' => 'required|exists:courses,id',
+        $classes = ClassCourse::orderBy('name')->get();
+        $subjects = Subject::all();
+        $course->load(['modules.lessons', 'directLessons']);
+        return view('tenant.admin.courses.edit', compact('course', 'classes', 'subjects'));
+    }
+
+    public function update(Request $request, Course $course)
+    {
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'class'     => 'required',
+            'subjects'    => 'required',
         ]);
 
-        $course = Course::findOrFail($request->id);
+        $course->update([
+            'thumbnail'             => $request->thumbnail ?? $course->thumbnail,
+            'video'                 => $request->video ?? $course->video,
+            'title'                 => $validated['title'],
+            'description'           => $validated['description'],
+            'is_public'             => $request->boolean('is_public'),
+            'requires_enrollment'   => $request->boolean('requires_enrollment'),
+            'enable_modules'        => $request->boolean('enable_modules'),
+            'enable_lessons'        => $request->boolean('enable_lessons'),
+            'enable_quizzes'        => $request->boolean('enable_quizzes'),
+            'enable_assignments'    => $request->boolean('enable_assignments'),
+            'enable_certificates'   => $request->boolean('enable_certificates'),
+            'enable_reviews'        => $request->boolean('enable_reviews'),
+        ]);
 
-        // Extract file paths from stored URLs
-        $thumbnailPath = $course->thumbnail ? str_replace(Storage::url(''), '', $course->thumbnail) : null;
-        $videoPath = $course->video ? str_replace(Storage::url(''), '', $course->video) : null;
+        $course->class()->sync($validated['class']);
+        $course->subjects()->sync($validated['subjects']);
 
-        // Delete thumbnail (S3 or local automatically)
-        if ($thumbnailPath && Storage::exists($thumbnailPath)) {
-            Storage::delete($thumbnailPath);
-        }
+        return back()->with('success', 'Course updated successfully.');
+    }
 
-        // Delete video (S3 or local automatically)
-        if ($videoPath && Storage::exists($videoPath)) {
-            Storage::delete($videoPath);
-        }
 
+    public function destroy(Request $request, Course $course)
+    {
         // Delete course entry
         $course->delete();
 
-        return redirect()->route('admin-courses')
-            ->with('success', 'Course deleted successfully.');
+        return back()->with('success', 'Course deleted successfully.');
     }
 }

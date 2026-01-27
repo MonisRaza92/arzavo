@@ -8,11 +8,21 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://arzavo.com/">
 <link rel="icon" type="image/x-icon" href="{{ media($customizes['favicon'] ?? 'images/favicon.ico') }}">
-<title>@yield('title', $settings['meta_title'] ?? 'Arzavo – School, College & Coaching Institute Management Software')</title>
+<title>@yield('title', $settings['meta_title'] ?? 'Arzavo School, College & Coaching Institute Management Software')</title>
 <x-variables :customizes="$customizes" />
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <!-- fontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ffffff">
+
+<!-- iOS support -->
+<link rel="apple-touch-icon" href="/images/logo/icon-dark.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+
 <!-- Google fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

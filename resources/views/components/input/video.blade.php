@@ -2,21 +2,22 @@
 'name',
 'label' => '',
 'value' => null,
-'icon' => 'fa-image',
+'icon' => 'fa-video',
 'aspect' => 'aspect-video',
 'bg' => 'bg-secondary',
 ])
 
 @php
-$hasImage = !empty($value);
+$hasVideo = !empty($value);
 @endphp
 
 <x-input.wrapper :label="$label">
 
-    <div class="image-field-{{ $name }} relative group border-primary border-rounded overflow-hidden">
+    <div class="video-field-{{ $name }} relative group border-primary border-rounded overflow-hidden">
+
         <button type="button"
             class="text-invert transition absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100"
-            onclick="deleteSettingsImage('{{ $name }}')">
+            onclick="deleteSettingsVideo('{{ $name }}')">
             <i class="fa-solid fa-trash text-sm"></i>
         </button>
 
@@ -26,16 +27,15 @@ $hasImage = !empty($value);
             <div
                 class="border-primary border-rounded {{ $bg }} flex flex-col justify-center items-center {{ $aspect }} cursor-pointer group relative overflow-hidden"
                 style="border-width:2px;border-style:dashed"
-                onclick="openContentPicker('{{ $name }}','image')">
+                onclick="openContentPicker('{{ $name }}','video')">
 
-                <img
-                    data-content-preview
-                    @if($hasImage) src="{{ media($value) }}" @endif
-                    class="{{ $hasImage ? '' : 'hidden' }} object-contain border-rounded">
-
+                <video data-content-preview controls
+                    @if($hasVideo) src="{{ media($value) }}" @endif
+                    class="{{ $hasVideo ? '' : 'hidden' }} object-cover h-full border-rounded">
+                </video>
                 <div
                     data-content-placeholder
-                    class="flex flex-col items-center text-tertiary h-full justify-center {{ $hasImage ? 'hidden' : '' }}">
+                    class="flex flex-col items-center text-tertiary h-full justify-center {{ $hasVideo ? 'hidden' : '' }}">
                     <i class="fa-solid {{ $icon }} text-3xl mb-2"></i>
                     Upload {{ $label }}
                 </div>
@@ -45,15 +45,16 @@ $hasImage = !empty($value);
                         Upload / Change
                     </span>
                 </div>
+
             </div>
         </div>
     </div>
 
 </x-input.wrapper>
 <script>
-    function deleteSettingsImage(key) {
+    function deleteSettingsVideo(key) {
 
-        const wrapper = document.querySelector('.image-field-' + key);
+        const wrapper = document.querySelector('.video-field-' + key);
         if (!wrapper) return;
 
         const preview = wrapper.querySelector('[data-content-preview]');

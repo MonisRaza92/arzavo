@@ -13,7 +13,7 @@
         <div class="mb-2 relative">
             @if($subject->image)
             <img
-                src="{{ asset($subject->image) }}"
+                src="{{ media($subject->image) }}"
                 alt="{{ $subject->name }}"
                 class="w-full aspect-video object-cover border-bottom">
             @else

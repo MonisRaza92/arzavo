@@ -6,7 +6,7 @@
 
 <div {{ $attributes->merge(['class' => "mb-4 $containerClass"]) }}>
     @if($label)
-    <label class="block text-sm font-medium mb-2" style="color:var(--text-color)">
+    <label class="block text-sm font-medium mb-2 text-secondary">
         {{ $label }}
     </label>
     @endif

@@ -2,25 +2,47 @@
 'name',
 'label' => '',
 'value' => false,
-'disabled' => false
+'disabled' => false,
+'hint' => null
 ])
 
-<x-input.wrapper :label="$label">
-    <div class="flex justify-end">
-        <div class="relative">
+<div class="flex justify-between items-center p-3 rounded-lg border border-primary">
 
-            <input type="hidden" name="{{ $name }}" value="0">
+    <div>
+        <label class="text-sm font-medium text-gray-700">
+            {{ $label }}
+        </label>
 
-            <input type="checkbox"
-                name="{{ $name }}"
-                value="1"
-                @checked($value)
-                @disabled($disabled)
-                class="sr-only peer">
-
-            <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition"></div>
-            <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full peer-checked:translate-x-5 transition"></div>
-
-        </div>
+        @if ($hint)
+        <p class="text-xs mt-1 text-gray-500">{{ $hint }}</p>
+        @endif
     </div>
-</x-input.wrapper>
+
+    <label class="relative inline-flex items-center cursor-pointer">
+        {{-- Hidden false value --}}
+        <input type="hidden" name="{{ $name }}" value="0">
+
+        {{-- Actual checkbox --}}
+        <input
+            type="checkbox"
+            name="{{ $name }}"
+            value="1"
+            @checked($value)
+            @disabled($disabled)
+            class="sr-only peer">
+
+        {{-- Track --}}
+        <div class="w-11 h-6 bg-gray-300 rounded-full
+                    peer-checked:bg-black
+                    peer-disabled:bg-gray-200
+                    transition-colors duration-200">
+        </div>
+
+        {{-- Thumb --}}
+        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full
+                    transition-transform duration-200
+                    peer-checked:translate-x-5">
+        </div>
+    </label>
+
+</div>

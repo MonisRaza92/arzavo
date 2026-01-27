@@ -1,4 +1,4 @@
-<div id="classAddPopup" class="hidden fixed inset-0 z-40 bg-invert-secondary flex items-center justify-center pt-10">
+<div id="classAddPopup" class="hidden fixed inset-0 z-100 bg-black/90 flex items-center justify-center pt-10">
 
     <div class="popup-content bg-primary border-primary border-rounded w-full max-w-md h-full sm:h-auto md:max-h-10/12 overflow-auto scrollbar">
         <form action="{{ route('admin.classes.courses.store') }}" method="POST">
@@ -7,27 +7,10 @@
 
                 {{-- Image --}}
                 <div class="mb-3">
-
-                    <label class="block text-tertiary text-xs mb-1" onclick="openImageMenu('classImageInput')">
+                    <label class="block text-tertiary text-xs mb-1">
                         Image (optional)
-
-                        {{-- Upload Area (JS ISKO DHUNDHTA HAI) --}}
-                        <div class="relative bg-secondary border-primary border-rounded mt-2 group cursor-pointer">
-
-                            {{-- Placeholder (JS ISKO REMOVE KARTA HAI) --}}
-                            <div class="flex flex-col items-center justify-center h-32 text-tertiary text-xs">
-                                <i class="fa fa-image text-lg mb-1"></i>
-                                Click to select image
-                            </div>
-
-                        </div>
-
-                        {{-- HIDDEN INPUT (JS ISME VALUE DALTA HAI) --}}
-                        <input type="text"
-                            name="image"
-                            id="classImageInput"
-                            class="hidden">
                     </label>
+                    <x-input.image name="image" />
                 </div>
 
 
@@ -77,7 +60,7 @@
                 </div>
             </div>
             {{-- Actions --}}
-            <div class="flex justify-end gap-2 border-top p-4">
+            <div class="flex justify-end gap-2 border-top p-4 sticky bottom-0 bg-primary">
                 <button type="button"
                     onclick="document.getElementById('classAddPopup').classList.add('hidden')"
                     class="px-4 py-2 text-xs bg-secondary text-secondary bg-hover-tertiary border-rounded">

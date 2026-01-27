@@ -1,4 +1,4 @@
-<div id="classEditPopup" class="hidden fixed inset-0 z-40 bg-invert-secondary flex items-center justify-center pt-10">
+<div id="classEditPopup" class="hidden fixed inset-0 z-100 bg-black/90 flex items-center justify-center pt-10">
 
     <div class="popup-content bg-primary border-primary border-rounded w-full max-w-md h-full sm:h-auto md:max-h-10/12 overflow-auto scrollbar">
         <form action="" id="classEditForm" method="POST">
@@ -9,27 +9,10 @@
 
                 {{-- Image --}}
                 <div class="mb-3">
-
-                    <label class="block text-tertiary text-xs mb-1" onclick="openImageMenu('classImageUpdateInput')">
+                    <label class="block text-tertiary text-xs mb-1">
                         Image (optional)
-
-                        {{-- Upload Area (JS ISKO DHUNDHTA HAI) --}}
-                        <div class="relative bg-secondary border-primary border-rounded mt-2 group cursor-pointer">
-
-                            {{-- Placeholder (JS ISKO REMOVE KARTA HAI) --}}
-                            <div class="flex flex-col items-center justify-center h-32 text-tertiary text-xs">
-                                <i class="fa fa-image text-lg mb-1"></i>
-                                Click to select image
-                            </div>
-
-                        </div>
-
-                        {{-- HIDDEN INPUT (JS ISME VALUE DALTA HAI) --}}
-                        <input type="text"
-                            name="image"
-                            id="classImageUpdateInput"
-                            class="hidden">
                     </label>
+                    <x-input.image name="image" />
                 </div>
 
 
@@ -83,7 +66,7 @@
                 </div>
             </div>
             {{-- Actions --}}
-            <div class="flex justify-end gap-2 border-top p-4">
+            <div class="flex justify-end gap-2 border-top p-4 sticky bottom-0 bg-primary">
                 <button type="button"
                     onclick="document.getElementById('classEditPopup').classList.add('hidden')"
                     class="px-4 py-2 text-xs bg-secondary text-secondary bg-hover-tertiary border-rounded">
@@ -113,26 +96,24 @@
                 const statusCheckbox = document.getElementById('editClassStatus');
                 statusCheckbox.checked = data.status == 1;
                 // IMAGE
-                document.getElementById('classImageUpdateInput').value = data.image || '';
+                // IMAGE
+                const wrapper = document.querySelector('.image-field-image');
+                if (wrapper) {
+                    const input = wrapper.querySelector('input[name="image"]');
+                    const preview = wrapper.querySelector('[data-content-preview]');
+                    const placeholder = wrapper.querySelector('[data-content-placeholder]');
 
-                if (data.image) {
-                    const input = document.getElementById('classImageUpdateInput');
-                    const uploadArea = input.closest('label').querySelector('.relative.bg-secondary');
-
-                    if (uploadArea) {
-                        // Remove placeholder
-                        const placeholder = uploadArea.querySelector('div.flex.flex-col');
-                        if (placeholder) placeholder.remove();
-
-                        // Create or update preview
-                        let preview = document.getElementById('classImageUpdatePreview');
-                        if (!preview) {
-                            preview = document.createElement('img');
-                            preview.id = 'classImageUpdatePreview';
-                            preview.className = 'w-full object-contain p-4 fade-in';
-                            uploadArea.prepend(preview);
-                        }
-                        preview.src = data.image;
+                    if (data.image) {
+                        const src = typeof window.mediaUrl === 'function' ? window.mediaUrl(data.image) : data.image;
+                        preview.src = src;
+                        preview.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                        if (input) input.value = data.image;
+                    } else {
+                        preview.classList.add('hidden');
+                        preview.src = '';
+                        placeholder.classList.remove('hidden');
+                        if (input) input.value = '';
                     }
                 }
 

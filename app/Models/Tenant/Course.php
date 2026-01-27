@@ -39,6 +39,12 @@ class Course extends Model
         'user_id',
     ];
 
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     /* ---------------------------------
      | RELATIONS
      |---------------------------------*/
@@ -50,7 +56,7 @@ class Course extends Model
     }
 
     // MANY classes
-    public function classes()
+    public function class()
     {
         return $this->belongsToMany(
             ClassCourse::class,

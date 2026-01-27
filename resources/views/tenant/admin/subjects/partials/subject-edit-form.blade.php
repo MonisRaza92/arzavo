@@ -1,4 +1,4 @@
-<div id="subjectEditPopup" class="hidden fixed inset-0 z-40 bg-invert-secondary flex items-center justify-center pt-10">
+<div id="subjectEditPopup" class="hidden fixed inset-0 z-100 bg-black/90 flex items-center justify-center pt-10">
 
     <div class="popup-content bg-primary border-primary border-rounded w-full max-w-md h-full sm:h-auto md:max-h-10/12 overflow-auto scrollbar">
         <form action="" id="subjectEditForm" method="POST">
@@ -8,27 +8,10 @@
                 <input type="hidden" name="id" id="editSubjectId">
                 {{-- Image --}}
                 <div class="mb-3">
-
-                    <label class="block text-tertiary text-xs mb-1" onclick="openImageMenu('subjectImageUpdateInput')">
+                    <label class="block text-tertiary text-xs mb-1">
                         Image (optional)
-
-                        {{-- Upload Area (JS ISKO DHUNDHTA HAI) --}}
-                        <div class="relative bg-secondary border-primary border-rounded mt-2 group cursor-pointer">
-
-                            {{-- Placeholder (JS ISKO REMOVE KARTA HAI) --}}
-                            <div class="flex flex-col items-center justify-center h-32 text-tertiary text-xs">
-                                <i class="fa fa-image text-lg mb-1"></i>
-                                Click to select image
-                            </div>
-
-                        </div>
-
-                        {{-- HIDDEN INPUT (JS ISME VALUE DALTA HAI) --}}
-                        <input type="text"
-                            name="image"
-                            id="subjectImageUpdateInput"
-                            class="hidden">
                     </label>
+                    <x-input.image name="image" />
                 </div>
 
 
@@ -56,7 +39,7 @@
                         class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
                         <option value="">Select Class</option>
                         @foreach ($classCourses as $classCourse)
-                            <option value="{{ $classCourse->id }}">{{ $classCourse->name }}</option>
+                        <option value="{{ $classCourse->id }}">{{ $classCourse->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -98,7 +81,7 @@
                 </div>
             </div>
             {{-- Actions --}}
-            <div class="flex justify-end gap-2 border-top p-4">
+            <div class="flex justify-end gap-2 border-top p-4 sticky bottom-0 bg-primary">
                 <button type="button"
                     onclick="document.getElementById('subjectEditPopup').classList.add('hidden')"
                     class="px-4 py-2 text-xs bg-secondary text-secondary bg-hover-tertiary border-rounded">
@@ -129,28 +112,26 @@
                 const statusCheckbox = document.getElementById('editSubjectStatus');
                 statusCheckbox.checked = data.status == 1;
                 // IMAGE
-                document.getElementById('subjectImageUpdateInput').value = data.image || '';
+                const wrapper = document.querySelector('.image-field-image');
+                if (wrapper) {
+                    const input = wrapper.querySelector('input[name="image"]');
+                    const preview = wrapper.querySelector('[data-content-preview]');
+                    const placeholder = wrapper.querySelector('[data-content-placeholder]');
 
-                if (data.image) {
-                    const input = document.getElementById('subjectImageUpdateInput');
-                    const uploadArea = input.closest('label').querySelector('.relative.bg-secondary');
-
-                    if (uploadArea) {
-                        // Remove placeholder
-                        const placeholder = uploadArea.querySelector('div.flex.flex-col');
-                        if (placeholder) placeholder.remove();
-
-                        // Create or update preview
-                        let preview = document.getElementById('subjectImageUpdatePreview');
-                        if (!preview) {
-                            preview = document.createElement('img');
-                            preview.id = 'subjectImageUpdatePreview';
-                            preview.className = 'w-full object-contain p-4 fade-in';
-                            uploadArea.prepend(preview);
-                        }
-                        preview.src = data.image;
+                    if (data.image) {
+                        const src = typeof window.mediaUrl === 'function' ? window.mediaUrl(data.image) : data.image;
+                        preview.src = src;
+                        preview.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                        if (input) input.value = data.image;
+                    } else {
+                        preview.classList.add('hidden');
+                        preview.src = '';
+                        placeholder.classList.remove('hidden');
+                        if (input) input.value = '';
                     }
                 }
+
 
             })
             .catch(error => {

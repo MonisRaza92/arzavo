@@ -4,11 +4,6 @@
     --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
-    --color-background: var(--background-color);
-    --color-forground: var(--forground-color);
-    --color-primary: var(--primary-color);
-    --color-tertiary: var(--tertiary-color);
-    --color-accent: var(--accent-color);
 }
 
 .container {
@@ -26,13 +21,6 @@
 }
 
 :root {
-    --background-color: #f1f1f1;
-    --forground-color: #ffffff;
-    --primary-color: #920000;
-    --tertiary-color: #ededed;
-    --accent-secondary: #c58400;
-
-
     --bg-primary: #ffffff;
     --bg-secondary: #f1f1f1;
     --bg-tertiary: #ededed;
@@ -40,7 +28,7 @@
     --bg-accent-subtle: #92000011;
     --bg-accent-secondary: #c58400;
     --bg-invert: #000000;
-    --bg-invert-secondary: #1a1a1a;
+    --bg-invert-secondary: #717171;
     --text-primary: #000000;
     --text-secondary: #4a4a4a;
     --text-tertiary: #717171;
@@ -51,7 +39,7 @@
     --border-primary: #e0e0e0;
     --border-invert: #000000;
     --border-width: 1px;
-    --border-rounded: 6px;
+    --border-rounded: 4px;
     --logo-size: 40px;
 }
 
@@ -210,6 +198,47 @@ button {
 
 .border-left {
     border-left: var(--border-width) solid var(--border-primary);
+}
+.border-dashed {
+  position: relative;
+}
+
+.border-dashed::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px; /* border thickness */
+  background:
+    repeating-linear-gradient(
+      to right,
+      var(--bg-invert) 0 14px,
+      transparent 14px 24px
+    ) top,
+    repeating-linear-gradient(
+      to right,
+      var(--bg-invert) 0 14px,
+      transparent 14px 24px
+    ) bottom,
+    repeating-linear-gradient(
+      to bottom,
+      var(--bg-invert) 0 14px,
+      transparent 14px 24px
+    ) left,
+    repeating-linear-gradient(
+      to bottom,
+      var(--bg-invert) 0 14px,
+      transparent 14px 24px
+    ) right;
+
+  background-size:
+    100% 2px,
+    100% 2px,
+    2px 100%,
+    2px 100%;
+
+  background-repeat: no-repeat;
+  pointer-events: none;
+  border-radius: var(--border-rounded); /* optional */
 }
 
 .border-rounded {

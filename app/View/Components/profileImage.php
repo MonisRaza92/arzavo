@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class ThemeToggleBtn extends Component
+class profileImage extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class ThemeToggleBtn extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.theme-toggle-btn');
+        return view('components.profile-image');
     }
 }
