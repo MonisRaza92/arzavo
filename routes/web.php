@@ -31,30 +31,6 @@ use App\Http\Controllers\Tenant\Students\StudentsController;
 use App\Http\Controllers\Tenant\Teachers\TeachersController;
 
 Route::view('/offline', 'offline');
-Route::get('/manifest.json', function () {
-    $color = \App\Models\Tenant\ColorScheme::first();
-    $customizes = \App\Models\Tenant\Customizes::all();
-    return response()->json([
-        'name' => app('currentTenant')->name ?? 'arzavo',
-        'short_name' => app('currentTenant')->name ?? 'arzavo',
-        'start_url' => '/',
-        'display' => 'standalone',
-        'background_color' => $color->scheme_color->background ?? '#ffffff',
-        'theme_color' => $color->scheme_color->background ?? '#ffffff',
-        'icons' => [
-            [
-                'src' => media($customizes['favicon'] ?? '/images/logo/icon-dark.png'),
-                'sizes' => '192x192',
-                'type' => 'image/png',
-            ],
-            [
-                'src' => media($customizes['favicon'] ?? '/images/logo/icon-dark2.png'),
-                'sizes' => '512x512',
-                'type' => 'image/png',
-            ],
-        ],
-    ]);
-});
 
 Route::domain(config('app.domain'))->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
