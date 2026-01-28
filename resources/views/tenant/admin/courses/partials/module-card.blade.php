@@ -1,5 +1,5 @@
-<div id="module-{{ $module->id }}" class="p-4 border-primary border-rounded bg-primary">
-    <div class="header">
+<div id="module-{{ $module->id }}" class="border-primary border-rounded bg-primary">
+    <div class="header border-bottom p-4">
         <div class="flex justify-between items-center">
             <h4 class="font-medium">{{ $module->title }}</h4>
             <div class="actions relative">
@@ -19,38 +19,14 @@
         </p>
         @endif
     </div>
+    <div class="p-4 pl-16 relative space-y-4">
+        <div style="border-style: dashed;" class="absolute top-0 left-8 w-1 h-[calc(100%-58px)] bg-transparent border-l-2 border-gray-200 before:content-[''] before:absolute before:-left-0.5 before:-bottom-4 before:w-8 before:h-10 before:rounded-bl-xl before:bg-transparent before:border-b-2 before:border-l-2 before:border-gray-200 before:border-dashed"></div>
+        <div id="moduleLessonsContainer{{ $module->id }}" class="space-y-4">
+            @foreach($module->lessons as $lesson)
+            @include('tenant.admin.courses.partials.lesson-card', ['lesson' => $lesson , 'module' => $module])
+            @endforeach
+        </div>
+        @include('tenant.admin.courses.partials.add-module-lesson', ['moduleId' => $module->id])
+        <button id="addModuleLessonBtn{{ $module->id }}" onclick="addModuleLesson({{ $module->id }})" class="text-secondary font-semibold border-rounded p-4 w-full border-primary" style="border-style: dashed; border-width: 2px;"><i class="fa-solid fa-plus mr-2"></i> Add Lesson</button>
+    </div>
 </div>
-<script>
-    async function deleteModule(moduleId) {
-
-        if (!confirm('Are you sure you want to delete this module with lessons?')) {
-            return;
-        }
-
-        try {
-            const res = await fetch(
-                `/admin/courses/{{ $course->slug }}/modules/${moduleId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                }
-            );
-
-            if (!res.ok) {
-                alert('Failed to delete module');
-                return;
-            }
-
-            // Remove module card from DOM
-            const el = document.getElementById(`module-${moduleId}`);
-            if (el) {
-                el.remove();
-            }
-        } catch (error) {
-            console.error('Error deleting module:', error);
-            alert('An error occurred while deleting the module');
-        }
-    }
-</script>

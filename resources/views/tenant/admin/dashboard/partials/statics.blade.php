@@ -161,7 +161,7 @@
                 </div>
 
                 <div class="mb-6">
-                    <h2 class="text-5xl font-bold text-transparent bg-clip-text text-primary counter" data-target="{{ $revenue }}">0</h2>
+                    <h2 class="text-5xl font-bold text-transparent bg-clip-text text-primary counter">₹12,34,567</h2>
                     <div class="flex items-center gap-2 mt-3">
                         <span class="inline-flex items-center px-3 py-1 rounded-lg bg-green-100 text-green-400 text-sm font-medium">
                             <i class="fas fa-arrow-up mr-1"></i> +32.5%
@@ -173,31 +173,31 @@
                 {{-- Revenue Chart --}}
                 <div class="grid grid-cols-7 gap-2 h-32 md:h-75 items-end">
                     <div class="flex flex-col items-center justify-end gap-1 h-full">
-                        <div class="w-full bg-invert rounded-3xl chart-bar" style="height: 45%;"></div>
+                        <div class="w-full bg-black/40 border-rounded chart-bar" style="height: 45%;"></div>
                         <span class="text-xs text-gray-500">Mon</span>
                     </div>
                     <div class="flex flex-col items-center justify-end gap-1 h-full">
-                        <div class="w-full bg-invert rounded-3xl chart-bar" style="height: 65%;"></div>
+                        <div class="w-full bg-black/60 border-rounded chart-bar" style="height: 65%;"></div>
                         <span class="text-xs text-gray-500">Tue</span>
                     </div>
                     <div class="flex flex-col items-center justify-end gap-1 h-full">
-                        <div class="w-full bg-invert rounded-3xl chart-bar" style="height: 50%;"></div>
+                        <div class="w-full bg-black/50 border-rounded chart-bar" style="height: 50%;"></div>
                         <span class="text-xs text-gray-500">Wed</span>
                     </div>
                     <div class="flex flex-col items-center justify-end gap-1 h-full">
-                        <div class="w-full bg-invert rounded-3xl chart-bar" style="height: 85%;"></div>
+                        <div class="w-full bg-black/80 border-rounded chart-bar" style="height: 85%;"></div>
                         <span class="text-xs text-gray-500">Thu</span>
                     </div>
                     <div class="flex flex-col items-center justify-end gap-1 h-full">
-                        <div class="w-full bg-invert rounded-3xl chart-bar" style="height: 70%;"></div>
+                        <div class="w-full bg-black/70 border-rounded chart-bar" style="height: 70%;"></div>
                         <span class="text-xs text-gray-500">Fri</span>
                     </div>
                     <div class="flex flex-col items-center justify-end gap-1 h-full">
-                        <div class="w-full bg-invert rounded-3xl chart-bar" style="height: 100%;"></div>
+                        <div class="w-full bg-black border-rounded chart-bar" style="height: 100%;"></div>
                         <span class="text-xs text-gray-500">Sat</span>
                     </div>
                     <div class="flex flex-col items-center justify-end gap-1 h-full">
-                        <div class="w-full bg-invert rounded-3xl chart-bar" style="height: 90%;"></div>
+                        <div class="w-full bg-black/90 border-rounded chart-bar" style="height: 90%;"></div>
                         <span class="text-xs text-gray-500">Sun</span>
                     </div>
                 </div>
@@ -226,15 +226,15 @@
                 <div class="mt-8 grid grid-cols-3 gap-4 w-full">
                     <div class="text-center border-primary border-rounded p-2 bg-invert text-invert">
                         <div class="text-[10px] uppercase font-bold mb-1">Paid</div>
-                        <div class="font-bold">514</div>
-                    </div>
-                    <div class="text-center border-primary border-rounded p-2 bg-invert text-invert">
-                        <div class="text-[10px] uppercase font-bold mb-1">Unpaid</div>
-                        <div class="font-bold">342</div>
+                        <div class="font-bold">51,123</div>
                     </div>
                     <div class="text-center border-primary border-rounded p-2 bg-invert text-invert">
                         <div class="text-[10px] uppercase font-bold mb-1">Pending</div>
-                        <div class="font-bold">728</div>
+                        <div class="font-bold">12,342</div>
+                    </div>
+                    <div class="text-center border-primary border-rounded p-2 bg-invert text-invert">
+                        <div class="text-[10px] uppercase font-bold mb-1">Total</div>
+                        <div class="font-bold">90,070</div>
                     </div>
                 </div>
             </div>

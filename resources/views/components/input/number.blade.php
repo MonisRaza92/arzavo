@@ -12,6 +12,7 @@
         type="number"
         name="{{ $name }}"
         value="{{ $value }}"
+        id="{{ $name }}"
         @if($min !==null) min="{{ $min }}" @endif
         @if($max !==null) max="{{ $max }}" @endif
         {{ $attributes->merge([

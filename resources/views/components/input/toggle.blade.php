@@ -26,6 +26,7 @@
         <input
             type="checkbox"
             name="{{ $name }}"
+            id="{{ $name }}"
             value="1"
             @checked($value)
             @disabled($disabled)

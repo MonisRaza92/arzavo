@@ -7,12 +7,12 @@ use App\Models\Tenant\Course;
 use App\Models\Tenant\CourseLesson;
 use App\Models\Tenant\CourseModule;
 
-class CourseLessonController
+class CourseModuleLessonController
 {
     /**
      * Update the specified lesson in storage.
      */
-    public function store(Request $request, Course $course)
+    public function store(Request $request, CourseModule $module)
     {
         $request->validate([
             'title'       => 'required|string|max:255',
@@ -24,8 +24,8 @@ class CourseLessonController
         ]);
 
         $lesson = CourseLesson::create([
-            'course_id'        => $course->id,
-            'course_module_id' => null,
+            'course_id'        => $module->course_id,
+            'course_module_id' => $module->id,
             'title'            => $request->title,
             'description'      => $request->description,
             'type'             => $request->type,
@@ -36,21 +36,21 @@ class CourseLessonController
             'is_free'          => $request->boolean('is_free'),
             'is_active'        => $request->boolean('is_active', true),
             'is_mandatory'     => $request->boolean('is_mandatory'),
-            'order'            => $course->lessons()->max('order') + 1,
+            'order'            => $module->lessons()->max('order') + 1,
         ]);
 
-        $course = Course::find($course->id);
+        $module = CourseModule::findOrFail($module->id);
 
-        return view('tenant.admin.courses.partials.lesson-card', compact('lesson', 'course'))->render();
+        return view('tenant.admin.courses.partials.lesson-card', compact('lesson', 'module'))->render();
     }
 
 
     /**
      * Remove the specified lesson from storage.
      */
-    public function destroy(Request $request, Course $course, CourseLesson $lesson)
+    public function destroy(Request $request, CourseModule $module)
     {
-        $lesson->delete();
+        $module->lessons()->delete();
 
         return response()->json(['success' => true]);
     }

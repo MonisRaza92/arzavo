@@ -137,10 +137,19 @@ class CourseController extends Controller
             'subjects'    => 'required',
         ]);
 
+        $slugBase = Str::slug($validated['title']);
+        $slug = $slugBase;
+        $count = 1;
+
+        while (Course::where('slug', $slug)->exists()) {
+            $slug = $slugBase . '-' . $count++;
+        }
+
         $course->update([
             'thumbnail'             => $request->thumbnail ?? $course->thumbnail,
             'video'                 => $request->video ?? $course->video,
             'title'                 => $validated['title'],
+            'slug'                  => $slug,
             'description'           => $validated['description'],
             'is_public'             => $request->boolean('is_public'),
             'requires_enrollment'   => $request->boolean('requires_enrollment'),
@@ -155,7 +164,7 @@ class CourseController extends Controller
         $course->class()->sync($validated['class']);
         $course->subjects()->sync($validated['subjects']);
 
-        return back()->with('success', 'Course updated successfully.');
+        return redirect()->route('admin.courses.edit', $course->slug)->with('success', 'Course updated successfully.');
     }
 
 

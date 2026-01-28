@@ -109,7 +109,7 @@
                     <h3 class="font-medium mb-4"><i class="fa-solid fa-sliders text-sm mr-1"></i> Enable Features</h3>
 
                     <div class="space-y-3">
-                        <x-input.toggle name="enable_modules" :value="$course->enable_modules" label="Allow Modules" />
+                        <x-input.toggle name="enable_modules" :value="$course->enable_modules" label="Allow Groups" />
                         <x-input.toggle name="enable_lessons" :value="$course->enable_lessons" label="Allow Lessons" />
                         <x-input.toggle name="enable_quizzes" :value="$course->enable_quizzes" label="Allow Quizzes" />
                         <x-input.toggle name="enable_assignments" :value="$course->enable_assignments" label="Allow Assignments" />
@@ -124,8 +124,21 @@
 
                     <div class="space-y-3">
                         <x-input.toggle name="is_paid" :value="$course->is_paid" label="Paid Course" hint="Turn off to make this course free" />
-                        <x-input.number name="price" :value="$course->price" label="Price" />
-                        <x-input.number name="discount_price" :value="$course->discount_price" label="Discount Price" />
+                        <div id="pricing" class="{{ $course->is_paid ? 'block' : 'hidden' }}">
+                            <x-input.number name="price" :value="$course->price" label="Price" />
+                            <x-input.number name="discount_price" :value="$course->discount_price" label="Discount Price" />
+                        </div>
+                        <script>
+                            const priceToggle = document.getElementById('is_paid');
+                            const pricing = document.getElementById('pricing');
+                            priceToggle.addEventListener('change', function() {
+                                if (this.checked) {
+                                    pricing.style.display = 'block';
+                                } else {
+                                    pricing.style.display = 'none';
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
 
@@ -148,19 +161,25 @@
         </div>
     </div>
 
+    <div class="space-y-4" id="courseFlowContainer">
 
+        @foreach($course->items as $item)
 
-    <div class="space-y-4" id="modulesContainer">
-        @foreach($course->modules as $module)
-        @include('tenant.admin.courses.partials.module-card', ['module' => $module, 'course' => $course])
+        @if($item['type'] === 'module')
+        @include('tenant.admin.courses.partials.module-card', [
+        'module' => $item['model'],
+        'course' => $course
+        ])
+        @else
+        @include('tenant.admin.courses.partials.lesson-card', [
+        'lesson' => $item['model']
+        ])
+        @endif
+
         @endforeach
+
     </div>
 
-    <div id="lessonsContainer" class="space-y-4">
-        @foreach($course->directLessons as $lesson)
-        @include('tenant.admin.courses.partials.lesson-card', ['lesson' => $lesson])
-        @endforeach
-    </div>
 
 
 
@@ -168,15 +187,15 @@
     @include('tenant.admin.courses.partials.add-lesson')
 
 
-    <div class="add-btn flex gap-4">
+    <div class="add-btn flex flex-col gap-4">
         @if ($course->enable_modules)
         <div class="bg-primary p-4 border-primary border-rounded w-full">
-            <button type="button" class="text-secondary font-semibold border-rounded p-4 w-full border-dashed addModuleBtn">Add Group <i class="fa-solid fa-plus text-xs ml-1"></i></button>
+            <button type="button" class="text-secondary font-semibold border-rounded p-4 w-full border-primary addModuleBtn" style="border-style: dashed; border-width: 2px;">Add Group <i class="fa-solid fa-plus text-xs ml-1"></i></button>
         </div>
         @endif
         @if ($course->enable_lessons)
-        <div class="bg-primary p-4 border-primary border-rounded w-full">
-            <button type="button" class="text-secondary font-semibold border-rounded p-4 w-full border-dashed addLessonBtn">Add Lesson <i class="fa-solid fa-plus text-xs ml-1"></i></button>
+        <div class="bg-primary p-4 border-primary border-rounded w-full addLessonBtn">
+            <button type="button" class="text-secondary font-semibold border-rounded p-4 w-full border-primary addLessonBtn" style="border-style: dashed; border-width: 2px;">Add Lesson <i class="fa-solid fa-plus text-xs ml-1"></i></button>
         </div>
         @endif
     </div>
@@ -187,7 +206,7 @@
     const form = document.getElementById('addModuleForm');
     const saveBtn = document.getElementById('saveModuleBtn');
     const cancelBtn = document.getElementById('cancelModuleBtn');
-    const container = document.getElementById('modulesContainer');
+    const container = document.getElementById('courseFlowContainer');
 
     addBtn.forEach(btn => {
         btn.onclick = () => {
@@ -238,7 +257,7 @@
     const lessonForm = document.getElementById('addLessonForm');
     const saveLessonBtn = document.getElementById('saveLessonBtn');
     const cancelLessonBtn = document.getElementById('cancelLessonBtn');
-    const lessonsContainer = document.getElementById('lessonsContainer');
+    const lessonsContainer = document.getElementById('courseFlowContainer');
 
     addLessonBtn.forEach(btn => {
         btn.onclick = () => {
@@ -263,10 +282,7 @@
         formData.append('is_free', lessonFree?.checked ? 1 : 0);
         formData.append('is_mandatory', lessonMandatory?.checked ? 1 : 0);
         formData.append('is_active', lessonActive?.checked ? 1 : 0);
-
-        if (lessonFile?.files[0]) {
-            formData.append('file', lessonFile.files[0]);
-        }
+        formData.append('file', lessonFile.value);
 
         const res = await fetch(
             "{{ route('admin.courses.lessons.store', $course) }}", {
@@ -282,26 +298,92 @@
         lessonsContainer.insertAdjacentHTML('beforeend', html);
 
         window.dispatchEvent(new Event('button-reset'));
-        addLessonForm.classList.add('hidden');
+        lessonForm.classList.add('hidden');
+        lessonForm.reset();
     };
 
+    function addModuleLesson(moduleId) {
+        const addModuleLessonBtn = document.getElementById('addModuleLessonBtn' + moduleId);
+        const moduleLessonForm = document.getElementById('addModuleLessonForm' + moduleId);
+        const saveModuleLessonBtn = document.getElementById('saveModuleLessonBtn' + moduleId);
+        const cancelModuleLessonBtn = document.getElementById('cancelModuleLessonBtn' + moduleId);
+        const moduleLessonsContainer = document.getElementById('moduleLessonsContainer' + moduleId);
 
-    async function deleteLesson(lessonId) {
-        if (!confirm('Delete this lesson?')) return;
+        addModuleLessonBtn.onclick = () => {
+            moduleLessonForm.classList.remove('hidden')
+        };
 
-        const res = await fetch(
-            `/admin/courses/{{ $course->slug }}/lessons/${lessonId}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        cancelModuleLessonBtn.onclick = () => {
+            moduleLessonForm.classList.add('hidden');
+        };
+
+        saveModuleLessonBtn.onclick = async () => {
+
+            const formData = new FormData();
+
+            formData.append('title', document.getElementById('moduleLessonTitle' + moduleId)?.value ?? '');
+            formData.append('description', document.getElementById('moduleLessonDescription' + moduleId)?.value ?? '');
+            formData.append('type', document.getElementById('moduleLessonType' + moduleId)?.value ?? '');
+            formData.append('duration', document.getElementById('moduleLessonDuration' + moduleId)?.value ?? '');
+            formData.append('video_path', document.getElementById('moduleLessonVideo' + moduleId)?.value ?? '');
+            formData.append('content', document.getElementById('moduleLessonContent' + moduleId)?.value ?? '');
+            formData.append('is_free', document.getElementById('moduleLessonFree' + moduleId)?.checked ? 1 : 0);
+            formData.append('is_mandatory', document.getElementById('moduleLessonMandatory' + moduleId)?.checked ? 1 : 0);
+            formData.append('is_active', document.getElementById('moduleLessonActive' + moduleId)?.checked ? 1 : 0);
+            formData.append('file', document.getElementById('moduleLessonFile' + moduleId)?.value ?? '');
+
+            const res = await fetch(
+                "/admin/modules/" + moduleId + "/lessons", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
                 }
-            }
-        );
+            );
 
-        if (res.ok) {
-            document.getElementById(`lesson-${lessonId}`)?.remove();
+            const html = await res.text();
+            moduleLessonsContainer.insertAdjacentHTML('beforeend', html);
+
+            window.dispatchEvent(new Event('button-reset'));
+            moduleLessonForm.classList.add('hidden');
+        };
+    }
+
+
+    async function deleteModule(moduleId) {
+
+        if (!confirm('Are you sure you want to delete this module with lessons?')) {
+            return;
+        }
+
+        try {
+            const res = await fetch(
+                `/admin/courses/{{ $course->slug }}/modules/${moduleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                }
+            );
+
+            if (!res.ok) {
+                alert('Failed to delete module');
+                return;
+            }
+
+            // Remove module card from DOM
+            const el = document.getElementById(`module-${moduleId}`);
+            if (el) {
+                el.remove();
+            }
+        } catch (error) {
+            console.error('Error deleting module:', error);
+            alert('An error occurred while deleting the module');
         }
     }
+
 
 
 
@@ -332,4 +414,44 @@
             form.submit();
         }
     }
+
+    const moduleToggle = document.getElementById('enable_modules');
+    const lessonToggle = document.getElementById('enable_lessons');
+
+    const moduleBtns = document.querySelectorAll('.addModuleBtn');
+    const lessonBtns = document.querySelectorAll('.addLessonBtn');
+
+    moduleToggle.addEventListener('change', (e) => {
+        if ({
+                {
+                    $course - > modules - > count()
+                }
+            } > 0) {
+            showToast('Please delete all Groups before disabling Groups', 'error');
+            e.target.checked = true;
+            return;
+        }
+        if (!e.target.checked) {
+            moduleBtns.forEach(btn => btn.classList.add('hidden'));
+        } else {
+            moduleBtns.forEach(btn => btn.classList.remove('hidden'));
+        }
+    });
+
+    lessonToggle.addEventListener('change', (e) => {
+        if ({
+                {
+                    $course - > directLessons - > count()
+                }
+            } > 0) {
+            showToast('Please delete all lessons before disabling lessons', 'error');
+            e.target.checked = true;
+            return;
+        }
+        if (!e.target.checked) {
+            lessonBtns.forEach(btn => btn.classList.add('hidden'));
+        } else {
+            lessonBtns.forEach(btn => btn.classList.remove('hidden'));
+        }
+    });
 </script>

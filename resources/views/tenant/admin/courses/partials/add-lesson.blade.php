@@ -15,28 +15,28 @@
     <x-input.select
         name="lessonType"
         label="Lesson type"
-        :options="['video','text','pdf']" />
+        :options="['video','pdf']" />
 
     {{-- CONDITIONAL FIELDS --}}
-    <div id="lessonVideoField" class="hidden">
-        <x-input.content
-            name="lessonVideo"
-            label="Select video"
-            type="video" />
-    </div>
+    <div class="flex flex-col md:flex-row gap-4 mt-4">
+        <div class="w-full" id="lessonVideoContainer">
+            <x-input.video
+                name="lessonVideo"
+                label="Select video"
+                type="video" />
+        </div>
 
-    <div id="lessonFileField" class="hidden">
-        <x-input.content
-            name="lessonFile"
-            label="Select file (PDF)"
-            type="pdf" />
-    </div>
+        <div class="hidden w-full" id="lessonFileContainer">
+            <x-input.content
+                name="lessonFile"
+                label="Select file (PDF)"
+                type="pdf" />
+        </div>
 
-    <div id="lessonContentField" class="hidden">
         <x-input.textarea
             name="lessonContent"
             label="Lesson content"
-            placeholder="Enter lesson content" />
+            placeholder="Enter lesson content" :rows="8" class="h-[calc(100%-1.7rem)]" />
     </div>
 
     <x-input.number
@@ -45,8 +45,10 @@
         placeholder="e.g. 10" />
 
     {{-- TOGGLES --}}
-    <div class="grid grid-cols-2 gap-4 mt-2">
-        <x-input.toggle name="lessonFree" label="Free lesson" :loading="false" value="1" />
+    <div class="grid grid-cols-2 gap-4 mt-4">
+        <div class="hidden">
+            <x-input.toggle name="lessonFree" label="Free lesson" :loading="false" value="1" />
+        </div>
         <x-input.toggle name="lessonMandatory" label="Mandatory" :loading="false" value="1" />
         <x-input.toggle name="lessonActive" label="Active" :value="1" :loading="false" />
     </div>
@@ -57,3 +59,22 @@
     </div>
 
 </div>
+
+<script>
+    const lessonType = document.getElementById('lessonType');
+    const lessonVideoContainer = document.getElementById('lessonVideoContainer');
+    const lessonFileContainer = document.getElementById('lessonFileContainer');
+
+    lessonType.addEventListener('change', function() {
+        if (this.value === 'video') {
+            lessonVideoContainer.classList.remove('hidden');
+            lessonFileContainer.classList.add('hidden');
+        } else if (this.value === 'pdf') {
+            lessonVideoContainer.classList.add('hidden');
+            lessonFileContainer.classList.remove('hidden');
+        } else {
+            lessonVideoContainer.classList.remove('hidden');
+            lessonFileContainer.classList.add('hidden');
+        }
+    });
+</script>

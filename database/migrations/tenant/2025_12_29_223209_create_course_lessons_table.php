@@ -39,7 +39,9 @@ return new class extends Migration {
                 'text',
                 'live',
                 'quiz',
-                'assignment'
+                'assignment',
+                'audio',
+                'multiple-choice',
             ])->default('video');
 
             /* ---------------------------------

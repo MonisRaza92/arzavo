@@ -128,4 +128,28 @@ class Course extends Model
     {
         return $this->hasOne(User::class, 'user_id');
     }
+    public function getItemsAttribute()
+    {
+        $items = collect();
+
+        // Modules
+        foreach ($this->modules as $module) {
+            $items->push([
+                'type'  => 'module',
+                'order' => $module->order,
+                'model' => $module,
+            ]);
+        }
+
+        // Direct lessons (module_id = null)
+        foreach ($this->directLessons as $lesson) {
+            $items->push([
+                'type'  => 'lesson',
+                'order' => $lesson->order,
+                'model' => $lesson,
+            ]);
+        }
+
+        return $items->sortBy('order')->values();
+    }
 }

@@ -9,6 +9,7 @@
 <x-input.wrapper :label="$label">
     <textarea
         name="{{ $name }}"
+        id="{{ $name }}"
         rows="{{ $rows }}"
         {{ $attributes->merge([
             'class' => "w-full p-2 rounded-md border border-primary bg-transparent $class"

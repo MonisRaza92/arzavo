@@ -26,6 +26,7 @@ use App\Http\Controllers\Tenant\Admin\MenuController;
 use App\Http\Controllers\Tenant\Admin\MenuItemController;
 use App\Http\Controllers\Tenant\Admin\CourseModuleController;
 use App\Http\Controllers\Tenant\Admin\CourseLessonController;
+use App\Http\Controllers\Tenant\Admin\CourseModuleLessonController;
 use App\Http\Controllers\Tenant\User\UserController;
 use App\Http\Controllers\Tenant\Students\StudentsController;
 use App\Http\Controllers\Tenant\Teachers\TeachersController;
@@ -134,7 +135,7 @@ function registerDomains($domain)
                 Route::resource('courses', CourseController::class);
                 Route::resource('courses.modules', CourseModuleController::class);
                 Route::resource('courses.lessons', CourseLessonController::class);
-                Route::resource('modules.lessons', CourseLessonController::class);
+                Route::resource('modules.lessons', CourseModuleLessonController::class);
 
                 Route::get('/exams', [AdminController::class, 'exams'])->name('admin-exams');
                 Route::get('/results', [AdminController::class, 'results'])->name('admin-results');

@@ -13,6 +13,7 @@
         type="text"
         name="{{ $name }}"
         value="{{ $value }}"
+        id="{{ $name }}"
         placeholder="{{ $placeholder }}"
         @disabled($disabled)
         @readonly($readonly)
