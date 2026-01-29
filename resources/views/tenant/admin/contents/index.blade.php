@@ -20,8 +20,8 @@
         <video src="{{ media($content->filepath) }}"
             class="w-full h-auto object-contain"
             muted loop preload="metadata"
-            onmouseenter="this.play()"
-            onmouseleave="this.pause();this.currentTime=0;">
+            onmouseenter="this.play(); this.controls = true;"
+            onmouseleave="this.pause(); this.controls = false;">
         </video>
 
         @elseif($content->type === 'pdf')
@@ -42,7 +42,7 @@
 
         <div class="text-primary text-sm bg-primary px-4 py-2 border-top">
             <p class="font-semibold overflow-hidden">{{ $content->filename }}</p>
-            <p class="opacity-80">Size: {{ number_format($content->size / (1024*1024), 2) }}</p>
+            <p class="opacity-80">Size: {{ formatSize($content->size) }}</p>
         </div>
         <div class="px-4 py-2 border-top flex justify-between text-xs items-center overflow-hidden bg-primary">
             <p class="text-tertiary">{{ $content->created_at->format('d M Y') }}</p>

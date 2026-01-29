@@ -33,7 +33,8 @@
         },
         "files": [
             "app/Helpers/ColorSchemeHelper.php",
-            "app/Helpers/MediaHelper.php"
+            "app/Helpers/MediaHelper.php",
+            "app/Helpers/FormatSizeHelper.php"
         ]
     },
     "autoload-dev": {

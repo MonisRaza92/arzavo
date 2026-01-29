@@ -11,7 +11,7 @@
                 Edit course content, structure, and settings from here.
             </p>
         </div>
-        <button type="button" class="bg-invert text-invert font-semibold px-4 py-2 border-primary border-rounded">Create New Course</button>
+        <button type="button" class="bg-invert text-invert font-semibold px-4 py-2 border-primary border-rounded" onclick="document.getElementById('courseAddPopup').classList.remove('hidden')">Create New Course</button>
     </div>
     <form action="{{ route('admin.courses.update', $course) }}"
         method="POST"
@@ -200,6 +200,7 @@
         @endif
     </div>
 </div>
+@include('tenant.admin.courses.partials.course-add')
 
 <script>
     const addBtn = document.querySelectorAll('.addModuleBtn');
@@ -422,11 +423,7 @@
     const lessonBtns = document.querySelectorAll('.addLessonBtn');
 
     moduleToggle.addEventListener('change', (e) => {
-        if ({
-                {
-                    $course - > modules - > count()
-                }
-            } > 0) {
+        if ({{$course->modules->count()}}>0) {
             showToast('Please delete all Groups before disabling Groups', 'error');
             e.target.checked = true;
             return;
@@ -439,11 +436,7 @@
     });
 
     lessonToggle.addEventListener('change', (e) => {
-        if ({
-                {
-                    $course - > directLessons - > count()
-                }
-            } > 0) {
+        if ({{$course->directLessons->count()}}>0) {
             showToast('Please delete all lessons before disabling lessons', 'error');
             e.target.checked = true;
             return;

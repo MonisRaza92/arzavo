@@ -233,11 +233,11 @@
 
         const grid = document.getElementById('contents');
         if (!grid) return;
-        const noContent = document.getElementById('no_content');
-        if (noContent) {
-            noContent.remove();
-        }
 
+        const noContent = document.getElementById('no_content');
+        if (noContent) noContent.remove();
+
+        const fileUrl = media(content.filepath) + '?v=' + Date.now();
 
         const wrapper = document.createElement('div');
         wrapper.className =
@@ -247,23 +247,23 @@
 
         if (content.type === 'image') {
             mediaHtml = `
-            <a href="${content.url}">
-                <img src="${content.url}"
+            <a href="${fileUrl}" target="_blank">
+                <img src="${fileUrl}"
                      class="w-full h-auto object-contain" />
             </a>
         `;
         } else if (content.type === 'video') {
             mediaHtml = `
-            <video src="${content.url}"
+            <video src="${fileUrl}"
                    class="w-full h-auto object-contain"
                    muted loop preload="metadata"
-                   onmouseenter="this.play()"
-                   onmouseleave="this.pause();this.currentTime=0;">
+                   onmouseenter="this.play();this.controls = true;"
+                   onmouseleave="this.pause();this.controls = false;">
             </video>
         `;
         } else if (content.type === 'pdf') {
             mediaHtml = `
-            <a href="${content.url}">
+            <a href="${fileUrl}" target="_blank">
                 <div class="flex items-center justify-center py-16">
                     <i class="fa-solid fa-file-pdf text-5xl text-red-500"></i>
                 </div>
@@ -290,7 +290,7 @@
                 ${content.filename}
             </p>
             <p class="opacity-80">
-                  Size: ${formatSize(content.size)}
+                Size: ${formatSize(content.size)}
             </p>
         </div>
 
@@ -313,12 +313,26 @@
         </div>
     `;
 
-        // 🔥 prepend = top me add
         grid.prepend(wrapper);
     }
+
 
     function formatSize(bytes) {
         if (!bytes || bytes === 0) return '-';
         return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function media(path) {
+        if (!path) return '';
+
+        // already full URL
+        if (path.startsWith('http://') || path.startsWith('https://')) {
+            return path;
+        }
+
+        path = path.replace(/^\/+/, '');
+
+        // public file
+        return '/storage/' + path;
     }
 </script>

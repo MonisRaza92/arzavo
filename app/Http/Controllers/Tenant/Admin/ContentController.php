@@ -12,9 +12,9 @@ class ContentController extends Controller
 {
     public function index()
     {
-
         $contents = Content::all();
-        return view('tenant.admin.contents.index', compact('contents'));
+        $storageUsed = Content::sum('size');
+        return view('tenant.admin.contents.index', compact('contents', 'storageUsed'));
     }
 
     public function store(Request $request)
@@ -73,7 +73,7 @@ class ContentController extends Controller
                 'filename' => $content->filename,
                 'size'     => $content->size ?? $size,
                 // 👇 frontend ke liye URL yahin generate karo
-                'filepath'      => $content->filepath,
+                'filepath' => $content->filepath,
             ]
         ]);
     }

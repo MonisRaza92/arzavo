@@ -13,11 +13,13 @@ class Content extends Model
         'type',
         'filename',
         'filepath',
+        'size',
         'is_active',
         'user_id'
     ];
     protected $casts = [
         'is_active' => 'boolean',
+        'size' => 'integer',
     ];
 
     public function teacher()
