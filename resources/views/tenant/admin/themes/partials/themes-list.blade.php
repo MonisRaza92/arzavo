@@ -1,84 +1,101 @@
-{{-- THEMES GRID --}}
+<!-- THEMES LIST -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
     @foreach($themes as $theme)
 
-    @php
-    $isActive = app('currentTheme') === $theme->slug;
-    @endphp
+        @php
+            $tenantTheme = $installedThemes->get($theme->id);
+        @endphp
 
-    <div class="border-rounded border-primary bg-primary overflow-hidden">
+        <div class="border-rounded border-primary bg-primary overflow-hidden">
 
-        {{-- PREVIEW PLACEHOLDER --}}
-        <div class="h-40 bg-gray-100 flex items-center justify-center text-sm text-gray-400">
-            Theme Preview
-        </div>
+            {{-- PREVIEW PLACEHOLDER --}}
+            <div class="h-40 bg-secondary flex items-center justify-center text-sm text-tertiary border-bottom">
+                Theme Preview
+            </div>
 
-        <div class="p-4">
+            <div class="p-4">
 
-            <div class="flex justify-between items-start">
-                <div>
-                    {{-- THEME NAME --}}
-                    <h3 class="text-lg font-semibold text-primary">
-                        {{ $theme->name }}
-                    </h3>
+                {{-- HEADER --}}
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-semibold">
+                            {{ $theme->name }}
+                        </h3>
 
-                    {{-- META --}}
-                    <div class="mt-1 text-sm text-secondary">
-                        Category: {{ $theme->category ?? 'Education' }}
+                        <p class="mt-1 text-sm text-tertiary">
+                            Category: {{ $theme->category ?? 'Education' }}
+                        </p>
+                    </div>
+
+                    {{-- STATUS BADGE --}}
+                    <div class="flex flex-col gap-2">
+                        @if($tenantTheme?->status === 'published')
+                            <span class="text-xs px-2 py-1 border-rounded border-primary bg-green-100 text-green-700">
+                                Active
+                            </span>
+                        @elseif($tenantTheme?->status === 'draft')
+                            <span class="text-xs px-2 py-1 border-rounded border-primary bg-blue-100 text-blue-700">
+                                Installed
+                            </span>
+                        @else
+                            <span class="text-xs px-2 py-1 border-rounded border-primary bg-gray-100 text-gray-600">
+                                Not Installed
+                            </span>
+                        @endif
+                        <a href="{{ route('website.preview', ['theme' => $theme->slug, 'slug' => 'home'], ) }}"
+                            target="_blank" title="See live preview"
+                            class="w-full text-center text-xs px-2 py-1 bg-tertiary border-primary border-rounded text-gray-700 hover:text-black transition">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
                     </div>
                 </div>
 
-                {{-- STATUS --}}
-                <div class="mt-3">
-                    @if($isActive)
-                    <span class="inline-block text-xs px-2 py-1 rounded bg-green-100 text-green-700">
-                        Active
-                    </span>
+                {{-- ACTIONS --}}
+                <div class="mt-4 flex flex-col gap-2">
+
+                    {{-- ACTIVE THEME --}}
+                    @if($tenantTheme?->status === 'published')
+                        <a data-turbo="false" href="{{ route('admin.builder.index', ['theme' => $tenantTheme->theme_slug, 'page' => 'home' ]) }}"
+                            class="w-full text-center px-4 py-2 text-sm rounded bg-black text-white hover:bg-gray-800 transition">
+                            Customize
+                        </a>
+                        <button disabled
+                            class="w-full px-4 py-2 text-sm rounded bg-blue-600 text-white hover:bg-blue-700 transition">
+                            Currently Active
+                        </button>
+
+                        {{-- DRAFT THEME --}}
+                    @elseif($tenantTheme?->status === 'draft')
+                        <a data-turbo="false"
+                            href="{{ route('admin.builder.index', ['theme' => $tenantTheme->theme_slug, 'page' => 'home']) }}"
+                            class="w-full text-center px-4 py-2 text-sm rounded bg-black text-white hover:bg-gray-800 transition">
+                            Customize
+                        </a>
+
+                        <form method="POST" action="{{ route('admin.themes.publish', $tenantTheme->id) }}">
+                            @csrf
+                            <button
+                                class="w-full px-4 py-2 text-sm rounded bg-green-600 text-white hover:bg-green-700 transition">
+                                Publish
+                            </button>
+                        </form>
+
                     @else
-                    <span class="inline-block text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
-                        Available
-                    </span>
+                        {{-- NOT INSTALLED --}}
+                        <form method="POST" action="{{ route('admin.themes.install', $theme->id) }}">
+                            @csrf
+                            <button
+                                class="w-full px-4 py-2 text-sm rounded bg-blue-600 text-white hover:bg-blue-700 transition">
+                                Install Theme
+                            </button>
+                        </form>
                     @endif
+
                 </div>
+
             </div>
-
-            {{-- ACTIONS --}}
-            <div class="mt-4 gap-2 flex flex-col gap-2">
-
-                {{-- Customize or Apply Button --}}
-
-                @if($isActive)
-                <a href="{{ route('admin.builder.index') }}"
-                    data-loading
-                    class="flex-1 text-center px-4 py-2 text-sm border-rounded
-                                      bg-black text-white hover:bg-gray-800 transition">
-                    Customize
-                </a>
-                @else
-                <form method="POST"
-                    action="{{ route('admin.themes.apply', ['id' => $theme->id]) }}"
-                    class="flex-1">
-                    @csrf
-                    <button
-                        class="w-full px-4 py-2 text-sm border-rounded
-                                           bg-blue-600 text-white hover:bg-blue-700 transition">
-                        Apply Theme
-                    </button>
-                </form>
-                @endif
-                <!-- Preview Button -->
-                <div class="flex-1">
-                    <a href=""
-                        class="w-full inline-block text-center px-4 py-2 text-sm border-rounded
-                                           bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
-                        Preview
-                    </a>
-                </div>
-            </div>
-
         </div>
-    </div>
 
     @endforeach
 

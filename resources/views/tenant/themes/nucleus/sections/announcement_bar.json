@@ -4,14 +4,20 @@
     "icon": "fa-bullhorn",
     "order": 0,
     "category": "Header",
+    "color_scheme": "scheme_1",
     "page": "home",
     "max_blocks": 1,
     "allowed_blocks": ["announcement"],
     "default_blocks": ["announcement"],
-    "moveable": "none",
     "fields": [
         {
-            "key": "color_scheme_id",
+            "key": "group",
+            "type": "group",
+            "label": "General Settings",
+            "icon": "fa-cog"
+        },
+        {
+            "key": "color_scheme",
             "label": "Color Scheme",
             "type": "color_scheme_selector"
         },

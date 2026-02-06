@@ -103,7 +103,7 @@
 
                 {{-- ACTIONS --}}
                 <div class="flex gap-2">
-                    <a href="{{ route('admin.courses.edit', $course) }}"
+                    <a data-turbo="false" href="{{ route('admin.courses.edit', $course) }}"
                         class="flex-1 text-center py-2 bg-invert text-invert border-rounded font-semibold">
                         Edit
                     </a>    

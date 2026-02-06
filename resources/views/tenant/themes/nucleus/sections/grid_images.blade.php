@@ -1,5 +1,6 @@
 @php
-$s = $section->settings ?? [];
+$s = $section['settings'] ?? [];
+$scheme = $section['color_scheme'] ?? 'scheme_1';
 $sectionPadding = $s['section_padding'] ?? '4';
 $img_1 = $s['grid_image_1'] ?? '';
 $img_2 = $s['grid_image_2'] ?? '';
@@ -8,15 +9,11 @@ $imgBorder = $s['image_border'] ?? 'disable';
 $imgRadius = $s['image_border_radius'] ?? 'enable';
 $shadow = $s['shadow'] ?? 'disble';
 
-$colors = $section->colorScheme->scheme_colors;
 
 
 @endphp
-<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
-    style="
-    --arzavo-background: {{ $colors->background ?? '' }};
-    --arzavo-border-color: {{ $colors->border ?? '' }};
-    --arzavo-shadow-color: {{ $colors->shadow ?? '' }};"
+<div data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}" 
+    style=" {{ scheme($scheme) }}"
     class="py-{{ $sectionPadding }} flex w-full arzavo-background">
     <div class="container grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div class="lg:col-span-2">

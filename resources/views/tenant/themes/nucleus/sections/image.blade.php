@@ -1,5 +1,6 @@
 @php
-$image = $section->settings ?? [];
+$image = $section['settings'] ?? [];
+$scheme = $section['color_scheme'] ?? 'scheme_1';
 
 $desktopImage = $image['desktop_image'] ?? '';
 $mobileImage = $image['mobile_image'] ?? $desktopImage;
@@ -13,7 +14,7 @@ $imagehadow = $image['shadow'] ?? 'none';
 $opacity = $image['opacity'] ?? 100;
 $hideDesktop = $image['hide_desktop'] ?? 'no';
 $hideMobile = $image['hide_mobile'] ?? 'no';
-$containerWidth = $image['container_width'] ?? '';
+$containerWidth = $image['container_width'] ?? 'container';
 $mt = $image['margin_top'] ?? 0;
 $mb = $image['margin_bottom'] ?? 0;
 $ml = $image['margin_left'] ?? 0;
@@ -39,21 +40,20 @@ $visibilityClass = '';
 if ($hideDesktop === '1' && $hideMobile === '1') {
 $visibilityClass = 'hidden';
 } elseif ($hideDesktop === '1') {
-$visibilityClass = 'hidden md:hidden';
+$visibilityClass = 'block md:hidden';
 } elseif ($hideMobile === '1') {
 $visibilityClass = 'md:block hidden';
 }
 
-$colors = $section->colorScheme->scheme_colors;
 @endphp
 
-<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}"
+<div data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
     style="
-    --arzavo-background: {{ $colors->background ?? '' }};
+    {{ scheme($scheme) }}
     margin-top: {{ $mt }}px;
     margin-bottom: {{ $mb }}px;
     margin-left: {{ $ml }}px;
-    margin-right: {{ $mr }}px; "
+    margin-right: {{ $mr }}px;"
     class="{{ $visibilityClass }}
     {{ $aspectRatioClass }} flex-1 arzavo-background">
     @if ($containerWidth === 'container')
@@ -84,7 +84,7 @@ $colors = $section->colorScheme->scheme_colors;
             <img
                 src="{{ media($mobileImage) ?? asset('images/tenant/bg.jpg') }}"
                 class="
-                block md:hidden
+                {{ $mobileImage ? 'block' : 'hidden' }} md:hidden
                 {{ $aspectRatioClass !== 'auto' ? $objectFitClass : '' }}
                 {{ $visibilityClass }}
                 {{ $imageSize }}

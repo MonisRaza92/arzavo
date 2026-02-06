@@ -92,23 +92,23 @@
             </button>
         </div>
     </div>
+    <script>
+        async function deleteLesson(lessonId) {
+            if (!confirm('Delete this lesson?')) return;
+    
+            const res = await fetch(
+                `/admin/courses/{{ $course->slug ?? $module->course_id }}/lessons/${lessonId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                }
+            );
+    
+            if (res.ok) {
+                document.getElementById(`lesson-${lessonId}`)?.remove();
+            }
+        }
+    </script>
 
 </div>
-<script>
-    async function deleteLesson(lessonId) {
-        if (!confirm('Delete this lesson?')) return;
-
-        const res = await fetch(
-            `/admin/courses/{{ $course->slug ?? $module->course_id }}/lessons/${lessonId}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            }
-        );
-
-        if (res.ok) {
-            document.getElementById(`lesson-${lessonId}`)?.remove();
-        }
-    }
-</script>

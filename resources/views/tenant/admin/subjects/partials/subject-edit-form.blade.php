@@ -11,7 +11,7 @@
                     <label class="block text-tertiary text-xs mb-1">
                         Image (optional)
                     </label>
-                    <x-input.image name="image" />
+                    <x-input.image name="updateimage" />
                 </div>
 
 
@@ -112,9 +112,9 @@
                 const statusCheckbox = document.getElementById('editSubjectStatus');
                 statusCheckbox.checked = data.status == 1;
                 // IMAGE
-                const wrapper = document.querySelector('.image-field-image');
+                const wrapper = document.querySelector('.image-field-updateimage');
                 if (wrapper) {
-                    const input = wrapper.querySelector('input[name="image"]');
+                    const input = wrapper.querySelector('input[name="updateimage"]');
                     const preview = wrapper.querySelector('[data-content-preview]');
                     const placeholder = wrapper.querySelector('[data-content-placeholder]');
 

@@ -1,0 +1,100 @@
+@extends('layouts.website')
+
+@section('title', $page->meta_title)
+
+@section('content')
+
+@php
+    $globalDesign = globalThemeDesign($themeId)->layout;
+@endphp
+
+{{-- ========================= --}}
+{{-- 🔵 GLOBAL HEADER --}}
+{{-- ========================= --}}
+@if(!empty($globalDesign['header']['sections']))
+    @foreach($globalDesign['header']['sections'] as $section)
+        @if(empty($section['is_active']))
+            @continue
+        @endif
+
+        @php
+            $viewPath = 'tenant.themes.' . $theme . '.sections.' . ($section['type'] ?? '');
+        @endphp
+
+        @if(!empty($section['type']) && View::exists($viewPath))
+            @includeIf($viewPath, [
+                'section' => $section,
+                'theme' => $theme,
+                'context' => 'global-header'
+            ])
+        @endif
+    @endforeach
+@endif
+
+
+{{-- ========================= --}}
+{{-- 🟢 PAGE CONTENT --}}
+{{-- ========================= --}}
+@if(empty($layout['sections']))
+    <p class="text-center py-10 text-gray-500">
+        No content available for this page.
+    </p>
+@else
+    @foreach($layout['sections'] as $section)
+        @if(empty($section['is_active']))
+            @continue
+        @endif
+
+        @php
+            $viewPath = 'tenant.themes.' . $theme . '.sections.' . ($section['type'] ?? '');
+        @endphp
+
+        @if(!empty($section['type']) && View::exists($viewPath))
+            @includeIf($viewPath, [
+                'section' => $section,
+                'theme' => $theme,
+                'context' => 'page'
+            ])
+        @endif
+    @endforeach
+@endif
+
+
+{{-- ========================= --}}
+{{-- 🔴 GLOBAL FOOTER --}}
+{{-- ========================= --}}
+@if(!empty($globalDesign['footer']['sections']))
+    @foreach($globalDesign['footer']['sections'] as $section)
+        @if(empty($section['is_active']))
+            @continue
+        @endif
+
+        @php
+            $viewPath = 'tenant.themes.' . $theme . '.sections.' . ($section['type'] ?? '');
+        @endphp
+
+        @if(!empty($section['type']) && View::exists($viewPath))
+            @includeIf($viewPath, [
+                'section' => $section,
+                'theme' => $theme,
+                'context' => 'global-footer'
+            ])
+        @endif
+    @endforeach
+@endif
+
+
+{{-- ========================= --}}
+{{-- 🛠️ EDITOR MODE HANDSHAKE --}}
+{{-- ========================= --}}
+<script>
+    window.ARZAVO_EDITOR_MODE = false;
+
+    window.addEventListener("message", function (e) {
+        if (e.data && e.data.type === "ARZAVO_EDITOR_MODE") {
+            window.ARZAVO_EDITOR_MODE = e.data.enabled === true;
+        }
+    });
+</script>
+
+@endsection

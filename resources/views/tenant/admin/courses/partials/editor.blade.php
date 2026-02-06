@@ -48,19 +48,18 @@
                 {{-- ACADEMICS --}}
                 <div class="p-4 bg-primary border-primary border-rounded">
                     <h3 class="font-medium mb-4"><i class="fa-solid fa-graduation-cap text-sm mr-1"></i> Academic Details</h3>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-input.select
-                            name="class"
+                            name="class_id"
                             label="Classes"
                             :options="$classes"
-                            :value="$course->class" />
+                            :value="$course->classId" />
 
-                        <x-input.select
+                        <x-input.multiselect
                             name="subjects"
                             label="Subjects"
                             :options="$subjects"
-                            :value="$course->subjects" />
+                            :value="$course->subjects->pluck('id')->toArray()" />
                     </div>
                 </div>
 
@@ -70,7 +69,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-input.select name="language" :value="$course->language"
-                            label="Language" :options="['english','hindi']" />
+                            label="Language" :options="['English','Hindi']" />
 
                         <x-input.select name="level" :value="$course->level"
                             label="Level" :options="['beginner','intermediate','advanced']" />
@@ -309,6 +308,8 @@
         const saveModuleLessonBtn = document.getElementById('saveModuleLessonBtn' + moduleId);
         const cancelModuleLessonBtn = document.getElementById('cancelModuleLessonBtn' + moduleId);
         const moduleLessonsContainer = document.getElementById('moduleLessonsContainer' + moduleId);
+        const moduleLessonVideo = document.getElementById('moduleLessonVideo' + moduleId);
+        const moduleLessonFile = document.getElementById('moduleLessonFile' + moduleId);
 
         addModuleLessonBtn.onclick = () => {
             moduleLessonForm.classList.remove('hidden')
@@ -348,6 +349,7 @@
 
             window.dispatchEvent(new Event('button-reset'));
             moduleLessonForm.classList.add('hidden');
+          moduleLessonForm.reset();
         };
     }
 

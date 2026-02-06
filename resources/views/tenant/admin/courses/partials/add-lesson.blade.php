@@ -1,4 +1,4 @@
-<div id="addLessonForm" class="hidden mt-4 p-4 border-rounded border-primary bg-primary space-y-4">
+<form id="addLessonForm" class="hidden mt-4 p-4 border-rounded border-primary bg-primary space-y-4">
 
     <h2 class="font-semibold mb-4"><i class="fa-solid fa-book-open text-sm mr-1"></i> Add New Lesson</h2>
 
@@ -19,7 +19,7 @@
 
     {{-- CONDITIONAL FIELDS --}}
     <div class="flex flex-col md:flex-row gap-4 mt-4">
-        <div class="w-full" id="lessonVideoContainer">
+        <div class="hidden w-full" id="lessonVideoContainer">
             <x-input.video
                 name="lessonVideo"
                 label="Select video"
@@ -58,7 +58,7 @@
         <x-button id="cancelLessonBtn" variant="secondary" :loading="false">Cancel</x-button>
     </div>
 
-</div>
+</form>
 
 <script>
     const lessonType = document.getElementById('lessonType');

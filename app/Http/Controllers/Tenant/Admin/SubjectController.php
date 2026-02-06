@@ -58,11 +58,12 @@ class SubjectController
             'class_course_id' => 'required|exists:class_courses,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|string',
+            'updateimage' => 'nullable|string',
             'status' => 'boolean',
         ]);
 
         $data['slug'] = Str::slug($data['name']);
+        $data['image'] = $data['updateimage'];
 
         $subject->update($data);
 

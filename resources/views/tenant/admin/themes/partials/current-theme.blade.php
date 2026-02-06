@@ -19,14 +19,14 @@
                 </p>
 
                 <h2 class="text-xl font-semibold text-gray-900">
-                    {{ $theme?->theme_name ?? 'Default Theme' }}
+                    {{ $activeTheme->theme_name }}
                 </h2>
 
-                @if($theme)
+                @if($activeTheme)
                     <p class="text-sm text-gray-500 mt-1">
                         Applied on:
                         <span class="text-gray-700">
-                            {{ $theme->applied_at?->format('d M Y, h:i A') }}
+                            {{ $activeTheme->installed_at?->format('d M Y, h:i A') }}
                         </span>
                     </p>
                 @endif
@@ -35,7 +35,7 @@
 
         {{-- RIGHT: ACTION --}}
         <div class="flex items-center gap-3">
-            <a href="{{ route('admin.builder.index', $theme->theme_slug) }}"
+            <a data-turbo="false" href="{{ route('admin.builder.index', ['theme' => $activeTheme->theme_slug, 'page' => 'home']) }}"
               data-loading
                class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md
                       bg-black text-white hover:bg-gray-800 transition">

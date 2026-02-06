@@ -1,17 +1,17 @@
-<div id="edit-form-{{ $section->id }}" class="section-edit-form hidden edit-form fixed top-0 left-0 bottom-0 w-[299px] overflow-auto scrollbar bg-primary z-30">
+<div id="edit-form-{{ $section['id'] }}" class="section-edit-form hidden edit-form absolute top-0 left-14 bottom-0 w-75 overflow-auto h-full scrollbar bg-primary z-30">
     <div class="flex items-center justify-between p-2 border-bottom sticky top-15.5 bg-primary z-10">
-        <h2 class="text-sm font-semibold text-primary px-2 py-2.25 bg-hover-primary group border-rounded flex gap-2 items-center" onclick="document.getElementById('edit-form-{{ $section->id }}').classList.add('hidden'); clearPreviewHighlights();" id="sectionFormClose">
-            <i class="fa-solid fa-arrow-left text-tertiary group-hover:-translate-x-1 duration-200"></i> {{ $section->name }}
+        <h2 class="text-sm font-semibold text-primary px-2 py-2.25 bg-hover-primary group border-rounded flex gap-2 items-center" onclick="document.getElementById('edit-form-{{ $section['id'] }}').classList.add('hidden'); clearPreviewHighlights();" id="sectionFormClose">
+            <i class="fa-solid fa-arrow-left text-tertiary group-hover:-translate-x-1 duration-200"></i> {{ $section['name'] }}
         </h2>
         <div class="flex items-center">
-            <button type="button" class="toggle-active-btn text-tertiary text-sm bg-hover-secondary p-1 border-rounded" data-section-id="{{ $section->id }}">
-                @if($section->is_active)
+            <button type="button" class="toggle-active-btn text-tertiary text-sm bg-hover-secondary p-1 border-rounded" data-section-id="{{ $section['id'] }}">
+                @if($section['is_active'])
                 <i class="fa-solid fa-eye"></i>
                 @else
                 <i class="fa-solid fa-eye-slash"></i>
                 @endif
             </button>
-            <form class="delete-section-form" data-section-id="{{ $section->id }}" action="{{ route('admin.builder.sections.destroy', $section->id) }}" method="POST">
+            <form class="delete-section-form" data-section-id="{{ $section['id'] }}" action="{{ route('admin.builder.sections.destroy', ['theme' => $theme->theme_slug, 'page' => $page, 'sectionId' => $section['id']]) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="button" class="delete-btn text-tertiary text-sm bg-hover-secondary p-1 border-rounded">
@@ -21,12 +21,12 @@
         </div>
     </div>
     @php
-    $schema = collect($availableSections)->firstWhere('type', $section->type);
+    $schema = collect($availableSections)->firstWhere('type', $section['type']) ?? [];
     $fields = $schema['fields'] ?? [];
     @endphp
 
     @if(count($fields) > 0)
-    <form class="editSectionForm px-4 pt-14" data-section-id="{{ $section->id }}" enctype="multipart/form-data">
+    <form class="editSectionForm px-4 pt-14" data-section-id="{{ $section['id'] }}" enctype="multipart/form-data" action="{{ route('admin.builder.sections.update', ['theme' => $theme->id, 'page' => $page->id, 'sectionId' => $section['id']]) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -65,12 +65,12 @@
                 {{-- 🎨 Color Scheme Selector --}}
                 @case('color_scheme_selector')
                 <div class="color-scheme-selector border-primary border-rounded pr-1">
-                    <select name="color_scheme_id"
+                    <select name="color_scheme"
                         class="w-full p-2 text-sm focus:outline-none live-input transition-all">
                         @foreach($colorSchemes as $scheme)
-                        <option value="{{ $scheme->id }}"
-                            {{ $section->color_scheme_id == $scheme->id ? 'selected' : '' }}>
-                            {{ $scheme->name ?? "Scheme $scheme->id" }}
+                        <option value="{{ $scheme->key }}"
+                            {{ ($section['color_scheme'] ?? 'scheme_1') === $scheme->key ? 'selected' : '' }}>
+                            {{ ucfirst(str_replace(['_', '-'], ' ', $scheme->key)) }}
                         </option>
                         @endforeach
                     </select>
@@ -98,12 +98,12 @@
 
                     <div
                         class="tiptap-editor p-3 w-full text-sm min-h-25"
-                        data-content="{{ $section->settings[$field['key']] ?? $field['default'] ?? '<p></p>' }}">
+                        data-content="{{ $section['settings'][$field['key']] ?? $field['default'] ?? '<p></p>' }}">
                     </div>
 
                     <input type="hidden"
                         name="settings[{{ $field['key'] }}]"
-                        value="{{ $section->settings[$field['key']] ?? $field['default'] ?? '' }}">
+                        value="{{ $section['settings'][$field['key']] ?? $field['default'] ?? '' }}">
                 </div>
                 @break
 
@@ -114,7 +114,7 @@
                 <x-input.url
                     :name="'settings[' . $field['key'] . ']'"
                     :label="$field['label'] ?? 'Link'"
-                    :value="$section->settings[$field['key']] ?? $field['default'] ?? ''"
+                    :value="$section['settings'][$field['key']] ?? $field['default'] ?? ''"
                     :placeholder="$field['placeholder'] ?? 'Type or select page/course'"
                     :required="($field['required'] ?? false) ? 'required' : ''" />
                 @break
@@ -125,7 +125,7 @@
                     rows="{{ $field['rows'] ?? 3 }}"
                     placeholder="{{ $field['placeholder'] ?? 'Write something...' }}"
                     {{ ($field['required'] ?? false) ? 'required' : '' }}
-                    class="w-full p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm resize-none transition-all">{{ $section->settings[$field['key']] ?? $field['default'] ?? '' }}</textarea>
+                    class="w-full p-2.5 border-primary border-rounded focus:ring-2 focus:ring-accent focus:outline-none live-input text-sm resize-none transition-all">{{ $section['settings'][$field['key']] ?? $field['default'] ?? '' }}</textarea>
                 @break
 
                 {{-- 📋 Select Dropdown --}}
@@ -147,7 +147,7 @@
                     }
 
                     // Check if this option is currently selected
-                    $currentSetting = $section->settings[$field['key']] ?? $field['default'] ?? '';
+                    $currentSetting = $section['settings'][$field['key']] ?? $field['default'] ?? '';
                     // Convert both to string for safe comparison
                     $isSelected = (string)$currentSetting === (string)$value;
                     @endphp
@@ -164,7 +164,7 @@
                 @case('array')
                 @if($field['key'] === 'navlinks' || $field['key'] === 'navlinks_mobile')
                 @php
-                $selectedLinks = collect($section->settings['navlinks'] ?? [])->pluck('slug')->toArray();
+                $selectedLinks = collect($section['settings']['navlinks'] ?? [])->pluck('slug')->toArray();
                 @endphp
                 <div>
                     <select name="settings[{{ $field['key'] }}][]"
@@ -184,7 +184,7 @@
                 @else
                 <textarea name="settings[{{ $field['key'] }}]"
                     rows="4"
-                    class="border-primary border-rounded w-full p-2.5 text-sm bg-gray-50 focus:ring-2 focus:ring-accent focus:outline-none font-mono transition-all">{{ json_encode($section->settings[$field['key']] ?? $field['value'] ?? '', JSON_PRETTY_PRINT) }}</textarea>
+                    class="border-primary border-rounded w-full p-2.5 text-sm bg-gray-50 focus:ring-2 focus:ring-accent focus:outline-none font-mono transition-all">{{ json_encode($section['settings'][$field['key']] ?? $field['value'] ?? '', JSON_PRETTY_PRINT) }}</textarea>
                 @endif
                 @break
 
@@ -194,7 +194,7 @@
                     <input type="checkbox"
                         name="settings[{{ $field['key'] }}]"
                         value="1"
-                        {{ !empty($section->settings[$field['key']]) ? 'checked' : '' }}
+                        {{ !empty($section['settings'][$field['key']]) ? 'checked' : '' }}
                         class="border-rounded border-primary accent-accent w-4 h-4 live-input cursor-pointer transition-all">
                     <span class="group-hover:text-accent transition-colors">{{ $field['text'] ?? 'Enable' }}</span>
                 </label>
@@ -206,7 +206,7 @@
                     <span class="text-xs text-gray-700 font-medium">{{ $field['text'] ?? 'Enable' }}</span>
                     <div class="relative inline-flex items-center cursor-pointer">
                         <input type="hidden" name="settings[{{ $field['key'] }}]" value="0">
-                        <input type="checkbox" name="settings[{{ $field['key'] }}]" value="1" class="sr-only peer live-input" {{ !empty($section->settings[$field['key']]) ? 'checked' : '' }}>
+                        <input type="checkbox" name="settings[{{ $field['key'] }}]" value="1" class="sr-only peer live-input" {{ !empty($section['settings'][$field['key']]) ? 'checked' : '' }}>
                         <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-900"></div>
                     </div>
                 </label>
@@ -219,7 +219,7 @@
                     <div class="relative group">
                         <input type="color"
                             id="colorPicker-{{ $field['key'] }}"
-                            value="{{ $section->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
+                            value="{{ $section['settings'][$field['key']] ?? $field['default'] ?? '#000000' }}"
                             class="w-15 h-9.5 border-primary border-rounded cursor-pointer color-input live-input transition-all hover:scale-105"
                             oninput="document.getElementById('colorInput-{{ $field['key'] }}').value = this.value">
                         <div class="absolute inset-0 border-2 border-transparent group-hover:border-accent border-rounded pointer-events-none transition-all"></div>
@@ -229,7 +229,7 @@
                     <input type="text"
                         id="colorInput-{{ $field['key'] }}"
                         name="settings[{{ $field['key'] }}]"
-                        value="{{ $section->settings[$field['key']] ?? $field['default'] ?? '#000000' }}"
+                        value="{{ $section['settings'][$field['key']] ?? $field['default'] ?? '#000000' }}"
                         maxlength="7"
                         pattern="^#[0-9A-Fa-f]{6}$"
                         class="w-full p-2 border-primary border-rounded text-sm live-input uppercase font-mono focus:ring-2 focus:ring-accent focus:outline-none transition-all"
@@ -244,12 +244,12 @@
                         min="{{ $field['min'] ?? 0 }}"
                         max="{{ $field['max'] ?? 100 }}"
                         step="{{ $field['step'] ?? 1 }}"
-                        value="{{ $section->settings[$field['key']] ?? $field['default'] ?? 50 }}"
+                        value="{{ $section['settings'][$field['key']] ?? $field['default'] ?? 50 }}"
                         name="settings[{{ $field['key'] }}]"
                         class="w-full range-black live-input range-slider transition-all accent-black"
                         oninput="this.nextElementSibling.textContent = this.value">
                     <span class="text-sm font-semibold w-12 text-right range-value bg-gray-100 px-2 py-1 border-rounded">
-                        {{ $section->settings[$field['key']] ?? $field['default'] ?? 50 }}
+                        {{ $section['settings'][$field['key']] ?? $field['default'] ?? 50 }}
                     </span>
                 </div>
                 @break
@@ -258,7 +258,7 @@
                 @case('number')
                 <input type="number"
                     name="settings[{{ $field['key'] }}]"
-                    value="{{ $section->settings[$field['key']] ?? $field['default'] ?? 0 }}"
+                    value="{{ $section['settings'][$field['key']] ?? $field['default'] ?? 0 }}"
                     min="{{ $field['min'] ?? 0 }}"
                     max="{{ $field['max'] ?? 100 }}"
                     step="{{ $field['step'] ?? 1 }}"
@@ -274,7 +274,7 @@
                         <input type="radio"
                             name="settings[{{ $field['key'] }}]"
                             value="{{ $value }}"
-                            {{ ($section->settings[$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
+                            {{ ($section['settings'][$field['key']] ?? $field['default']) == $value ? 'checked' : '' }}
                             class="sr-only peer live-input">
 
                         <span class="block p-2 text-sm capitalize text-center
@@ -299,7 +299,7 @@
                         <input type="radio"
                             name="settings[{{ $field['key'] }}]"
                             value="{{ $value }}"
-                            {{ ($section->settings[$field['key']] ?? $field['default']) === $value ? 'checked' : '' }}
+                            {{ ($section['settings'][$field['key']] ?? $field['default']) === $value ? 'checked' : '' }}
                             class="sr-only peer live-input">
                         <span class="block p-1.5 text-center text-sm transition-all duration-200 {{ $class }} peer-checked:bg-black peer-checked:text-white hover:bg-gray-100 peer-checked:hover:bg-gray-900">
                             Aa
@@ -314,33 +314,33 @@
                 {{-- 🖼️ Image Upload --}}
                 @case('image')
                 @php
-                $hasImage = $section->settings[$field['key']] ?? null;
+                $hasImage = $section['settings'][$field['key']] ?? "";
                 @endphp
-                <div class="media-field-{{ $field['key'] }}_{{ $section->id }} relative group overflow-hidden">
+                <div class="media-field-{{ $field['key'] }}_{{ $section['id'] }} relative group overflow-hidden">
                     <!-- Delete Button - Always Visible -->
                     <button type="button"
                         class="delete-image-btn text-invert transition-all z-10 opacity-0 group-hover:opacity-100 absolute top-1 right-1"
-                        onclick="deleteSectionMedia('{{ $field['key'] }}_{{ $section->id }}')">
+                        onclick="deleteSectionMedia('{{ $field['key'] }}_{{ $section['id'] }}')">
                         <i class="fa-solid fa-trash text-sm"></i>
                     </button>
 
                     <!-- Upload Area -->
                     <div data-content-wrapper>
                         <input type="hidden" name="settings[{{ $field['key'] }}]"
-                            id="{{ $field['key'] }}_{{ $section->id }}"
+                            id="{{ $field['key'] }}_{{ $section['id'] }}"
                             @if($hasImage)
                             value="{{ $hasImage }}"
                             @endif>
 
                         <div class="border-primary border-rounded cursor-pointer group relative overflow-hidden"
                             style="border-style: dashed; border-width: 2px;"
-                            onclick="openContentPicker('{{ $field['key'] }}_{{ $section->id }}', 'image')">
+                            onclick="openContentPicker('{{ $field['key'] }}_{{ $section['id'] }}', 'image')">
 
-                            <img data-content-preview @if($hasImage !==null ) src="{{ media($hasImage) }}" @endif
-                                class="{{ $hasImage === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded">
+                            <img data-content-preview @if($hasImage !== "" ) src="{{ media($hasImage) }}" @endif
+                                class="{{ $hasImage === "" ? 'hidden' : '' }} w-full h-auto object-contain border-rounded">
 
                             <div data-content-placeholder
-                                class="flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasImage === null ? '' : 'hidden' }}">
+                                class="flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasImage === "" ? '' : 'hidden' }}">
                                 <i class="fa-solid fa-image text-3xl mb-2"></i>
                                 Upload {{ $field['label'] }}
                             </div>
@@ -355,35 +355,35 @@
 
                 @case('video')
                 @php
-                $hasVideo = $section->settings[$field['key']] ?? null;
+                $hasVideo = $section['settings'][$field['key']] ?? "";
                 @endphp
-                <div class="media-field-{{ $field['key'] }}_{{ $section->id }} relative group overflow-hidden">
+                <div class="media-field-{{ $field['key'] }}_{{ $section['id'] }} relative group overflow-hidden">
                     <!-- Delete Button - Always Visible -->
                     <button type="button"
                         class="delete-image-btn text-invert transition-all z-10 opacity-0 group-hover:opacity-100 absolute top-1 right-1"
-                        onclick="deleteSectionMedia('{{ $field['key'] }}_{{ $section->id }}')">
+                        onclick="deleteSectionMedia('{{ $field['key'] }}_{{ $section['id'] }}')">
                         <i class="fa-solid fa-trash text-sm"></i>
                     </button>
 
                     <!-- Upload Area -->
                     <div data-content-wrapper>
                         <input type="hidden" name="settings[{{ $field['key'] }}]"
-                            id="{{ $field['key'] }}_{{ $section->id }}"
+                            id="{{ $field['key'] }}_{{ $section['id'] }}"
                             @if($hasVideo)
                             value="{{ $hasVideo }}"
                             @endif>
 
                         <div class="border-primary border-rounded cursor-pointer group relative overflow-hidden"
                             style="border-style: dashed; border-width: 2px;"
-                            onclick="openContentPicker('{{ $field['key'] }}_{{ $section->id }}', 'video')">
+                            onclick="openContentPicker('{{ $field['key'] }}_{{ $section['id'] }}', 'video')">
 
-                            <video data-content-preview @if($hasVideo !==null ) src="{{ media($hasVideo) }}" @endif
-                                class="{{ $hasVideo === null ? 'hidden' : '' }} w-full h-auto object-contain border-rounded"
+                            <video data-content-preview @if($hasVideo !== "" ) src="{{ media($hasVideo) }}" @endif
+                                class="{{ $hasVideo === "" ? 'hidden' : '' }} w-full h-auto object-contain border-rounded"
                                 muted autoplay loop preload=" metadata">
                             </video>
 
                             <div data-content-placeholder
-                                class=" flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasVideo === null ? '' : 'hidden' }}">
+                                class=" flex flex-col text-[12px] items-center text-tertiary w-full aspect-video justify-center {{ $hasVideo === "" ? '' : 'hidden' }}">
                                 <i class="fa-solid fa-video text-3xl mb-2"></i>
                                 Upload {{ $field['label'] }}
                             </div>
@@ -400,7 +400,7 @@
                 <div class="flex items-center gap-2">
                     @foreach(['left'=>'fa-align-left','center'=>'fa-align-center','right'=>'fa-align-right'] as $align => $icon)
                     <button type="button"
-                        class="flex-1 p-2.5 border-primary border-rounded hover:bg-accent hover:text-white transition-all duration-200 {{ ($section->settings[$field['key']] ?? 'left') === $align ? 'bg-accent text-white shadow-md' : 'hover:scale-105' }}"
+                        class="flex-1 p-2.5 border-primary border-rounded hover:bg-accent hover:text-white transition-all duration-200 {{ ($section['settings'][$field['key']] ?? 'left') === $align ? 'bg-accent text-white shadow-md' : 'hover:scale-105' }}"
                         onclick="this.closest('.field-item').querySelector('input[name=\'settings[{{ $field['key'] }}]\']').value='{{ $align }}'; 
                                         this.closest('.editSectionForm').dispatchEvent(new Event('input'));
                                         this.closest('.flex').querySelectorAll('button').forEach(b => b.classList.remove('bg-accent', 'text-white', 'shadow-md'));
@@ -410,7 +410,7 @@
                     @endforeach
                     <input type="hidden"
                         name="settings[{{ $field['key'] }}]"
-                        value="{{ $section->settings[$field['key']] ?? 'left' }}">
+                        value="{{ $section['settings'][$field['key']] ?? 'left' }}">
                 </div>
                 @break
 
@@ -418,7 +418,7 @@
                 @default
                 <input type="text"
                     name="settings[{{ $field['key'] }}]"
-                    value="{{ $section->settings[$field['key']] ?? '' }}"
+                    value="{{ $section['settings'][$field['key']] ?? '' }}"
                     class="w-full p-2.5 border-primary border-rounded live-input text-sm focus:ring-2 focus:ring-accent focus:outline-none transition-all">
                 @endswitch
 
@@ -438,7 +438,7 @@
 <script>
     // Handle conditional field visibility
     document.addEventListener("turbo:load", function() {
-        const form = document.querySelector(`#edit-form-{{ $section->id }} .editSectionForm`);
+        const form = document.querySelector(`#edit-form-{{ $section['id'] }} .editSectionForm`);
         if (!form) return;
 
         function getValue(input) {
@@ -573,6 +573,7 @@
         const sectionId = form.dataset.sectionId;
         const formData = new FormData(form);
 
+
         // Add empty string for empty image fields to ensure they get cleared
         const imageInputs = form.querySelectorAll('input[type="hidden"][id$="Input"]');
         imageInputs.forEach(input => {
@@ -581,7 +582,7 @@
             }
         });
 
-        fetch(`/admin/builder/sections/${sectionId}`, {
+        fetch(form.action, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': form.querySelector('[name=_token]').value,
@@ -592,10 +593,7 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
-                    const iframe = document.getElementById('livePreviewContent');
-                    if (iframe) {
-                        iframe.contentWindow.location.reload();
-                    }
+                   reloadPreview()
                 } else {
                     console.error('Update failed:', data.message || 'Unknown error');
                 }

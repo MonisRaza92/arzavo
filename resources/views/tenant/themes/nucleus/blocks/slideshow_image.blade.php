@@ -1,5 +1,5 @@
 @php
-$s = $block->settings ?? [];
+$s = $block['settings'] ?? [];
 
 $image = $s['image'] ?? '';
 $link  = $s['image_link'] ?? '';

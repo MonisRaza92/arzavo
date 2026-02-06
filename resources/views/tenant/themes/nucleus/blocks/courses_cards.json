@@ -1,0 +1,57 @@
+{
+    "type": "courses_cards",
+    "name": "Courses Cards",
+    "icon": "fa-grip",
+    "order": 10,
+    "category": "Content",
+    "max_blocks": 6,
+    "allowed_blocks": ["course_title", "course_desc", "course_thumbnail", "course_pricing", "course_author", "course_badges"],
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout"  
+        },
+        {
+            "key": "columns_desktop",
+            "label": "Desktop Columns",
+            "type": "range",
+            "default": "4",
+            "min": 1,
+            "max": 6
+        },
+        {
+            "key": "columns_tablet",
+            "label": "Tablet Columns",
+            "type": "range",
+            "default": "2",
+            "min": 1,
+            "max": 4
+        },
+        {
+            "key": "columns_mobile",
+            "label": "Mobile Columns",
+            "type": "range",
+            "default": "1",
+            "min": 1,
+            "max": 2
+        },
+        {
+            "key": "gap",
+            "label": "Gap",
+            "type": "range",
+            "default": "24",
+            "min": 0,
+            "max": 60
+        },
+        {
+            "key": "max_items",
+            "label": "Max Courses",
+            "type": "range",
+            "default": "8",
+            "min": 1,
+            "max": 16
+        }
+    ]
+}

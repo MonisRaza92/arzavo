@@ -1,6 +1,6 @@
 @php
-$s = $section->settings ?? [];
-$colors = $section->colorScheme->scheme_colors;
+$s = $section['settings'] ?? [];
+$scheme = $section['color_scheme'] ?? 'scheme_1';
 
 $codeContent = $s['code_content'] ?? '';
 $containerWidth = $s['container_width'] ?? 'container';
@@ -15,11 +15,9 @@ $enableBorder = $s['enable_border'] ?? 'disable';
 $enableShadow = $s['enable_shadow'] ?? 'disable';
 @endphp
 
-<section data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
+<section data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}" 
     style="
-        --arzavo-background: {{ $colors->background ?? '#ffffff' }};
-        --arzavo-border-color: {{ $colors->border ?? '#d4d4d4' }};
-        background: var(--arzavo-background);
+        {{ scheme($scheme) }}
         padding-top: {{ $pt }}px;
         padding-bottom: {{ $pb }}px;
         padding-left: {{ $pl }}px;
@@ -27,7 +25,7 @@ $enableShadow = $s['enable_shadow'] ?? 'disable';
         min-height: {{ $minHeight }}px;
     "
     class="
-        arzavo-embedded-code-section
+        arzavo-embedded-code-section arzavo-background
         {{ $showOn === 'desktop' ? 'hidden md:block' : '' }}
         {{ $showOn === 'mobile' ? 'block md:hidden' : '' }}
         {{ $enableBorder === 'enable' ? 'arzavo-border-top arzavo-border-bottom' : '' }}

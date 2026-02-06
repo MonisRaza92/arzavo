@@ -3,233 +3,737 @@
 namespace App\Http\Controllers\Tenant\Admin;
 
 use Illuminate\Http\Request;
-use App\Models\Tenant\Section;
 use App\Models\Tenant\Block;
+use App\Models\Tenant\ThemePageDesign;
+use App\Models\Tenant\TenantTheme;
+use App\Models\Tenant\Page;
 
 class BlockController
 {
-    public function store(Request $request, $sectionId)
+    public function store(Request $request, $themeSlug, $pageId, $sectionId)
     {
-        $theme = app('currentTheme');
+        $request->validate([
+            'block_type' => 'required|string',
+            'block_name' => 'required|string',
+        ]);
 
+        $theme = TenantTheme::where('theme_slug', operator: $themeSlug)->firstOrFail();
+
+        $found = $this->findSectionWithDesign(
+            $theme->id,
+            $pageId,
+            $sectionId
+        );
+
+        if (!$found) {
+            return response()->json(['error' => 'Section not found'], 404);
+        }
+
+        // 🔧 Resolve section reference
+        if ($found['scope'] === 'global') {
+            $section =& $found['layout'][$found['area']]['sections'][$found['index']];
+        } else {
+            $section =& $found['layout']['sections'][$found['index']];
+        }
+
+        $section['blocks'] ??= [];
+
+        $block = $this->buildBlock(
+            $request->block_type,
+            $request->block_name,
+            $themeSlug,
+            count($section['blocks']) + 1
+        );
+
+        $section['blocks'][] = $block;
+
+        $found['design']->update(['layout' => $found['layout']]);
+
+        return view('tenant.admin.builder.blocks.block-list', [
+            'block' => $block,
+            'section' => $section,
+            'theme' => $theme,
+            'page' => Page::find($pageId),
+            'availableBlocks' => $this->availableBlocks($themeSlug),
+            'blockRules' => $this->blockRules($themeSlug),
+        ])->render();
+    }
+
+    private function buildBlock(string $type, string $name, string $themeSlug, int $order)
+    {
+        $json = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$type}.json");
+        $schema = json_decode(file_get_contents($json), true);
+
+        $settings = [];
+        foreach ($schema['fields'] ?? [] as $f) {
+            if (isset($f['key'], $f['default'])) {
+                $settings[$f['key']] = $f['default'];
+            }
+        }
+
+        return [
+            'id' => 'blk_' . uniqid(),
+            'type' => $type,
+            'name' => $name,
+            'icon' => $schema['icon'] ?? 'fa-cube',
+            'settings' => $settings,
+            'order' => $order,
+            'color_scheme' => $schema['color_scheme'] ?? null,
+            'is_active' => true,
+            'blocks' => [],
+        ];
+    }
+
+
+    public function storeNested(Request $request, $themeSlug, $pageId, $sectionId, $blockId)
+    {
         $request->validate([
             'block_type' => 'required|string',
             'block_name' => 'required|string'
         ]);
 
-        $section = Section::findOrFail($sectionId);
+        $design = $this->themePageDesign(
+            TenantTheme::where('theme_slug', $themeSlug)->first()->id,
+            $pageId,
+        );
 
-        // ORDER
-        $order = ($section->blocks()->max('order') ?? 0) + 1;
+        $layout = $design->layout;
 
-        // 1️⃣ JSON FILE READ
-        $jsonPath = resource_path("views/tenant/themes/{$theme}/blocks/{$request->block_type}.json");
-
-        $defaultSettings = [];
-        $defaultBlocks = [];
-        $defaultBlockIcon = 'fa-shapes';
-
-        if (file_exists($jsonPath)) {
-            $json = json_decode(file_get_contents($jsonPath), true);
-            if (!empty($json['fields'])) {
-                foreach ($json['fields'] as $field) {
-                    if (isset($field['key']) && array_key_exists('default', $field)) {
-                        $defaultSettings[$field['key']] = $field['default'];
-                    }
-                    // array fields value → default
-                    if (isset($field['key']) && isset($field['value'])) {
-                        $defaultSettings[$field['key']] = $field['value'];
-                    }
-                }
+        // 🔎 Find section
+        foreach ($layout['sections'] as &$section) {
+            if ($section['id'] !== $sectionId) {
+                continue;
             }
-            if (!empty($json['default_blocks']) && is_array($json['default_blocks'])) {
-                $defaultBlocks = $json['default_blocks'];
+
+            // 📄 Load schema
+            $jsonPath = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$request->block_type}.json");
+
+            if (!file_exists($jsonPath)) {
+                return back()->with('error', 'Block schema not found');
             }
-            if (isset($json['icon'])) {
-                $defaultBlockIcon = $json['icon'];
-            }
-        }
-        // 2️⃣ SECTION CREATE + DEFAULT SETTINGS SAVE
-        $block = Block::create([
-            'section_id' => $section->id,
-            'name' => $request->block_name,
-            'type' => $request->block_type,
-            'icon' => $defaultBlockIcon,
-            'settings' => $defaultSettings,
-            'order' => $order
-        ]);
 
-        // AUTO ADD BLOCKS
-        $blockOrder = 1;
+            $schema = json_decode(file_get_contents($jsonPath), true);
 
-        foreach ($defaultBlocks as $blockType) {
-
-            $blockJsonPath = resource_path("views/tenant/themes/{$theme}blocks/{$blockType}.json");
-            $blockDefaultSettings = [];
-            $blockIcon = 'fa-puzzle-piece';
-
-            if (file_exists($blockJsonPath)) {
-                $blockJson = json_decode(file_get_contents($blockJsonPath), true);
-
-                if (!empty($blockJson['fields'])) {
-                    foreach ($blockJson['fields'] as $field) {
-                        if (isset($field['key']) && array_key_exists('default', $field)) {
-                            $blockDefaultSettings[$field['key']] = $field['default'];
-                        }
-                        if (isset($field['key']) && isset($field['value'])) {
-                            $blockDefaultSettings[$field['key']] = $field['value'];
-                        }
-                    }
-                }
-                if (isset($blockJson['icon'])) {
-                    $blockIcon = $blockJson['icon'];
+            // 🎛 Default settings
+            $defaultSettings = [];
+            foreach ($schema['fields'] ?? [] as $field) {
+                if (isset($field['key']) && array_key_exists('default', $field)) {
+                    $defaultSettings[$field['key']] = $field['default'];
                 }
             }
 
-            Block::create([
-                'parent_block_id' => $block->id,
-                'name' => ucfirst($blockType),
-                'type' => $blockType,
-                'icon' => $blockIcon ?? 'fa-puzzle-piece',
-                'settings' => $blockDefaultSettings,
-                'order' => $blockOrder++
-            ]);
+            // 🧱 New block (no order yet – recursion handles it)
+            $newBlock = [
+                'id' => 'blk_' . uniqid(),
+                'type' => $request->block_type,
+                'name' => $request->block_name,
+                'icon' => $schema['icon'] ?? 'fa-shapes',
+                'settings' => $defaultSettings,
+                'color_scheme' => $schema['color_scheme'] ?? null,
+                'is_active' => true,
+                'blocks' => [],
+            ];
+
+            // 🔁 Recursive insert
+            $added = $this->addNestedBlockRecursive(
+                $section['blocks'],
+                $blockId,
+                $newBlock
+            );
+
+            if (!$added) {
+                return back()->with('error', 'Parent block not found');
+            }
+
+            // 💾 Save
+            $design->update(['layout' => $layout]);
+            $availableBlocks = $this->availableBlocks($themeSlug);
+            $blockRules = $this->blockRules($themeSlug);
+            $theme = TenantTheme::where('theme_slug', $themeSlug)->first();
+            $page = Page::findOr($pageId);
+            $section = collect($layout['sections'])->firstWhere('id', $sectionId);
+
+            return view('tenant.admin.builder.blocks.block-list', ['block' => $newBlock, 'availableBlocks' => $availableBlocks, 'blockRules' => $blockRules, 'theme' => $theme, 'page' => $page, 'section' => $section])->render();
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Section updated successfully',
-        ]);
+        return back()->with('error', 'Section not found');
     }
-    public function storeNested(Request $request, $blockId)
+
+    private function addNestedBlockRecursive(array &$blocks, string $targetBlockId, array $newBlock): bool
     {
-        $theme = app('currentTheme');
+        foreach ($blocks as &$block) {
 
-        $request->validate([
-            'block_type' => 'required|string',
-            'block_name' => 'required|string'
-        ]);
+            // 🎯 Target block mil gaya
+            if ($block['id'] === $targetBlockId) {
 
-        $parentBlock = Block::findOrFail($blockId);
+                $block['blocks'] = $block['blocks'] ?? [];
 
-        // ORDER
-        $order = ($parentBlock->children()->max('order') ?? 0) + 1;
+                // 🔢 Auto order
+                $newBlock['order'] = count($block['blocks']) + 1;
 
-        // 1️⃣ JSON FILE READ
-        $jsonPath = resource_path("views/tenant/themes/{$theme}/blocks/{$request->block_type}.json");
-
-        $defaultSettings = [];
-
-        if (file_exists($jsonPath)) {
-            $json = json_decode(file_get_contents($jsonPath), true);
-            if (!empty($json['fields'])) {
-                foreach ($json['fields'] as $field) {
-                    if (isset($field['key']) && array_key_exists('default', $field)) {
-                        $defaultSettings[$field['key']] = $field['default'];
-                    }
-                    // array fields value → default
-                    if (isset($field['key']) && isset($field['value'])) {
-                        $defaultSettings[$field['key']] = $field['value'];
-                    }
-                }
+                $block['blocks'][] = $newBlock;
+                return true;
             }
-            if (isset($json['icon'])) {
-                $blockIcon = $json['icon'];
+
+            // 🔁 Aur andar jao
+            if (!empty($block['blocks']) && is_array($block['blocks'])) {
+                $added = $this->addNestedBlockRecursive(
+                    $block['blocks'],
+                    $targetBlockId,
+                    $newBlock
+                );
+
+                if ($added) {
+                    return true;
+                }
             }
         }
 
-        // 2️⃣ NESTED BLOCK CREATE + DEFAULT SETTINGS SAVE
-        $nestedBlock = Block::create([
-            'parent_block_id' => $parentBlock->id,
-            'name' => $request->block_name,
-            'type' => $request->block_type,
-            'icon' => $blockIcon ?? 'fa-puzzle-piece',
-            'settings' => $defaultSettings,
-            'order' => $order
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Nested Block created successfully',
-        ]);
+        return false;
     }
-    public function update(Request $request, $blockId)
+
+    public function update(Request $request, $themeId, $pageId, $sectionId, $blockId)
     {
         $validated = $request->validate([
-            'color_scheme_id' => 'nullable|exists:color_schemes,id',
+            'color_scheme' => 'nullable|exists:color_schemes,id',
             'settings' => 'nullable|array',
         ]);
 
-        $block = Block::findOrFail($blockId);
+        $found = $this->findSectionScope($themeId, $pageId, $sectionId);
 
-        // Normalize empty string to null for color_scheme_id
-        $colorSchemeId = isset($validated['color_scheme_id']) && $validated['color_scheme_id'] !== ''
-            ? $validated['color_scheme_id']
-            : null;
+        if (!$found) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Section not found'
+            ], 404);
+        }
 
-        // Get existing settings
-        $oldSettings = is_array($block->settings) ? $block->settings : [];
-        $newSettings = $validated['settings'] ?? [];
+        // 🔧 Resolve correct section
+        if ($found['scope'] === 'global') {
+            $section =& $found['layout'][$found['area']]['sections'][$found['sectionIndex']];
+        } else {
+            $section =& $found['layout']['sections'][$found['sectionIndex']];
+        }
 
-        // Merge settings
-        $mergedSettings = array_merge($oldSettings, $newSettings);
+        // 🔥 Recursive block search (nested support)
+        $foundBlock = $this->findBlockRecursive($section['blocks'], $blockId);
 
-        // Update block
-        $block->update([
-            'settings' => $mergedSettings,
-            'color_scheme_id' => $colorSchemeId
+        if (!$foundBlock) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Block not found'
+            ], 404);
+        }
+
+        // ✅ Merge settings
+        if (!empty($validated['settings'])) {
+            $foundBlock['block']['settings'] = array_merge(
+                $foundBlock['block']['settings'] ?? [],
+                $validated['settings']
+            );
+        }
+
+        // ✅ Update color scheme
+        if (array_key_exists('color_scheme', $validated)) {
+            $foundBlock['block']['color_scheme'] = $validated['color_scheme'];
+        }
+
+        // 💾 Save correct design
+        $found['design']->update([
+            'layout' => $found['layout']
         ]);
 
         return response()->json([
             'status' => 'success',
             'message' => 'Block updated successfully',
-            'block' => $block,
-            'refresh' => true,
-        ]);
-    }
-    public function destroy($blockId)
-    {
-        $block = Block::findOrFail($blockId);
-
-        $block->delete();
-        return response()->json([
-            'status' => 'success',
-            'id' => $block->id,
-        ]);
-    }
-
-
-    public function toggleActive($blockId)
-    {
-        $block = Block::findOrFail($blockId);
-
-        $block->is_active = !$block->is_active;
-        $block->save();
-
-        return response()->json([
-            'status' => 'success',
-            'is_active' => $block->is_active,
             'refresh' => true
         ]);
     }
-    public function reorder(Request $request, $sectionId)
+
+    private function findSectionScope($themeId, $pageId, $sectionId)
     {
-        foreach ($request->order as $blockId => $position) {
-            Block::where('id', $blockId)
-                ->where('section_id', $sectionId)
-                ->update(['order' => $position]);
+        // 1️⃣ GLOBAL FIRST
+        $global = globalThemeDesign($themeId);
+        $globalLayout = $global->layout;
+
+        foreach (['header', 'footer', 'globals'] as $area) {
+            foreach ($globalLayout[$area]['sections'] ?? [] as $i => $section) {
+                if ($section['id'] === $sectionId) {
+                    return [
+                        'scope' => 'global',
+                        'area' => $area,
+                        'design' => $global,
+                        'layout' => $globalLayout,
+                        'sectionIndex' => $i,
+                    ];
+                }
+            }
         }
 
-        return response()->json(['status' => 'success']);
-    }
-    public function reorderNested(Request $request, $parentId)
-    {
-        foreach ($request->order as $childId => $position) {
-            Block::where('id', $childId)
-                ->where('parent_block_id', $parentId)
-                ->update(['order' => $position]);
+        // 2️⃣ PAGE FALLBACK
+        $pageDesign = $this->themePageDesign($themeId, $pageId);
+        $pageLayout = $pageDesign->layout;
+
+        foreach ($pageLayout['sections'] ?? [] as $i => $section) {
+            if ($section['id'] === $sectionId) {
+                return [
+                    'scope' => 'page',
+                    'design' => $pageDesign,
+                    'layout' => $pageLayout,
+                    'sectionIndex' => $i,
+                ];
+            }
         }
 
-        return response()->json(['status' => 'success']);
+        return null;
     }
+
+
+
+    public function destroy($themeId, $pageId, $sectionId, $blockId)
+    {
+        $found = $this->findSectionForBlock($themeId, $pageId, $sectionId);
+
+        if (!$found) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Section not found'
+            ], 404);
+        }
+
+        // 🔧 Resolve section reference
+        if ($found['scope'] === 'global') {
+            $section =& $found['layout'][$found['area']]['sections'][$found['sectionIndex']];
+        } else {
+            $section =& $found['layout']['sections'][$found['sectionIndex']];
+        }
+
+        if (empty($section['blocks'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No blocks in section'
+            ]);
+        }
+
+        // 🔥 Recursive delete (nested-safe)
+        $deleted = $this->removeBlockRecursive($section['blocks'], $blockId);
+
+        if (!$deleted) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Block not found'
+            ], 404);
+        }
+
+        // 💾 Save to correct design
+        $found['design']->update([
+            'layout' => $found['layout']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'id' => $blockId,
+            'refresh' => true,
+        ]);
+    }
+
+    private function removeBlockRecursive(array &$blocks, string $blockId): bool
+    {
+        foreach ($blocks as $index => &$block) {
+
+            if ($block['id'] === $blockId) {
+                unset($blocks[$index]);
+                $blocks = array_values($blocks);
+                return true;
+            }
+
+            if (!empty($block['blocks']) && is_array($block['blocks'])) {
+                if ($this->removeBlockRecursive($block['blocks'], $blockId)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+
+
+    public function toggleActive($themeId, $pageId, $sectionId, $blockId)
+    {
+        $found = $this->findSectionForBlockScope($themeId, $pageId, $sectionId);
+
+        if (!$found) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Section not found'
+            ], 404);
+        }
+
+        // 🔧 Resolve correct section reference
+        if ($found['scope'] === 'global') {
+            $section =& $found['layout'][$found['area']]['sections'][$found['sectionIndex']];
+        } else {
+            $section =& $found['layout']['sections'][$found['sectionIndex']];
+        }
+
+        // 🔥 Recursive search (nested-safe)
+        $result = $this->findBlockRecursive($section['blocks'], $blockId);
+
+        if (!$result) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Block not found'
+            ], 404);
+        }
+
+        // ✅ Toggle
+        $result['block']['is_active'] = !($result['block']['is_active'] ?? true);
+
+        // 💾 Save in correct design
+        $found['design']->update([
+            'layout' => $found['layout']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'is_active' => $result['block']['is_active'],
+            'refresh' => true
+        ]);
+    }
+
+
+    private function findBlockRecursive(array &$blocks, string $blockId): ?array
+    {
+        foreach ($blocks as $index => &$block) {
+
+            if ($block['id'] === $blockId) {
+                return [
+                    'block' => &$block,
+                    'index' => $index,
+                    'parent' => &$blocks,
+                ];
+            }
+
+            if (!empty($block['blocks']) && is_array($block['blocks'])) {
+                $found = $this->findBlockRecursive($block['blocks'], $blockId);
+                if ($found) {
+                    return $found;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private function findSectionForBlockScope($themeId, $pageId, $sectionId)
+    {
+        // 1️⃣ GLOBAL FIRST
+        $global = globalThemeDesign($themeId);
+        $globalLayout = $global->layout;
+
+        foreach (['header', 'footer', 'globals'] as $area) {
+            foreach ($globalLayout[$area]['sections'] ?? [] as $i => $section) {
+                if ($section['id'] === $sectionId) {
+                    return [
+                        'scope' => 'global',
+                        'area' => $area,
+                        'design' => $global,
+                        'layout' => $globalLayout,
+                        'sectionIndex' => $i,
+                    ];
+                }
+            }
+        }
+
+        // 2️⃣ PAGE FALLBACK
+        $pageDesign = $this->themePageDesign($themeId, $pageId);
+        $pageLayout = $pageDesign->layout;
+
+        foreach ($pageLayout['sections'] ?? [] as $i => $section) {
+            if ($section['id'] === $sectionId) {
+                return [
+                    'scope' => 'page',
+                    'design' => $pageDesign,
+                    'layout' => $pageLayout,
+                    'sectionIndex' => $i,
+                ];
+            }
+        }
+
+        return null;
+    }
+
+    public function reorder(Request $request, $themeId, $pageId, $sectionId)
+    {
+        $order = $request->input('order', []);
+
+        if (empty($order)) {
+            return response()->json(['status' => 'error'], 422);
+        }
+
+        // 🔍 Find section (global OR page)
+        $found = $this->findSectionForBlockScope($themeId, $pageId, $sectionId);
+
+        if (!$found) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Section not found'
+            ], 404);
+        }
+
+        // 🔧 Resolve correct section
+        if ($found['scope'] === 'global') {
+            $section =& $found['layout'][$found['area']]['sections'][$found['sectionIndex']];
+        } else {
+            $section =& $found['layout']['sections'][$found['sectionIndex']];
+        }
+
+        if (!isset($section['blocks']) || !is_array($section['blocks'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No blocks in section'
+            ], 422);
+        }
+
+        // 1️⃣ Apply order values
+        foreach ($section['blocks'] as &$block) {
+            if (isset($order[$block['id']])) {
+                $block['order'] = (int) $order[$block['id']];
+            }
+        }
+        unset($block);
+
+        // 2️⃣ Sort blocks
+        usort(
+            $section['blocks'],
+            fn($a, $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0)
+        );
+
+        // 💾 Save correct design
+        $found['design']->update([
+            'layout' => $found['layout']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'scope' => $found['scope'],
+            'refresh' => true
+        ]);
+    }
+
+
+    public function reorderNested(Request $request, $themeId, $pageId, $sectionId, $parentBlockId)
+    {
+        $order = $request->input('order', []);
+
+        if (empty($order)) {
+            return response()->json(['status' => 'error'], 422);
+        }
+
+        // 🔍 Find section (global OR page)
+        $found = $this->findSectionForBlockScope($themeId, $pageId, $sectionId);
+
+        if (!$found) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Section not found'
+            ], 404);
+        }
+
+        // 🔧 Resolve correct section
+        if ($found['scope'] === 'global') {
+            $section =& $found['layout'][$found['area']]['sections'][$found['sectionIndex']];
+        } else {
+            $section =& $found['layout']['sections'][$found['sectionIndex']];
+        }
+
+        if (!isset($section['blocks'])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No blocks in section'
+            ], 422);
+        }
+
+        // 🔁 Reorder nested blocks
+        $this->reorderNestedBlocks(
+            $section['blocks'],
+            $order,
+            $parentBlockId
+        );
+
+        // 💾 Save correct design
+        $found['design']->update([
+            'layout' => $found['layout']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'scope' => $found['scope'],
+            'refresh' => true
+        ]);
+    }
+
+
+    private function reorderNestedBlocks(array &$blocks, array $order, string $parentId): bool
+    {
+        foreach ($blocks as &$block) {
+
+            // ✅ Parent block mil gaya
+            if ($block['id'] === $parentId) {
+
+                if (!isset($block['blocks']) || !is_array($block['blocks'])) {
+                    return true;
+                }
+
+                // 🔁 apply order
+                foreach ($block['blocks'] as &$child) {
+                    if (isset($order[$child['id']])) {
+                        $child['order'] = (int) $order[$child['id']];
+                    }
+                }
+
+                // 🔃 sort children
+                usort(
+                    $block['blocks'],
+                    fn($a, $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0)
+                );
+
+                return true;
+            }
+
+            // 🔁 go deeper (infinite nesting)
+            if (!empty($block['blocks'])) {
+                if ($this->reorderNestedBlocks($block['blocks'], $order, $parentId)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    private function themePageDesign($themeId, $pageId)
+    {
+        return ThemePageDesign::firstOrCreate(
+            [
+                'tenant_theme_id' => $themeId,
+                'page_id' => $pageId,
+            ],
+            [
+                'layout' => ['sections' => []]
+            ]
+        );
+    }
+    private function availableBlocks($themeSlug)
+    {
+        return collect(
+            glob(resource_path("views/tenant/themes/{$themeSlug}/blocks/*.json"))
+        )->map(function ($file) {
+            $data = json_decode(file_get_contents($file), true);
+
+            return [
+                'type' => $data['type'] ?? basename($file, '.json'),
+                'name' => $data['name'] ?? basename($file, '.json'),
+                'icon' => $data['icon'] ?? 'fa-code',
+                'category' => $data['category'] ?? null,
+                'preview' => $data['preview'] ?? null,
+                'fields' => $data['fields'] ?? [],
+                'allowed_blocks' => $data['allowed_blocks'] ?? null,
+                'moveable' => $data['moveable'] ?? 'allow',
+            ];
+        })->values();
+    }
+    private function blockRules(string $themeSlug): array
+    {
+        return collect($this->availableBlocks($themeSlug))
+            ->mapWithKeys(function ($block) {
+                return [
+                    $block['type'] => [
+                        'max_blocks' => $block['max_blocks'] ?? null,
+                        'allowed_blocks' => $block['allowed_blocks'] ?? [],
+                        'moveable' => $block['moveable'] ?? 'allow',
+                    ]
+                ];
+            })
+            ->toArray();
+    }
+
+    private function findSectionWithDesign($themeId, $pageId, $sectionId)
+    {
+        // 1️⃣ GLOBAL
+        $global = globalThemeDesign($themeId);
+        $layout = $global->layout;
+
+        foreach (['header', 'footer', 'globals'] as $area) {
+            foreach ($layout[$area]['sections'] ?? [] as $i => $section) {
+                if ($section['id'] === $sectionId) {
+                    return [
+                        'scope' => 'global',
+                        'area' => $area,
+                        'design' => $global,
+                        'layout' => $layout,
+                        'index' => $i,
+                    ];
+                }
+            }
+        }
+
+        // 2️⃣ PAGE
+        $pageDesign = $this->themePageDesign($themeId, $pageId);
+        foreach ($pageDesign->layout['sections'] ?? [] as $i => $section) {
+            if ($section['id'] === $sectionId) {
+                return [
+                    'scope' => 'page',
+                    'design' => $pageDesign,
+                    'layout' => $pageDesign->layout,
+                    'index' => $i,
+                ];
+            }
+        }
+
+        return null;
+    }
+
+    private function findSectionForBlock($themeId, $pageId, $sectionId)
+    {
+        // 1️⃣ GLOBAL FIRST
+        $global = globalThemeDesign($themeId);
+        $globalLayout = $global->layout;
+
+        foreach (['header', 'footer', 'globals'] as $area) {
+            foreach ($globalLayout[$area]['sections'] ?? [] as $index => $section) {
+                if ($section['id'] === $sectionId) {
+                    return [
+                        'scope' => 'global',
+                        'area' => $area,
+                        'design' => $global,
+                        'layout' => $globalLayout,
+                        'sectionIndex' => $index,
+                    ];
+                }
+            }
+        }
+
+        // 2️⃣ PAGE FALLBACK
+        $pageDesign = $this->themePageDesign($themeId, $pageId);
+        $pageLayout = $pageDesign->layout;
+
+        foreach ($pageLayout['sections'] ?? [] as $index => $section) {
+            if ($section['id'] === $sectionId) {
+                return [
+                    'scope' => 'page',
+                    'design' => $pageDesign,
+                    'layout' => $pageLayout,
+                    'sectionIndex' => $index,
+                ];
+            }
+        }
+
+        return null;
+    }
+
+
 }

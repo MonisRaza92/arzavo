@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Arzavo\Theme;
-use App\Models\Tenant\ThemeState;
-use App\Http\Controllers\Tenant\Admin\ThemeController;
+use App\Models\Tenant\TenantTheme;
+use App\Services\Theme\ThemeInstaller;
 
 class TenantSeeder extends Seeder
 {
@@ -16,99 +16,53 @@ class TenantSeeder extends Seeder
      */
     public function run(): void
     {
-        /**
-         * SAFETY CHECK
-         * Agar pehle se theme applied hai, dobara mat lagao
-         */
-        if (ThemeState::count() > 0) {
-            return;
-        }
+        // ---------------------------
+        // 1️⃣ Get theme from central DB
+        // ---------------------------
+        $theme = Theme::where('slug', 'nucleus')->firstOrFail();
 
-        /**
-         * MAIN DB se Nucleus theme lao
-         */
-        $theme = Theme::where('slug', 'nucleus')->first();
-
-        if (! $theme) {
-            logger()->error('Default theme "Nucleus" not found.');
-            return;
-        }
-
-        /**
-         * Theme state set karo (TENANT DB)
-         */
-        ThemeState::create([
+        // ---------------------------
+        // 2️⃣ Attach theme to tenant
+        // ---------------------------
+        $tenantTheme = TenantTheme::create([
             'theme_id' => $theme->id,
-            'theme_name' => $theme->name,
             'theme_slug' => $theme->slug,
             'theme_version' => $theme->version,
-            'applied_with_reset' => true,
-            'applied_at' => now(),
+            'status' => 'published',
+            'is_active' => true,
+            'installed_at' => now(),
+            'published_at' => now(),
         ]);
-        // Apply theme
 
-
+        // ---------------------------
+        // 3️⃣ Create system pages
+        // ---------------------------
         DB::table('pages')->insert([
-            [
-                'name' => 'Home',
-                'slug' => 'home',
-                'is_system_page' => true,
-                'is_active' => true,
-                'created_at' => now(),
-            ],
-            [
-                'name' => 'About',
-                'slug' => 'about',
-                'is_system_page' => true,
-                'is_active' => true,
-                'created_at' => now(),
-            ],
-            [
-                'name' => 'Courses',
-                'slug' => 'courses',
-                'is_system_page' => true,
-                'is_active' => true,
-                'created_at' => now(),
-            ],
-            [
-                'name' => 'View Course',
-                'slug' => 'view-course',
-                'is_system_page' => true,
-                'is_active' => true,
-                'created_at' => now(),
-            ],
+            ['name' => 'Home', 'slug' => 'home', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'About', 'slug' => 'about', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'Courses', 'slug' => 'courses', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'View Course', 'slug' => 'view-course', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
         ]);
 
+        // ---------------------------
+        // 4️⃣ Apply theme (🔥 MAIN STEP)
+        // ---------------------------
+        ThemeInstaller::installForTenant(
+            $theme->slug,
+            $tenantTheme
+        );
+
+        // ---------------------------
+        // 5️⃣ Menus etc.
+        // ---------------------------
         DB::table('menus')->insert([
-            [
-                'name'=> 'Header',
-                'slug' => 'header',
-                'location' => 'header',
-            ],
+            ['name' => 'Header', 'slug' => 'header', 'location' => 'header'],
         ]);
+
         DB::table('menu_items')->insert([
-            [
-                'menu_id'=> 1,
-                'name'=> 'Home',
-                'link' => '',
-                'order' => 0,
-            ],
-            [
-                'menu_id'=> 1,
-                'name'=> 'About',
-                'link' => 'about',
-                'order' => 1,
-            ],
-            [
-                'menu_id'=> 1,
-                'name'=> 'Courses',
-                'link' => 'courses',
-                'order' => 2,
-            ],
+            ['menu_id' => 1, 'name' => 'Home', 'link' => '/', 'order' => 0],
+            ['menu_id' => 1, 'name' => 'About', 'link' => 'about', 'order' => 1],
+            ['menu_id' => 1, 'name' => 'Courses', 'link' => 'courses', 'order' => 2],
         ]);
-
-
-        $controller = app(ThemeController::class);
-        $controller->applyThemeInternal($theme);
     }
 }

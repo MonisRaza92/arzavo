@@ -1,47 +1,28 @@
-<div id="addModuleLessonForm{{ $moduleId }}" class="hidden mt-4 p-4 border-rounded border-primary bg-primary space-y-4">
+<form id="addModuleLessonForm{{ $moduleId }}" class="hidden mt-4 p-4 border-rounded border-primary bg-primary space-y-4">
 
     <h2 class="font-semibold mb-4"><i class="fa-solid fa-book-open text-sm mr-1"></i> Add New Lesson</h2>
 
-    <x-input.text
-        name="moduleLessonTitle{{ $moduleId }}"
-        label="Lesson title"
-        placeholder="Enter lesson title" />
+    <x-input.text name="moduleLessonTitle{{ $moduleId }}" label="Lesson title" placeholder="Enter lesson title" />
 
-    <x-input.textarea
-        name="moduleLessonDescription{{ $moduleId }}"
-        label="Lesson description"
+    <x-input.textarea name="moduleLessonDescription{{ $moduleId }}" label="Lesson description"
         placeholder="Short description (optional)" />
 
-    <x-input.select
-        name="moduleLessonType{{ $moduleId }}"
-        label="Lesson type"
-        :options="['video','pdf']" />
+    <x-input.select name="moduleLessonType{{ $moduleId }}" label="Lesson type" :options="['video', 'pdf']" />
 
     {{-- CONDITIONAL FIELDS --}}
     <div class="flex flex-col md:flex-row gap-4 mt-2">
         <div class="hidden w-full" id="moduleLessonVideoContainer{{ $moduleId }}">
-            <x-input.video
-                name="moduleLessonVideo{{ $moduleId }}"
-                label="Select video"
-                type="video" />
+            <x-input.video name="moduleLessonVideo{{ $moduleId }}" label="Select video" type="video" value="" />
         </div>
         <div class="hidden w-full" id="moduleLessonFileContainer{{ $moduleId }}">
-            <x-input.content
-                name="moduleLessonFile{{ $moduleId }}"
-                label="Select file (PDF)"
-                type="pdf" />
+            <x-input.content name="moduleLessonFile{{ $moduleId }}" label="Select file (PDF)" type="pdf" value="" />
         </div>
 
-        <x-input.textarea
-            name="moduleLessonContent{{ $moduleId }}"
-            label="Lesson content"
+        <x-input.textarea name="moduleLessonContent{{ $moduleId }}" label="Lesson content"
             placeholder="Enter lesson content" :rows="8" class="h-[calc(100%-1.7rem)]" />
     </div>
 
-    <x-input.number
-        name="moduleLessonDuration{{ $moduleId }}"
-        label="Duration (minutes)"
-        placeholder="e.g. 10" />
+    <x-input.number name="moduleLessonDuration{{ $moduleId }}" label="Duration (minutes)" placeholder="e.g. 10" />
 
     {{-- TOGGLES --}}
     <div class="grid grid-cols-2 gap-4 mt-2">
@@ -53,34 +34,30 @@
     </div>
 
     <div class="flex gap-2 mt-4">
-        <x-button id="saveModuleLessonBtn{{ $moduleId }}" variant="primary" loadingText="Saving...">Save Lesson</x-button>
+        <x-button id="saveModuleLessonBtn{{ $moduleId }}" variant="primary" loadingText="Saving...">Save
+            Lesson</x-button>
         <x-button id="cancelModuleLessonBtn{{ $moduleId }}" variant="secondary" :loading="false">Cancel</x-button>
     </div>
 
-</div>
+</form>
 
 <script>
     (function() {
-        const moduleLessonType = document.getElementById('moduleLessonType{{ $moduleId }}');
-        const containers = {
-            video: document.getElementById('moduleLessonVideoContainer{{ $moduleId }}'),
-            pdf: document.getElementById('moduleLessonFileContainer{{ $moduleId }}'),
-        };
+        const lessonType = document.getElementById('moduleLessonType{{ $moduleId }}');
+        const lessonVideoContainer = document.getElementById('moduleLessonVideoContainer{{ $moduleId }}');
+        const lessonFileContainer = document.getElementById('moduleLessonFileContainer{{ $moduleId }}');
 
-        const updateLessonTypeVisibility = () => {
-            if (!moduleLessonType) return;
-            const selectedValue = moduleLessonType.value;
-            Object.entries(containers).forEach(([type, container]) => {
-                if (container) {
-                    container.classList.toggle('hidden', type !== selectedValue);
-                }
-            });
-        };
-
-        if (moduleLessonType) {
-            moduleLessonType.addEventListener('change', updateLessonTypeVisibility);
-            // Initial call to set correct state
-            updateLessonTypeVisibility();
-        }
+        lessonType.addEventListener('change', function () {
+            if (this.value === 'video') {
+                lessonVideoContainer.classList.remove('hidden');
+                lessonFileContainer.classList.add('hidden');
+            } else if (this.value === 'pdf') {
+                lessonVideoContainer.classList.add('hidden');
+                lessonFileContainer.classList.remove('hidden');
+            } else {
+                lessonVideoContainer.classList.remove('hidden');
+                lessonFileContainer.classList.add('hidden');
+            }
+        });
     })();
 </script>

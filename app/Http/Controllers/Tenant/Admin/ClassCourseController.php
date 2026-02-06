@@ -42,11 +42,12 @@ class ClassCourseController
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|string',
+            'updateimage' => 'nullable|string',
             'status' => 'boolean',
         ]);
 
         $data['slug'] = Str::slug($data['name']);
+        $data['image'] = $data['updateimage'];
 
         $classCourse->update($data);
 

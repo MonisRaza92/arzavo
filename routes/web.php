@@ -8,16 +8,17 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Tenant\TenantWebsiteController;
+use App\Http\Controllers\Tenant\Website\ThemePageController;
 use App\Http\Controllers\Tenant\Admin\AdminController;
 use App\Http\Controllers\Tenant\Admin\StudentsController as AdminStudentsController;
 use App\Http\Controllers\Tenant\Admin\ContentController;
 use App\Http\Controllers\Tenant\Admin\CourseController;
 use App\Http\Controllers\Tenant\Admin\CustomizesController;
 use App\Http\Controllers\Tenant\Admin\ColorSchemeController;
-use App\Http\Controllers\Tenant\Admin\ImagesController;
 use App\Http\Controllers\Tenant\Admin\SettingsController;
 use App\Http\Controllers\Tenant\Admin\PageController;
 use App\Http\Controllers\Tenant\Admin\ThemeController;
+use App\Http\Controllers\Tenant\Admin\BuilderController;
 use App\Http\Controllers\Tenant\Admin\SectionController;
 use App\Http\Controllers\Tenant\Admin\BlockController;
 use App\Http\Controllers\Tenant\Admin\ClassCourseController;
@@ -69,12 +70,33 @@ function registerDomains($domain)
 
     Route::domain($domain)->middleware('tenant')->group(function () {
         //Tenant Auth Routes
-        Route::get('/', [TenantWebsiteController::class, 'home'])->name('tenant.home');
-        Route::get('/about', [TenantWebsiteController::class, 'about'])->name('tenant.about');
-        Route::get('/courses', [TenantWebsiteController::class, 'courses'])->name('tenant.courses');
-        Route::get('/view/course', [TenantWebsiteController::class, 'courses'])->name('tenant.view.course');
-        Route::get('/{slug}', [TenantWebsiteController::class, 'pages'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('tenant.pages');
-        Route::get('/edit/{slug}', [TenantWebsiteController::class, 'preview'])->where('slug', '^(?!\/$)[A-Za-z0-9-_]+$')->name('website.preview');
+        Route::get('/', function () {
+            return app(ThemePageController::class)->system('home');
+        })->name('tenant.home');
+
+        Route::get('/about', function () {
+            return app(ThemePageController::class)->system('about');
+        })->name('tenant.about');
+
+        Route::get('/courses', function () {
+            return app(ThemePageController::class)->system('courses');
+        })->name('tenant.courses');
+
+        Route::get('/view/course', function () {
+            return app(ThemePageController::class)->system('view/course');
+        })->name('tenant.view.course');
+        Route::get('/preview/{theme}/{slug}', function ($slug, $theme) {
+            return app(ThemePageController::class)->preview($slug, $theme);
+        })
+            ->where('slug', '[A-Za-z0-9-_]+')
+            ->name('website.preview');
+
+        Route::get('/{slug}', function ($slug) {
+            return app(ThemePageController::class)->page($slug);
+        })
+            ->where('slug', '[A-Za-z0-9-_]+')
+            ->name('tenant.pages');
+
 
         Route::prefix('account')->group(function () {
             Route::get('/login', [TenantLoginController::class, 'login'])->name('tenant.login');
@@ -126,13 +148,14 @@ function registerDomains($domain)
                 Route::resource('subjects', SubjectController::class);
                 Route::get('/subjects/{id}/get', [SubjectController::class, 'get'])->name('subjects.get');
                 Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update');
-
-
+                
+                
                 //Admin Contents Routes
                 Route::resource('contents', ContentController::class);
-
+                
                 //Admin Courses Routes
                 Route::resource('courses', CourseController::class);
+                Route::put('courses/{course}/status', [CourseController::class, 'status'])->name('course.status');
                 Route::resource('courses.modules', CourseModuleController::class);
                 Route::resource('courses.lessons', CourseLessonController::class);
                 Route::resource('modules.lessons', CourseModuleLessonController::class);
@@ -146,33 +169,44 @@ function registerDomains($domain)
 
                 //Admin Customizations Routes
                 Route::resource('customizes', CustomizesController::class);
+
+                // Admin Color Sheme Routes
                 Route::resource('scheme', ColorSchemeController::class);
-                Route::get('/scheme/get/{id}', [ColorSchemeController::class, 'get'])->name('scheme.get');
-                Route::resource('images', ImagesController::class);
+                
+                // Admin Pages Routes
                 Route::resource('pages', PageController::class);
-                Route::resource('themes', ThemeController::class);
+
+                // Admin Menus Routes
                 Route::resource('menus', MenuController::class);
                 Route::resource('menu-items', MenuItemController::class);
                 Route::post('/menu-items/reorder', [MenuItemController::class, 'reorder'])->name('menu-items.reorder');
-                Route::post('/themes/apply/{id}', [ThemeController::class, 'apply'])->name('themes.apply');
-                Route::prefix('builder')->name('builder.')->group(function () {
-                    Route::get('{theme}', [SectionController::class, 'index'])->name('index');
 
-                    Route::prefix('sections')->name('sections.')->group(function () {
-                        Route::post('/{pageId}', [SectionController::class, 'store'])->name('store');
-                        Route::post('/{pageId}/template', [SectionController::class, 'storeTemplate'])->name('store.template');
-                        Route::put('/{sectionId}', [SectionController::class, 'update'])->name('update');
-                        Route::delete('/{sectionId}', [SectionController::class, 'destroy'])->name('destroy');
-                        Route::post('/{pageId}/reorder', [SectionController::class, 'reorder'])->name('reorder');
-                        Route::post('/{sectionId}/toggle-active', [SectionController::class, 'toggleActive'])->name('toggleActive');
-                        Route::prefix('blocks')->name('blocks.')->group(function () {
-                            Route::post('/{sectionId}/blocks', [BlockController::class, 'store'])->name('store');
-                            Route::post('/{blockId}/blocks/nested', [BlockController::class, 'storeNested'])->name('nested.store');
-                            Route::put('/{blockId}', [BlockController::class, 'update'])->name('update');
-                            Route::delete('/{blockId}', [BlockController::class, 'destroy'])->name('destroy');
-                            Route::post('/{blockId}/toggle-active', [BlockController::class, 'toggleActive'])->name('toggleActive');
-                            Route::post('/{sectionId}', [BlockController::class, 'reorder'])->name('reorder');
-                            Route::post('nested/{blockId}', [BlockController::class, 'reorderNested'])->name('nested.reorder');
+                // Admin Themes Routes
+                Route::resource('themes', ThemeController::class);
+                Route::post('/themes/install/{id}', [ThemeController::class, 'install'])->name('themes.install');
+                Route::post('/themes/upload', [ThemeController::class, 'upload'])->name('themes.upload');
+                Route::post('/themes/publish/{id}', [ThemeController::class, 'publish'])->name('themes.publish');
+
+                // Admin Builder Routes
+                Route::prefix('builder/{theme}')->name('builder.')->group(function () {
+                    Route::get('/', [SectionController::class, 'index'])->name('index');
+                    Route::prefix('{page}/')->name('sections.')->group(function () {
+                        Route::post('/', [SectionController::class, 'store'])->name('store');
+                        Route::post('/template', [SectionController::class, 'storeTemplate'])->name('store.template');
+                        Route::prefix('/{sectionId}')->group(function () {
+                            Route::put('/', [SectionController::class, 'update'])->name('update');
+                            Route::delete('/', [SectionController::class, 'destroy'])->name('destroy');
+                            Route::post('/reorder', [SectionController::class, 'reorder'])->name('reorder');
+                            Route::post('/toggle-active', [SectionController::class, 'toggleActive'])->name('toggleActive');
+                            Route::post('/blocks', [BlockController::class, 'store'])->name('blocks.store');
+                            Route::prefix('/{blockId}/')->name('blocks.')->group(function () {
+                                Route::post('/nested', [BlockController::class, 'storeNested'])->name('nested.store');
+                                Route::put('/update', [BlockController::class, 'update'])->name('update');
+                                Route::delete('/delete', [BlockController::class, 'destroy'])->name('destroy');
+                                Route::post('/toggle-active', [BlockController::class, 'toggleActive'])->name('toggleActive');
+                                Route::post('/reorder', [BlockController::class, 'reorder'])->name('reorder');
+                                Route::post('/nested/reorder', [BlockController::class, 'reorderNested'])->name('nested.reorder');
+                            });
                         });
                     });
                 });

@@ -4,8 +4,8 @@
     "icon": "fa-shapes",
     "order": 3,
     "category": "Layout",
-    "color_scheme_id": 1,
-    "max_blocks": 5,
+    "color_scheme": "scheme_1",
+    "max_blocks": 10,
     "allowed_blocks": [
         "heading",
         "text",
@@ -22,9 +22,11 @@
         "social_links",
         "spacer",
         "video",
-        "header"
+        "header",
+        "tabs",
+        "courses_cards"
     ],
-    "default_blocks": "",
+    "default_blocks": null,
     "fields": [
         {
             "key": "group",
@@ -103,6 +105,7 @@
             "key": "group",
             "type": "group",
             "label": "Overlay",
+            "icon": "fa-square-plus",
             "conditional": {
                 "field": "background_type",
                 "operator": "!=",
@@ -160,7 +163,8 @@
         {
             "key": "group",
             "type": "group",
-            "label": "Size & Width"
+            "label": "Size & Width",
+            "icon": "fa-arrows-alt"
         },
         {
             "key": "content_width",
@@ -171,22 +175,47 @@
         },
         {
             "key": "height",
-            "label": "Section Height",
+            "label": "Desktop Height",
             "type": "radio",
-            "options": ["fit", "full"],
-            "default": "fit"
+            "options": ["auto", "full", "custom"],
+            "default": "full"
+        },
+        {
+            "key": "custom_height",
+            "label": "Custom Height (vh)",
+            "type": "range",
+            "default": "60",
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "height",
+                "value": "custom"
+            }
         },
         {
             "key": "mobile_height",
             "label": "Mobile Height",
-            "type": "switch",
-            "default": "1",
-            "text": "Full screen height on mobile"
+            "type": "radio",
+            "options": ["auto", "full", "custom"],
+            "default": "full"
+        },
+        {
+            "key": "mobile_custom_height",
+            "label": "Mobile Custom Height (vh)",
+            "type": "range",
+            "default": "60",
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "mobile_height",
+                "value": "custom"
+            }
         },
         {
             "key": "group",
             "type": "group",
-            "label": "Layout"
+            "label": "Layout",
+            "icon": "fa-layer-group"
         },
         {
             "key": "direction",
@@ -218,12 +247,13 @@
             "label": "Position",
             "type": "select",
             "options": ["start", "center", "end", "between"],
-            "default": "between"
+            "default": "center"
         },
         {
             "key": "group",
             "type": "group",
-            "label": "Spacing"
+            "label": "Spacing",
+            "icon": "fa-arrows-alt-v"
         },
         {
             "key": "gap",
@@ -265,23 +295,88 @@
             "min": 0,
             "max": 100
         },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Mobile Spacing",
+            "icon": "fa-mobile-screen-button"
+        },
+        {
+            "key": "enable_mobile_spacing",
+            "label": "Mobile Spacing",
+            "type": "switch",
+            "default": "0",
+            "text": "Custom spacing for mobile"
+        },
+        {
+            "key": "mobile_padding_top",
+            "label": "Mobile Padding Top",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100,
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
+        {
+            "key": "mobile_padding_bottom",
+            "label": "Mobile Padding Bottom",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100,
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
+        {
+            "key": "mobile_margin_top",
+            "label": "Mobile Margin Top",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100,
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
+        {
+            "key": "mobile_margin_bottom",
+            "label": "Mobile Margin Bottom",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100,
+            "conditional": {
+                "field": "enable_mobile_spacing",
+                "value": "1"
+            }
+        },
         
         {
             "key": "group",
             "type": "group",
-            "label": "Responsive"
+            "label": "Visibility",
+            "icon": "fa-eye-slash"
         },
         {
             "key": "hide_desktop",
             "label": "Hide on Desktop",
             "type": "switch",
-            "default": "0"
+            "default": "0",
+            "text": "Hide For Desktop/Tablate"
         },
         {
             "key": "hide_mobile",
             "label": "Hide on Mobile",
             "type": "switch",
-            "default": "0"
+            "default": "0",
+            "text": "Hide For Mobile Devices"
         }
     ]
 }

@@ -79,15 +79,14 @@
                 "desktop_image": null,
                 "mobile_image": null,
                 "alt_text": "Hero Image",
-                "aspect_ratio": "landscape",
-                "border_radius": "enable"
+                "aspect_ratio": "landscape"
             }
         }
     ],
     "settings": {
         "background_type": "color",
         "height": "auto",
-        "mobile_height": "0",
+        "mobile_height": "auto",
         "direction": "horizontal",
         "mobile_direction": "vertical",
         "alignment": "center",

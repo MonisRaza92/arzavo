@@ -1,0 +1,133 @@
+{
+    "type": "icon",
+    "name": "Icon",
+    "icon": "fa-icons",
+    "order": 7,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "icon_name",
+            "label": "Icon Name",
+            "type": "icon",
+            "default": "star"
+        },
+        {
+            "key": "icon_size",
+            "label": "Icon Size (px)",
+            "type": "range",
+            "default": 40,
+            "min": 10,
+            "max": 200
+        },
+        {
+            "key": "icon_color",
+            "label": "Icon Color",
+            "type": "select",
+            "options": ["heading", "paragraph", "border"],
+            "default": "heading"
+        },
+        {
+            "key": "background_style",
+            "label": "Background Style",
+            "type": "select",
+            "options": ["none", "circle", "square", "rounded"],
+            "default": "none"
+        },
+        {
+            "key": "background_size",
+            "label": "Background Size (px)",
+            "type": "range",
+            "default": 80,
+            "min": 40,
+            "max": 200
+        },
+        {
+            "key": "alignment",
+            "label": "Icon Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "select",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "hover_effect",
+            "label": "Hover Effect",
+            "type": "select",
+            "options": ["none", "scale", "rotate", "bounce"],
+            "default": "none"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top (px)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom (px)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_left",
+            "label": "Margin Left (px)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "margin_right",
+            "label": "Margin Right (px)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top (px)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 50
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom (px)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 50
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left (px)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 50
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right (px)",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 50
+        }
+    ]
+}

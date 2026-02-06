@@ -1,6 +1,6 @@
 @php
-$s = $section->settings ?? [];
-$colors = $section->colorScheme->scheme_colors;
+$s = $section['settings'] ?? [];
+$scheme = $section['color_scheme'] ?? 'scheme_1';
 
 $sectionHeight = $s['section_height'] ?? 200;
 $waveDirection = $s['wave_direction'] ?? 'down';
@@ -14,21 +14,19 @@ $mb = $s['margin_bottom'] ?? 0;
 $showOn = $s['show_on'] ?? 'both';
 
 // Wave color from color scheme
-$waveColor = $colors->background ?? '#ffffff';
 $bgColor = $colors->border ?? '#000000';
 
 // Animation direction
 $animationDirection = $reverseAnimation === 'enable' ? 'reverse' : 'normal';
 
 // Unique ID for this section
-$uniqueId = 'wave-' . $section->id;
+$uniqueId = 'wave-' . $section['id'];
 @endphp
 
-<section  data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
+<section  data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}" 
     id="{{ $uniqueId }}"
     style="
-        --arzavo-background: {{ $bgColor }};
-        --arzavo-wave-color: {{ $waveColor }};
+        --arzavo-wave-color: var(--arzavo-border-color);
         background: var(--arzavo-background);
         height: {{ $sectionHeight }}px;
         margin-top: {{ $mt }}px;

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use App\Models\Arzavo\Tenant;
-use App\Models\Tenant\ThemeState;
+use App\Services\ThemeContext;
 
 class TenantMiddleware
 {
@@ -62,17 +62,18 @@ class TenantMiddleware
         DB::setDefaultConnection('tenant');
 
         // 5. BIND TENANT INSTANCE
-        $themeState = ThemeState::current();
+        $activeTheme = ThemeContext::active();
 
-        $themeSlug = $themeState?->theme_slug ?? 'nucleus';
+        $themeSlug = $activeTheme->theme_slug;
+        // fallback safety
+        $tenantThemeId = $activeTheme->id;
 
-        // Bind globally for this request
+        // Bind globally
+        app()->instance('currentThemeSlug', $themeSlug);
         app()->instance('currentTenant', $tenant);
-        app()->instance('currentTheme', $themeSlug);
-
-        URL::defaults([
-            'theme' => $themeSlug,
-        ]);
+        app()->instance('currentThemeId', $tenantThemeId);
+        app()->instance('activeTheme', $activeTheme);
+        
         return $next($request);
     }
 }

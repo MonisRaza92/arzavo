@@ -1,0 +1,310 @@
+{
+    "type": "custom_section",
+    "name": "Features: Simple Grid",
+    "icon": "fa-star",
+    "category": "Features",
+    "order": 1,
+
+    "settings": {
+        "background_type": "color",
+        "direction": "vertical",
+        "mobile_direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 64,
+        "padding_top": 80,
+        "padding_bottom": 80
+    },
+
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "direction": "vertical",
+                "alignment": "center",
+                "gap": 12
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Powerful Features for Growing Institutes",
+                        "heading_type": "heading-2",
+                        "alignment": "center",
+                        "mobile_alignment": "center"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Everything you need to manage operations, reduce manual work, and grow your institute on one unified platform.",
+                        "alignment": "center",
+                        "mobile_alignment": "center"
+                    }
+                }
+            ]
+        },
+
+        {
+            "type": "group",
+            "settings": {
+                "direction": "vertical",
+                "gap": 40,
+                "width": "full"
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal",
+                        "mobile_direction": "vertical",
+                        "position": "between",
+                        "gap": 32,
+                        "width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "center",
+                                "gap": 14,
+                                "width": "custom",
+                                "max_width": 30
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "users",
+                                        "icon_size": 48,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Student Management",
+                                        "heading_type": "heading-6",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Handle admissions, profiles, attendance and academic records of every student from one centralized system.",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                }
+                            ]
+                        },
+
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "center",
+                                "gap": 14,
+                                "width": "custom",
+                                "max_width": 30
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "wallet",
+                                        "icon_size": 48,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Fees & Billing",
+                                        "heading_type": "heading-6",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Automate invoices, track pending dues, manage expenses and maintain complete financial transparency.",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                }
+                            ]
+                        },
+
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "center",
+                                "gap": 14,
+                                "width": "custom",
+                                "max_width": 30
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "chalkboard-user",
+                                        "icon_size": 48,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Teacher Control",
+                                        "heading_type": "heading-6",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Manage teacher profiles, salaries, schedules and performance tracking without paperwork.",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal",
+                        "mobile_direction": "vertical",
+                        "position": "between",
+                        "gap": 32,
+                        "width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "center",
+                                "gap": 14,
+                                "width": "custom",
+                                "max_width": 30
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "calendar-check",
+                                        "icon_size": 48,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Attendance",
+                                        "heading_type": "heading-6",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Automatically record student and staff attendance and generate daily and monthly reports.",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                }
+                            ]
+                        },
+
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "center",
+                                "gap": 14,
+                                "width": "custom",
+                                "max_width": 30
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "chart-line",
+                                        "icon_size": 48,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Analytics",
+                                        "heading_type": "heading-6",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Track revenue, student growth, teacher performance and overall institute health in real time.",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                }
+                            ]
+                        },
+
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "center",
+                                "gap": 14,
+                                "width": "custom",
+                                "max_width": 30
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "envelope",
+                                        "icon_size": 48,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Communication",
+                                        "heading_type": "heading-6",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Send notices, fee reminders and important updates to students and parents instantly.",
+                                        "alignment": "center",
+                                        "mobile_alignment": "center"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

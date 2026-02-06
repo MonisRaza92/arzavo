@@ -4,6 +4,7 @@ namespace App\Models\Tenant;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Course extends Model
 {
@@ -56,11 +57,24 @@ class Course extends Model
     }
 
     // MANY classes
-    public function class()
+    public function classes()
     {
         return $this->belongsToMany(
             ClassCourse::class,
             'course_class_course'
+        );
+    }
+
+    protected function className(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->classes->first()?->name,
+        );
+    }
+    protected function classId(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->classes->first()?->id,
         );
     }
 

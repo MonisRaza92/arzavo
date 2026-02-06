@@ -1,5 +1,6 @@
 @php
-$s = $section->settings ?? [];
+$s = $section['settings'] ?? [];
+$scheme = $section['color_scheme'] ?? 'scheme_1';
 
 $height = $s['spacer_height'] ?? '50';
 $mobileHeight = $s['mobile_spacer_height'] ?? '30';
@@ -8,12 +9,11 @@ $bgImage = $s['background_image'] ?? '';
 $mt = $s['margin_top'] ?? '0';
 $mb = $s['margin_bottom'] ?? '0';
 
-$colors = $section->colorScheme->scheme_colors;
 @endphp
 
 <div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
     style="
-    --arzavo-background: {{ $colors->background ?? '' }};
+    {{ scheme($scheme) }}
     @if ($bgType === 'image' && $bgImage)
     background-image: url('{{ media($bgImage) }}');
     background-size: cover;
@@ -34,7 +34,6 @@ $colors = $section->colorScheme->scheme_colors;
 <!-- Mobile Spacer -->
 <div
     style="
-    --arzavo-background: {{ $colors->background ?? '' }};
     @if ($bgType === 'image' && $bgImage)
     background-image: url('{{ media($bgImage) }}');
     background-size: cover;

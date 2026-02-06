@@ -37,13 +37,11 @@ class AppServiceProvider extends ServiceProvider
 
                 $settings = \App\Models\Tenant\Settings::pluck('value', 'key')->toArray();
                 $customizes = \App\Models\Tenant\Customizes::pluck('value', 'key')->toArray();
-                $images = \App\Models\Tenant\Images::all();
-                $colorSchemes = \App\Models\Tenant\ColorScheme::all();
-                $theme = \App\Models\Tenant\ThemeState::current();
 
                 $students = \App\Models\Tenant\User::where('role', 'student')->get();
                 $teachers = \App\Models\Tenant\User::where('role', 'teacher')->get();
                 $staff = \App\Models\Tenant\User::where('role', 'staff')->get();
+                $colorSchemes = \App\Models\Tenant\ColorScheme::where('theme_id', app('currentThemeId'))->orderBy('id', 'asc')->get();
 
                 $contents = \App\Models\Tenant\Content::all();
 
@@ -51,6 +49,8 @@ class AppServiceProvider extends ServiceProvider
                 $subjects = \App\Models\Tenant\Subject::all();
                 $courses = \App\Models\Tenant\Course::all();
                 $menus = \App\Models\Tenant\Menu::all();
+
+                $activeTheme = app('activeTheme');
 
                 return $view->with([
                     'user'          => $user,
@@ -60,13 +60,12 @@ class AppServiceProvider extends ServiceProvider
                     'teachers'      => $teachers,
                     'staff'         => $staff,
                     'courses'       => $courses,
-                    'images'        => $images,
-                    'colorSchemes'  => $colorSchemes,
-                    'theme'         => $theme,
                     'classCourses'  => $classCourses,
                     'subjects'      => $subjects,
                     'contents'      => $contents,
-                    'menus'          => $menus,
+                    'menus'         => $menus,
+                    'activeTheme'   => $activeTheme,
+                    'colorSchemes'  => $colorSchemes
                 ]);
             }
         });

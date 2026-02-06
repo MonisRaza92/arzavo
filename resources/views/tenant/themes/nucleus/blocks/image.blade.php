@@ -1,5 +1,5 @@
 @php
-$image = $block->settings ?? [];
+$image = $block['settings'] ?? [];
 
 $desktopImage = $image['desktop_image'] ?? '';
 $mobileImage = $image['mobile_image'] ?? $desktopImage;
@@ -45,7 +45,7 @@ $visibilityClass = 'md:block hidden';
 
 @endphp
 
-<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}"
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
     class="{{ $visibilityClass }}
     {{ $aspectRatioClass }} flex-1"
     style="

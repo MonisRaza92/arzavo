@@ -89,12 +89,12 @@ class User extends Authenticatable
 
     public function courses()
     {
-        return $this->hasMany(Courses::class, 'user_id');
+        return $this->hasMany(Course::class, 'user_id');
     }
 
     public function contents()
     {
-        return $this->hasMany(Contents::class, 'user_id');
+        return $this->hasMany(Content::class, 'user_id');
     }
     public function feePlans()
     {
@@ -106,11 +106,11 @@ class User extends Authenticatable
     }
     public function subject()
     {
-        return $this->belongsTo(Subjects::class, 'subject_id');
+        return $this->belongsTo(Subject::class, 'subject_id');
     }
 
     public function class()
     { // "class" reserved word hai
-        return $this->belongsTo(Classes::class, 'class_id');
+        return $this->belongsTo(ClassCourse::class, 'class_id');
     }
 }

@@ -14,8 +14,9 @@
         name="{{ $name }}"
         id="{{ $name }}"
         {{ $attributes->merge([
-            'class' => "w-full p-2 rounded-md border border-primary bg-transparent $class"
+            'class' => "w-full p-2 border-rounded border-primary bg-transparent $class"
         ]) }}>
+        <option value="">Select Value</option>
 
         @foreach($options as $key => $opt)
 

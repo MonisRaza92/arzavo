@@ -23,7 +23,7 @@
 :root {
     --bg-primary: #ffffff;
     --bg-secondary: #f1f1f1;
-    --bg-tertiary: #ededed;
+    --bg-tertiary: #e6e6e6;
     --bg-accent: #920000;
     --bg-accent-subtle: #92000011;
     --bg-accent-secondary: #c58400;
@@ -127,6 +127,14 @@ button {
     background-color: var(--bg-invert-secondary);
 }
 
+.text-tertiary {
+    color: var(--text-tertiary);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
 .text-primary {
     color: var(--text-primary);
 }
@@ -135,13 +143,7 @@ button {
     color: var(--text-primary);
 }
 
-.text-secondary {
-    color: var(--text-secondary);
-}
 
-.text-tertiary {
-    color: var(--text-tertiary);
-}
 
 .text-accent {
     color: var(--text-accent);
@@ -199,46 +201,9 @@ button {
 .border-left {
     border-left: var(--border-width) solid var(--border-primary);
 }
+
 .border-dashed {
-  position: relative;
-}
-
-.border-dashed::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 2px; /* border thickness */
-  background:
-    repeating-linear-gradient(
-      to right,
-      var(--bg-invert) 0 14px,
-      transparent 14px 24px
-    ) top,
-    repeating-linear-gradient(
-      to right,
-      var(--bg-invert) 0 14px,
-      transparent 14px 24px
-    ) bottom,
-    repeating-linear-gradient(
-      to bottom,
-      var(--bg-invert) 0 14px,
-      transparent 14px 24px
-    ) left,
-    repeating-linear-gradient(
-      to bottom,
-      var(--bg-invert) 0 14px,
-      transparent 14px 24px
-    ) right;
-
-  background-size:
-    100% 2px,
-    100% 2px,
-    2px 100%,
-    2px 100%;
-
-  background-repeat: no-repeat;
-  pointer-events: none;
-  border-radius: var(--border-rounded); /* optional */
+    border: 2px dashed var(--border-primary);
 }
 
 .border-rounded {
@@ -373,6 +338,113 @@ button {
     pointer-events: none;
     z-index: 1000;
     animation: noise 0.2s infinite;
+}
+
+.quick-angle-btn {
+    @apply h-12 rounded-xs border border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 text-xl font-bold text-gray-600 hover:text-indigo-600 transition-all duration-200 hover:shadow-md;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+[data-color-picker] input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right, #e5e7eb 0%, currentColor 100%);
+    outline: none;
+}
+
+[data-color-picker] input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid currentColor;
+    cursor: grab;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s;
+}
+
+[data-color-picker] input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+[data-color-picker] input[type="range"]::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.25);
+}
+
+[data-color-picker] input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid currentColor;
+    cursor: grab;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+[data-color-picker] input[type="color"] {
+    cursor: pointer;
+}
+
+[data-color-picker] input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 4px;
+}
+
+[data-color-picker] input[type="color"]::-webkit-color-swatch {
+    border: none;
+    scale: 1.5;
+}
+
+.stop-marker {
+    position: absolute;
+    bottom: -2px;
+    transform: translateX(-50%);
+    cursor: grab;
+    transition: transform 0.1s;
+}
+
+.stop-marker:hover {
+    transform: translateX(-50%) scale(1.15);
+}
+
+.stop-marker:active {
+    cursor: grabbing;
+    transform: translateX(-50%) scale(1.25);
+}
+
+.stop-marker-handle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+}
+
+.sortable-drag {
+    opacity: 1;
 }
 
 @keyframes noise {
@@ -680,8 +752,8 @@ button {
     }
 }
 
-.arzavo-invert-text {
-    color: var(--arzavo-invert-text-color);
+.arzavo-invert-filter {
+    filter: invert(1);
 }
 
 .arzavo-primary-btn {
@@ -698,7 +770,7 @@ button {
     transition: all 0.3s ease;
 
     &:hover {
-        background : var(--arzavo-primary-btn-hover-background);
+        background: var(--arzavo-primary-btn-hover-background);
         color: var(--arzavo-primary-btn-hover-text);
         border-color: var(--arzavo-primary-btn-hover-border);
     }
@@ -833,25 +905,27 @@ button {
 .gradient-picker-popup button:hover {
     opacity: 0.9;
 }
+
 .tiptap-editor {
-  outline: none;
-  border: none;
-  box-shadow: none;
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 .tiptap-editor:focus {
-  outline: none;
-  border: none;
-  box-shadow: none;
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 .tiptap-editor *:focus {
-  outline: none;
-  box-shadow: none;
+    outline: none;
+    box-shadow: none;
 }
+
 .tiptap-editor[contenteditable="true"] {
-  outline: none !important;
-  -webkit-user-modify: read-write-plaintext-only;
+    outline: none !important;
+    -webkit-user-modify: read-write-plaintext-only;
 }
 
 

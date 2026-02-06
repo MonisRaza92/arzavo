@@ -1,7 +1,8 @@
 @php
-$s = $block->settings ?? [];
+$s = $block['settings'] ?? [];
 
-$colorScheme = $s['color_scheme'] ?? '';
+$scheme = $s['color_scheme'] ?? null;
+$colorScheme = $s['color_scheme_type'] ?? 'parent';
 
 $bgType = $s['background_type'] ?? '';
 $mediaType = $s['media_type'] ?? '';
@@ -49,28 +50,22 @@ $pl = $s['padding_left'] ?? '';
 $hideMobile = $s['hide_mobile'] ?? '';
 $hideDesktop = $s['hide_desktop'] ?? '';
 
-if ($colorScheme === 'saparate' && $block->colorScheme) {
-    $colors = $block->colorScheme->scheme_colors;
-    $primaryBtn = $block->colorScheme->primary_btn;
-    $secondaryBtn = $block->colorScheme->secondary_btn;
-    $input = $block->colorScheme->input;
-}
 @endphp
 
 <style>
-.group-s-{{ $block->id }} {
+.group-s-{{ $block['id'] }} {
     overflow: {{ $overflow }};
     z-index: {{ $zIndex }};
 }
 
-.group-s-{{ $block->id }} {
+.group-s-{{ $block['id'] }} {
     @if ($widthM === 'custom')
         width: {{ $maxWidthM }}%;
     @endif
 }
 
 @media (min-width: 768px) {
-    .group-s-{{ $block->id }} {
+    .group-s-{{ $block['id'] }} {
         @if ($width === 'custom')
             width: {{ $maxWidth }}%;
         @endif
@@ -78,10 +73,12 @@ if ($colorScheme === 'saparate' && $block->colorScheme) {
 }
 </style>
 <div
-    data-block-id="{{ $block->id }}"
-    data-name="{{ $block->name }}"
+    data-block-id="{{ $block['id'] }}"
+    data-name="{{ $block['name'] }}"
     style="
-       {{ colors($colors, $primaryBtn, $secondaryBtn, $input) }}
+       @if ($colorScheme !== 'parent')
+       {{ scheme($scheme) }}
+       @endif
         padding-top: {{ $pt }}px;
         padding-right: {{ $pr }}px;
         padding-bottom: {{ $pb }}px;
@@ -114,7 +111,7 @@ if ($colorScheme === 'saparate' && $block->colorScheme) {
         @endif
     "
     class="
-        group-s-{{ $block->id }}
+        group-s-{{ $block['id'] }}
         s-component flex flex-1
         {{ $hideMobile === '1' ? 'hidden md:flex' : '' }}
         {{ $hideDesktop === '1' ? 'md:hidden' : '' }}
@@ -147,5 +144,5 @@ if ($colorScheme === 'saparate' && $block->colorScheme) {
         ">
     </div>
     @endif
-    @include('tenant.themes.includes.nested-blocks')
+    {!! renderBlocks($block['blocks']) !!}
 </div>

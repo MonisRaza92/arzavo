@@ -1,5 +1,6 @@
 @php
-$slideShow = $section->settings ?? [];
+$slideShow = $section['settings'] ?? [];
+$scheme =$section['color_scheme'];
 
 $autoplay = $slideShow['autoplay'] ?? '1';
 $delay = $slideShow['autoplay_delay'] ?? '3000';
@@ -9,20 +10,34 @@ $mt = $slideShow['margin_top'] ?? '0';
 $mb = $slideShow['margin_bottom'] ?? '0';
 $hideDesktop = $slideShow['hide_desktop'] ?? '0';
 $hideMobile = $slideShow['hide_mobile'] ?? '0';
-$sliderHeight = $slideShow['slider_height'] ?? '500';
 $contentWidth = $slideShow['content_width'] ?? 'full';
 $border = $slideShow['border'] ?? 'none';
 $borderRadius = $slideShow['border_radius'] ?? 'enable';
 $customBR = $slideShow['custom_border_radius'] ?? '0';
 
+$aspectRatio = $slideShow['aspect_ratio'] ?? 'wide';
+$customAspectRatio = $slideShow['custom_aspect_ratio'] ?? '16:9';
 
-$colors = $section->colorScheme->scheme_colors;
-// ... color logic setup
-$slides = $section->blocks;
+$aspectRatioMap = [
+    'ultra_wide' => '21 / 9',
+    'wide'       => '16 / 9',
+    'classic'    => '4 / 3',
+    'square'     => '1 / 1',
+    'portrait'   => '3 / 4',
+    'tall'       => '9 / 16',
+];
+
+// Final CSS aspect-ratio value
+$finalAspectRatio = $aspectRatio === 'custom'
+    ? str_replace(':', ' / ', $customAspectRatio)
+    : ($aspectRatioMap[$aspectRatio] ?? '16 / 9');
+
+
+$slides = $section['blocks'];
 @endphp
 
 <div
-    data-section-id="{{ $section->id }}" data-name="{{ $section->name }}"
+    data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
     class="relative group
         {{ $hideDesktop === '1' ? 'md:hidden block' : '' }}
         {{ $hideMobile === '1' ? 'md:block hidden' : '' }}
@@ -31,18 +46,18 @@ $slides = $section->blocks;
     data-autoplay="{{ $autoplay }}"
     data-delay="{{ $delay }}000"
     style="
-    {{ colors($colors) }}
+    {{ scheme($scheme) }}
     padding-top: {{ $mt }}px; padding-bottom: {{ $mb }}px;
     background: var(--arzavo-background);
     ">
     <div class="{{ $contentWidth === 'full' ? 'w-full' : 'container'}}">
 
-        <div class="relative w-full h-full overflow-hidden">
+        <div class="relative w-full h-full overflow-hidden" style="aspect-ratio: {{ $finalAspectRatio }};">
 
             <div class="slider-track flex h-full w-full transition-transform duration-500 ease-out will-change-transform">
                 @foreach($slides as $block)
                 <div class="w-full h-full shrink-0 grow-0 relative {{ $border === '1' ? 'arzavo-border' : '' }}{{ $borderRadius === 'enable' ? ' arzavo-border-rounded' : ''}} overflow-hidden" @if($borderRadius==='custom' ) style="border-radius: {{ $customBR }}px;" @endif>
-                    @include('tenant.themes.' . $theme->theme_slug .'.blocks.slideshow_image')
+                    @include('tenant.themes.' . $theme .'.blocks.slideshow_image')
                 </div>
                 @endforeach
             </div>

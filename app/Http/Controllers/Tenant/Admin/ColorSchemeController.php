@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\Tenant\ColorScheme;
+use Illuminate\Support\Str;
 
 class ColorSchemeController
 {
@@ -12,7 +13,28 @@ class ColorSchemeController
         $request->validate([
             'colors' => 'required|array',
             'colors.0' => 'required|array',
+            'theme_id' => 'required',
         ]);
+
+        $themeId = $request->theme_id;
+
+        /**
+         * Generate next scheme key per theme
+         * scheme_1, scheme_2, scheme_3...
+         */
+        $lastKey = ColorScheme::where('theme_id', $themeId)
+            ->where('key', 'like', 'scheme_%')
+            ->orderByRaw(
+                "CAST(SUBSTRING_INDEX(`key`, '_', -1) AS UNSIGNED) DESC"
+            )
+            ->value('key');
+
+        $nextNumber = $lastKey
+            ? ((int) Str::after($lastKey, 'scheme_') + 1)
+            : 1;
+
+        $key = 'scheme_' . $nextNumber;
+
 
         // Ensure colors is in array format [0] = {...}
         $colors = $request->colors;
@@ -21,6 +43,8 @@ class ColorSchemeController
         }
 
         $scheme = ColorScheme::create([
+            'theme_id' => $themeId,
+            'key' => $key,
             'colors' => $colors
         ]);
 
@@ -28,6 +52,7 @@ class ColorSchemeController
             return response()->json([
                 'success' => true,
                 'id' => $scheme->id,
+                'key' => $scheme->key,
                 'scheme' => $scheme,
                 'message' => 'Color Scheme Added Successfully'
             ]);

@@ -1,6 +1,6 @@
 {
     "type": "slideshow_image",
-    "name": "Slideshow",
+    "name": "Image",
     "icon": "fa-image",
     "order": 4,
     "category": "Basic",
@@ -19,7 +19,7 @@
         {
             "key": "alt_text",
             "label": "Alt Text",
-            "type": "text",
+            "type": "textaria",
             "default": "",
             "placeholder": "Describe the image (SEO & accessibility)"
         },
@@ -32,7 +32,7 @@
         {
             "key": "image_link",
             "label": "Link URL",
-            "type": "url",
+            "type": "link",
             "default": ""
         },
         {

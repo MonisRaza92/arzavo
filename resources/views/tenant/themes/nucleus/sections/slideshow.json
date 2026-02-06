@@ -4,10 +4,16 @@
     "icon": "fa-images",
     "order": 8,
     "category": "Hero",
-    "color_scheme_id": 1,
+    "color_scheme": "scheme_1",
     "max_blocks": 10,
-    "allowed_blocks": ["slideshow_image"],
-    "default_blocks": ["slideshow_image", "slideshow_image", "slideshow_image"],
+    "allowed_blocks": [
+        "slideshow_image"
+    ],
+    "default_blocks": [
+        "slideshow_image",
+        "slideshow_image",
+        "slideshow_image"
+    ],
     "fields": [
         {
             "key": "group",
@@ -16,11 +22,10 @@
             "icon": "fa-layer-group"
         },
         {
-            "key": "color_scheme_id",
+            "key": "color_scheme",
             "label": "Color Scheme",
             "type": "color_scheme_selector"
         },
-
         {
             "key": "group",
             "type": "group",
@@ -30,8 +35,58 @@
             "key": "content_width",
             "label": "Content Width",
             "type": "radio",
-            "options": ["container", "full"],
+            "options": [
+                "container",
+                "full"
+            ],
             "default": "container"
+        },
+        {
+            "key": "aspect_ratio",
+            "label": "Height Ratio",
+            "type": "select",
+            "default": "wide",
+            "options": [
+                {
+                    "label": "Ultra Wide (21:9)",
+                    "value": "ultra_wide"
+                },
+                {
+                    "label": "Wide (16:9)",
+                    "value": "wide"
+                },
+                {
+                    "label": "Classic (4:3)",
+                    "value": "classic"
+                },
+                {
+                    "label": "Square (1:1)",
+                    "value": "square"
+                },
+                {
+                    "label": "Portrait (3:4)",
+                    "value": "portrait"
+                },
+                {
+                    "label": "Tall (9:16)",
+                    "value": "tall"
+                },
+                {
+                    "label": "Custom",
+                    "value": "custom"
+                }
+            ]
+        },
+        {
+            "key": "custom_aspect_ratio",
+            "label": "Custom Aspect Ratio (width : height)",
+            "type": "text",
+            "placeholder": "e.g. 16:7",
+            "default": "16:9",
+            "conditional": {
+                "field": "aspect_ratio",
+                "value": "custom"
+            }
         },
         {
             "key": "group",
@@ -108,8 +163,12 @@
             "key": "border_radius",
             "label": "Border Radius",
             "type": "radio",
-            "default": "enable",
-            "options": ["enable", "disable", "custom"]
+            "default": "disable",
+            "options": [
+                "enable",
+                "disable",
+                "custom"
+            ]
         },
         {
             "key": "custom_border_radius",

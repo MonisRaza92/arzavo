@@ -4,6 +4,7 @@
         --global-padding: {{ $customizes['global_padding'] ?? '16' }}px;
         --arzavo-background: #ffffff;
         --arzavo-heading-color: #000000;
+        --arzavo-subheading-color: #000000;
         --arzavo-invert-text-color: #000000;
         --arzavo-border-color: #d4d4d4;
         --arzavo-shadow-color: #000000;

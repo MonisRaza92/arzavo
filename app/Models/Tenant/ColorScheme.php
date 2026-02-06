@@ -8,7 +8,7 @@ class ColorScheme extends Model
 {
     protected $connection = 'tenant';
 
-    protected $fillable = ['colors'];
+    protected $fillable = ['theme_id', 'key', 'colors'];
 
     protected $casts = [
         'colors' => 'array',
@@ -28,14 +28,12 @@ class ColorScheme extends Model
         return parent::__get($key);
     }
 
-
-    public function sections()
+    public function tenantTheme()
     {
-        return $this->hasMany(Section::class, 'color_scheme_id');
-    }
-
-    public function blocks()
-    {
-        return $this->hasMany(Block::class, 'color_scheme_id');
+        return $this->belongsTo(
+            TenantTheme::class,
+            'theme_id', // FK on color_schemes table
+            'theme_id'  // owner key on tenant_themes table
+        );
     }
 }

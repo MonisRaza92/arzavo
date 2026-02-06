@@ -1,13 +1,39 @@
 <?php
 
-if (!function_exists('colors')) {
+use App\Models\Tenant\ColorScheme;
 
-    function colors(
-        $colors = null,
-        $primaryBtn = null,
-        $secondaryBtn = null,
-        $input = null
-    ) {
+if (!function_exists('scheme')) {
+
+    /**
+     * Generate CSS variables for a color scheme
+     *
+     * @param string|null $key        e.g. scheme_1
+     * @param int|null    $themeId    e.g. $theme->theme_id
+     */
+    function scheme($key)
+    {
+        $themeId = app('currentThemeId') ?? null;
+
+        if (!$key || !$themeId) {
+            return '';
+        }
+
+        // dd($key, $themeId);
+        // ✅ Resolve scheme by theme_id + key (NOT by id)
+        $scheme = ColorScheme::where('theme_id', $themeId)
+            ->where('key', $key)
+            ->first();
+
+        if (!$scheme) {
+            return '';
+        }
+
+        // ⚠️ colors structure AS-IS (no change)
+        $colors = $scheme->scheme_colors;
+        $primaryBtn = $scheme->primary_btn;
+        $secondaryBtn = $scheme->secondary_btn;
+        $input = $scheme->input;
+
         $css = '';
 
         // 🎨 Base colors
@@ -15,6 +41,7 @@ if (!function_exists('colors')) {
             $css .= "--arzavo-background: {$colors->background};";
             $css .= "--arzavo-border-color: {$colors->border};";
             $css .= "--arzavo-heading-color: {$colors->heading};";
+            $css .= "--arzavo-subheading-color: {$colors->subheading};";
             $css .= "--arzavo-paragraph-color: {$colors->paragraph};";
             $css .= "--arzavo-secondary-text-color: {$colors->secondary_text};";
             $css .= "--arzavo-invert-text-color: {$colors->invert_text};";
@@ -42,7 +69,7 @@ if (!function_exists('colors')) {
             $css .= "--arzavo-secondary-btn-hover-border: {$secondaryBtn->hover_border};";
         }
 
-        // 🔗 Link button
+        // 🧾 Input
         if ($input) {
             $css .= "--arzavo-input-background: {$input->background};";
             $css .= "--arzavo-input-text: {$input->text};";

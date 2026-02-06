@@ -201,20 +201,26 @@ window.openSectionEditor = function (sectionId) {
 
 document.addEventListener("click", function (e) {
     if (!window.ARZAVO_EDITOR_MODE) return;
-    // ✅ IGNORE form elements (THIS IS THE FIX)
-    if (e.target.closest("input, textarea, select, label, button")) {
+
+    if (e.target.closest(".menu, .block-editor-header, button, input, textarea, select, form")) {
         return;
     }
 
     const section = e.target.closest("[data-section-id]");
-    if (!section) return;
+    const block = e.target.closest("[data-block-id]");
+
+    if (!section && !block) return;
 
     e.preventDefault();
     e.stopPropagation();
 
-    const id = section.dataset.sectionId;
-    window.parent.openSectionEditor(id);
-});
+    if (block) {
+        window.parent.openBlockEditor(block.dataset.blockId);
+    } else {
+        window.parent.openSectionEditor(section.dataset.sectionId);
+    }
+}, true);
+
 
 document.addEventListener("mouseover", function (e) {
     if (!window.ARZAVO_EDITOR_MODE) return;
@@ -272,64 +278,71 @@ if (savedState) {
 window.openBlockEditor = function (blockId) {
     openEditorTab("sections");
 
-    openParentNestedBlocks(blockId);
-    // close sections
-    document.querySelectorAll(".section-edit-form").forEach((f) => {
-        f.classList.add("hidden");
-    });
-    window.currentOpenBlockId = blockId;
-    window.currentOpenSectionId = null;
+    const blockEl = document.querySelector(
+        `[data-block-id="${blockId}"]`
+    );
+    if (!blockEl) return;
 
-    // close blocks
+    const sectionId = blockEl.dataset.sectionId;
+
+    // ✅ 1. Section ki block list open karo (MISSING STEP)
+    openSectionBlockList(sectionId);
+
+    // ✅ 2. Parent nested blocks open karo
+    openParentNestedBlocks(blockId);
+
+    // ✅ 3. Forms reset
     document.querySelectorAll(".edit-block-form").forEach((f) => {
         f.classList.add("hidden");
     });
 
-    // clear preview
-    clearPreviewHighlights();
+    document.querySelectorAll(".section-edit-form").forEach((f) => {
+        f.classList.add("hidden");
+    });
 
+    // ✅ 4. Open target block form
     const editForm = document.getElementById("edit-block-form-" + blockId);
     if (!editForm) return;
 
     editForm.classList.remove("hidden");
     editForm.scrollTop = 0;
 
+    // ✅ 5. Preview highlight
+    clearPreviewHighlights();
+
     const previewDoc =
         document.getElementById("livePreviewContent")?.contentWindow?.document;
 
     const previewBlock = previewDoc?.querySelector(
-        `[data-block-id="${blockId}"]`,
+        `[data-block-id="${blockId}"]`
     );
 
     if (previewBlock) {
         previewBlock.classList.add("preview-active");
-        scrollPreviewIntoView(previewBlock, "center"); // 🔥
+        scrollPreviewIntoView(previewBlock, "center");
     }
 
     window.currentOpenBlockId = blockId;
+    window.currentOpenSectionId = null;
 };
 
-document.addEventListener("click", function (e) {
-    if (!window.ARZAVO_EDITOR_MODE) return;
-    // ✅ IGNORE form elements inside block editor
-    if (e.target.closest("input, textarea, select, label, button")) {
-        return;
+function openSectionBlockList(sectionId) {
+    const blocks = document.getElementById("blocks-" + sectionId);
+    const arrow = document.getElementById("arrow-" + sectionId);
+
+    if (blocks && blocks.classList.contains("hidden")) {
+        blocks.classList.remove("hidden");
+        arrow?.classList.add("rotate-90");
+
+        // save section state
+        blocksState[sectionId] = true;
+        localStorage.setItem(
+            "SectionBlocksState",
+            JSON.stringify(blocksState)
+        );
     }
+}
 
-    // ❌ Ignore explicit close button
-    if (e.target.closest("#blockFormClose")) {
-        return;
-    }
-
-    const block = e.target.closest("[data-block-id]");
-    if (!block) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const id = block.dataset.blockId;
-    window.parent.openBlockEditor(id);
-});
 
 function openParentNestedBlocks(blockId) {
     let current = document.getElementById(`block-${blockId}`);
@@ -502,522 +515,496 @@ document.addEventListener("turbo:before-cache", () => {
     });
 });
 
-class GradientPicker {
-    constructor(targetInput, options = {}) {
-        this.targetInput = targetInput;
-        this.options = {
-            defaultAngle: 90,
-            defaultColor: "#4f46e5",
-            presets: [
-                ["#4f46e5", "#9333ea"],
-                ["#3b82f6", "#06b6d4"],
-                ["#f59e0b", "#ef4444"],
-                ["#10b981", "#3b82f6"],
-                ["#ec4899", "#8b5cf6"],
-                ["#222222", "#000000"],
-            ],
-            ...options,
-        };
 
-        this.state = {
-            mode: "gradient",
-            angle: this.options.defaultAngle,
-            stops: [
-                { color: "#4f46e5", position: 0 },
-                { color: "#9333ea", position: 100 },
-            ],
-            solidColor: this.options.defaultColor,
-        };
 
-        this.isOpen = false;
-        this.popup = null;
-        this.init();
-    }
 
-    init() {
-        this.injectStyles();
 
-        // Parse initial value
-        if (this.targetInput.value) {
-            this.parseInput(this.targetInput.value);
+document.addEventListener("turbo:load", () => {
+
+    // Preset colors
+    const presetColors = [
+        '#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff',
+        '#ff6b6b', '#4ecdc4', '#45b7d1', '#f7b731', '#5f27cd', '#00d2d3', '#ff9ff3'
+    ];
+
+    document.querySelectorAll("[data-color-picker]").forEach(cp => {
+
+        const hidden = cp.querySelector("input[type=hidden]");
+        let initialValue = hidden.value || "#f2f2f2";
+
+        const preview = cp.querySelectorAll("[data-preview]");
+        const popup = cp.querySelector("[data-popup]");
+        const input = cp.querySelector("[data-input]");
+        const trigger = cp.querySelector("[data-trigger]");
+
+        const solidUI = cp.querySelector("[data-solid]");
+        const gradientUI = cp.querySelector("[data-gradient-ui]");
+        const toggle = cp.querySelector("[data-toggle]");
+        const swatchesContainer = cp.querySelector("[data-swatches]");
+        const presetsContainer = cp.querySelector("[data-presets]");
+        const gradientBar = cp.querySelector("[data-gradient-bar]");
+        const stopMarkers = cp.querySelector("[data-stop-markers]");
+
+        let mode = "solid";
+        let angle = 135;
+        let currentColor = initialValue;
+        let stops = [{
+            color: "#ff6b6b",
+            pos: 0
+        },
+        {
+            color: "#4ecdc4",
+            pos: 50
+        },
+        {
+            color: "#45b7d1",
+            pos: 100
         }
+        ];
 
-        // --- 1. VISUAL FIX: Input Styling ---
-        // Swatch element remove kar diya hai.
-        // Direct input ko style kar rahe hain taaki wo color box jaisa dikhe.
-        this.targetInput.classList.add("pgp-input-visual");
-        this.targetInput.readOnly = true;
-        this.updateInputVisual();
-
-        // --- Events ---
-        const toggleFn = (e) => {
+        function openPopup(e) {
             e.preventDefault();
             e.stopPropagation();
-            this.toggle();
-        };
-
-        this.targetInput.addEventListener("click", toggleFn);
-
-        // Global Click to Close
-        document.addEventListener("click", (e) => {
-            if (
-                this.isOpen &&
-                this.popup &&
-                !this.popup.contains(e.target) &&
-                e.target !== this.targetInput
-            ) {
-                this.close();
-            }
-        });
-
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && this.isOpen) this.close();
-        });
-    }
-
-    injectStyles() {
-        if (document.getElementById("pgp-styles")) return;
-        const style = document.createElement("style");
-        style.id = "pgp-styles";
-        style.textContent = `
-            /* --- INPUT STYLING (The w-32 colored box) --- */
-            .pgp-input-visual {
-                /* Text Hide Logic */
-                color: transparent !important;
-                text-shadow: none !important;
-                caret-color: transparent;
-                cursor: pointer;
-                
-                /* Box Styling */
-                width: 127px !important; /* Approx w-32 */
-                height: 38px !important;
-                background-size: cover;
-                background-position: center;
-                transition: border-color 0.2s, box-shadow 0.2s;
-            }
-            .pgp-input-visual:focus {
-                outline: none;
-                border-color: #4f46e5;
-                box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-            }
-
-            /* --- POPUP STYLING --- */
-            .pgp-popup {
-                position: fixed; 
-                z-index: 99999; 
-                width: 300px;
-                background: #fff; 
-                border-radius: 12px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-                border: 1px solid #e5e7eb; 
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                opacity: 0; 
-                transition: opacity 0.1s ease;
-                display: flex;
-                flex-direction: column;
-            }
-            .pgp-popup.visible { opacity: 1; }
-            
-            /* Tabs */
-            .pgp-tabs { display: flex; border-bottom: 1px solid #e5e7eb; padding: 4px 4px 0; background: #f9fafb; border-radius: 12px 12px 0 0; }
-            .pgp-tab {
-                flex: 1; padding: 10px; font-size: 13px; font-weight: 600; color: #6b7280;
-                background: transparent; border: none; cursor: pointer; border-bottom: 2px solid transparent;
-            }
-            .pgp-tab.active { color: #4f46e5; border-bottom-color: #4f46e5; }
-            
-            /* Content */
-            .pgp-content { padding: 16px; overflow-y: auto; max-height: 380px; }
-            
-            /* Preview */
-            .pgp-preview {
-                height: 80px; width: 100%; border-radius: 8px; margin-bottom: 16px;
-                border: 1px solid #e5e7eb; position: relative; overflow: hidden;
-                /* Checkerboard background for transparency reference */
-                background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%);
-                background-size: 10px 10px;
-            }
-            .pgp-preview-inner { position: absolute; inset: 0; }
-            
-            /* Controls */
-            .pgp-row { margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
-            .pgp-label { font-size: 12px; font-weight: 600; color: #374151; }
-            
-            /* Sliders & Inputs */
-            input[type=range].pgp-slider { -webkit-appearance: none; width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; outline: none; }
-            input[type=range].pgp-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #4f46e5; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-            
-            /* Stops */
-            .pgp-stops { max-height: 120px; overflow-y: auto; margin: 0 -8px; padding: 0 8px; }
-            .pgp-stop-item { display: flex; align-items: center; gap: 8px; background: #f9fafb; padding: 6px; border-radius: 6px; margin-bottom: 6px; border: 1px solid #f3f4f6; }
-            .pgp-color-input { width: 32px; height: 32px; padding: 0; border: none; border-radius: 4px; overflow: hidden; cursor: pointer; }
-            .pgp-color-input::-webkit-color-swatch-wrapper { padding: 0; }
-            .pgp-color-input::-webkit-color-swatch { border: none; }
-            
-            /* Buttons */
-            .pgp-btn-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border: none; background: #fee2e2; color: #ef4444; border-radius: 4px; cursor: pointer; }
-            .pgp-btn-add { width: 100%; padding: 8px; background: #eff6ff; color: #4f46e5; border: 1px dashed #c7d2fe; border-radius: 6px; cursor: pointer; font-size: 12px; margin-top: 8px; }
-            
-            /* Presets */
-            .pgp-presets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 12px; }
-            .pgp-preset { width: 100%; aspect-ratio: 1; border-radius: 4px; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s; }
-            .pgp-preset:hover { transform: scale(1.1); }
-            
-            /* Footer */
-            .pgp-footer { padding: 12px 16px; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 8px; background: #f9fafb; border-radius: 0 0 12px 12px; }
-            .pgp-btn { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid transparent; }
-            .pgp-btn-secondary { background: #fff; border-color: #d1d5db; color: #374151; }
-            .pgp-btn-primary { background: #111827; color: #fff; }
-        `;
-        document.head.appendChild(style);
-    }
-
-    createPopup() {
-        this.popup = document.createElement("div");
-        this.popup.className = "pgp-popup";
-        this.popup.addEventListener("click", (e) => e.stopPropagation());
-        document.body.appendChild(this.popup);
-        this.render();
-    }
-
-    render() {
-        if (!this.popup) return;
-
-        let html = `
-            <div class="pgp-tabs">
-                <button class="pgp-tab ${
-                    this.state.mode === "gradient" ? "active" : ""
-                }" data-tab="gradient">Gradient</button>
-                <button class="pgp-tab ${
-                    this.state.mode === "solid" ? "active" : ""
-                }" data-tab="solid">Solid Color</button>
-            </div>
-            <div class="pgp-content">
-        `;
-
-        const currentStyle = this.getGradientString();
-        html += `<div class="pgp-preview"><div class="pgp-preview-inner" style="background: ${currentStyle}"></div></div>`;
-
-        html += `<div class="pgp-presets">`;
-        this.options.presets.forEach((p, i) => {
-            const bg = Array.isArray(p)
-                ? `linear-gradient(135deg, ${p[0]}, ${p[1]})`
-                : p;
-            html += `<div class="pgp-preset" style="background: ${bg}" data-preset="${i}"></div>`;
-        });
-        html += `</div>`;
-
-        if (this.state.mode === "gradient") {
-            html += `
-                <div class="pgp-row">
-                    <span class="pgp-label">Angle: ${this.state.angle}°</span>
-                    <input type="range" class="pgp-slider" min="0" max="360" value="${this.state.angle}" data-action="angle">
-                </div>
-                <div class="pgp-label" style="margin-bottom:8px">Color Stops</div>
-                <div class="pgp-stops"></div>
-                <button class="pgp-btn-add">+ Add Stop</button>
-            `;
-        } else {
-            html += `
-                <div class="pgp-row" style="margin-top: 16px;">
-                    <span class="pgp-label">Select Color</span>
-                    <input type="color" value="${this.hexToRgbInput(
-                        this.state.solidColor,
-                    )}" data-action="solid-input" style="width: 100%; height: 40px; cursor: pointer;">
-                </div>
-                <div class="pgp-row">
-                    <span class="pgp-label">Hex Code</span>
-                    <input type="text" value="${
-                        this.state.solidColor
-                    }" data-action="solid-text" style="width: 80px; padding: 4px; border: 1px solid #d1d5db; border-radius: 4px; text-transform: uppercase;">
-                </div>
-            `;
+            popup.classList.remove("hidden");
         }
-        html += `</div>
-            <div class="pgp-footer">
-                <button class="pgp-btn pgp-btn-secondary" data-action="cancel">Cancel</button>
-                <button class="pgp-btn pgp-btn-primary" data-action="apply">Apply</button>
-            </div>`;
 
-        this.popup.innerHTML = html;
+        trigger.addEventListener("mousedown", openPopup);
+        input.addEventListener("mousedown", openPopup);
 
-        if (this.state.mode === "gradient") this.renderStopsList();
-        this.bindEvents();
-    }
 
-    renderStopsList() {
-        const container = this.popup.querySelector(".pgp-stops");
-        if (!container) return;
-        container.innerHTML = "";
-        this.state.stops.forEach((stop, index) => {
-            const div = document.createElement("div");
-            div.className = "pgp-stop-item";
-            div.innerHTML = `
-                <input type="color" class="pgp-color-input" value="${this.hexToRgbInput(
-                    stop.color,
-                )}" data-index="${index}">
-                <input type="range" class="pgp-slider" min="0" max="100" value="${
-                    stop.position
-                }" data-index="${index}" style="flex:1">
-                <span style="font-size:11px; width:28px; text-align:right">${
-                    stop.position
-                }%</span>
-                ${
-                    this.state.stops.length > 2
-                        ? `<button class="pgp-btn-icon" data-action="remove" data-index="${index}">×</button>`
-                        : ""
-                }
-            `;
-            div.querySelectorAll("input").forEach((inp) =>
-                inp.addEventListener("click", (e) => e.stopPropagation()),
-            );
-            container.appendChild(div);
-        });
-    }
-
-    bindEvents() {
-        this.popup.querySelectorAll(".pgp-tab").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                this.state.mode = btn.dataset.tab;
-                this.render();
-            });
+        document.addEventListener("mousedown", e => {
+            if (!cp.contains(e.target)) {
+                popup.classList.add("hidden");
+            }
         });
 
-        this.popup.addEventListener("input", (e) => {
-            const target = e.target;
-            const action = target.dataset.action;
-            const index = target.dataset.index;
 
-            if (action === "angle") {
-                this.state.angle = parseInt(target.value);
-                this.popup.querySelector(".pgp-label").textContent =
-                    `Angle: ${this.state.angle}°`;
-            } else if (action === "solid-input") {
-                this.state.solidColor = target.value;
-                const textInput = this.popup.querySelector(
-                    '[data-action="solid-text"]',
-                );
-                if (textInput) textInput.value = target.value;
-            } else if (index !== undefined) {
-                if (target.type === "color")
-                    this.state.stops[index].color = target.value;
-                if (target.type === "range") {
-                    this.state.stops[index].position = parseInt(target.value);
-                    target.nextElementSibling.textContent = target.value + "%";
+        /* ---------------- CORE UPDATE ---------------- */
+        function update(value) {
+            hidden.value = value;
+            input.value = value;
+            preview.forEach(p => p.style.background = value);
+        }
+
+        /* ---------------- COLOR UTILITIES ---------------- */
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function rgbToHex(r, g, b) {
+            return "#" + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? "0" + hex : hex;
+            }).join("");
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            const max = Math.max(r, g, b),
+                min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r:
+                        h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+                        break;
+                    case g:
+                        h = ((b - r) / d + 2) / 6;
+                        break;
+                    case b:
+                        h = ((r - g) / d + 4) / 6;
+                        break;
                 }
             }
-            this.updateInternalPreview();
+            return {
+                h: h * 360,
+                s: s * 100,
+                l: l * 100
+            };
+        }
+
+        function hslToRgb(h, s, l) {
+            h /= 360;
+            s /= 100;
+            l /= 100;
+            let r, g, b;
+
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1 / 6) return p + (q - p) * 6 * t;
+                    if (t < 1 / 2) return q;
+                    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1 / 3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1 / 3);
+            }
+            return {
+                r: Math.round(r * 255),
+                g: Math.round(g * 255),
+                b: Math.round(b * 255)
+            };
+        }
+
+        /* ---------------- SWATCHES GENERATION ---------------- */
+        function generateSwatches(baseColor) {
+            const rgb = hexToRgb(baseColor);
+            if (!rgb) return [];
+
+            const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+            const swatches = [];
+
+            // Lightness variations
+            for (let i = 0; i < 5; i++) {
+                const newL = Math.max(10, Math.min(90, hsl.l + (i - 2) * 15));
+                const newRgb = hslToRgb(hsl.h, hsl.s, newL);
+                swatches.push(rgbToHex(newRgb.r, newRgb.g, newRgb.b));
+            }
+
+            // Saturation variations
+            for (let i = 0; i < 5; i++) {
+                const newS = Math.max(10, Math.min(100, hsl.s + (i - 2) * 20));
+                const newRgb = hslToRgb(hsl.h, newS, hsl.l);
+                swatches.push(rgbToHex(newRgb.r, newRgb.g, newRgb.b));
+            }
+
+            return swatches;
+        }
+
+        function renderSwatches(color) {
+            if (!swatchesContainer) return;
+
+            const swatches = generateSwatches(color);
+            swatchesContainer.innerHTML = swatches.map(swatch => `
+                    <button type="button" 
+                        class="w-full aspect-square border-rounded border-primary hover:scale-110 transition-all cursor-pointer"
+                        style="background: ${swatch}"
+                        data-swatch="${swatch}">
+                    </button>
+                `).join('');
+
+            swatchesContainer.querySelectorAll('[data-swatch]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const color = btn.dataset.swatch;
+                    currentColor = color;
+                    cp.querySelector('[data-solid-picker]').value = color;
+                    update(color);
+                    renderSwatches(color);
+                });
+            });
+        }
+
+        /* ---------------- PRESETS ---------------- */
+        function renderPresets() {
+            if (!presetsContainer) return;
+
+            presetsContainer.innerHTML = presetColors.map(color => `
+                    <button type="button" 
+                        class="w-full aspect-square border-rounded border-primary hover:scale-110 transition-all cursor-pointer"
+                        style="background: ${color}"
+                        data-preset="${color}">
+                    </button>
+                `).join('');
+
+            presetsContainer.querySelectorAll('[data-preset]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const color = btn.dataset.preset;
+                    currentColor = color;
+                    cp.querySelector('[data-solid-picker]').value = color;
+                    update(color);
+                    renderSwatches(color);
+                });
+            });
+        }
+
+        /* ---------------- SOLID MODE ---------------- */
+        const solidPicker = cp.querySelector("[data-solid-picker]");
+        if (solidPicker) {
+            solidPicker.addEventListener("input", e => {
+                currentColor = e.target.value;
+                update(currentColor);
+                renderSwatches(currentColor);
+            });
+        }
+
+        input.addEventListener("input", e => {
+            const val = e.target.value;
+            if (/^#[0-9A-F]{6}$/i.test(val)) {
+                currentColor = val;
+                if (solidPicker) solidPicker.value = val;
+                renderSwatches(val);
+            }
+            update(val);
         });
 
-        this.popup.addEventListener("click", (e) => {
-            const target = e.target;
-            const action = target.dataset.action;
+        /* ---------------- MODE TOGGLE ---------------- */
+        toggle?.addEventListener("click", e => {
+            const btn = e.target.closest("button");
+            if (!btn) return;
 
-            if (action === "remove") {
-                this.state.stops.splice(parseInt(target.dataset.index), 1);
-                this.render();
-            } else if (target.classList.contains("pgp-btn-add")) {
-                const lastPos =
-                    this.state.stops[this.state.stops.length - 1].position;
-                this.state.stops.push({
-                    color: "#888888",
-                    position: Math.min(lastPos + 20, 100),
-                });
-                this.render();
-            } else if (target.classList.contains("pgp-preset")) {
-                const preset = this.options.presets[target.dataset.preset];
-                if (Array.isArray(preset)) {
-                    this.state.mode = "gradient";
-                    this.state.stops = [
-                        { color: preset[0], position: 0 },
-                        { color: preset[1], position: 100 },
-                    ];
+            mode = btn.dataset.mode;
+            solidUI.classList.toggle("hidden", mode !== "solid");
+            gradientUI.classList.toggle("hidden", mode !== "gradient");
+
+            toggle.querySelectorAll("button").forEach(b => {
+                if (b === btn) {
+                    b.classList.add("bg-white", "shadow-sm", "text-gray-900");
+                    b.classList.remove("text-gray-600");
                 } else {
-                    this.state.mode = "solid";
-                    this.state.solidColor = preset;
+                    b.classList.remove("bg-white", "shadow-sm", "text-gray-900");
+                    b.classList.add("text-gray-600");
                 }
-                this.render();
-            } else if (action === "cancel") {
-                this.close();
-            } else if (action === "apply") {
-                this.apply();
+            });
+
+            if (mode === "gradient") {
+                buildGradient();
             }
         });
 
-        const solidText = this.popup.querySelector(
-            '[data-action="solid-text"]',
-        );
-        if (solidText) {
-            solidText.addEventListener("change", (e) => {
-                this.state.solidColor = e.target.value;
-                this.render();
+        /* ---------------- ANGLE WHEEL ---------------- */
+        const wheel = cp.querySelector("[data-angle-wheel]");
+        const indicator = cp.querySelector("[data-angle-indicator]");
+        const angleDisplay = cp.querySelector("[data-angle-display]");
+
+        function updateAngle(newAngle) {
+            angle = ((newAngle % 360) + 360) % 360;
+            if (indicator) indicator.style.transform = `rotate(${angle}deg)`;
+            if (angleDisplay) angleDisplay.textContent = `${Math.round(angle)}°`;
+            buildGradient();
+        }
+
+        wheel?.addEventListener("mousedown", e => {
+            e.stopPropagation();
+            const moveHandler = (e) => {
+                const rect = wheel.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const newAngle = Math.round((Math.atan2(y, x) * 180) / Math.PI + 90);
+                updateAngle(newAngle);
+            };
+
+            moveHandler(e);
+
+            const upHandler = () => {
+                document.removeEventListener("mousemove", moveHandler);
+                document.removeEventListener("mouseup", upHandler);
+            };
+
+            document.addEventListener("mousemove", moveHandler);
+            document.addEventListener("mouseup", upHandler);
+        });
+
+        /* ---------------- QUICK ANGLES ---------------- */
+        cp.querySelectorAll("[data-quick-angle]").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                updateAngle(parseInt(btn.dataset.quickAngle));
+            });
+        });
+
+        /* ---------------- INTERACTIVE STOP MARKERS ---------------- */
+        function renderStopMarkers() {
+            if (!stopMarkers) return;
+            stopMarkers.innerHTML = '';
+
+            stops.forEach((stop, index) => {
+                const marker = document.createElement('div');
+                marker.className = 'stop-marker';
+                marker.style.left = `${stop.pos}%`;
+                marker.setAttribute('data-marker-index', index);
+                marker.innerHTML = `<div class="stop-marker-handle" style="background: ${stop.color}"></div>`;
+
+                // DRAG FUNCTIONALITY - PROPERLY IMPLEMENTED
+                marker.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    const rect = stopMarkers.getBoundingClientRect();
+                    marker.style.zIndex = '10';
+                    document.body.style.cursor = 'grabbing';
+
+                    const moveHandler = (e) => {
+                        e.preventDefault();
+                        const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+                        const percentage = Math.round((x / rect.width) * 100);
+
+                        stop.pos = percentage;
+                        marker.style.left = `${percentage}%`;
+
+                        buildGradient();
+
+                        // Update the corresponding range slider
+                        const stopRow = stopsBox.children[index];
+                        if (stopRow) {
+                            const rangeInput = stopRow.querySelector('input[type="range"]');
+                            const posDisplay = stopRow.querySelector('.text-xs.font-bold');
+                            if (rangeInput) rangeInput.value = percentage;
+                            if (posDisplay) posDisplay.textContent = `${percentage}%`;
+                        }
+                    };
+
+                    const upHandler = () => {
+                        marker.style.zIndex = '';
+                        document.body.style.cursor = '';
+                        document.removeEventListener('mousemove', moveHandler);
+                        document.removeEventListener('mouseup', upHandler);
+                        renderStops(); // Final update
+                    };
+
+                    document.addEventListener('mousemove', moveHandler);
+                    document.addEventListener('mouseup', upHandler);
+                });
+
+                stopMarkers.appendChild(marker);
             });
         }
-    }
 
-    updateInternalPreview() {
-        const preview = this.popup.querySelector(".pgp-preview-inner");
-        if (preview) preview.style.background = this.getGradientString();
-    }
+        /* ---------------- GRADIENT STOPS ---------------- */
+        const stopsBox = cp.querySelector("[data-stops]");
+        let sortableInstance = null;
 
-    getGradientString() {
-        if (this.state.mode === "solid") return this.state.solidColor;
-        const sorted = [...this.state.stops].sort(
-            (a, b) => a.position - b.position,
-        );
-        return `linear-gradient(${this.state.angle}deg, ${sorted
-            .map((s) => `${s.color} ${s.position}%`)
-            .join(", ")})`;
-    }
+        function renderStops() {
+            if (!stopsBox) return;
 
-    parseInput(value) {
-        if (!value) return;
-        if (value.includes("gradient")) {
-            this.state.mode = "gradient";
-            const gradientMatch = value.match(
-                /linear-gradient\(([^,]+)deg,\s*(.+)\)/,
-            );
-            if (gradientMatch) {
-                this.state.angle = parseInt(gradientMatch[1]) || 90;
-                const parts = gradientMatch[2]
-                    .split(/,(?![^(]*\))/)
-                    .map((s) => s.trim());
-                this.state.stops = parts.map((part, i) => {
-                    const match = part.match(/(.+?)\s+(\d+)%?/);
-                    return match
-                        ? { color: match[1], position: parseInt(match[2]) }
-                        : {
-                              color: part,
-                              position: (i / (parts.length - 1)) * 100,
-                          };
-                });
+            stopsBox.innerHTML = "";
+
+            stops.forEach((stop, i) => {
+                const row = document.createElement("div");
+                row.setAttribute('data-stop-index', i);
+                row.className = "flex items-center gap-4 p-2 w-full bg-secondary border-rounded border-primary";
+
+                row.innerHTML = `
+                        <input type="color" value="${stop.color}"
+                            class="w-12 h-12 border-2 border-white border-rounded cursor-pointer hover:scale-105 transition-all flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <input type="range" min="0" max="100" value="${stop.pos}"
+                                class="w-full" style="color: ${stop.color}">
+                            <div class="flex items-center justify-between mt-1 px-1">
+                                <span class="text-xs text-gray-500 font-medium">Position</span>
+                                <span class="text-xs font-bold text-gray-700">${stop.pos}%</span>
+                            </div>
+                        </div>
+                        ${stops.length > 2 ? `
+                        <button type="button" class="w-9 h-9 border-rounded bg-primary text-tertiary hover:bg-red-100 transition-all font-bold text-lg flex-shrink-0">
+                            <i class="fa-solid fa-trash-alt"></i>
+                        </button>` : '<div class="w-9 shrink-0"></div>'}
+                    `;
+
+                const dragHandle = row.querySelector('.drag-handle');
+                const colorInput = row.querySelector('input[type="color"]');
+                const rangeInput = row.querySelector('input[type="range"]');
+                const posDisplay = row.querySelector('.text-xs.font-bold');
+                const deleteBtn = row.querySelector('button');
+
+                colorInput.oninput = (e) => {
+                    e.stopPropagation();
+                    stop.color = colorInput.value;
+                    rangeInput.style.color = stop.color;
+                    buildGradient();
+                    renderStopMarkers();
+                };
+
+                rangeInput.oninput = (e) => {
+                    e.stopPropagation();
+                    stop.pos = parseInt(rangeInput.value);
+                    posDisplay.textContent = `${stop.pos}%`;
+                    buildGradient();
+                    renderStopMarkers();
+                };
+
+                if (deleteBtn) {
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        stops.splice(i, 1);
+                        renderStops();
+                        buildGradient();
+                        renderStopMarkers();
+                    };
+                }
+
+                stopsBox.appendChild(row);
+            });
+
+            // Destroy previous sortable instance if exists
+            if (sortableInstance) {
+                sortableInstance.destroy();
             }
-        } else {
-            this.state.mode = "solid";
-            this.state.solidColor = value;
-        }
-    }
-
-    toggle() {
-        this.isOpen ? this.close() : this.open();
-    }
-
-    open() {
-        document.querySelectorAll(".pgp-popup").forEach((p) => p.remove());
-        if (!this.popup) this.createPopup();
-
-        // --- 2. SMART POSITIONING FIX ---
-
-        // Step A: Calculate Dimensions
-        const rect = this.targetInput.getBoundingClientRect();
-        const popupHeight = 460; // Max estimated height
-        const viewportHeight = window.innerHeight;
-
-        const spaceBelow = viewportHeight - rect.bottom;
-        const spaceAbove = rect.top;
-
-        // Step B: Decision Logic
-        let openUpwards = false;
-
-        if (spaceBelow >= popupHeight) {
-            // Case 1: Enough space below -> Open Down
-            openUpwards = false;
-        } else if (spaceAbove >= popupHeight) {
-            // Case 2: Not enough below, but enough above -> Open Up
-            openUpwards = true;
-        } else {
-            // Case 3: Tight fit! Neither side has full space.
-            // Pick the side with MORE space.
-            openUpwards = spaceAbove > spaceBelow;
-
-            // Optional: You can force a max-height on the popup content here if needed
-            // this.popup.style.maxHeight = (openUpwards ? spaceAbove : spaceBelow) - 20 + 'px';
         }
 
-        // Step C: Apply Position
-        if (openUpwards) {
-            this.popup.style.top = rect.top - popupHeight - 8 + "px";
-            this.popup.style.transformOrigin = "bottom left";
+        cp.querySelector("[data-add-stop]")?.addEventListener("click", (e) => {
+            e.stopPropagation();
 
-            // Extra Safety: Don't go off top of screen
-            if (parseInt(this.popup.style.top) < 0) {
-                this.popup.style.top = "10px";
+            // Find the biggest gap between stops
+            let maxGap = 0;
+            let gapStart = 0;
+
+            const sortedStops = [...stops].sort((a, b) => a.pos - b.pos);
+
+            for (let i = 0; i < sortedStops.length - 1; i++) {
+                const gap = sortedStops[i + 1].pos - sortedStops[i].pos;
+                if (gap > maxGap) {
+                    maxGap = gap;
+                    gapStart = sortedStops[i].pos;
+                }
             }
-        } else {
-            this.popup.style.top = rect.bottom + 8 + "px";
-            this.popup.style.transformOrigin = "top left";
-        }
 
-        // Horizontal Safety
-        if (rect.left + 300 > window.innerWidth) {
-            this.popup.style.left = window.innerWidth - 310 + "px";
-        } else {
-            this.popup.style.left = rect.left + "px";
-        }
+            const newPos = gapStart + Math.round(maxGap / 2);
 
-        // Re-parse current value
-        if (this.targetInput.value) this.parseInput(this.targetInput.value);
+            stops.push({
+                color: "#ffffff",
+                pos: newPos
+            });
 
-        this.render();
-        requestAnimationFrame(() => {
-            this.popup.classList.add("visible");
-            this.isOpen = true;
+            renderStops();
+            buildGradient();
+            renderStopMarkers();
         });
-    }
 
-    close() {
-        if (this.popup) {
-            this.popup.classList.remove("visible");
-            setTimeout(() => {
-                if (this.popup) this.popup.remove();
-                this.popup = null;
-            }, 100);
+        function buildGradient() {
+            const sortedStops = [...stops].sort((a, b) => a.pos - b.pos);
+            const css = `linear-gradient(${angle}deg, ${sortedStops.map(s => `${s.color} ${s.pos}%`).join(", ")
+                })`;
+            update(css);
+
+            if (gradientBar) {
+                gradientBar.style.background = `linear-gradient(90deg, ${sortedStops.map(s => `${s.color} ${s.pos}%`).join(", ")
+                    })`;
+            }
         }
-        this.isOpen = false;
-    }
 
-    apply() {
-        this.targetInput.value = this.getGradientString();
-        this.updateInputVisual();
-        this.targetInput.dispatchEvent(new Event("input", { bubbles: true }));
-        this.targetInput.dispatchEvent(new Event("change", { bubbles: true }));
-        this.close();
-    }
+        /* ---------------- INITIALIZATION ---------------- */
+        updateAngle(angle);
+        renderStops();
+        renderSwatches(currentColor);
+        renderPresets();
+        renderStopMarkers();
 
-    updateInputVisual() {
-        // --- 3. APPLY GRADIENT TO INPUT BACKGROUND ---
-        this.targetInput.style.background = this.targetInput.value;
-        // Text is hidden via CSS (.pgp-input-visual)
-    }
-
-    hexToRgbInput(color) {
-        if (!color || !color.startsWith("#")) return "#000000";
-        if (color.length === 7) return color;
-        if (color.length === 4)
-            return (
-                "#" +
-                color[1] +
-                color[1] +
-                color[2] +
-                color[2] +
-                color[3] +
-                color[3]
-            );
-        return color;
-    }
-}
-
-// Initializer
-function initGradientPickers() {
-    document.querySelectorAll("[data-gradient-picker]").forEach((input) => {
-        if (!input._pgp) input._pgp = new GradientPicker(input);
+        if (mode === "solid") {
+            update(currentColor);
+            if (solidPicker) solidPicker.value = currentColor;
+        } else {
+            buildGradient();
+        }
     });
-}
-
-if (typeof document !== "undefined") {
-    document.addEventListener("DOMContentLoaded", initGradientPickers);
-    document.addEventListener("turbo:load", initGradientPickers);
-}
-// Expose globally
-window.GradientPicker = GradientPicker;
-window.initGradientPickers = initGradientPickers;
+});

@@ -82,7 +82,7 @@
             "key": "border_radius",
             "label": "Border Radius",
             "type": "radio",
-            "default": "enable",
+            "default": "disable",
             "options": ["enable", "disable", "custom"]
         },
         {

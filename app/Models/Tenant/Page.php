@@ -19,9 +19,4 @@ class Page extends Model
         'is_system_page'=> 'boolean',
         'is_active' => 'boolean',
     ];
-
-    public function sections()
-    {
-        return $this->hasMany(Section::class)->orderBy('order');
-    }
 }

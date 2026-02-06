@@ -34,7 +34,10 @@
         "files": [
             "app/Helpers/ColorSchemeHelper.php",
             "app/Helpers/MediaHelper.php",
-            "app/Helpers/FormatSizeHelper.php"
+            "app/Helpers/FormatSizeHelper.php",
+            "app/Helpers/RenderBlockHelper.php",
+            "app/Helpers/SpacingHelper.php",
+            "app/Helpers/GlobalThemeDesign.php"
         ]
     },
     "autoload-dev": {

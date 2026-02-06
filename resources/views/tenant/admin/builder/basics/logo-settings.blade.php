@@ -34,17 +34,17 @@
 
                 <!-- Upload Area -->
                 <div data-content-wrapper>
-                    <input type="hidden" name="{{ $key }}" id="{{ $key }}" @if($customizes[$key] !==null) value="{{ $customizes[$key] }}" @endif>
+                    <input type="hidden" name="{{ $key }}" id="{{ $key }}" @if(($customizes[$key] ?? null) !== null) value="{{ $customizes[$key] ?? '' }}" @endif>
 
                     <div class="border-primary border-rounded px-2 bg-secondary flex flex-col justify-center items-center aspect-video cursor-pointer group relative overflow-hidden"
                        style="border-width: 2px; border-style: dashed;"
                         onclick="openContentPicker('{{ $key }}', 'image')">
 
-                        <img data-content-preview @if($customizes[$key] !==null) src="{{ media($customizes[$key]) }}" @endif
-                            class="{{ $customizes[$key] === null ? 'hidden' : '' }} object-contain border-rounded">
+                        <img data-content-preview @if(($customizes[$key] ?? null) !== null) src="{{ media($customizes[$key]) }}" @endif
+                            class="{{  empty($customizes[$key] ?? null) ? 'hidden' : '' }} object-contain border-rounded">
 
                         <div data-content-placeholder
-                            class="flex flex-col items-center text-tertiary h-full justify-center {{ $customizes[$key] === null ? '' : 'hidden' }}">
+                            class="flex flex-col items-center text-tertiary h-full justify-center {{  empty($customizes[$key] ?? null) ? '' : 'hidden' }}">
                             <i class="fa-solid {{$item['icon']}} text-3xl mb-2"></i>
                             Upload {{ $item['label'] }}
                         </div>
