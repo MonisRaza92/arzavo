@@ -37,6 +37,8 @@
     "settings": {
         "background_type": "image",
         "direction": "vertical",
+        "height": "full",
+        "mobile_height": "full",
         "mobile_direction": "1",
         "alignment": "start",
         "position": "end",

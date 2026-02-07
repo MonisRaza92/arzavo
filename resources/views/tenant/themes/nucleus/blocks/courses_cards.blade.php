@@ -1,5 +1,6 @@
 @php
     $b = $block['settings'] ?? [];
+    $scheme = $block['color_scheme'] ?? 'scheme_1';
 
     $colsDesktop = $b['columns_desktop'] ?? 4;
     $colsTablet = $b['columns_tablet'] ?? 2;
@@ -28,21 +29,22 @@
     }
 </style>
 
-<div class="courses-grid-{{ $block['id'] }} w-full" data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}">
+<div class="courses-grid-{{ $block['id'] }} w-full" data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" style="{{ scheme($scheme) }}">
 
     @forelse ($courses->take($maxItems) as $course)
 
-        <div class="arzavo-border-rounded arzavo-border p-4">
-            {!! renderBlocks($block['blocks']) !!}
-        </div>
+        <a href="{{ route('tenant.view.course', $course->slug) }}"
+            class="arzavo-border-rounded arzavo-border p-4 space-y-4 arzavo-background">
+            {!! renderBlocks($block['blocks'],['course'=> $course]) !!}
+        </a>
 
     @empty
 
         {{-- Demo fallback --}}
         @for ($i = 1; $i <= $maxItems; $i++)
-            <div class="arzavo-border-rounded arzavo-border p-4">
+            <a class="arzavo-border-rounded arzavo-border p-4 space-y-4 arzavo-background">
                 {!! renderBlocks($block['blocks']) !!}
-            </div>
+            </a>
         @endfor
 
     @endforelse

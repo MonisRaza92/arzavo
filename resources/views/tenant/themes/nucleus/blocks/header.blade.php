@@ -22,7 +22,7 @@ $pb = $s['padding_bottom'] ?? 40;
     class="
         header-s-{{ $block['id'] }}
         s-component
-        mx-auto arzavo-background
+        mx-auto
         flex w-full
         {{ $direction === 'horizontal' ? 'flex-row' : 'flex-col' }}
         items-{{ $alignment }}

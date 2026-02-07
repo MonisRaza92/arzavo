@@ -44,7 +44,7 @@
 @endphp
 
 
-<p data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" style="
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" style="
         padding-top: {{ $pt }}px;
         padding-bottom: {{ $pb }}px;
         padding-left: {{ $pl }}px;
@@ -82,4 +82,4 @@
             <i class="fa-solid fa-check-to-slot"></i> Badge
         </span>
     @endif
-</p>
+</div>

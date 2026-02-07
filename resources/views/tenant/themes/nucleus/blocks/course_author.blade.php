@@ -44,7 +44,7 @@
 @endphp
 
 
-<p data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" style="
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" style="
         padding-top: {{ $pt }}px;
         padding-bottom: {{ $pb }}px;
         padding-left: {{ $pl }}px;
@@ -58,30 +58,30 @@
         {{ $mAlignmentClass }}
         {{ $alignmentClass }}
     ">
-<div class="flex items-center gap-2">
-    @if ($course->author ?? null)
-        @if ($user->profile_picture ?? null)
-            <img src="{{ media($user->profile_picture) }}" class="border-rounded logo aspect-square object-cover w-full"
-                alt="{{ $user->fname }}">
+    <div class="flex items-center gap-2">
+        @if ($course->author ?? null)
+            @if ($user->profile_picture ?? null)
+                <img src="{{ media($user->profile_picture) }}" class="border-rounded logo aspect-square object-cover w-full"
+                    alt="{{ $user->fname }}">
+            @else
+                <h2
+                    class="font-bold border-rounded text-xl flex justify-center items-center logo aspect-square bg-invert text-invert">
+                    {{ strtoupper(substr($user->fname, 0, 1)) }}
+                </h2>
+            @endif
         @else
             <h2
                 class="font-bold border-rounded text-xl flex justify-center items-center logo aspect-square bg-invert text-invert">
-                {{ strtoupper(substr($user->fname, 0, 1)) }}
+                A
             </h2>
         @endif
-    @else
-        <h2
-            class="font-bold border-rounded text-xl flex justify-center items-center logo aspect-square bg-invert text-invert">
-            A
-        </h2>
-    @endif
-    <div>
-        <p class="font-semibold text-primary">
-            {{ $course->author->fname ?? 'Arzavo' }} {{ $course->author->lname ?? 'Ems' }}
-        </p>
-        <p class="text-tertiary" style="font-size: var(--arzavo-secondary-text-font-size);">
-            {{ $course->author->email ?? 'arzavoems@gmail.com' }}
-        </p>
+        <div>
+            <p class="font-semibold text-primary">
+                {{ $course->author->fname ?? 'Arzavo' }} {{ $course->author->lname ?? 'Ems' }}
+            </p>
+            <p class="text-tertiary" style="font-size: var(--arzavo-secondary-text-font-size);">
+                {{ $course->author->email ?? 'arzavoems@gmail.com' }}
+            </p>
+        </div>
     </div>
 </div>
-</p>

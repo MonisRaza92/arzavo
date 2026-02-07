@@ -1,0 +1,36 @@
+{
+    "type": "custom_section",
+    "name": "Course: Collection",
+    "icon": "fa-list",
+    "order": 0,
+    "category": "Content",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings":{
+                "alignment": "start",
+                "position": "start",
+                "padding_bottom": "16"
+            }
+        },
+        {
+            "type": "courses_cards",
+            "settings": {
+                "gap": "16"
+            }
+        }
+    ],
+    "settings": {
+        "background_type": "color",
+        "height": "auto",
+        "mobile_height": "auto",
+        "direction": "vertical",
+        "mobile_direction": "1",
+        "alignment": "center",
+        "position": "center",
+        "gap": "24",
+        "padding_top": "0",
+        "padding_bottom": "16"
+    }
+}

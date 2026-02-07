@@ -3,14 +3,14 @@
 use Illuminate\Support\Facades\View;
 
 if (!function_exists('renderBlocks')) {
-    function renderBlocks(array $blocks, ?string $theme = null): string
+    function renderBlocks(array $blocks, array $context = [], ?string $theme = null): string
     {
         $theme = $theme ?? app('currentThemeSlug');
         $html = '';
 
         foreach ($blocks as $block) {
 
-            // Skip inactive blocks
+            // inactive block skip
             if (empty($block['is_active'])) {
                 continue;
             }
@@ -21,10 +21,13 @@ if (!function_exists('renderBlocks')) {
                 continue;
             }
 
-            $html .= View::make($view, [
-                'block' => $block,
-                'theme' => $theme,
-            ])->render();
+            $html .= View::make($view, array_merge(
+                $context,          // 👈 jo bhi bheja, sab
+                [
+                    'block' => $block,
+                    'theme' => $theme,
+                ]
+            ))->render();
         }
 
         return $html;

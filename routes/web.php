@@ -82,7 +82,7 @@ function registerDomains($domain)
             return app(ThemePageController::class)->system('courses');
         })->name('tenant.courses');
 
-        Route::get('/view/course', function () {
+        Route::get('/view/course/{slug}', function () {
             return app(ThemePageController::class)->system('view/course');
         })->name('tenant.view.course');
         Route::get('/preview/{theme}/{slug}', function ($slug, $theme) {

@@ -195,7 +195,7 @@ class BlockController
     public function update(Request $request, $themeId, $pageId, $sectionId, $blockId)
     {
         $validated = $request->validate([
-            'color_scheme' => 'nullable|exists:color_schemes,id',
+            'color_scheme' => 'nullable',
             'settings' => 'nullable|array',
         ]);
 
