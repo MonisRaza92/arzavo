@@ -11,7 +11,7 @@ $mb = $s['margin_bottom'] ?? '0';
 
 @endphp
 
-<div data-section-id="{{ $section->id }}" data-name="{{ $section->name }}" 
+<div data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}" 
     style="
     {{ scheme($scheme) }}
     @if ($bgType === 'image' && $bgImage)

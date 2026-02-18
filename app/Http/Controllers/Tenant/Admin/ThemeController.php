@@ -16,10 +16,12 @@ class ThemeController
         $themes = Theme::active()->get();
 
         $installedThemes = TenantTheme::all()->keyBy('theme_id');
+        $tenantThemes = TenantTheme::latest()->get();
 
         return view('tenant.admin.themes.index', compact(
             'themes',
-            'installedThemes'
+            'installedThemes',
+            'tenantThemes'
         ));
     }
 
@@ -79,6 +81,35 @@ class ThemeController
         session()->forget('preview_theme_id');
 
         return back()->with('success', 'Theme published successfully');
+    }
+
+    public function copy($tenantThemeId)
+    {
+        $tenantTheme = TenantTheme::findOrFail($tenantThemeId);
+
+        DB::transaction(function () use ($tenantTheme) {
+
+            // 1️⃣ duplicate DB record
+            $newTheme = $tenantTheme->replicate();
+
+            $newTheme->status = 'draft';
+            $newTheme->is_active = false;
+            $newTheme->published_at = null;
+            $newTheme->installed_at = now();
+
+            // optional label so admin samjhe copy hai
+            $newTheme->theme_version = $tenantTheme->theme_version . '-copy-' . time();
+
+            $newTheme->save();
+
+            // 2️⃣ duplicate theme tenant data via service
+            ThemeInstaller::installForTenant(
+                $tenantTheme->theme_slug,
+                $newTheme
+            );
+        });
+
+        return back()->with('success', 'Theme copied successfully');
     }
 
     /**

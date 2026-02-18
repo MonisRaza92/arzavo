@@ -44,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
                 $colorSchemes = \App\Models\Tenant\ColorScheme::where('theme_id', app('currentThemeId'))->orderBy('id', 'asc')->get();
 
                 $contents = \App\Models\Tenant\Content::all();
+                $blogs = \App\Models\Tenant\Blog::all();
 
                 $classCourses = \App\Models\Tenant\ClassCourse::all();
                 $subjects = \App\Models\Tenant\Subject::all();
@@ -63,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
                     'classCourses'  => $classCourses,
                     'subjects'      => $subjects,
                     'contents'      => $contents,
+                    'blogs'         => $blogs,
                     'menus'         => $menus,
                     'activeTheme'   => $activeTheme,
                     'colorSchemes'  => $colorSchemes

@@ -8,7 +8,7 @@
 ])
 
 @php
-$hasImage = !empty($value);
+$hasImage = filled($value);
 @endphp
 
 <x-input.wrapper :label="$label">

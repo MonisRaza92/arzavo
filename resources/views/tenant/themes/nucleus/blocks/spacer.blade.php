@@ -1,5 +1,5 @@
 @php
-$s = $block->settings ?? [];
+$s = $block['settings'] ?? [];
 
 $heightDesktop = $s['height_desktop'] ?? 40;
 $heightMobile = $s['height_mobile'] ?? 20;
@@ -13,7 +13,7 @@ $visibilityClass = match($visibility) {
 };
 @endphp
 
-<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" 
     class="spacer-block {{ $visibilityClass }}"
     style="
         height: {{ $heightMobile }}px;

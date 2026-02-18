@@ -12,13 +12,13 @@ use App\Http\Controllers\Tenant\Website\ThemePageController;
 use App\Http\Controllers\Tenant\Admin\AdminController;
 use App\Http\Controllers\Tenant\Admin\StudentsController as AdminStudentsController;
 use App\Http\Controllers\Tenant\Admin\ContentController;
+use App\Http\Controllers\Tenant\Admin\BlogController;
 use App\Http\Controllers\Tenant\Admin\CourseController;
 use App\Http\Controllers\Tenant\Admin\CustomizesController;
 use App\Http\Controllers\Tenant\Admin\ColorSchemeController;
 use App\Http\Controllers\Tenant\Admin\SettingsController;
 use App\Http\Controllers\Tenant\Admin\PageController;
 use App\Http\Controllers\Tenant\Admin\ThemeController;
-use App\Http\Controllers\Tenant\Admin\BuilderController;
 use App\Http\Controllers\Tenant\Admin\SectionController;
 use App\Http\Controllers\Tenant\Admin\BlockController;
 use App\Http\Controllers\Tenant\Admin\ClassCourseController;
@@ -152,6 +152,8 @@ function registerDomains($domain)
                 
                 //Admin Contents Routes
                 Route::resource('contents', ContentController::class);
+
+                Route::resource('blog', BlogController::class);
                 
                 //Admin Courses Routes
                 Route::resource('courses', CourseController::class);
@@ -186,6 +188,7 @@ function registerDomains($domain)
                 Route::post('/themes/install/{id}', [ThemeController::class, 'install'])->name('themes.install');
                 Route::post('/themes/upload', [ThemeController::class, 'upload'])->name('themes.upload');
                 Route::post('/themes/publish/{id}', [ThemeController::class, 'publish'])->name('themes.publish');
+                Route::post('/themes/copy/{id}', [ThemeController::class, 'copy'])->name('themes.copy');
 
                 // Admin Builder Routes
                 Route::prefix('builder/{theme}')->name('builder.')->group(function () {

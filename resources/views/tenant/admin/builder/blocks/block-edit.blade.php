@@ -36,7 +36,7 @@
     @endphp
 
     @if(count($fields) > 0)
-    <form class="editBlockForm px-4 pt-14" data-block-id="{{ $block['id'] }}" enctype="multipart/form-data" action="{{ route('admin.builder.sections.blocks.update', ['theme' => $theme->id, 'page' => $page->id, 'sectionId' => $section['id'], 'blockId' => $block['id']]) }}" method="POST">
+    <form class="editBlockForm px-2 pt-12" data-block-id="{{ $block['id'] }}" enctype="multipart/form-data" action="{{ route('admin.builder.sections.blocks.update', ['theme' => $theme->id, 'page' => $page->id, 'sectionId' => $section['id'], 'blockId' => $block['id']]) }}" method="POST">
         @csrf
         @method('PUT')
 

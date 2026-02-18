@@ -1,6 +1,6 @@
 @php
 $s = $section['settings'] ?? [];
-$scheme = $s['color_scheme'] ?? 'scheme_1';
+$scheme = $section['color_scheme'] ?? 'scheme_1';
 $padding = $s['padding'] ?? 1;
 $border = $s['divider'] ?? 'enable';
 @endphp

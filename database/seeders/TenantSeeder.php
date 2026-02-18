@@ -39,9 +39,15 @@ class TenantSeeder extends Seeder
         // ---------------------------
         DB::table('pages')->insert([
             ['name' => 'Home', 'slug' => 'home', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'About', 'slug' => 'about', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'Contact', 'slug' => 'contact', 'is_system_page' => false, 'is_active' => true, 'created_at' => now()],
             ['name' => 'Courses', 'slug' => 'courses', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'View Course', 'slug' => 'view-course', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'View Course', 'slug' => 'course', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'Blogs', 'slug' => 'blogs', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'View Blog', 'slug' => 'blog', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'Content Store', 'slug' => 'content-store', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'View Content', 'slug' => 'view-content', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'Privacy Policy', 'slug' => 'privacy-policy', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'Terms & Conditions', 'slug' => 'terms-conditions', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
         ]);
 
         // ---------------------------
@@ -57,12 +63,18 @@ class TenantSeeder extends Seeder
         // ---------------------------
         DB::table('menus')->insert([
             ['name' => 'Header', 'slug' => 'header', 'location' => 'header'],
+            ['name' => 'Footer', 'slug' => 'footer', 'location' => 'footer'],
         ]);
 
         DB::table('menu_items')->insert([
+            // Header
             ['menu_id' => 1, 'name' => 'Home', 'link' => '/', 'order' => 0],
-            ['menu_id' => 1, 'name' => 'About', 'link' => 'about', 'order' => 1],
-            ['menu_id' => 1, 'name' => 'Courses', 'link' => 'courses', 'order' => 2],
+            ['menu_id' => 1, 'name' => 'Courses', 'link' => '/courses', 'order' => 1],
+            ['menu_id' => 1, 'name' => 'Contact', 'link' => '/contact', 'order' => 2],
+            
+            // Footer
+            ['menu_id' => 2, 'name' => 'Privacy Policy', 'link' => '/privacy-policy', 'order' => 0],
+            ['menu_id' => 2, 'name' => 'Terms & Conditions', 'link' => '/terms-conditions', 'order' => 1],
         ]);
     }
 }

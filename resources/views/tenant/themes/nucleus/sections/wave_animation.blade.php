@@ -13,8 +13,6 @@ $mt = $s['margin_top'] ?? 0;
 $mb = $s['margin_bottom'] ?? 0;
 $showOn = $s['show_on'] ?? 'both';
 
-// Wave color from color scheme
-$bgColor = $colors->border ?? '#000000';
 
 // Animation direction
 $animationDirection = $reverseAnimation === 'enable' ? 'reverse' : 'normal';

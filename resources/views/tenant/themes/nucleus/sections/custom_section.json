@@ -26,13 +26,106 @@
         "tabs",
         "courses_cards"
     ],
-    "default_blocks": null,
     "fields": [
         {
             "key": "group",
             "type": "group",
-            "label": "Background",
+            "label": "Layout",
             "icon": "fa-layer-group"
+        },
+        {
+            "key": "direction",
+            "label": "Direction",
+            "type": "radio",
+            "options": [
+                "vertical",
+                "horizontal"
+            ],
+            "default": "vertical"
+        },
+        {
+            "key": "mobile_direction",
+            "label": "Mobile Direction",
+            "type": "switch",
+            "default": "1",
+            "text": "Force vertical layout on mobile",
+            "conditional": {
+                "field": "direction",
+                "value": "horizontal"
+            }
+        },
+        {
+            "key": "alignment",
+            "label": "Alignment",
+            "type": "radio",
+            "options": [
+                "start",
+                "center",
+                "end"
+            ],
+            "default": "center"
+        },
+        {
+            "key": "position",
+            "label": "Content Position",
+            "type": "select",
+            "options": [
+                "start",
+                "center",
+                "end",
+                "between"
+            ],
+            "default": "center"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Size & Width",
+            "icon": "fa-arrows-left-right"
+        },
+        {
+            "key": "content_width",
+            "label": "Content Width",
+            "type": "radio",
+            "options": [
+                "container",
+                "full"
+            ],
+            "default": "container"
+        },
+        {
+            "key": "height",
+            "label": "Desktop Height",
+            "type": "radio",
+            "options": [
+                "auto",
+                "full",
+                "custom"
+            ],
+            "default": "full"
+        },
+        {
+            "key": "custom_height",
+            "label": "Custom Height (vh)",
+            "type": "range",
+            "default": 60,
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "height",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "mobile_height",
+            "label": "Full Height on Mobile",
+            "type": "switch"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Background",
+            "icon": "fa-image"
         },
         {
             "key": "color_scheme_id",
@@ -43,14 +136,17 @@
             "key": "background_type",
             "label": "Background Type",
             "type": "radio",
-            "options": ["color", "image", "video"],
+            "options": [
+                "color",
+                "image",
+                "video"
+            ],
             "default": "color"
         },
         {
             "key": "background_image",
             "label": "Background Image",
             "type": "image",
-            "default": "",
             "conditional": {
                 "field": "background_type",
                 "value": "image"
@@ -60,10 +156,23 @@
             "key": "background_video",
             "label": "Background Video",
             "type": "video",
-            "default": "",
             "conditional": {
                 "field": "background_type",
                 "value": "video"
+            }
+        },
+        {
+            "key": "background_attachment",
+            "label": "Background Scroll",
+            "type": "radio",
+            "options": [
+                "scroll",
+                "fixed"
+            ],
+            "default": "scroll",
+            "conditional": {
+                "field": "background_type",
+                "value": "image"
             }
         },
         {
@@ -71,7 +180,7 @@
             "label": "Background Blur",
             "type": "switch",
             "default": "0",
-            "text": "Enable blur effect on background",
+            "text": "Enable blur on background media",
             "conditional": {
                 "field": "background_type",
                 "operator": "!=",
@@ -82,23 +191,12 @@
             "key": "background_blur_intensity",
             "label": "Blur Intensity",
             "type": "range",
-            "default": "8",
+            "default": 8,
             "min": 0,
             "max": 30,
             "conditional": {
                 "field": "background_blur",
                 "value": "1"
-            }
-        },
-        {
-            "key": "background_attachment",
-            "label": "Background Scroll",
-            "type": "radio",
-            "options": ["scroll", "fixed"],
-            "default": "scroll",
-            "conditional": {
-                "field": "background_type",
-                "value": "image"
             }
         },
         {
@@ -117,7 +215,6 @@
             "label": "Enable Overlay",
             "type": "switch",
             "default": "0",
-            "text": "Overlay for media background",
             "conditional": {
                 "field": "background_type",
                 "operator": "!=",
@@ -129,137 +226,34 @@
             "label": "Overlay Color",
             "type": "color",
             "default": "#000000",
-            "conditional": [
-                {
-                    "field": "background_type",
-                    "operator": "!=",
-                    "value": "color"
-                },
-                {
-                    "field": "background_overlay",
-                    "value": "1"
-                }
-            ]
+            "conditional": {
+                "field": "background_overlay",
+                "value": "1"
+            }
         },
         {
             "key": "overlay_opacity",
             "label": "Overlay Opacity",
             "type": "range",
-            "default": "50",
+            "default": 50,
             "min": 0,
             "max": 100,
-            "conditional": [
-                {
-                    "field": "background_type",
-                    "operator": "!=",
-                    "value": "color"
-                },
-                {
-                    "field": "background_overlay",
-                    "value": "1"
-                }
-            ]
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Size & Width",
-            "icon": "fa-arrows-alt"
-        },
-        {
-            "key": "content_width",
-            "label": "Content Width",
-            "type": "radio",
-            "options": ["container", "full"],
-            "default": "container"
-        },
-        {
-            "key": "height",
-            "label": "Desktop Height",
-            "type": "radio",
-            "options": ["auto", "full", "custom"],
-            "default": "full"
-        },
-        {
-            "key": "custom_height",
-            "label": "Custom Height (vh)",
-            "type": "range",
-            "default": "60",
-            "min": 10,
-            "max": 100,
             "conditional": {
-                "field": "height",
-                "value": "custom"
-            }
-        },
-        {
-            "key": "mobile_height",
-            "label": "Mobile Height",
-            "type": "radio",
-            "options": ["auto", "full", "custom"],
-            "default": "full"
-        },
-        {
-            "key": "mobile_custom_height",
-            "label": "Mobile Custom Height (vh)",
-            "type": "range",
-            "default": "60",
-            "min": 10,
-            "max": 100,
-            "conditional": {
-                "field": "mobile_height",
-                "value": "custom"
+                "field": "background_overlay",
+                "value": "1"
             }
         },
         {
             "key": "group",
             "type": "group",
-            "label": "Layout",
-            "icon": "fa-layer-group"
-        },
-        {
-            "key": "direction",
-            "label": "Direction",
-            "type": "radio",
-            "options": ["vertical", "horizontal"],
-            "default": "vertical"
-        },
-        {
-            "key": "mobile_direction",
-            "label": "Mobile Direction",
-            "type": "switch",
-            "default": "1",
-            "text": "Vertical layout on mobile",
-            "conditional": {
-                "field": "direction",
-                "value": "horizontal"
-            }
-        },
-        {
-            "key": "alignment",
-            "label": "Alignment",
-            "type": "radio",
-            "options": ["start", "center", "end"],
-            "default": "center"
-        },
-        {
-            "key": "position",
-            "label": "Position",
-            "type": "select",
-            "options": ["start", "center", "end", "between"],
-            "default": "center"
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Spacing",
+            "label": "Spacing (Desktop)",
             "icon": "fa-arrows-alt-v"
         },
         {
             "key": "gap",
             "label": "Gap",
             "type": "range",
-            "default": "16",
+            "default": 16,
             "min": 0,
             "max": 100
         },
@@ -267,7 +261,7 @@
             "key": "padding_top",
             "label": "Padding Top",
             "type": "range",
-            "default": "16",
+            "default": 16,
             "min": 0,
             "max": 100
         },
@@ -275,7 +269,7 @@
             "key": "padding_bottom",
             "label": "Padding Bottom",
             "type": "range",
-            "default": "16",
+            "default": 16,
             "min": 0,
             "max": 100
         },
@@ -283,7 +277,7 @@
             "key": "margin_top",
             "label": "Margin Top",
             "type": "range",
-            "default": "0",
+            "default": 0,
             "min": 0,
             "max": 100
         },
@@ -291,29 +285,27 @@
             "key": "margin_bottom",
             "label": "Margin Bottom",
             "type": "range",
-            "default": "0",
+            "default": 0,
             "min": 0,
             "max": 100
         },
-
         {
             "key": "group",
             "type": "group",
-            "label": "Mobile Spacing",
+            "label": "Spacing (Mobile)",
             "icon": "fa-mobile-screen-button"
         },
         {
             "key": "enable_mobile_spacing",
-            "label": "Mobile Spacing",
+            "label": "Custom Mobile Spacing",
             "type": "switch",
-            "default": "0",
-            "text": "Custom spacing for mobile"
+            "default": "0"
         },
         {
             "key": "mobile_padding_top",
-            "label": "Mobile Padding Top",
+            "label": "Padding Top",
             "type": "range",
-            "default": "16",
+            "default": 16,
             "min": 0,
             "max": 100,
             "conditional": {
@@ -323,9 +315,9 @@
         },
         {
             "key": "mobile_padding_bottom",
-            "label": "Mobile Padding Bottom",
+            "label": "Padding Bottom",
             "type": "range",
-            "default": "16",
+            "default": 16,
             "min": 0,
             "max": 100,
             "conditional": {
@@ -335,9 +327,9 @@
         },
         {
             "key": "mobile_margin_top",
-            "label": "Mobile Margin Top",
+            "label": "Margin Top",
             "type": "range",
-            "default": "0",
+            "default": 0,
             "min": 0,
             "max": 100,
             "conditional": {
@@ -347,9 +339,9 @@
         },
         {
             "key": "mobile_margin_bottom",
-            "label": "Mobile Margin Bottom",
+            "label": "Margin Bottom",
             "type": "range",
-            "default": "0",
+            "default": 0,
             "min": 0,
             "max": 100,
             "conditional": {
@@ -357,7 +349,6 @@
                 "value": "1"
             }
         },
-        
         {
             "key": "group",
             "type": "group",
@@ -368,15 +359,13 @@
             "key": "hide_desktop",
             "label": "Hide on Desktop",
             "type": "switch",
-            "default": "0",
-            "text": "Hide For Desktop/Tablate"
+            "default": "0"
         },
         {
             "key": "hide_mobile",
             "label": "Hide on Mobile",
             "type": "switch",
-            "default": "0",
-            "text": "Hide For Mobile Devices"
+            "default": "0"
         }
     ]
 }

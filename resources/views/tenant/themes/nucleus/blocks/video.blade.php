@@ -1,5 +1,5 @@
 @php
-$s = $block->settings ?? [];
+$s = $block['settings'] ?? [];
 
 $videoType = $s['video_type'] ?? 'youtube';
 $youtubeUrl = $s['youtube_url'] ?? '';
@@ -60,7 +60,7 @@ $mobileAlignmentClass = match($mobileAlignment) {
 };
 @endphp
 
-<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" class="arzavo-video flex {{ $alignmentClass }} {{ $mobileAlignmentClass }}" 
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" class="arzavo-video flex {{ $alignmentClass }} {{ $mobileAlignmentClass }}" 
      style="margin-top: {{ $marginTop }}px; margin-bottom: {{ $marginBottom }}px;">
     <div class="{{ $widthClass }}">
         @if($videoType === 'youtube' && $videoId)

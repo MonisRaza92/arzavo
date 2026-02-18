@@ -74,6 +74,22 @@ return [
                 'route' => 'admin.contents.index',
                 'active' => 'admin/contents',
             ],
+            [
+                'type' => 'link',
+                'id' => 'blogsStories',
+                'icon' => 'fa-blog',
+                'text' => 'Blogs & Stories',
+                'route' => 'admin.blog.index',
+                'active' => 'admin/blog',
+            ],
+            [
+                'type' => 'link',
+                'id' => 'contentStore',
+                'icon' => 'fa-store',
+                'text' => 'Content Store',
+                'route' => 'admin.blog.index',
+                'active' => 'admin/store',
+            ],
         ],
     ],
 

@@ -1,5 +1,5 @@
 @php
-$s = $block->settings ?? [];
+$s = $block['settings'] ?? [];
 
 $width = $s['size'] ?? '100';
 $thickness = $s['thickness'] ?? '1';
@@ -8,7 +8,7 @@ $pb = $s['padding_bottom'] ?? '0';
 $rounded = $s['rounded'] ?? 'disable';
 
 @endphp
-<div data-block-id="{{ $block->id }}" data-name="{{ $block->name }}" 
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" 
     class="divider-s flex items-center justify-center"
     style="
         padding-top: {{ $pt }}px;

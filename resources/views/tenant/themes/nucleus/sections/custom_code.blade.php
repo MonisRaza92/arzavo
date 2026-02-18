@@ -49,8 +49,8 @@ $enableShadow = $s['enable_shadow'] ?? 'disable';
                 <polyline points="16 18 22 12 16 6"></polyline>
                 <polyline points="8 6 2 12 8 18"></polyline>
             </svg>
-            <p style="color: {{ $colors->heading ?? '#6b7280' }}; font-size: 18px; margin: 0;">No embed code added yet</p>
-            <p style="color: {{ $colors->paragraph ?? '#9ca3af' }}; font-size: 14px; margin-top: 8px;">Paste your HTML, iframe, or JavaScript code in the settings panel</p>
+            <p style="color: --arzavo-paragraph-color; font-size: 18px; margin: 0;">No embed code added yet</p>
+            <p style="color: --arzavo-paragraph-color; font-size: 14px; margin-top: 8px;">Paste your HTML, iframe, or JavaScript code in the settings panel</p>
         </div>
         @endif
     </div>

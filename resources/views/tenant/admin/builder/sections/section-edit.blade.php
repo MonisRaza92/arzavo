@@ -26,7 +26,7 @@
     @endphp
 
     @if(count($fields) > 0)
-    <form class="editSectionForm px-4 pt-14" data-section-id="{{ $section['id'] }}" enctype="multipart/form-data" action="{{ route('admin.builder.sections.update', ['theme' => $theme->id, 'page' => $page->id, 'sectionId' => $section['id']]) }}" method="POST">
+    <form class="editSectionForm px-2 pt-12" data-section-id="{{ $section['id'] }}" enctype="multipart/form-data" action="{{ route('admin.builder.sections.update', ['theme' => $theme->id, 'page' => $page->id, 'sectionId' => $section['id']]) }}" method="POST">
         @csrf
         @method('PUT')
 
