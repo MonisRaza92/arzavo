@@ -1,83 +1,69 @@
 @php
-$slideShow = $section['settings'] ?? [];
-$scheme =$section['color_scheme'];
+    $slideShow = $section['settings'] ?? [];
+    $scheme = $section['color_scheme'];
 
-$autoplay = $slideShow['autoplay'] ?? '1';
-$delay = $slideShow['autoplay_delay'] ?? '3000';
-$showArrows = $slideShow['show_arrows'] ?? '1';
-$showDots = $slideShow['show_dots'] ?? '1';
-$mt = $slideShow['margin_top'] ?? '0';
-$mb = $slideShow['margin_bottom'] ?? '0';
-$hideDesktop = $slideShow['hide_desktop'] ?? '0';
-$hideMobile = $slideShow['hide_mobile'] ?? '0';
-$contentWidth = $slideShow['content_width'] ?? 'full';
-$border = $slideShow['border'] ?? 'none';
-$borderRadius = $slideShow['border_radius'] ?? 'enable';
-$customBR = $slideShow['custom_border_radius'] ?? '0';
+    $autoplay = $slideShow['autoplay'] ?? '1';
+    $delay = $slideShow['autoplay_delay'] ?? '3000';
+    $showArrows = $slideShow['show_arrows'] ?? '1';
+    $showDots = $slideShow['show_dots'] ?? '1';
+    $mt = $slideShow['margin_top'] ?? '0';
+    $mb = $slideShow['margin_bottom'] ?? '0';
+    $hideDesktop = $slideShow['hide_desktop'] ?? '0';
+    $hideMobile = $slideShow['hide_mobile'] ?? '0';
+    $contentWidth = $slideShow['content_width'] ?? 'full';
+    $border = $slideShow['border_width'] ?? '0';
+    $borderRadius = $slideShow['border_radius'] ?? '0';
 
-$aspectRatio = $slideShow['aspect_ratio'] ?? 'wide';
-$customAspectRatio = $slideShow['custom_aspect_ratio'] ?? '16:9';
-
-$aspectRatioMap = [
-    'ultra_wide' => '21 / 9',
-    'wide'       => '16 / 9',
-    'classic'    => '4 / 3',
-    'square'     => '1 / 1',
-    'portrait'   => '3 / 4',
-    'tall'       => '9 / 16',
-];
-
-// Final CSS aspect-ratio value
-$finalAspectRatio = $aspectRatio === 'custom'
-    ? str_replace(':', ' / ', $customAspectRatio)
-    : ($aspectRatioMap[$aspectRatio] ?? '16 / 9');
-
-
-$slides = $section['blocks'];
+    $slides = $section['blocks'];
+    $slideCount = count($slides);
 @endphp
 
-<div
-    data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
+<div data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
     class="relative group
         {{ $hideDesktop === '1' ? 'md:hidden block' : '' }}
         {{ $hideMobile === '1' ? 'md:block hidden' : '' }}
     "
-    data-slider
-    data-autoplay="{{ $autoplay }}"
-    data-delay="{{ $delay }}000"
+    data-slider data-autoplay="{{ $autoplay }}" data-delay="{{ $delay }}000"
     style="
     {{ scheme($scheme) }}
     padding-top: {{ $mt }}px; padding-bottom: {{ $mb }}px;
     background: var(--arzavo-background);
     ">
-    <div class="{{ $contentWidth === 'full' ? 'w-full' : 'container'}}">
+    <div class="{{ $contentWidth === 'full' ? 'w-full' : 'container px-0!' }}">
 
-        <div class="relative w-full h-full overflow-hidden" style="aspect-ratio: {{ $finalAspectRatio }};">
+        <div class="relative w-full h-full overflow-hidden">
 
-            <div class="slider-track flex h-full w-full transition-transform duration-500 ease-out will-change-transform">
-                @foreach($slides as $block)
-                <div class="w-full h-full shrink-0 grow-0 relative {{ $border === '1' ? 'arzavo-border' : '' }}{{ $borderRadius === 'enable' ? ' arzavo-border-rounded' : ''}} overflow-hidden" @if($borderRadius==='custom' ) style="border-radius: {{ $customBR }}px;" @endif>
-                    @include('tenant.themes.' . $theme .'.blocks.slideshow_image')
-                </div>
+            <div
+                class="slider-track flex h-full w-full transition-transform duration-500 ease-out will-change-transform">
+                @foreach ($slides as $block)
+                    <div class="w-full h-full shrink-0 grow-0 relative arz-border
+                    overflow-hidden"
+                        style="border-radius: {{ $borderRadius }}px; border-width: {{ $border }}px;">
+                        {!! renderBlocks([$block]) !!}
+                    </div>
                 @endforeach
             </div>
 
-            @if($showArrows === '1')
-            <button class="slider-prev absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 disabled:opacity-30">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-            </button>
-            <button class="slider-next absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 disabled:opacity-30">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-            </button>
+            @if ($showArrows === '1' && $slideCount > 1)
+                <button
+                    class="slider-prev absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 disabled:opacity-30">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <button
+                    class="slider-next absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 disabled:opacity-30">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
             @endif
 
-            @if($showDots === '1')
-            <div class="slider-dots absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-            </div>
+            @if ($showDots === '1' && $slideCount > 1)
+                <div class="slider-dots absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-12">
+                </div>
             @endif
         </div>
     </div>
@@ -134,32 +120,45 @@ $slides = $section['blocks'];
             // --- Dots Logic ---
             function setupDots() {
                 if (!dotsWrapper) return;
+
                 dotsWrapper.innerHTML = '';
+
                 slides.forEach((_, i) => {
+
                     const btn = document.createElement('button');
-                    // Shopify style generic classes
-                    btn.className = `w-3 h-3 rounded-full border border-gray-400 transition-all duration-300 ${i === 0 ? 'bg-white scale-110' : 'bg-transparent hover:bg-white/50'}`;
+
+                    btn.className =
+                        i === 0 ?
+                        'h-2 w-8 rounded-full bg-white transition-all duration-300' :
+                        'h-2 w-2 rounded-full bg-white/50 hover:bg-white/70 transition-all duration-300';
+
                     btn.ariaLabel = `Go to slide ${i + 1}`;
+
                     btn.addEventListener('click', () => {
                         stopAutoplay();
                         goToSlide(i);
                         startAutoplay();
                     });
+
                     dotsWrapper.appendChild(btn);
                 });
             }
 
             function updateDots() {
                 if (!dotsWrapper) return;
+
                 Array.from(dotsWrapper.children).forEach((btn, i) => {
+
                     if (i === currentIndex) {
-                        btn.className = 'w-3 h-3 rounded-full border border-white bg-white scale-110 transition-all duration-300';
+                        btn.className =
+                            'h-2 w-8 rounded-full bg-white transition-all duration-300';
                     } else {
-                        btn.className = 'w-3 h-3 rounded-full border border-gray-400 bg-transparent hover:bg-white/50 transition-all duration-300';
+                        btn.className =
+                            'h-2 w-2 rounded-full bg-white/50 hover:bg-white/70 transition-all duration-300';
                     }
+
                 });
             }
-
             // --- Autoplay ---
             function startAutoplay() {
                 if (!autoplayEnabled) return;
@@ -194,7 +193,7 @@ $slides = $section['blocks'];
 
             // --- Touch / Swipe Support (Mobile) ---
             slider.addEventListener('touchstart', (e) => {
-                startX = e.toucheslideShow[0].clientX;
+                startX = e.touches[0].clientX;
                 isDragging = true;
                 stopAutoplay();
             }, {
@@ -203,7 +202,7 @@ $slides = $section['blocks'];
 
             slider.addEventListener('touchend', (e) => {
                 if (!isDragging) return;
-                const endX = e.changedToucheslideShow[0].clientX;
+                const endX = e.changedTouches[0].clientX;
                 const diff = startX - endX;
 
                 if (Math.abs(diff) > 50) { // Threshold 50px

@@ -13,11 +13,11 @@ $id = 'cp_' . Str::random(8);
 
     {{-- Trigger --}}
     <div class="group flex items-center gap-2 cursor-pointer" data-trigger>
-        <div class="w-12 h-11 border-rounded border-primary" data-preview></div>
+        <div class="w-10 h-8.5 border-rounded border-primary" data-preview></div>
         <div class="flex-1">
             <input type="text"
                 data-input
-                class="w-full text-base font-medium px-4 py-2.5 border-rounded border-primary"
+                class="w-full text-xs font-medium p-2 border-rounded border-primary"
                 placeholder="#000000">
         </div>
     </div>
@@ -60,20 +60,29 @@ $id = 'cp_' . Str::random(8);
                                 data-solid-picker>
                         </div>
                     </div>
-
-                    {{-- Color Swatches --}}
-                    <div class="mt-2">
-                        <label class="text-sm font-semibold text-secondary">Related Swatches</label>
-                        <div class="mt-1 grid grid-cols-5 gap-2" data-swatches>
-                            <!-- Swatches will be generated here -->
+                    {{-- OPACITY --}}
+                    <div class="mt-3">
+                        <label class="text-sm font-semibold text-secondary">
+                           Opacity
+                       </label>
+                    
+                       <div class="flex items-center gap-3 mt-1">
+                           <input
+                               type="range"
+                               min="0"
+                               max="100"
+                               value="100"
+                               class="w-full"
+                                data-opacity>
+                    
+                            <span
+                                class="text-xs w-10 text-right"
+                                data-opacity-value>
+                                100%
+                            </span>
                         </div>
                     </div>
 
-                    {{-- Preset Colors --}}
-                    <div class="mt-2 hidden">
-                        <label class="text-sm font-semibold text-secondary">Quick Colors</label>
-                        <div class="mt-1 grid grid-cols-5 gap-2" data-presets></div>
-                    </div>
                 </div>
 
                 {{-- GRADIENT MODE --}}

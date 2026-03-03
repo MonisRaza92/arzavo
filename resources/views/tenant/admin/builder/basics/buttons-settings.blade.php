@@ -2,7 +2,7 @@
     <button onclick="openCustomizesMenu('buttons-settings-menu', 'arrow-buttons')"
         type="button"
         class="p-4 flex justify-between items-center w-full text-sm font-semibold bg-hover-secondary">
-        <span>Buttons</span>
+        <span><i class="fa-solid fa-arrow-pointer mr-1"></i> Buttons</span>
         <i class="fas fa-angle-right transition-all duration-300" id="arrow-buttons"></i>
     </button>
 

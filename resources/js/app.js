@@ -7,11 +7,15 @@ import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Link } from "@tiptap/extension-link";
 
+
+
+// Tip Tap Script
+window.initRichText = initRichText;
 function initRichText() {
     document.querySelectorAll(".tiptap-editor").forEach((el) => {
         if (el.editor) return;
 
-        const hidden = el.parentElement.querySelector("input[type=hidden]");
+        const hidden = el.closest(".richtext-wrapper").querySelector("input[type=hidden]");
         const content = el.dataset.content || "<p></p>";
 
         const editor = new Editor({
@@ -57,9 +61,9 @@ function initRichText() {
             };
         });
 
-        wrapper.querySelector("input[type=color]").oninput = (e) => {
-            editor.chain().focus().setColor(e.target.value).run();
-        };
+        // wrapper.querySelector("input[type=color]").oninput = (e) => {
+        //     editor.chain().focus().setColor(e.target.value).run();
+        // };
 
         const linkBar = wrapper.querySelector(".link-bar");
         const linkInput = wrapper.querySelector(".link-url");
@@ -99,6 +103,9 @@ function initRichText() {
 document.addEventListener("turbo:load", () => {
     setTimeout(initRichText, 50);
 });
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(initRichText, 50);
+});
 
 document.addEventListener("turbo:before-cache", () => {
     document.querySelectorAll(".tiptap-editor").forEach((el) => {
@@ -108,6 +115,88 @@ document.addEventListener("turbo:before-cache", () => {
         }
     });
 });
+
+const richObserver = new MutationObserver(mutations => {
+
+    mutations.forEach(m => {
+
+        m.addedNodes.forEach(node => {
+
+            if (node.nodeType !== 1) return;
+
+            if (
+                node.classList?.contains('tiptap-editor') ||
+                node.querySelector?.('.tiptap-editor')
+            ) {
+                initRichText();
+            }
+
+        });
+
+    });
+
+});
+
+richObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+});
+
+
+
+
+
+
+document.addEventListener('arzavo:navbar-change', e => {
+
+    const state = e.detail.state;
+
+    document
+        .querySelectorAll('.arzavo-logo-wrapper')
+        .forEach(wrapper => {
+
+            const normal =
+                wrapper.querySelector('.arzavo-logo-normal');
+
+            const invert =
+                wrapper.querySelector('.arzavo-logo-invert');
+
+            if (!normal || !invert) return;
+
+            if (state === 'transparent') {
+
+                normal.style.opacity = 0;
+                invert.style.opacity = 1;
+
+            } else {
+
+                normal.style.opacity = 1;
+                invert.style.opacity = 0;
+            }
+        });
+
+});
+document.addEventListener('DOMContentLoaded', () => {
+
+    document.querySelectorAll('.arzavo-navbar')
+        .forEach(navbar => {
+            const state = navbar.dataset.state || 'normal';
+
+            navbar.dispatchEvent(
+                new CustomEvent('arzavo:navbar-change', {
+                    detail: { state },
+                    bubbles: true
+                })
+            );
+        });
+
+});
+
+
+
+
+
+
 
 import "alpine-turbo-drive-adapter";
 window.Alpine = Alpine;
@@ -119,27 +208,262 @@ if ("serviceWorker" in navigator) {
     });
 }
 
+
+
 function toggleModel(id) {
-    const model = document.getElementById(id);
-    if (!model) return;
-    model.classList.toggle("hidden");
+    const modal = document.getElementById(id);
+    if (!modal) return;
+
+    modal.classList.toggle("hidden");
+
+    if (!modal.classList.contains("hidden")) {
+        attachOutsideClick(modal);
+    }
 }
 
 function openModel(id) {
-    const model = document.getElementById(id);
-    if (!model) return;
-    model.classList.remove("hidden");
+    const modal = document.getElementById(id);
+    if (!modal) return;
+
+    modal.classList.remove("hidden");
+    attachOutsideClick(modal);
 }
 
 function closeModel(id) {
-    const model = document.getElementById(id);
-    if (!model) return;
-    model.classList.add("hidden");
+    const modal = document.getElementById(id);
+    if (!modal) return;
+
+    modal.classList.add("hidden");
+    detachOutsideClick(modal);
 }
 
+/* ---------- Outside Click Logic ---------- */
+
+function attachOutsideClick(modal) {
+
+    function outsideHandler(e) {
+        const content = modal.querySelector(".modal-content");
+
+        if (!content || !content.contains(e.target)) {
+            closeModel(modal.id);
+        }
+    }
+
+    modal._outsideHandler = outsideHandler;
+
+    setTimeout(() => {
+        document.addEventListener("click", outsideHandler);
+    }, 10);
+}
+
+function detachOutsideClick(modal) {
+    if (modal._outsideHandler) {
+        document.removeEventListener("click", modal._outsideHandler);
+        modal._outsideHandler = null;
+    }
+}
+
+/* global access */
 window.toggleModel = toggleModel;
 window.openModel = openModel;
 window.closeModel = closeModel;
+
+
+
+
+// Component Js
+function openUrlPicker(input) {
+
+    const picker = input.parentElement.querySelector('.url-popup');
+
+    document.querySelectorAll('.url-popup').forEach(p => p.classList.add('hidden'));
+
+    picker.classList.remove('hidden');
+
+    // reset view
+    picker.querySelector('.url-back').classList.add('hidden');
+
+    picker.querySelectorAll('.url-links').forEach(l => l.classList.add('hidden'));
+
+    picker.querySelector('.url-groups').classList.remove('hidden');
+
+}
+
+window.openUrlPicker = openUrlPicker;
+
+function openUrlGroup(btn) {
+
+    const popup = btn.closest('.url-popup');
+    const group = btn.dataset.group;
+
+    popup.querySelector('.url-groups').classList.add('hidden');
+
+    popup.querySelector(`.url-links[data-group="${group}"]`).classList.remove('hidden');
+
+    popup.querySelector('.url-back').classList.remove('hidden');
+
+}
+
+window.openUrlGroup = openUrlGroup;
+
+function urlBack(btn) {
+
+    const popup = btn.closest('.url-popup');
+
+    popup.querySelectorAll('.url-links').forEach(l => l.classList.add('hidden'));
+
+    popup.querySelector('.url-groups').classList.remove('hidden');
+
+    btn.classList.add('hidden');
+
+}
+
+window.urlBack = urlBack;
+
+function selectUrl(el, url) {
+
+    const popup = el.closest('.url-popup');
+    const picker = popup.closest('.url-picker');
+    const input = picker.querySelector('input[name]');
+
+    // set value
+    input.value = url;
+
+    // IMPORTANT: bubble events so global listener catches them
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+
+    // FAILSAFE: directly submit block form if exists
+    const blockForm = input.closest('.editBlockForm');
+    if (blockForm && typeof submitBlockForm === 'function') {
+        submitBlockForm(blockForm);
+    }
+
+    // also support section form (same component reused)
+    const sectionForm = input.closest('.editSectionForm');
+    if (sectionForm && window.BuilderSection) {
+        BuilderSection.submit(sectionForm);
+    }
+
+    popup.classList.add('hidden');
+}
+
+window.selectUrl = selectUrl;
+
+// close outside click
+document.addEventListener('click', e => {
+    if (!e.target.closest('.url-picker')) {
+        document.querySelectorAll('.url-popup').forEach(p => p.classList.add('hidden'));
+    }
+});
+
+// search filter (works inside links)
+document.addEventListener('input', e => {
+
+    if (!e.target.classList.contains('url-search')) return;
+
+    const q = e.target.value.toLowerCase();
+    const popup = e.target.closest('.url-popup');
+
+    popup.querySelectorAll('.url-links button').forEach(btn => {
+        btn.style.display =
+            btn.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+    });
+
+});
+
+function deleteSettingsImage(uid) {
+
+    const wrapper = document.querySelector('.image-field-' + uid);
+    if (!wrapper) return;
+
+    const preview = wrapper.querySelector('[data-content-preview]');
+    const placeholder = wrapper.querySelector('[data-content-placeholder]');
+    const input = wrapper.querySelector('#' + uid);
+
+    if (preview) {
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+    }
+
+    if (placeholder) {
+        placeholder.classList.remove('hidden');
+    }
+
+    if (input) {
+        input.value = '';
+
+        // trigger builder autosave
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+}
+window.deleteSettingsImage = deleteSettingsImage;
+
+function deleteSettingsVideo(uid) {
+
+    const wrapper = document.querySelector('.video-field-' + uid);
+    if (!wrapper) return;
+
+    const preview = wrapper.querySelector('[data-content-preview]');
+    const placeholder = wrapper.querySelector('[data-content-placeholder]');
+    const input = wrapper.querySelector('#' + uid);
+
+    if (preview) {
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+    }
+
+    if (placeholder) {
+        placeholder.classList.remove('hidden');
+    }
+
+    if (input) {
+        input.value = '';
+
+        // trigger autosave
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+}
+window.deleteSettingsVideo = deleteSettingsVideo;
+
+function deleteSettingsContent(uid) {
+
+    const wrapper = document.querySelector('.content-field-' + uid);
+    if (!wrapper) return;
+
+    const preview = wrapper.querySelector('[data-content-preview]');
+    const placeholder = wrapper.querySelector('[data-content-placeholder]');
+    const input = wrapper.querySelector('#' + uid);
+
+    if (preview) {
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+    }
+
+    if (placeholder) {
+        placeholder.classList.remove('hidden');
+    }
+
+    if (input) {
+        input.value = '';
+
+        // autosave trigger for builder
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+}
+window.deleteSettingsContent = deleteSettingsContent;
+
+
+
+
+
+
+
+
+
 
 window.openSectionEditor = function (sectionId) {
     openEditorTab("sections");
@@ -521,12 +845,6 @@ document.addEventListener("turbo:before-cache", () => {
 
 document.addEventListener("turbo:load", () => {
 
-    // Preset colors
-    const presetColors = [
-        '#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff',
-        '#ff6b6b', '#4ecdc4', '#45b7d1', '#f7b731', '#5f27cd', '#00d2d3', '#ff9ff3'
-    ];
-
     document.querySelectorAll("[data-color-picker]").forEach(cp => {
 
         const hidden = cp.querySelector("input[type=hidden]");
@@ -540,26 +858,18 @@ document.addEventListener("turbo:load", () => {
         const solidUI = cp.querySelector("[data-solid]");
         const gradientUI = cp.querySelector("[data-gradient-ui]");
         const toggle = cp.querySelector("[data-toggle]");
-        const swatchesContainer = cp.querySelector("[data-swatches]");
-        const presetsContainer = cp.querySelector("[data-presets]");
         const gradientBar = cp.querySelector("[data-gradient-bar]");
         const stopMarkers = cp.querySelector("[data-stop-markers]");
+        const opacitySlider = cp.querySelector("[data-opacity]");
+        const opacityLabel = cp.querySelector("[data-opacity-value]");
 
         let mode = "solid";
         let angle = 135;
         let currentColor = initialValue;
-        let stops = [{
-            color: "#ff6b6b",
-            pos: 0
-        },
-        {
-            color: "#4ecdc4",
-            pos: 50
-        },
-        {
-            color: "#45b7d1",
-            pos: 100
-        }
+        let stops = [
+            { color: "#ff6b6b", alpha: 1, pos: 0 },
+            { color: "#4ecdc4", alpha: 1, pos: 50 },
+            { color: "#45b7d1", alpha: 1, pos: 100 }
         ];
 
         function openPopup(e) {
@@ -581,9 +891,24 @@ document.addEventListener("turbo:load", () => {
 
         /* ---------------- CORE UPDATE ---------------- */
         function update(value) {
+
             hidden.value = value;
             input.value = value;
-            preview.forEach(p => p.style.background = value);
+
+            preview.forEach(p => {
+                p.style.background = value;
+            });
+
+            // sync opacity slider
+            const parsed = parseColor(value);
+
+            if (opacitySlider) {
+                opacitySlider.value =
+                    Math.round(parsed.a * 100);
+
+                opacityLabel.textContent =
+                    opacitySlider.value + "%";
+            }
         }
 
         /* ---------------- COLOR UTILITIES ---------------- */
@@ -665,86 +990,61 @@ document.addEventListener("turbo:load", () => {
             };
         }
 
-        /* ---------------- SWATCHES GENERATION ---------------- */
-        function generateSwatches(baseColor) {
-            const rgb = hexToRgb(baseColor);
-            if (!rgb) return [];
+        function parseColor(color) {
 
-            const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-            const swatches = [];
+            if (color.startsWith("rgba")) {
+                const m = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*([\d\.]+)?\)/);
 
-            // Lightness variations
-            for (let i = 0; i < 5; i++) {
-                const newL = Math.max(10, Math.min(90, hsl.l + (i - 2) * 15));
-                const newRgb = hslToRgb(hsl.h, hsl.s, newL);
-                swatches.push(rgbToHex(newRgb.r, newRgb.g, newRgb.b));
+                return {
+                    r: +m[1],
+                    g: +m[2],
+                    b: +m[3],
+                    a: m[4] ? parseFloat(m[4]) : 1
+                };
             }
 
-            // Saturation variations
-            for (let i = 0; i < 5; i++) {
-                const newS = Math.max(10, Math.min(100, hsl.s + (i - 2) * 20));
-                const newRgb = hslToRgb(hsl.h, newS, hsl.l);
-                swatches.push(rgbToHex(newRgb.r, newRgb.g, newRgb.b));
-            }
+            const rgb = hexToRgb(color);
 
-            return swatches;
-        }
-
-        function renderSwatches(color) {
-            if (!swatchesContainer) return;
-
-            const swatches = generateSwatches(color);
-            swatchesContainer.innerHTML = swatches.map(swatch => `
-                    <button type="button" 
-                        class="w-full aspect-square border-rounded border-primary hover:scale-110 transition-all cursor-pointer"
-                        style="background: ${swatch}"
-                        data-swatch="${swatch}">
-                    </button>
-                `).join('');
-
-            swatchesContainer.querySelectorAll('[data-swatch]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const color = btn.dataset.swatch;
-                    currentColor = color;
-                    cp.querySelector('[data-solid-picker]').value = color;
-                    update(color);
-                    renderSwatches(color);
-                });
-            });
-        }
-
-        /* ---------------- PRESETS ---------------- */
-        function renderPresets() {
-            if (!presetsContainer) return;
-
-            presetsContainer.innerHTML = presetColors.map(color => `
-                    <button type="button" 
-                        class="w-full aspect-square border-rounded border-primary hover:scale-110 transition-all cursor-pointer"
-                        style="background: ${color}"
-                        data-preset="${color}">
-                    </button>
-                `).join('');
-
-            presetsContainer.querySelectorAll('[data-preset]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const color = btn.dataset.preset;
-                    currentColor = color;
-                    cp.querySelector('[data-solid-picker]').value = color;
-                    update(color);
-                    renderSwatches(color);
-                });
-            });
+            return rgb
+                ? { ...rgb, a: 1 }
+                : { r: 242, g: 242, b: 242, a: 1 };
         }
 
         /* ---------------- SOLID MODE ---------------- */
         const solidPicker = cp.querySelector("[data-solid-picker]");
         if (solidPicker) {
             solidPicker.addEventListener("input", e => {
-                currentColor = e.target.value;
-                update(currentColor);
-                renderSwatches(currentColor);
+
+                const rgb = hexToRgb(e.target.value);
+
+                const alpha =
+                    (opacitySlider?.value || 100) / 100;
+
+                const rgba =
+                    `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
+
+                currentColor = rgba;
+
+                update(rgba);
+            });
+
+            opacitySlider?.addEventListener("input", () => {
+
+                const base =
+                    parseColor(currentColor);
+
+                const alpha =
+                    opacitySlider.value / 100;
+
+                const rgba =
+                    `rgba(${base.r},${base.g},${base.b},${alpha})`;
+
+                currentColor = rgba;
+
+                opacityLabel.textContent =
+                    opacitySlider.value + "%";
+
+                update(rgba);
             });
         }
 
@@ -753,7 +1053,6 @@ document.addEventListener("turbo:load", () => {
             if (/^#[0-9A-F]{6}$/i.test(val)) {
                 currentColor = val;
                 if (solidPicker) solidPicker.value = val;
-                renderSwatches(val);
             }
             update(val);
         });
@@ -895,27 +1194,55 @@ document.addEventListener("turbo:load", () => {
                 row.className = "flex items-center gap-4 p-2 w-full bg-secondary border-rounded border-primary";
 
                 row.innerHTML = `
-                        <input type="color" value="${stop.color}"
-                            class="w-12 h-12 border-2 border-white border-rounded cursor-pointer hover:scale-105 transition-all flex-shrink-0">
-                        <div class="flex-1 min-w-0">
-                            <input type="range" min="0" max="100" value="${stop.pos}"
-                                class="w-full" style="color: ${stop.color}">
-                            <div class="flex items-center justify-between mt-1 px-1">
-                                <span class="text-xs text-gray-500 font-medium">Position</span>
-                                <span class="text-xs font-bold text-gray-700">${stop.pos}%</span>
-                            </div>
-                        </div>
-                        ${stops.length > 2 ? `
-                        <button type="button" class="w-9 h-9 border-rounded bg-primary text-tertiary hover:bg-red-100 transition-all font-bold text-lg flex-shrink-0">
-                            <i class="fa-solid fa-trash-alt"></i>
-                        </button>` : '<div class="w-9 shrink-0"></div>'}
-                    `;
+<input type="color"
+    value="${stop.color}"
+    class="w-12 h-12 border-rounded cursor-pointer">
 
+<div class="flex-1">
+
+    <input type="range"
+        min="0"
+        max="100"
+        value="${stop.pos}"
+        class="w-full">
+
+    <div class="flex justify-between text-xs mt-1">
+        <span>Position</span>
+        <span>${stop.pos}%</span>
+    </div>
+
+    <div class="mt-2">
+        <input type="range"
+            min="0"
+            max="100"
+            value="${Math.round(stop.alpha * 100)}"
+            data-alpha
+            class="w-full">
+
+        <div class="text-xs text-right">
+            Opacity ${Math.round(stop.alpha * 100)}%
+        </div>
+    </div>
+
+</div>
+`;
+
+                const alphaInput =
+                    row.querySelector('[data-alpha]');
                 const dragHandle = row.querySelector('.drag-handle');
                 const colorInput = row.querySelector('input[type="color"]');
                 const rangeInput = row.querySelector('input[type="range"]');
                 const posDisplay = row.querySelector('.text-xs.font-bold');
                 const deleteBtn = row.querySelector('button');
+
+                alphaInput.oninput = () => {
+
+                    stop.alpha =
+                        alphaInput.value / 100;
+
+                    buildGradient();
+                    renderStopMarkers();
+                };
 
                 colorInput.oninput = (e) => {
                     e.stopPropagation();
@@ -973,6 +1300,7 @@ document.addEventListener("turbo:load", () => {
 
             stops.push({
                 color: "#ffffff",
+                alpha: 1,
                 pos: newPos
             });
 
@@ -982,22 +1310,49 @@ document.addEventListener("turbo:load", () => {
         });
 
         function buildGradient() {
-            const sortedStops = [...stops].sort((a, b) => a.pos - b.pos);
-            const css = `linear-gradient(${angle}deg, ${sortedStops.map(s => `${s.color} ${s.pos}%`).join(", ")
-                })`;
+
+            const sorted =
+                [...stops].sort((a, b) => a.pos - b.pos);
+
+            const css =
+                `linear-gradient(${angle}deg,
+        ${sorted.map(s => {
+
+                    const rgb = hexToRgb(s.color);
+
+                    return `rgba(${rgb.r},
+                         ${rgb.g},
+                         ${rgb.b},
+                         ${s.alpha})
+                         ${s.pos}%`;
+
+                }).join(',')}
+        )`;
+
             update(css);
 
             if (gradientBar) {
-                gradientBar.style.background = `linear-gradient(90deg, ${sortedStops.map(s => `${s.color} ${s.pos}%`).join(", ")
-                    })`;
+
+                gradientBar.style.background =
+                    `linear-gradient(90deg,
+            ${sorted.map(s => {
+
+                        const rgb = hexToRgb(s.color);
+
+                        return `rgba(${rgb.r},
+                             ${rgb.g},
+                             ${rgb.b},
+                             ${s.alpha})
+                             ${s.pos}%`;
+
+                    }).join(',')}
+            )`;
             }
         }
 
         /* ---------------- INITIALIZATION ---------------- */
         updateAngle(angle);
         renderStops();
-        renderSwatches(currentColor);
-        renderPresets();
         renderStopMarkers();
 
         if (mode === "solid") {

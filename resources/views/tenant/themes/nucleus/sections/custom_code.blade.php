@@ -25,6 +25,7 @@ $enableShadow = $s['enable_shadow'] ?? 'disable';
         min-height: {{ $minHeight }}px;
     "
     class="
+        {{ $containerWidth }}
         arzavo-embedded-code-section arzavo-background
         {{ $showOn === 'desktop' ? 'hidden md:block' : '' }}
         {{ $showOn === 'mobile' ? 'block md:hidden' : '' }}
@@ -33,7 +34,6 @@ $enableShadow = $s['enable_shadow'] ?? 'disable';
     ">
 
     <div class="
-        {{ $containerWidth }}
         {{ $alignment === 'left' ? 'text-left' : '' }}
         {{ $alignment === 'center' ? 'text-center' : '' }}
         {{ $alignment === 'right' ? 'text-right' : '' }}

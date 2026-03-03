@@ -55,6 +55,7 @@ class BlogController
         }
 
         Blog::create($data);
+        ping_google();
 
         return back()->with('success', 'Blog created successfully');
     }
@@ -112,6 +113,7 @@ class BlogController
         unset($data[$imageField]);
 
         $blog->update($data);
+        ping_google();
 
         return back()->with('success', 'Blog updated successfully');
     }

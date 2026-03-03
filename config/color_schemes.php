@@ -10,7 +10,6 @@ return [
             ['key' => 'subheading', 'label' => 'Subheading', 'type' => 'color'],
             ['key' => 'paragraph', 'label' => 'Paragraph', 'type' => 'color'],
             ['key' => 'secondary_text', 'label' => 'Secondary Text', 'type' => 'color'],
-            ['key' => 'invert_text', 'label' => 'Invert Text', 'type' => 'color'],
             ['key' => 'link', 'label' => 'Link', 'type' => 'color'],
             ['key' => 'link_hover', 'label' => 'Link Hover', 'type' => 'color'],
             ['key' => 'border', 'label' => 'Border Color', 'type' => 'color'],

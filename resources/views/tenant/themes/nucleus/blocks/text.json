@@ -16,7 +16,7 @@
         {
             "key": "text",
             "label": "Text Content",
-            "type": "textarea",
+            "type": "richtext",
             "default": "Your text content goes here. You can write multiple lines and it will be displayed beautifully on your website.",
             "placeholder": "Enter your text here"
         },
@@ -27,40 +27,58 @@
             "options": ["paragraph", "secondary-text"],
             "default": "paragraph"
         },
-        {
-            "key": "font_style",
-            "label": "Font Style",
-            "type": "radio",
-            "options": ["normal", "italic"],
-            "default": "normal"
-        },
+
         {
             "key": "group",
             "label": "Layout",
             "type": "group"
         },
         {
-            "key": "alignment",
-            "label": "Text Alignment",
+            "key": "desktop_width_type",
+            "label": "Heading Width",
             "type": "radio",
-            "options": ["left", "center", "right"],
-            "default": "left"
+            "options": [
+                "auto",
+                "full",
+                "custom"
+            ],
+            "default": "auto"
         },
         {
-            "key": "width",
-            "label": "Width",
+            "key": "desktop_width",
+            "label": "Desktop Custom Width",
             "type": "range",
-            "default": "100",
-            "min": 0,
-            "max": 100
+            "default": 100,
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "desktop_width_type",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "alignment",
+            "label": "Desktop Alignment",
+            "type": "radio",
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
+            "default": "left"
         },
         {
             "key": "mobile_alignment",
             "label": "Mobile Alignment",
             "type": "radio",
-            "options": ["left", "center", "right"],
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
             "default": "left"
         },
+        
         {
             "key": "group",
             "label": "Spacing",

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\Admin;
 use App\Models\Arzavo\Theme; // central DB
 use App\Models\Tenant\TenantTheme;
 use App\Services\Theme\ThemeInstaller;
+use App\Services\Theme\ThemeUninstaller;
 use Illuminate\Support\Facades\DB;
 
 class ThemeController
@@ -79,6 +80,7 @@ class ThemeController
         });
 
         session()->forget('preview_theme_id');
+        ping_google();
 
         return back()->with('success', 'Theme published successfully');
     }
@@ -124,5 +126,40 @@ class ThemeController
         }
 
         return json_decode(file_get_contents($path), true);
+    }
+    public function destroy($tenantThemeId)
+    {
+        $tenantTheme = TenantTheme::findOrFail($tenantThemeId);
+        if (TenantTheme::count() <= 1) {
+            return back()->with(
+                'error',
+                'At least one theme must remain installed.'
+            );
+        }
+
+        // 🚫 published theme protection (optional but recommended)
+        if ($tenantTheme->status === 'published') {
+            return back()->with(
+                'error',
+                'Published theme cannot be deleted.'
+            );
+        }
+
+        // published theme protection
+        if ($tenantTheme->status === 'published') {
+            return back()->with(
+                'error',
+                'Published theme cannot be deleted'
+            );
+        }
+
+        ThemeUninstaller::uninstall($tenantTheme);
+
+        session()->forget('preview_theme_id');
+
+        return back()->with(
+            'success',
+            'Theme deleted successfully'
+        );
     }
 }

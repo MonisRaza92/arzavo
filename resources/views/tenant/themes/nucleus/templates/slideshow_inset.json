@@ -1,0 +1,131 @@
+{
+    "type": "slideshow",
+    "name": "Slideshow: Inset Content",
+    "icon": "fa-image-stack",
+    "order": 6,
+    "category": "Banners",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "slide",
+            "color_scheme": "scheme_1",
+            "settings": {
+                "media_stack": "1",
+                "media_aspect_ratio": "21:9",
+                "direction": "vertical",
+                "alignment": "start",
+                "position": "start",
+                "gap": 16,
+                "padding_top": 24,
+                "padding_bottom": 24,
+                "padding_left": 4,
+                "padding_right": 4
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Run Your Institution Smarter",
+                        "heading_type": "heading-2"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Admissions, fees, attendance, reports — everything in one dashboard."
+                    }
+                },
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Start Free Demo",
+                        "button_type": "primary"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "slide",
+            "color_scheme": "scheme_1",
+            "settings": {
+                "media_stack": "1",
+                "media_aspect_ratio": "21:9",
+                "direction": "vertical",
+                "alignment": "start",
+                "position": "start",
+                "gap": 16,
+                "padding_top": 24,
+                "padding_bottom": 24,
+                "padding_left": 4,
+                "padding_right": 4
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Automate Fees & Reports",
+                        "heading_type": "heading-2"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Track payments, send reminders, generate reports instantly."
+                    }
+                },
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Explore Features",
+                        "button_type": "secondary"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "slide",
+            "color_scheme": "scheme_1",
+            "settings": {
+                "media_stack": "1",
+                "media_aspect_ratio": "21:9",
+                "direction": "vertical",
+                "alignment": "start",
+                "position": "start",
+                "gap": 16,
+                "padding_top": 24,
+                "padding_bottom": 24,
+                "padding_left": 4,
+                "padding_right": 4
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Stay Connected With Students",
+                        "heading_type": "heading-2"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Send notices, alerts and results instantly from Arzavo."
+                    }
+                },
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Get Started Today",
+                        "button_type": "primary"
+                    }
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "content_width": "container",
+        "autoplay": "1",
+        "autoplay_delay": "3",
+        "show_arrows": "1",
+        "show_dots": "1"
+    }
+}

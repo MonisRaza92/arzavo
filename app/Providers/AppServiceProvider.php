@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
+use Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void {}
+    public function register(): void
+    {
+    }
 
     public function boot(): void
     {
@@ -18,58 +20,62 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('*', function ($view) {
 
-            // If TenantMiddleware has NOT run yet → RETURN immediately
             if (!app()->bound('currentTenant')) {
-                // Main platform only gets main user
-                $customizes = [];
-                $settings = [];
                 return $view->with([
-                    'user' => Auth::guard('web')->user(),
-                    'customizes' => $customizes,
-                    'settings'   => $settings,
-                ]);
-            } else {
-
-                // Otherwise TENANT DB is active → now load tenant models
-                $tenant = app('currentTenant');
-
-                $user = Auth::guard('tenant')->user();
-
-                $settings = \App\Models\Tenant\Settings::pluck('value', 'key')->toArray();
-                $customizes = \App\Models\Tenant\Customizes::pluck('value', 'key')->toArray();
-
-                $students = \App\Models\Tenant\User::where('role', 'student')->get();
-                $teachers = \App\Models\Tenant\User::where('role', 'teacher')->get();
-                $staff = \App\Models\Tenant\User::where('role', 'staff')->get();
-                $colorSchemes = \App\Models\Tenant\ColorScheme::where('theme_id', app('currentThemeId'))->orderBy('id', 'asc')->get();
-
-                $contents = \App\Models\Tenant\Content::all();
-                $blogs = \App\Models\Tenant\Blog::all();
-
-                $classCourses = \App\Models\Tenant\ClassCourse::all();
-                $subjects = \App\Models\Tenant\Subject::all();
-                $courses = \App\Models\Tenant\Course::all();
-                $menus = \App\Models\Tenant\Menu::all();
-
-                $activeTheme = app('activeTheme');
-
-                return $view->with([
-                    'user'          => $user,
-                    'settings'      => $settings,
-                    'customizes'    => $customizes,
-                    'students'      => $students,
-                    'teachers'      => $teachers,
-                    'staff'         => $staff,
-                    'courses'       => $courses,
-                    'classCourses'  => $classCourses,
-                    'subjects'      => $subjects,
-                    'contents'      => $contents,
-                    'blogs'         => $blogs,
-                    'menus'         => $menus,
-                    'activeTheme'   => $activeTheme,
-                    'colorSchemes'  => $colorSchemes
+                    'settings' => [],
+                    'customizes' => []
                 ]);
             }
+
+            /*
+            |--------------------------------------------------------------------------
+            | REQUEST MEMORY CACHE (RUNS ONLY ONCE PER REQUEST)
+            |--------------------------------------------------------------------------
+            */
+
+            static $settings = null;
+            static $customizes = null;
+            static $schemes = null;
+            static $menus = null;
+            static $user = null;
+
+            if ($settings === null) {
+                $settings = \App\Models\Tenant\Settings
+                    ::pluck('value', 'key')
+                    ->toArray();
+            }
+
+            if ($customizes === null) {
+                $customizes = \App\Models\Tenant\Customizes
+                    ::pluck('value', 'key')
+                    ->toArray();
+            }
+
+            if ($schemes === null) {
+
+                $themeId = activeThemeId();
+
+                $schemes = \App\Models\Tenant\ColorScheme
+                    ::where('theme_id', $themeId)
+                    ->get()
+                    ->keyBy('key');
+            }
+
+            if ($menus === null) {
+                $menus = \App\Models\Tenant\Menu::all();
+            }
+
+            if ($user === null) {
+                $user = Auth::guard('web')->user() ?? Auth::guard('tenant')->user();
+            }
+
+            return $view->with([
+                'settings'      => $settings,
+                'customizes'    => $customizes,
+                'colorSchemes'  => $schemes,
+                'menus'         => $menus,
+                'user'          => $user
+            ]);
         });
     }
 }

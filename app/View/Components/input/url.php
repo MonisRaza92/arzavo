@@ -1,6 +1,5 @@
 <?php
-
-namespace App\View\Components\input;
+namespace App\View\Components\Input;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -8,39 +7,47 @@ use Illuminate\View\Component;
 use App\Models\Tenant\Page;
 use App\Models\Tenant\Course;
 
-class url extends Component
+class Url extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    public $urls;
+
     public function __construct()
     {
-        //
+        /*
+        |--------------------------------------------------------------------------
+        | REQUEST LEVEL CACHE
+        |--------------------------------------------------------------------------
+        */
+
+        static $cachedUrls = null;
+
+        if ($cachedUrls === null) {
+
+            $pages = Page::select('name', 'slug')
+                ->get()
+                ->map(fn($p) => [
+                    'label' => $p->name,
+                    'url' => url($p->slug)
+                ]);
+
+            $courses = Course::select('title', 'slug')
+                ->get()
+                ->map(fn($c) => [
+                    'label' => $c->title,
+                    'url' => url('/course/' . $c->slug)
+                ]);
+
+            $cachedUrls = [
+                'Pages' => $pages,
+                'Courses' => $courses,
+            ];
+        }
+
+        $this->urls = $cachedUrls;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
-        $pageUrls = Page::select('name', 'slug')
-            ->get()
-            ->map(fn($p) => [
-                'type' => 'page',
-                'label' => $p->name,
-                'value' => $p->slug,
-            ]);
-
-        $courseUrls = Course::select('title', 'slug')
-            ->get()
-            ->map(fn($c) => [
-                'type' => 'course',
-                'label' => $c->title,
-                'value' => $c->slug,
-            ]);
-
-        $urls = $pageUrls->merge($courseUrls)->values();
-
-        return view('components.input.url', compact('urls'));
+        return view('components.input.url');
     }
 }

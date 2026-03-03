@@ -86,6 +86,7 @@ class DomainController
             'domain_verified_at'   => now(),
             'domain_ssl_output'    => $sslOutput,
         ]);
+        ping_google();
 
         return response()->json([
             'status' => 'success',

@@ -1,106 +1,95 @@
 @php
-$image = $section['settings'] ?? [];
-$scheme = $section['color_scheme'] ?? 'scheme_1';
+    $s = $section['settings'] ?? [];
+    $scheme = $section['color_scheme'] ?? 'scheme_1';
 
-$desktopImage = $image['desktop_image'] ?? '';
-$mobileImage = $image['mobile_image'] ?? $desktopImage;
-$imageLink = $image['image_link'] ?? '';
-$openNewTab = $image['open_new_tab'] ?? 'no';
-$imageSize = $image['image_fit'] ?? 'auto';
-$aspectRatio = $image['aspect_ratio'] ?? 'auto';
-$borderRadius = $image['border_radius'] ?? 'enable';
-$cBorderRadius = $image['custom_border_radius'] ?? '0';
-$imagehadow = $image['shadow'] ?? 'none';
-$opacity = $image['opacity'] ?? 100;
-$hideDesktop = $image['hide_desktop'] ?? 'no';
-$hideMobile = $image['hide_mobile'] ?? 'no';
-$containerWidth = $image['container_width'] ?? 'container';
-$mt = $image['margin_top'] ?? 0;
-$mb = $image['margin_bottom'] ?? 0;
-$ml = $image['margin_left'] ?? 0;
-$mr = $image['margin_right'] ?? 0;
+    $desktop = $s['desktop_image'] ?? null;
+    $mobile = $s['mobile_image'] ?? $desktop;
 
-$aspectRatioClass = match($aspectRatio) {
-'square' => 'aspect-square',
-'portrait' => 'aspect-[3/4]',
-'landscape' => 'aspect-[4/3]',
-'wide' => 'aspect-[16/9]',
-'auto' => '',
-default => ''
-};
+    $stack = $s['media_stack'] ?? '0';
+    $container = $s['container_width'] ?? 'full';
 
-$objectFitClass = match($imageSize) {
-'cover' => 'object-cover',
-'contain' => 'object-contain',
-'auto' => 'object-cover',
-default => 'object-cover'
-};
+    $overlay = $s['overlay_enable'] ?? '0';
+    $overlayColor = $s['overlay_color'] ?? '#000';
+    $overlayOpacity = ($s['overlay_opacity'] ?? 40) / 100;
 
-$visibilityClass = '';
-if ($hideDesktop === '1' && $hideMobile === '1') {
-$visibilityClass = 'hidden';
-} elseif ($hideDesktop === '1') {
-$visibilityClass = 'block md:hidden';
-} elseif ($hideMobile === '1') {
-$visibilityClass = 'md:block hidden';
-}
+    $gap = $s['gap'] ?? 16;
+    $pt = $s['margin_top'] ?? 16;
+    $pb = $s['margin_bottom'] ?? 16;
+
+    $aspect = $s['aspect_ratio'] ?? 'auto';
+
+    $aspectClass = match ($aspect) {
+        'square' => 'aspect-square',
+        'portrait' => 'aspect-[3/4]',
+        'landscape' => 'aspect-[4/3]',
+        'wide' => 'aspect-[16/9]',
+        default => '',
+    };
+
+    $fit = ($s['image_fit'] ?? 'cover') === 'contain' ? 'object-contain' : 'object-cover';
+
+    $thickness = $s['border_width'] ?? 0;
+    $radius = $s['border_radius'] ?? 0;
 
 @endphp
 
-<div data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
-    style="
-    {{ scheme($scheme) }}
-    margin-top: {{ $mt }}px;
-    margin-bottom: {{ $mb }}px;
-    margin-left: {{ $ml }}px;
-    margin-right: {{ $mr }}px;"
-    class="{{ $visibilityClass }}
-    {{ $aspectRatioClass }} flex-1 arzavo-background">
-    @if ($containerWidth === 'container')
-    <div class=" container">
-        @endif
-        @if($imageLink)
-        <a href="{{ $imageLink }}" {{ $openNewTab === '1' ? 'target="_blank"' : '' }}>
-            @endif
-            <!-- Desktop Image -->
-            <img
-                src="{{ media($desktopImage) ?? asset('images/tenant/bg.jpg') }}"
-                class="
-                {{ $mobileImage ? 'hidden md:block' : 'block' }}
-                {{ $aspectRatioClass !== 'auto' ? $objectFitClass : '' }}
-                {{ $visibilityClass }}
-                {{ $imageSize }}
-                {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }}
-                w-full h-full
-            "
-                style="
-                opacity: {{ $opacity / 100 }};
-                @if($borderRadius === 'custom')
-                border-radius: {{ $cBorderRadius }}%;
-                @endif
-            " />
+<div class="w-full arzavo-background" data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
+    style="padding-top:{{ $pt }}px;padding-bottom:{{ $pb }}px;">
 
-            <!-- Mobile Image -->
-            <img
-                src="{{ media($mobileImage) ?? asset('images/tenant/bg.jpg') }}"
-                class="
-                {{ $mobileImage ? 'block' : 'hidden' }} md:hidden
-                {{ $aspectRatioClass !== 'auto' ? $objectFitClass : '' }}
-                {{ $visibilityClass }}
-                {{ $imageSize }}
-                {{ $borderRadius === 'enable' ? 'arzavo-border-rounded' : '' }}
-                w-full h-full
-            "
+
+    @if ($stack === '0')
+        {{-- overlay mode --}}
+
+        <div
+            class="relative w-full overflow-hidden {{ $aspectClass }} {{ $container === 'container' ? 'container' : '' }}">
+
+            <img src="{{ image($desktop) }}" class="w-full h-full hidden md:block arz-border {{ $fit }}"
                 style="
-                opacity: {{ $opacity / 100 }};
-                @if($borderRadius === 'custom')
-                border-radius: {{ $cBorderRadius }}%;
-                @endif
-            " />
-            @if($imageLink)
-        </a>
-        @endif
-        @if ($containerWidth === 'container')
-    </div>
+opacity:{{ ($s['opacity'] ?? 100) / 100 }};
+@if ($container === 'container') border-radius: {{ $radius }}px; border-width: {{ $thickness }}px; @endif
+">
+            <img src="{{ image($mobile) }}" class="w-full h-full block md:hidden arz-border {{ $fit }}"
+                style="
+opacity:{{ ($s['opacity'] ?? 100) / 100 }};
+@if ($container === 'container') border-radius: {{ $radius }}px; border-width: {{ $thickness }}px; @endif
+">
+
+            @if ($overlay === '1')
+                <div class="absolute inset-0" style="background:{{ $overlayColor }};opacity:{{ $overlayOpacity }}">
+                </div>
+            @endif
+
+            @if (!empty($section['blocks']))
+                <div class="absolute inset-0 flex flex-col container
+items-{{ $s['alignment'] ?? 'center' }}
+justify-{{ $s['position'] ?? 'center' }}
+p-6"
+                    style="gap:{{ $gap }}px">
+
+                    {!! renderBlocks($section['blocks']) !!}
+
+                </div>
+            @endif
+
+        </div>
+    @else
+        {{-- stacked mode --}}
+
+        <div class="flex flex-col {{ $container === 'container' ? 'container px-0!' : '' }}"
+            style="gap:{{ $gap }}px">
+
+            <div class="w-full hidden md:block {{ $aspectClass }}">
+                <img src="{{ image($desktop) }}" class="w-full h-full {{ $fit }}">
+            </div>
+            <div class="w-full block md:hidden {{ $aspectClass }}">
+                <img src="{{ image($mobile) }}" class="w-full h-full {{ $fit }}">
+            </div>
+
+            <div class="container">
+                {!! renderBlocks($section['blocks']) !!}
+            </div>
+
+        </div>
     @endif
+
 </div>

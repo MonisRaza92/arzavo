@@ -8,7 +8,7 @@
 
             {{-- PREVIEW PLACEHOLDER --}}
             <div
-                class="w-28 h-20 rounded-md border bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+                class="h-20 aspect-video border-rounded border-primary bg-gray-100 flex items-center justify-center text-xs text-gray-400">
                 Preview
             </div>
 
@@ -35,9 +35,9 @@
 
         {{-- RIGHT: ACTION --}}
         <div class="flex items-center gap-3">
-            <a data-turbo="false" href="{{ route('admin.builder.index', ['theme' => $activeTheme->theme_slug, 'page' => 'home']) }}"
-              data-loading
-               class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md
+            <a data-turbo="false"
+                href="{{ route('admin.builder.index', ['theme' => $activeTheme->theme_slug, 'status' => $activeTheme->status, 'theme_id' => $activeTheme->id, 'is_active' => $activeTheme->is_active, 'page' => 'home']) }}"
+                data-loading class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md
                       bg-black text-white hover:bg-gray-800 transition">
                 <i class="fa-solid fa-pen-to-square text-xs"></i>
                 Customize Theme

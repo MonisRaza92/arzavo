@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Tenant\ColorScheme;
 
 if (!function_exists('scheme')) {
 
@@ -10,21 +9,19 @@ if (!function_exists('scheme')) {
      * @param string|null $key        e.g. scheme_1
      * @param int|null    $themeId    e.g. $theme->theme_id
      */
-    function scheme($key)
+    function scheme($key = 'scheme_1')
     {
-        $themeId = app('currentThemeId') ?? null;
+        $themeId = activeThemeId();
 
-        if (!$key || !$themeId) {
+        $schemes = app('view')->getShared()['colorSchemes'] ?? [];
+
+        if (!$schemes || !isset($schemes[$key])) {
             return '';
         }
 
-        // dd($key, $themeId);
-        // ✅ Resolve scheme by theme_id + key (NOT by id)
-        $scheme = ColorScheme::where('theme_id', $themeId)
-            ->where('key', $key)
-            ->first();
+        $scheme = $schemes[$key];
 
-        if (!$scheme) {
+        if ($scheme->theme_id != $themeId) {
             return '';
         }
 
@@ -38,43 +35,43 @@ if (!function_exists('scheme')) {
 
         // 🎨 Base colors
         if ($colors) {
-            $css .= "--arzavo-background: {$colors->background};";
-            $css .= "--arzavo-border-color: {$colors->border};";
-            $css .= "--arzavo-heading-color: {$colors->heading};";
-            $css .= "--arzavo-subheading-color: {$colors->subheading};";
-            $css .= "--arzavo-paragraph-color: {$colors->paragraph};";
-            $css .= "--arzavo-secondary-text-color: {$colors->secondary_text};";
-            $css .= "--arzavo-invert-text-color: {$colors->invert_text};";
-            $css .= "--arzavo-link-color: {$colors->link};";
-            $css .= "--arzavo-link-hover-color: {$colors->link_hover};";
+            $css .= "--arzavo-background: " . ($colors->background ?? '#ffffff') . ";";
+            $css .= "--arzavo-border-color: " . ($colors->border ?? '#cccccc') . ";";
+            $css .= "--arzavo-heading-color: " . ($colors->heading ?? '#000000') . ";";
+            $css .= "--arzavo-subheading-color: " . ($colors->subheading ?? '#333333') . ";";
+            $css .= "--arzavo-paragraph-color: " . ($colors->paragraph ?? '#666666') . ";";
+            $css .= "--arzavo-secondary-text-color: " . ($colors->secondary_text ?? '#999999') . ";";
+            $css .= "--arzavo-invert-text-color: " . ($colors->invert_text ?? '#ffffff') . ";";
+            $css .= "--arzavo-link-color: " . ($colors->link ?? '#0066cc') . ";";
+            $css .= "--arzavo-link-hover-color: " . ($colors->link_hover ?? '#004499') . ";";
         }
 
         // 🔘 Primary button
         if ($primaryBtn) {
-            $css .= "--arzavo-primary-btn-background: {$primaryBtn->background};";
-            $css .= "--arzavo-primary-btn-text: {$primaryBtn->text};";
-            $css .= "--arzavo-primary-btn-border: {$primaryBtn->border};";
-            $css .= "--arzavo-primary-btn-hover-background: {$primaryBtn->hover_background};";
-            $css .= "--arzavo-primary-btn-hover-text: {$primaryBtn->hover_text};";
-            $css .= "--arzavo-primary-btn-hover-border: {$primaryBtn->hover_border};";
+            $css .= "--arzavo-primary-btn-background: " . ($primaryBtn->background ?? '#007bff') . ";";
+            $css .= "--arzavo-primary-btn-text: " . ($primaryBtn->text ?? '#ffffff') . ";";
+            $css .= "--arzavo-primary-btn-border: " . ($primaryBtn->border ?? '#007bff') . ";";
+            $css .= "--arzavo-primary-btn-hover-background: " . ($primaryBtn->hover_background ?? '#0056b3') . ";";
+            $css .= "--arzavo-primary-btn-hover-text: " . ($primaryBtn->hover_text ?? '#ffffff') . ";";
+            $css .= "--arzavo-primary-btn-hover-border: " . ($primaryBtn->hover_border ?? '#0056b3') . ";";
         }
 
         // 🔘 Secondary button
         if ($secondaryBtn) {
-            $css .= "--arzavo-secondary-btn-background: {$secondaryBtn->background};";
-            $css .= "--arzavo-secondary-btn-text: {$secondaryBtn->text};";
-            $css .= "--arzavo-secondary-btn-border: {$secondaryBtn->border};";
-            $css .= "--arzavo-secondary-btn-hover-background: {$secondaryBtn->hover_background};";
-            $css .= "--arzavo-secondary-btn-hover-text: {$secondaryBtn->hover_text};";
-            $css .= "--arzavo-secondary-btn-hover-border: {$secondaryBtn->hover_border};";
+            $css .= "--arzavo-secondary-btn-background: " . ($secondaryBtn->background ?? '#6c757d') . ";";
+            $css .= "--arzavo-secondary-btn-text: " . ($secondaryBtn->text ?? '#ffffff') . ";";
+            $css .= "--arzavo-secondary-btn-border: " . ($secondaryBtn->border ?? '#6c757d') . ";";
+            $css .= "--arzavo-secondary-btn-hover-background: " . ($secondaryBtn->hover_background ?? '#545b62') . ";";
+            $css .= "--arzavo-secondary-btn-hover-text: " . ($secondaryBtn->hover_text ?? '#ffffff') . ";";
+            $css .= "--arzavo-secondary-btn-hover-border: " . ($secondaryBtn->hover_border ?? '#545b62') . ";";
         }
 
         // 🧾 Input
         if ($input) {
-            $css .= "--arzavo-input-background: {$input->background};";
-            $css .= "--arzavo-input-text: {$input->text};";
-            $css .= "--arzavo-input-border: {$input->border};";
-            $css .= "--arzavo-input-focus-border: {$input->focus_border};";
+            $css .= "--arzavo-input-background: " . ($input->background ?? '#ffffff') . ";";
+            $css .= "--arzavo-input-text: " . ($input->text ?? '#000000') . ";";
+            $css .= "--arzavo-input-border: " . ($input->border ?? '#cccccc') . ";";
+            $css .= "--arzavo-input-focus-border: " . ($input->focus_border ?? '#007bff') . ";";
         }
 
         return $css;

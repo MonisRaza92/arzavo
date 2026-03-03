@@ -6,7 +6,8 @@
 
     <x-section.background :bg="$settings['background']" />
 
-    <div class="section-content relative z-30 {{ $settings['layout']['class'] }}" style="{{ $settings['spacing']['style'] }}">
+    <div class="section-content relative z-30 {{ $settings['layout']['class'] }} {{ $settings['spacing']['class'] }}"
+        style="{{ $settings['spacing']['style'] }}">
         {!! renderBlocks($section['blocks']) !!}
     </div>
 </div>

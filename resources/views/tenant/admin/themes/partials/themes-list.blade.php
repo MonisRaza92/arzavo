@@ -1,79 +1,95 @@
-<h2 class="mb-3 font-semibold">Installed Themes</h2>
+<h2 class="mb-3 mt-6 font-semibold"><i class="fa-regular fa-cards-blank mr-1"></i> Installed Themes</h2>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
 
     @foreach($tenantThemes as $tenantT)
 
-        <div class="border-rounded border-primary bg-white overflow-hidden">
+        <div class="p-2 border-rounded border-primary bg-primary relative">
 
-            {{-- preview --}}
-            <div class="h-44 bg-gray-100 flex items-center justify-center border-bottom relative">
-                Theme Preview
+            {{-- Preview --}}
+            <a href="{{ route('website.preview', ['theme' => $tenantT->theme_slug, 'slug' => 'home', 'theme_id' => $tenantT->id]) }}"
+                target="_blank">
+                <div
+                    class="bg-gray-100 aspect-video flex items-center justify-center border-primary border-rounded relative">
+                    Preview
+                    @if($tenantT->status === 'published')
+                        <span class="absolute top-2 right-2 text-xs text-green-600 rounded">
+                            <i class="fa-regular fa-circle-dot mr-1 text-[10px]"></i> Published
+                        </span>
+                    @else
+                        <span class="absolute top-2 right-2 text-xs text-blue-700 rounded">
+                            <i class="fa-regular fa-cloud-check mr-1 text-[10px]"></i> Installed
+                        </span>
+                    @endif
 
-                <a href="{{ route('website.preview', ['theme' => $tenantT->theme_slug, 'slug' => 'home']) }}"
-                    target="_blank"
-                    class="absolute top-2 right-2 bg-white/90 px-2 py-1 border-rounded text-xs shadow hover:bg-white">
-                    <i class="fa-solid fa-eye mr-1"></i> Preview
-                </a>
-            </div>
+                </div>
+            </a>
 
-            <div class="p-4">
+            <div class="py-2 pl-1">
 
-                <div class="flex justify-between items-start">
+                {{-- Title + Menu --}}
+                <div class="flex justify-between items-start relative">
+
                     <div>
-                        <h3 class="font-semibold text-lg">
+                        <h3 class="font-semibold">
                             {{ ucfirst($tenantT->theme_slug) }}
                         </h3>
-                        <p class="text-sm text-gray-500">
+
+                        <p class="text-xs text-gray-500">
                             Version {{ $tenantT->theme_version }}
                         </p>
                     </div>
 
-                    @if($tenantT->status === 'published')
-                        <span class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
-                            Live
-                        </span>
-                    @else
-                        <span class="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                            Draft
-                        </span>
-                    @endif
+                    {{-- Ellipsis --}}
+                    <button onclick="toggleModel('theme-actions-{{ $tenantT->id }}')"
+                        class="border-rounded hover:bg-gray-100">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+
+                    {{-- Dropdown Menu --}}
+                    <div id="theme-actions-{{ $tenantT->id }}"
+                        class="hidden absolute right-0 p-1 top-10 w-48 bg-white border border-gray-200 rounded shadow-lg z-20">
+
+                        @if($tenantT->status === 'draft')
+                            <form method="POST" action="{{ route('admin.themes.publish', $tenantT->id) }}">
+                                @csrf
+                                <button class="text-sm px-3 py-2 hover:bg-gray-100 w-full text-left">
+                                    <i class="fa-regular fa-circle-dot mr-1"></i> Publish Theme
+                                </button>
+                            </form>
+                        @endif
+                        <a data-turbo="false"
+                            href="{{ route('admin.builder.index', ['theme' => $tenantT->theme_slug, 'status' => $tenantT->status, 'theme_id' => $tenantT->id, 'is_active' => $tenantT->is_active, 'page' => 'home']) }}"
+                            class="block px-3 py-2 text-sm hover:bg-gray-100">
+                            <i class="fa-regular fa-sliders mr-1"></i> Customize
+                        </a>
+
+                        <form method="POST" action="{{ route('admin.themes.copy', $tenantT->id) }}">
+                            @csrf
+                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                <i class="fa-jelly fa-regular fa-clone mr-1"></i> Duplicate
+                            </button>
+                        </form>
+
+                        <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                            <i class="fa-solid fa-code mr-1"></i> Edit Code
+                        </button>
+
+                        <!-- <button class="w-full text-left px-3 mb-1 py-2 text-sm hover:bg-gray-100">
+                            <i class="fa-regular fa-gear mr-1"></i> Default Content
+                        </button> -->
+
+                        <form action="{{ route('admin.themes.destroy', $tenantT->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="w-full text-left px-3 py-2 border-top text-sm text-red-600 hover:bg-red-50">
+                                <i class="fa-regular fa-trash mr-1"></i> Delete Theme
+                            </button>
+                        </form>
+
+                    </div>
+
                 </div>
-
-                {{-- buttons --}}
-                <div class="mt-4 flex gap-2">
-
-                    <a data-turbo="false"
-                        href="{{ route('admin.builder.index', ['theme' => $tenantT->theme_slug, 'page' => 'home']) }}"
-                        class="flex-1 text-center px-4 py-2 text-sm border-rounded bg-black text-white hover:bg-gray-800">
-                        Customize
-                    </a>
-
-                    <form method="POST" action="{{ route('admin.themes.copy', $tenantT->id) }}">
-                        @csrf
-                        <button class="px-3 py-2 border-rounded border-primary bg-gray-100 hover:bg-gray-200" title="Duplicate this theme">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                    </form>
-
-                </div>
-
-                @if($tenantT->status === 'draft')
-                    <form method="POST" action="{{ route('admin.themes.publish', $tenantT->id) }}" class="mt-2">
-                        @csrf
-                        <button class="w-full px-4 py-2 border-rounded bg-green-600 text-white hover:bg-green-700">
-                            Publish
-                        </button>
-                    </form>
-                @else
-                    <form method="POST" action="{{ route('admin.themes.publish', $tenantT->id) }}" class="mt-2">
-                        @csrf
-                        <button class="w-full px-4 py-2 border-rounded bg-zinc-400 text-white">
-                            Published
-                        </button>
-                    </form>
-                @endif
-
             </div>
 
         </div>
@@ -81,8 +97,7 @@
     @endforeach
 </div>
 
-
-<h2 class="mb-3 font-semibold">Available Themes</h2>
+<h2 class="mb-3 mt-6 font-semibold"><i class="fa-solid fa-rectangle-history-circle-plus mr-1"></i> Available Themes</h2>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
@@ -92,44 +107,39 @@
             $installed = $tenantThemes->firstWhere('theme_id', $theme->id);
         @endphp
 
-        <div class="border-rounded border-primary border-gray-200 bg-white overflow-hidden">
+        <div class="overflow-hidden p-2 border-rounded border-primary bg-primary">
 
             {{-- preview --}}
-            <div class="h-44 bg-gray-100 flex items-center justify-center border-bottom relative">
-                Theme Preview
+            <a href="{{ route('website.preview', ['theme' => $theme->slug, 'slug' => 'home', 'theme_id' => $theme->id]) }}"
+                target="_blank">
+                <div
+                    class="bg-gray-100 aspect-video flex items-center justify-center border-primary border-rounded relative">
+                    Preview
+                </div>
+            </a>
 
-                <a href="{{ route('website.preview', ['theme' => $theme->slug, 'slug' => 'home']) }}" target="_blank"
-                    class="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded text-xs shadow hover:bg-white">
-                    <i class="fa-solid fa-eye mr-1"></i> Preview
-                </a>
-            </div>
+            <div class="p-2 pb-1 flex justify-between items-center">
 
-            <div class="p-4">
+                <div>
+                    <h3 class="font-semibold">{{ $theme->name }}</h3>
+                    <h3 class="text-xs text-tertiary">Version {{ $theme->version }}</h3>
+                </div>
+                <div class="flex flex-col items-end">
+                    @if ($theme->is_paid)
+                        <span class="text-sm text-tertiary font-semibold">₹ {{ $theme->price }}</span>
+                    @endif
+                    @if($installed)
+                        <span class="text-sm text-tertiary italic">Installed</span>
+                    @else
+                        <form method="POST" action="{{ route('admin.themes.install', $theme->id) }}">
+                            @csrf
+                            <button class="w-full text-sm text-blue-600 hover:text-blue-800">
+                                Install <i class="fa-regular fa-rectangle-history-circle-plus text-xs ml-1"></i>
+                            </button>
+                        </form>
+                    @endif
 
-                <h3 class="font-semibold text-lg">{{ $theme->name }}</h3>
-
-                <p class="text-sm text-gray-500 mb-4">
-                    Version {{ $theme->version }}
-                </p>
-
-                @if($installed)
-
-                    <a data-turbo="false"
-                        href="{{ route('admin.builder.index', ['theme' => $installed->theme_slug, 'page' => 'home']) }}"
-                        class="block w-full text-center px-4 py-2 border-rounded bg-black text-white hover:bg-gray-800">
-                        Customize
-                    </a>
-
-                @else
-
-                    <form method="POST" action="{{ route('admin.themes.install', $theme->id) }}">
-                        @csrf
-                        <button class="w-full px-4 py-2 border-rounded bg-blue-600 text-white hover:bg-blue-700">
-                            Install Theme
-                        </button>
-                    </form>
-
-                @endif
+                </div>
 
             </div>
 

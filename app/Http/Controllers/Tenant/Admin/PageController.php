@@ -37,6 +37,7 @@ class PageController
             'status' => $request->status ? 1 : 0,
         ]);
 
+        ping_google();
         return back()->with('success', 'Page created successfully!');
     }
 
@@ -62,6 +63,7 @@ class PageController
             'status' => $request->status ? 1 : 0,
         ]);
 
+        ping_google();
         return back()->with('success', 'Page updated successfully!');
     }
 
@@ -70,6 +72,7 @@ class PageController
         $page = Page::findOrFail($pageId);
         $page->delete();
 
+        ping_google();
         return back()->with('success', 'Page deleted successfully!');
     }
 }

@@ -1,7 +1,7 @@
 {
     "type": "spacer",
     "name": "Spacer",
-    "icon": "fa-arrows-up-down",
+    "icon": "fa-distribute-spacing-vertical",
     "order": 0,
     "category": "Layout",
     "color_scheme": "scheme_1",

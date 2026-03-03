@@ -14,6 +14,7 @@
     <script>
         window.ARZAVO_EDITOR_MODE = true;
     </script>
+    @vite('resources/js/builder.js')
 </body>
 
 </html>

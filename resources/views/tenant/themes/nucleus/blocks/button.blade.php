@@ -1,70 +1,114 @@
 @php
-$s = $block['settings'] ?? [];
+    $s = $block['settings'] ?? [];
 
-$text = $s['text'] ?? 'Click Here';
-$url = $s['url'] ?? '#';
-$buttonType = $s['button_type'] ?? 'primary';
+    $text = $s['text'] ?? 'Click Here';
+    $url = $s['url'] ?? '#';
+    $type = $s['button_type'] ?? 'primary';
 
-$icon = $s['icon'] ?? 'none';
-$iconPosition = $s['icon_position'] ?? 'right';
+    /* ICON */
+    $showIcon = ($s['show_icon'] ?? '0') === '1';
+    $icon = $s['icon'] ?? 'arrow-right';
+    $iconPos = $s['icon_position'] ?? 'right';
+    $iconGap = $s['icon_gap'] ?? 8;
 
-$widthDesktop = $s['width_desktop'] ?? 'theme';
-$widthMobile = $s['width_mobile'] ?? 'theme';
+    /* WIDTH */
+    $widthD = $s['width_desktop'] ?? 'default';
+    $widthM = $s['width_mobile'] ?? 'default';
 
-$openNewTab = $s['open_new_tab'] ?? 'disable';
+    /* ALIGN */
+    $alignD = $s['text_align_desktop'] ?? 'center';
+    $alignM = $s['text_align_mobile'] ?? 'center';
 
-$mt = $s['margin_top'] ?? 0;
-$mb = $s['margin_bottom'] ?? 0;
-$ml = $s['margin_left'] ?? 0;
-$mr = $s['margin_right'] ?? 0;
+    /* LINK */
+    $newTab = ($s['open_new_tab'] ?? '0') === '1';
+    $nofollow = ($s['nofollow'] ?? '0') === '1';
+    $aria = $s['aria_label'] ?? null;
 
-$textAlignDesktop = $s['text_align_desktop'] ?? 'center';
-$textAlignMobile = $s['text_align_mobile'] ?? 'center';
+    /* SPACING */
+    $mt = $s['margin_top'] ?? 0;
+    $mb = $s['margin_bottom'] ?? 0;
+    $ml = $s['margin_left'] ?? 0;
+    $mr = $s['margin_right'] ?? 0;
 
-$desktopTextAlignClass = match ($textAlignDesktop) {
-'left' => 'md:text-start',
-'center' => 'md:text-center',
-'right' => 'md:text-end',
-default => 'md:text-center',
-};
+    /* VISIBILITY */
+    $hideM = ($s['hide_mobile'] ?? '0') === '1';
+    $hideD = ($s['hide_desktop'] ?? '0') === '1';
 
-$mobileTextAlignClass = match ($textAlignMobile) {
-'left' => 'text-start',
-'center' => 'text-center',
-'right' => 'text-end',
-default => 'text-center',
-};
+    $unique = 'btn-' . $block['id'];
+
+    $classes = [$unique, 'items-center justify-center', 'arzavo-' . $type . '-btn', 'transition-all duration-200'];
+
+    /* MOBILE WIDTH */
+    if ($widthM === 'full') {
+        $classes[] = 'w-full';
+    } else {
+        $classes[] = 'w-auto';
+    }
+
+    /* DESKTOP WIDTH */
+    if ($widthD === 'full') {
+        $classes[] = 'md:w-full';
+    } else {
+        $classes[] = 'md:w-auto';
+    }
+
+    if ($hideM && !$hideD) {
+        $classes[] = 'hidden md:inline-flex';
+    } elseif ($hideD && !$hideM) {
+        $classes[] = 'inline-flex md:hidden';
+    } else {
+        $classes[] = 'inline-flex';
+    }
+
+    $style = "
+margin-top:{$mt}px;
+margin-bottom:{$mb}px;
+margin-left:{$ml}px;
+margin-right:{$mr}px;
+";
+
 @endphp
 
-<a
-    data-block-id="{{ $block['id'] }}"
-    data-name="{{ $block['name'] }}"
-    href="{{ $url }}"
-    @if($openNewTab==='enable' )
-    target="_blank" rel="noopener noreferrer"
-    @endif
-    style="
-        margin-top: {{ $mt }}px;
-        margin-bottom: {{ $mb }}px;
-        margin-left: {{ $ml }}px;
-        margin-right: {{ $mr }}px;
-    "
-    class="
-        inline-flex items-center justify-center gap-2
-        arzavo-{{ $buttonType }}-btn
-        {{ $mobileTextAlignClass }}
-        {{ $desktopTextAlignClass }}
-        {{ $widthMobile === 'full' ? 'w-full' : 'w-auto' }}
-        {{ $widthDesktop === 'full' ? 'md:w-full' : 'md:w-auto' }}
-        transition-all duration-200
-    ">
-    @if($icon !== 'none' && $iconPosition === 'left')
-    <i class="fa-solid fa-{{ $icon }}"></i>
+
+<style>
+    .{{ $unique }} {
+
+        @if ($widthD === 'full')
+            justify-content: {{ $alignD }};
+        @endif
+
+        gap:{{ $showIcon ? $iconGap . 'px' : '0px' }};
+
+    }
+
+    @media(max-width:767px) {
+
+        .{{ $unique }} {
+
+            @if ($widthM === 'full')
+                justify-content: {{ $alignM }};
+            @endif
+
+        }
+
+    }
+</style>
+
+
+<a data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" href="{{ $url }}"
+    @if ($newTab) target="_blank" rel="noopener {{ $nofollow ? 'nofollow' : '' }}" @endif
+    @if (!$newTab && $nofollow) rel="nofollow" @endif
+    @if ($aria) aria-label="{{ $aria }}" @endif class="{{ implode(' ', $classes) }}"
+    style="{{ $style }}">
+
+    @if ($showIcon && $iconPos === 'left')
+        <i class="fa-solid fa-{{ $icon }}"></i>
     @endif
 
     <span>{{ $text }}</span>
 
-    @if($icon !== 'none' && $iconPosition === 'right')
-    <i class="fa-solid fa-{{ $icon }}"></i>
+    @if ($showIcon && $iconPos === 'right')
+        <i class="fa-solid fa-{{ $icon }}"></i>
     @endif
+
 </a>

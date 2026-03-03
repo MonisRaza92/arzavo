@@ -1,7 +1,7 @@
 {
     "type": "heading",
     "name": "Heading",
-    "icon": "fa-font",
+    "icon": "fa-text-size",
     "order": 1,
     "category": "Basic",
     "max_blocks": 0,
@@ -16,7 +16,7 @@
         {
             "key": "text",
             "label": "Heading Text",
-            "type": "text",
+            "type": "richtext",
             "default": "Your Amazing Heading",
             "placeholder": "Enter your heading here"
         },
@@ -36,48 +36,60 @@
         },
         {
             "key": "group",
-            "label": "Appearence",
-            "type": "group"
-        },
-        {
-            "key": "font_style",
-            "label": "Font Style",
-            "type": "radio",
-            "options": ["normal", "italic"],
-            "default": "normal"
-        },
-        {
-            "key": "text_decoration",
-            "label": "Text Decoration",
-            "type": "select",
-            "options": ["none", "underline", "line-through"],
-            "default": "none"
-        },
-        {
-            "key": "group",
             "label": "Layout",
             "type": "group"
+        },
+        {
+            "key": "desktop_width_type",
+            "label": "Heading Width",
+            "type": "radio",
+            "options": [
+                "auto",
+                "full",
+                "custom"
+            ],
+            "default": "auto"
+        },
+        {
+            "key": "desktop_width",
+            "label": "Desktop Custom Width",
+            "type": "range",
+            "default": 100,
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "desktop_width_type",
+                "value": "custom"
+            }
         },
         {
             "key": "alignment",
             "label": "Desktop Alignment",
             "type": "radio",
-            "options": ["left", "center", "right"],
-            "default": "left"
-        },
-        {
-            "key": "width",
-            "label": "Width",
-            "type": "range",
-            "default": "100",
-            "min": 0,
-            "max": 100
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
+            "default": "left",
+            "conditional": {
+                "field": "desktop_width_type",
+                "value": [
+                    "full",
+                    "custom"
+                ],
+                "operator": "in"
+            }
         },
         {
             "key": "mobile_alignment",
             "label": "Mobile Alignment",
             "type": "radio",
-            "options": ["left", "center", "right"],
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
             "default": "left"
         },
         {

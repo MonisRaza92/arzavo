@@ -1,18 +1,18 @@
 {
     "type": "slideshow",
-    "name": "Hero: Slideshow",
-    "icon": "fa-images",
-    "order": 8,
-    "category": "Hero",
+    "name": "Slideshow: Images",
+    "icon": "fa-image-stack",
+    "order": 5,
+    "category": "Banners",
     "color_scheme": "scheme_1",
     "max_blocks": 10,
     "allowed_blocks": [
-        "slideshow_image"
+        "slide"
     ],
     "default_blocks": [
-        "slideshow_image",
-        "slideshow_image",
-        "slideshow_image"
+        "slide",
+        "slide",
+        "slide"
     ],
     "fields": [
         {
@@ -39,54 +39,7 @@
                 "container",
                 "full"
             ],
-            "default": "container"
-        },
-        {
-            "key": "aspect_ratio",
-            "label": "Height Ratio",
-            "type": "select",
-            "default": "wide",
-            "options": [
-                {
-                    "label": "Ultra Wide (21:9)",
-                    "value": "ultra_wide"
-                },
-                {
-                    "label": "Wide (16:9)",
-                    "value": "wide"
-                },
-                {
-                    "label": "Classic (4:3)",
-                    "value": "classic"
-                },
-                {
-                    "label": "Square (1:1)",
-                    "value": "square"
-                },
-                {
-                    "label": "Portrait (3:4)",
-                    "value": "portrait"
-                },
-                {
-                    "label": "Tall (9:16)",
-                    "value": "tall"
-                },
-                {
-                    "label": "Custom",
-                    "value": "custom"
-                }
-            ]
-        },
-        {
-            "key": "custom_aspect_ratio",
-            "label": "Custom Aspect Ratio (width : height)",
-            "type": "text",
-            "placeholder": "e.g. 16:7",
-            "default": "16:9",
-            "conditional": {
-                "field": "aspect_ratio",
-                "value": "custom"
-            }
+            "default": "full"
         },
         {
             "key": "group",
@@ -96,7 +49,7 @@
         },
         {
             "key": "autoplay",
-            "label": "Autoplay",
+            "label": "Automatically change slides",
             "type": "switch",
             "default": "1",
             "text": "Automatically change slides"
@@ -122,10 +75,31 @@
         },
         {
             "key": "show_dots",
-            "label": "Pagination Dots",
+            "label": "Pagination Dots indicators",
             "type": "switch",
             "default": "1",
             "text": "Show slide indicators"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
+        {
+            "key": "border_width",
+            "label": "Border Width",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
         },
         {
             "key": "group",
@@ -134,68 +108,34 @@
         },
         {
             "key": "margin_top",
-            "label": "Margin Top (px)",
+            "label": "Margin Top",
             "type": "range",
-            "default": "16",
+            "default": "0",
             "min": 0,
             "max": 100
         },
         {
             "key": "margin_bottom",
-            "label": "Margin Bottom (px)",
+            "label": "Margin Bottom ",
             "type": "range",
-            "default": "16",
+            "default": "0",
             "min": 0,
             "max": 100
         },
         {
             "key": "group",
             "type": "group",
-            "label": "Style"
-        },
-        {
-            "key": "border",
-            "label": "Border",
-            "type": "switch",
-            "default": "0"
-        },
-        {
-            "key": "border_radius",
-            "label": "Border Radius",
-            "type": "radio",
-            "default": "disable",
-            "options": [
-                "enable",
-                "disable",
-                "custom"
-            ]
-        },
-        {
-            "key": "custom_border_radius",
-            "label": "Border Radius (%)",
-            "type": "range",
-            "min": 0,
-            "max": 50,
-            "default": "0",
-            "conditional": {
-                "field": "border_radius",
-                "value": "custom"
-            }
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Responsive Visibility"
+            "label": "Visibility"
         },
         {
             "key": "hide_desktop",
-            "label": "Hide on Desktop",
+            "label": "Hide this section on desktop",
             "type": "switch",
             "default": "0"
         },
         {
             "key": "hide_mobile",
-            "label": "Hide on Mobile",
+            "label": "Hide this section on Mobile",
             "type": "switch",
             "default": "0"
         }

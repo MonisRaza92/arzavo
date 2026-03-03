@@ -1,20 +1,23 @@
 {
     "type": "announcement_bar",
     "name": "Announcement Bar",
-    "icon": "fa-bullhorn",
+    "icon": "fa-rss",
     "order": 0,
     "category": "Header",
     "color_scheme": "scheme_1",
-    "page": "home",
-    "max_blocks": 1,
-    "allowed_blocks": ["announcement"],
-    "default_blocks": ["announcement"],
+    "max_blocks": 10,
+    "allowed_blocks": [
+        "announcement"
+    ],
+    "default_blocks": [
+        "announcement"
+    ],
     "fields": [
         {
             "key": "group",
             "type": "group",
-            "label": "General Settings",
-            "icon": "fa-cog"
+            "label": "Layout",
+            "icon": "fa-layer-group"
         },
         {
             "key": "color_scheme",
@@ -22,33 +25,54 @@
             "type": "color_scheme_selector"
         },
         {
-            "key": "bar_behavior",
-            "label": "Bar Behavior",
+            "key": "container_width",
+            "label": "Section Width",
             "type": "radio",
-            "options": ["scroll_up", "sticky"],
-            "default": "scroll_up"
+            "options": [
+                "container",
+                "full"
+            ],
+            "default": "container"
         },
         {
             "key": "divider",
-            "label": "Divider Bottom",
-            "type": "radio",
-            "default": "enable",
-            "options": ["enable", "disable"]
-        },
-        {
-            "key": "bar_hide_btn",
-            "label": "Bar Hide Button",
-            "type": "radio",
-            "options": ["enable", "disable"],
-            "default": "enable"
-        },
-        {
-            "key": "padding",
-            "label": "Vertical Spacing",
+            "label": "Divider Thickness",
             "type": "range",
-            "default": 4,
             "min": 0,
-            "max": 20
+            "max": 5,
+            "default": "1"
+        },
+        {
+            "key": "padding_y",
+            "label": "Vertical Padding",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 40
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Behaviour",
+            "icon": "fa-rotate"
+        },
+        {
+            "key": "auto_rotate",
+            "label": "Auto Rotate",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "rotate_speed",
+            "label": "Rotate Speed (ms)",
+            "type": "number",
+            "default": 4,
+            "min": 1,
+            "max": 10,
+            "conditional": {
+                "field": "auto_rotate",
+                "value": "1"
+            }
         }
     ]
 }

@@ -1,12 +1,12 @@
 {
     "type": "header",
     "name": "Header",
-    "icon": "fa-heading",
+    "icon": "fa-frame",
     "order": 2,
     "category": "Layout",
     "max_blocks": 3,
-    "moveable": "none",
-    "allowed_blocks": ["heading", "text", "button", "divider", "spacer"],
+    "moveable": false,
+    "allowed_blocks": ["heading", "text", "button", "divider", "spacer", "icon", "group"],
     "default_blocks": ["heading"],
     "fields": [
         {

@@ -116,6 +116,7 @@ class CourseController extends Controller
         $course->classes()->sync($validated['class_id']);
         $course->subjects()->sync($validated['subjects']);
 
+        ping_google();
         // ----------------------------
         // DONE
         // ----------------------------
@@ -166,6 +167,7 @@ class CourseController extends Controller
 
         $course->classes()->sync($validated['class_id']);
         $course->subjects()->sync($validated['subjects']);
+        ping_google();
 
         return redirect()->route('admin.courses.edit', $course->slug)->with('success', 'Course updated successfully.');
     }
@@ -178,6 +180,7 @@ class CourseController extends Controller
             'publish_date' => $newStatus === 'published' ? now() : null,
         ]);
 
+        ping_google();
         return redirect()->route('admin.courses.edit', $course->slug)->with('success', "Course status updated to {$newStatus}.");
     }
     public function destroy(Request $request, Course $course)

@@ -18,6 +18,6 @@
         @disabled($disabled)
         @readonly($readonly)
         {{ $attributes->merge([
-            'class' => "w-full p-2 rounded-md border border-primary bg-transparent $class"
+            'class' => "w-full p-2 border-rounded text-xs border-primary bg-transparent $class"
         ]) }}>
 </x-input.wrapper>

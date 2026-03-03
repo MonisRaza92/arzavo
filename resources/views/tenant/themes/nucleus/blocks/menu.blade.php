@@ -36,16 +36,16 @@
 
             @foreach($menu->items as $item)
                 <li class="relative group">
-                    <a href="{{ $item->link }}" class="inline-flex items-center {{ $size }} arzavo-link arzavo-menu" style="color: var(--arzavo-heading-color);" @if ($item->children->count()) onclick="event.preventDefault()" @endif>
+                    <a href="{{ $item->link }}" class="inline-flex items-center {{ $size }} arz-link" @if ($item->children->count()) onclick="event.preventDefault()" @endif>
                         {{ $item->name }}
                     </a>
 
                     @if($item->children->count())
-                        <ul class="absolute top-full left-0 hidden group-hover:block min-w-48 arzavo-border border-rounded mt-2"
+                        <ul class="absolute top-full left-0 hidden group-hover:block min-w-48 border-rounded mt-2"
                             style="background: var(--arzavo-background)">
                             @foreach($item->children->where('parent_id', $item->id) as $child)
                                 <li>
-                                    <a href="{{ $child->link }}" class="block px-4 py-2 arzavo-link">
+                                    <a href="{{ $child->link }}" class="block px-4 py-2 arz-link">
                                         {{ $child->title }}
                                     </a>
                                 </li>
@@ -56,15 +56,15 @@
             @endforeach
         </ul>
         <button class="text-xl md:hidden" onclick="toggleMobileMenu()" style="color: var(--arzavo-heading-color);"><i class="fa-solid fa-bars arzavo-icons"></i></button>
-        <ul class="flex md:hidden flex-col fixed right-0 transform translate-x-full hidden transition-all duration-300 top-0 w-3/4 h-dvh arzavo-background z-30 overflow-y-auto scrollbar"
-            id="mobileMenu">
+        <ul class="flex md:hidden flex-col fixed right-0 border-0 transform translate-x-full hidden transition-all duration-300 top-0 w-3/4 h-dvh arzavo-background z-30 overflow-y-auto scrollbar"
+            id="mobileMenu" style="{{ scheme($scheme) }}">
             <div class="header flex px-4 py-3.5 justify-between arzavo-border-bottom">
-                <img src="{{ media($customizes['logo'] ?? '') }}" alt="logo" class="h-8 shrink-0">
+                <img src="{{ media($customizes['logo'] ?? '') }}" alt="logo" class="arz-logo-size shrink-0">
                 <button class="text-2xl" onclick="toggleMobileMenu()" style="color: var(--arzavo-heading-color);"><i class="fa-solid fa-xmark"></i></button>
             </div>
             @foreach($mobileMenu->items as $item)
                 <li class="relative group px-4 py-3 arzavo-border-bottom">
-                    <a href="{{ $item->link }}" class="inline-flex items-center arzavo-link {{ $size }}" style="color: var(--arzavo-heading-color);" @if ($item->children->count()) onclick="event.preventDefault()" @endif>
+                    <a href="{{ $item->link }}" class="inline-flex items-center arz-link {{ $size }}" @if ($item->children->count()) onclick="event.preventDefault()" @endif>
                         {{ $item->name }}
                     </a>
 
@@ -73,7 +73,7 @@
                             class="absolute top-full left-0 hidden group-hover:block min-w-48 arzavo-border border-rounded mt-2 arzavo-background">
                             @foreach($item->children->where('parent_id', $item->id) as $child)
                                 <li>
-                                    <a href="{{ $child->link }}" class="block px-4 py-2 arzavo-link">
+                                    <a href="{{ $child->link }}" class="block px-4 py-2 arz-link">
                                         {{ $child->title }}
                                     </a>
                                 </li>
@@ -84,7 +84,7 @@
             @endforeach
             <div class="absolute p-4 arzavo-border-top bottom-0 left-0 w-full">
                 @if (!Auth::guard('tenant')->check())
-                    <a href="{{ route('tenant.login') }}"><i class="fa-{{ $iconStyle }} fa-user text-xl"></i></a>
+                    <a href="{{ route('tenant.login') }}"><i class="fa-{{ $iconStyle }} fa-user text-xl" style="color: var(--arzavo-heading-color);"></i></a>
                 @else
                     <div class="menu relative" onclick="toggleModel('authMenuMobile')">
                         <i class="fa-{{ $iconStyle }} fa-user text-xl" style="color: var(--arzavo-heading-color);"></i>

@@ -2,7 +2,7 @@
     "type": "navbar",
     "name": "Header: Navbar",
     "icon": "fa-bars",
-    "order": 1,
+    "order": 2,
     "Page": [
         "global"
     ],
@@ -17,7 +17,6 @@
         "logo",
         "menu"
     ],
-    "moveable": "none",
     "fields": [
         {
             "key": "group",
@@ -41,30 +40,28 @@
         },
         {
             "key": "transparent",
-            "label": "Transparent",
+            "label": "Transparent header on home",
             "type": "switch",
             "default": "0",
-            "text": "Make Navbar Transparent",
             "conditional": {
                 "field": "navbar_behavior",
                 "value": "sticky"
             }
         },
         {
+            "key": "invert_color_scheme",
+            "label": "Invert Scheme",
+            "type": "invert_color_scheme",
+            "help": "Select a color scheme to be used when the header is in transparent mode.",
+            "conditional": {
+                "field": "transparent",
+                "value": "1"
+            }
+        },
+        {
             "key": "group",
             "type": "group",
             "label": "Layout"
-        },
-        {
-            "key": "navbar_height",
-            "label": "Height",
-            "type": "select",
-            "options": [
-                "compact",
-                "standard",
-                "spacious"
-            ],
-            "default": "standard"
         },
         {
             "key": "links_position",
@@ -83,10 +80,11 @@
         },
         {
             "key": "divider",
-            "label": "Divider",
-            "type": "switch",
+            "label": "Divider Width",
+            "type": "range",
             "default": "1",
-            "text": "Enable to add divider in bottom"
+            "min": 0,
+            "max": 5
         },
         {
             "key": "icon_style",

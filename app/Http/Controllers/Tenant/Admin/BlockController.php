@@ -14,6 +14,7 @@ class BlockController
     {
         $request->validate([
             'block_type' => 'required|string',
+            'schema' => 'required|string',
             'block_name' => 'required|string',
         ]);
 
@@ -41,6 +42,7 @@ class BlockController
         $block = $this->buildBlock(
             $request->block_type,
             $request->block_name,
+            $request->schema ?? null,
             $themeSlug,
             count($section['blocks']) + 1
         );
@@ -59,9 +61,9 @@ class BlockController
         ])->render();
     }
 
-    private function buildBlock(string $type, string $name, string $themeSlug, int $order)
+    private function buildBlock(string $type, string $name, string $schemaName, string $themeSlug, int $order)
     {
-        $json = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$type}.json");
+        $json = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$schemaName}.json");
         $schema = json_decode(file_get_contents($json), true);
 
         $settings = [];
@@ -73,7 +75,8 @@ class BlockController
 
         return [
             'id' => 'blk_' . uniqid(),
-            'type' => $type,
+            'type' => $schema['type'] ?? $type,
+            'schema' => $schemaName,
             'name' => $name,
             'icon' => $schema['icon'] ?? 'fa-cube',
             'settings' => $settings,
@@ -89,6 +92,7 @@ class BlockController
     {
         $request->validate([
             'block_type' => 'required|string',
+            'schema' => 'required|string',
             'block_name' => 'required|string'
         ]);
 
@@ -105,8 +109,9 @@ class BlockController
                 continue;
             }
 
+            $blockPath = $request->schema ?? $request->block_type;
             // 📄 Load schema
-            $jsonPath = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$request->block_type}.json");
+            $jsonPath = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$blockPath}.json");
 
             if (!file_exists($jsonPath)) {
                 return back()->with('error', 'Block schema not found');
@@ -126,6 +131,7 @@ class BlockController
             $newBlock = [
                 'id' => 'blk_' . uniqid(),
                 'type' => $request->block_type,
+                'schema' => $request->schema,
                 'name' => $request->block_name,
                 'icon' => $schema['icon'] ?? 'fa-shapes',
                 'settings' => $defaultSettings,
@@ -637,6 +643,7 @@ class BlockController
             return [
                 'type' => $data['type'] ?? basename($file, '.json'),
                 'name' => $data['name'] ?? basename($file, '.json'),
+                'schema' => basename($file, '.json'),
                 'icon' => $data['icon'] ?? 'fa-code',
                 'category' => $data['category'] ?? null,
                 'preview' => $data['preview'] ?? null,
@@ -651,7 +658,7 @@ class BlockController
         return collect($this->availableBlocks($themeSlug))
             ->mapWithKeys(function ($block) {
                 return [
-                    $block['type'] => [
+                    $block['schema'] ?? $block['type'] => [
                         'max_blocks' => $block['max_blocks'] ?? null,
                         'allowed_blocks' => $block['allowed_blocks'] ?? [],
                         'moveable' => $block['moveable'] ?? 'allow',

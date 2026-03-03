@@ -15,7 +15,7 @@
 
 {{-- OVERLAY --}}
 @if (!empty($bg['overlay']))
-    <div class="absolute inset-0 z-10 pointer-events-none" style="background-color: {{ $bg['overlay']['color'] }};
+    <div class="absolute inset-0 z-10 pointer-events-none" style="background: {{ $bg['overlay']['color'] }};
                     opacity: {{ $bg['overlay']['opacity'] }}%;">
     </div>
 @endif

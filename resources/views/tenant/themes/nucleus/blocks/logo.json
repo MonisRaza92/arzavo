@@ -1,32 +1,27 @@
 {
     "type": "logo",
     "name": "Logo",
-    "icon": "fa-shield-alt",
+    "icon": "fa-expand",
     "order": 6,
     "category": "Basic",
     "max_blocks": 0,
+    "toggle": false,
+    "deletable": false,
     "allowed_blocks": "",
     "default_blocks": "",
     "fields": [
         {
             "key": "group",
             "type": "group",
-            "label": "General"
-        },
-        {
-            "key": "logo_size",
-            "label": "Logo Size",
-            "type": "range",
-            "default": "35",
-            "min": 10,
-            "max": 100
+            "label": "General",
+            "help": "To change logo and size, Click Settings icon on the top left corner of screen and open Logo & Favicon."
         },
         {
             "key": "clickable_logo",
             "label": "Clickable Logo",
             "type": "switch",
             "default": "0",
-            "text": "Enable to redirect homepage"
+            "help": "Clicking the logo will take users to the homepage. This is typically expected behavior for logos on websites."
         },
         {
             "key": "group",

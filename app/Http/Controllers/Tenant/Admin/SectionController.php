@@ -14,8 +14,9 @@ class SectionController
     public function index(Request $request, $theme)
     {
         $page = $request->input('page');
+        $themeId = $request->input('theme_id');
         $page = Page::where('slug', $page ?? 'home')->first();
-        $theme = TenantTheme::where('theme_slug', $theme)->firstOrFail();
+        $theme = TenantTheme::where('id', $themeId)->firstOrFail();
 
         // 3. Load / create page design (JSON layout)
         $design = $this->themePageDesign($theme->id, $page->id);
@@ -25,6 +26,8 @@ class SectionController
         $availableSections = $this->availableSections($theme->theme_slug);
         $availableBlocks = $this->availableBlocks($theme->theme_slug);
         $pages = Page::all();
+        $activeTheme = app('activeTheme');
+        app()->instance('builderThemeId',$themeId);
 
         return view('tenant.admin.builder.index', [
             'theme' => $theme,
@@ -35,6 +38,9 @@ class SectionController
             'availableBlocks' => $availableBlocks,
             'availableTemplates' => $availableTemplates,
             'pages' => $pages,
+            'sectionRules' => $this->sectionRules($theme->theme_slug),
+            'blockRules' => $this->blockRules($theme->theme_slug),
+            'activeTheme' => $activeTheme,
         ]);
     }
 
@@ -43,12 +49,14 @@ class SectionController
     {
         $request->validate([
             'section_type' => 'required|string',
+            'schema' => 'string',
             'section_name' => 'required|string',
             'target' => 'required|in:header,page,footer,globals',
         ]);
 
+        $schemaName = $request->input('schema');
         // Load section schema
-        $schemaPath = resource_path("views/tenant/themes/{$themeSlug}/sections/{$request->section_type}.json");
+        $schemaPath = resource_path("views/tenant/themes/{$themeSlug}/sections/{$schemaName}.json");
 
         $schema = json_decode(file_get_contents($schemaPath), true);
 
@@ -124,6 +132,7 @@ class SectionController
         $section = [
             'id' => 'sec_' . uniqid(),
             'type' => $request->section_type,
+            'schema' => $request->schema,
             'name' => $request->section_name,
             'icon' => $schema['icon'] ?? 'fa-shapes',
             'settings' => $settings,
@@ -135,12 +144,41 @@ class SectionController
 
         // Default blocks
         $defaultBlocks = is_array($schema['default_blocks'] ?? null) ? $schema['default_blocks'] : [];
-        foreach ($defaultBlocks as $blockType) {
-            $section['blocks'][] = $this->buildBlock($blockType, $themeSlug);
+        $order = 1;
+
+        foreach ($defaultBlocks as $block) {
+
+            $normalized = $this->normalizeBlock($block);
+
+            $section['blocks'][] = $this->buildBlock(
+                $normalized,
+                $themeSlug,
+                $order++
+            );
         }
 
         return $section;
     }
+
+    private function normalizeBlock($block): array
+    {
+        // string block → convert
+        if (is_string($block)) {
+            return [
+                'type' => $block,
+                'settings' => []
+            ];
+        }
+
+        // already object → keep safe defaults
+        return [
+            'type' => $block['type'] ?? '',
+            'settings' => $block['settings'] ?? [],
+            'color_scheme' => $block['color_scheme'] ?? null,
+            'default_blocks' => $block['default_blocks'] ?? null,
+        ];
+    }
+
     /**
      * Build block recursively (JSON BASED)
      */
@@ -148,6 +186,7 @@ class SectionController
     {
         $type = is_array($block) ? $block['type'] : $block;
         $customSettings = is_array($block) ? ($block['settings'] ?? []) : [];
+        $customColorScheme = is_array($block) ? ($block['color_scheme'] ?? null) : null;
 
         $path = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$type}.json");
 
@@ -169,13 +208,14 @@ class SectionController
 
         $blockData = [
             'id' => 'blk_' . uniqid(),
-            'type' => $type,
+            'type' => $schema['type'] ?? $type,
             'name' => $schema['name'] ?? ucfirst($type),
+            'schema' => $type,
             'icon' => $schema['icon'] ?? 'fa-box',
             'settings' => $settings,
             'is_active' => true,
             'order' => $order,
-            'color_scheme' => $schema['color_scheme'] ?? null,
+            'color_scheme' => $customColorScheme ?? ($schema['color_scheme'] ?? null),
             'blocks' => [],
         ];
 
@@ -643,6 +683,7 @@ class SectionController
                 'icon' => $data['icon'] ?? 'fa-puzzle-piece',
                 'category' => $data['category'] ?? 'Layout',
                 'preview' => $data['preview'] ?? null,
+                'order' => $data['order'] ?? 9999,
             ];
         })->values();
     }
@@ -657,6 +698,7 @@ class SectionController
             return [
                 'type' => $data['type'] ?? basename($file, '.json'),
                 'name' => $data['name'] ?? basename($file, '.json'),
+                'schema' => basename($file, '.json'),
                 'icon' => $data['icon'] ?? 'fa-code',
                 'category' => $data['category'] ?? null,
                 'preview' => $data['preview'] ?? null,
@@ -678,12 +720,16 @@ class SectionController
             return [
                 'type' => $data['type'] ?? basename($file, '.json'),
                 'name' => $data['name'] ?? basename($file, '.json'),
+                'schema' => basename($file, '.json'),
                 'icon' => $data['icon'] ?? 'fa-code',
                 'category' => $data['category'] ?? null,
                 'preview' => $data['preview'] ?? null,
                 'fields' => $data['fields'] ?? [],
                 'allowed_blocks' => $data['allowed_blocks'] ?? null,
-                'moveable' => $data['moveable'] ?? 'allow',
+                'moveable' => $data['moveable'] ?? true,
+                'max_blocks' => $data['max_blocks'] ?? null,
+                'deletable' => $data['deletable'] ?? true,
+                'toggle' => $data['toggle'] ?? true,
             ];
         })->values();
     }
@@ -692,10 +738,10 @@ class SectionController
         return collect($this->availableSections($themeSlug))
             ->mapWithKeys(function ($section) {
                 return [
-                    $section['type'] => [
+                    $section['schema'] ?? $section['type'] => [
                         'max_blocks' => $section['max_blocks'] ?? null,
                         'allowed_blocks' => $section['allowed_blocks'] ?? [],
-                        'moveable' => $section['moveable'] ?? 'allow',
+                        'moveable' => $section['moveable'] ?? true,
                     ]
                 ];
             })
@@ -707,10 +753,12 @@ class SectionController
         return collect($this->availableBlocks($themeSlug))
             ->mapWithKeys(function ($block) {
                 return [
-                    $block['type'] => [
+                    $block['schema'] ?? $block['type'] => [
                         'max_blocks' => $block['max_blocks'] ?? null,
                         'allowed_blocks' => $block['allowed_blocks'] ?? [],
-                        'moveable' => $block['moveable'] ?? 'allow',
+                        'moveable' => $block['moveable'] ?? true,
+                        'deletable' => $block['deletable'] ?? true,
+                        'toggle' => $block['toggle'] ?? true,
                     ]
                 ];
             })

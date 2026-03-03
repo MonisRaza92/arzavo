@@ -20,6 +20,7 @@ class SectionResolver
     {
         return [
             'id' => $this->section['id'] ?? null,
+            'settings' => $this->section['settings'] ?? [],
             'background' => $this->resolveBackground(),
             'layout' => $this->resolveLayout(),
             'spacing' => $this->resolveSpacing(),
@@ -33,7 +34,7 @@ class SectionResolver
 
     protected function resolveBackground(): array
     {
-        $type = $this->settings['background_type'] ?? 'color';
+        $type = $this->settings['background_type'] ?? 'none';
 
         $bg = [
             'type' => $type,
@@ -43,12 +44,12 @@ class SectionResolver
             'blur' => null,
         ];
 
-        if ($type === 'color') {
+        if ($type === 'none') {
             $bg['style'] = 'background: var(--arzavo-background);';
         }
 
         if ($type === 'image') {
-            $image = media($this->settings['background_image'] ?? null);
+            $image = media($this->settings['background_image'] ?? 'images/tenant/background.jpg');
             $attachment = $this->settings['background_attachment'] ?? 'scroll';
 
             $bg['style'] = "
@@ -65,7 +66,7 @@ class SectionResolver
         }
 
         if (
-            $type !== 'color' &&
+            $type !== 'none' &&
             ($this->settings['background_overlay'] ?? '0') === '1'
         ) {
             $bg['overlay'] = [
@@ -75,7 +76,7 @@ class SectionResolver
         }
 
         if (
-            $type !== 'color' &&
+            $type !== 'none' &&
             ($this->settings['background_blur'] ?? '0') === '1'
         ) {
             $bg['blur'] = (int) ($this->settings['background_blur_intensity'] ?? 8);
@@ -91,39 +92,73 @@ class SectionResolver
 
     protected function resolveLayout(): array
     {
-        $direction = $this->settings['direction'] ?? 'vertical'; // vertical | horizontal
-        $align = $this->settings['alignment'] ?? 'center';   // start | center | end
-        $position = $this->settings['position'] ?? 'center';    // start | center | between
+        $direction = $this->settings['direction'] ?? 'vertical';
+        $mobileVertical = ($this->settings['mobile_direction'] ?? '1') === '1';
+
+        $align = $this->settings['alignment'] ?? 'center';
+        $mobileAlign = $this->settings['mobile_alignment'] ?? $align;
+
+        $position = $this->settings['position'] ?? 'center';
+        $mobilePosition = $this->settings['mobile_position'] ?? $position;
+
         $container = $this->settings['content_width'] ?? 'container';
 
         $classes = [];
 
-        $mobileVertical = ($this->settings['mobile_direction'] ?? '1') === '1';
+        /* ---------------------------
+           FLEX DIRECTION
+        --------------------------- */
 
-        if ($direction === 'horizontal' && $mobileVertical) {
-            $classes[] = 'flex-col md:flex-row';
+        if ($direction === 'horizontal') {
+
+            if ($mobileVertical) {
+                $classes[] = 'flex flex-col md:flex-row';
+            } else {
+                $classes[] = 'flex flex-row';
+            }
+
+        } else {
+            $classes[] = 'flex flex-col';
         }
 
-        // direction
-        $classes[] = $direction === 'horizontal'
-            ? 'flex flex-row'
-            : 'flex flex-col';
+        /* ---------------------------
+           ALIGN ITEMS
+        --------------------------- */
 
-        // alignment
-        $classes[] = match ($align) {
+        $classes[] = match ($mobileAlign) {
             'start' => 'items-start',
             'end' => 'items-end',
             default => 'items-center',
         };
 
-        // position (justify)
-        $classes[] = match ($position) {
+        $classes[] = match ($align) {
+            'start' => 'md:items-start',
+            'end' => 'md:items-end',
+            default => 'md:items-center',
+        };
+
+        /* ---------------------------
+           JUSTIFY CONTENT
+        --------------------------- */
+
+        $classes[] = match ($mobilePosition) {
             'start' => 'justify-start',
             'end' => 'justify-end',
             'between' => 'justify-between',
             default => 'justify-center',
         };
-        
+
+        $classes[] = match ($position) {
+            'start' => 'md:justify-start',
+            'end' => 'md:justify-end',
+            'between' => 'md:justify-between',
+            default => 'md:justify-center',
+        };
+
+        /* ---------------------------
+           CONTAINER WIDTH
+        --------------------------- */
+
         if ($container === 'container') {
             $classes[] = 'container';
         }
@@ -146,27 +181,44 @@ class SectionResolver
         $mb = (int) ($this->settings['margin_bottom'] ?? 0);
         $gap = (int) ($this->settings['gap'] ?? 0);
 
-        $height = $this->settings['height'] ?? 'auto'; // auto | full | custom
+        $height = $this->settings['height'] ?? 'auto';
         $customHeight = (int) ($this->settings['custom_height'] ?? 60);
+        $mobileFull = ($this->settings['mobile_height'] ?? '0') === '1';
 
         $style = "
-            padding-top: {$pt}px;
-            padding-bottom: {$pb}px;
-            margin-top: {$mt}px;
-            margin-bottom: {$mb}px;
-            gap: {$gap}px;
-        ";
+        padding-top: {$pt}px;
+        padding-bottom: {$pb}px;
+        margin-top: {$mt}px;
+        margin-bottom: {$mb}px;
+        gap: {$gap}px;
+    ";
+
+        $classes = [];
+
+        /* --------------------
+           MOBILE HEIGHT
+        -------------------- */
+
+        if ($mobileFull) {
+            $classes[] = 'min-h-screen';
+        }
+
+        /* --------------------
+           DESKTOP HEIGHT
+        -------------------- */
 
         if ($height === 'full') {
-            $style .= 'min-height: 100vh;';
+            $classes[] = 'md:min-h-screen';
         }
 
         if ($height === 'custom') {
-            $style .= "min-height: {$customHeight}vh;";
+            $style .= "--section-height: {$customHeight}vh;";
+            $classes[] = 'md:min-h-[var(--section-height)]';
         }
 
         return [
             'style' => $style,
+            'class' => implode(' ', $classes),
         ];
     }
 

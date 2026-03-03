@@ -2,7 +2,7 @@
     <button onclick="openCustomizesMenu('advanced-settings-menu','arrow-advanced')"
         type="button"
         class="p-4 flex justify-between items-center w-full text-sm font-semibold bg-hover-secondary">
-        <span>Advanced</span>
+        <span><i class="fa-solid fa-code mr-1"></i> Advanced</span>
         <i class="fas fa-angle-right transition-all duration-300" id="arrow-advanced"></i>
     </button>
 

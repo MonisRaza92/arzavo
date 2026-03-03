@@ -1,74 +1,78 @@
 @php
-$s = $block['settings'] ?? [];
+    $s = $block['settings'] ?? [];
 
-$text = $s['text'] ?? '';
-$textType = $s['text_type'] ?? '';
-$fontSize = $s['font_size'] ?? '';
-$fontWeight = $s['font_weight'] ?? '';
-$fontStyle = $s['font_style'] ?? '';
-$textDecoration = $s['text_decoration'] ?? '';
-$lineHeight = $s['line_height'] ?? '';
-$width = $s['width'] ?? '100';
-$alignment = $s['alignment'] ?? '';
-$mAlignment = $s['mobile_alignment'] ?? '';
-$mt = $s['margin_top'] ?? 0;
-$mb = $s['margin_bottom'] ?? 0;
-$pt = $s['padding_top'] ?? 0;
-$pb = $s['padding_bottom'] ?? 0;
-$pl = $s['padding_left'] ?? 0;
-$pr = $s['padding_right'] ?? 0;
+    $text = $s['text'] ?? '';
+    $type = $s['text_type'] ?? 'paragraph';
 
+    $desktopWidthType = $s['desktop_width_type'] ?? 'auto';
+    $desktopWidth = $s['desktop_width'] ?? 100;
 
-$lineHeightClass = match($lineHeight) {
-    'tight' => 'leading-tight',
-    'normal' => 'leading-normal',
-    'relaxed' => 'leading-relaxed',
-    'loose' => 'leading-loose',
-    default => 'leading-normal'
-};
+    $align = $s['alignment'] ?? 'left';
+    $mAlign = $s['mobile_alignment'] ?? 'left';
 
-$alignmentClass = match($alignment) {
-    'left' => 'md:text-left',
-    'center' => 'md:text-center',
-    'right' => 'md:text-right',
-    'justify' => 'md:text-justify',
-    default => 'md:text-left'
-};
+    $pt = $s['padding_top'] ?? 0;
+    $pb = $s['padding_bottom'] ?? 0;
+    $pl = $s['padding_left'] ?? 0;
+    $pr = $s['padding_right'] ?? 0;
 
-$mAlignmentClass = match($mAlignment) {
-    'left' => 'text-left',
-    'center' => 'text-center',
-    'right' => 'text-right',
-    'justify' => 'text-justify',
-    default => 'text-left'
-};
+    /* ---------- WIDTH STYLE ---------- */
+
+    $style = '';
+
+    if ($desktopWidthType === 'full') {
+        $style .= 'width:100%;';
+    } elseif ($desktopWidthType === 'custom') {
+        $style .= "--desktop-width:{$desktopWidth}%;";
+    }
+
+    /* ---------- ALIGNMENT ---------- */
+
+    $alignClass = match ($align) {
+        'center' => 'md:mx-auto md:text-center',
+        'right' => 'md:ml-auto md:text-right',
+        default => 'md:text-left',
+    };
+
+    $mAlignClass = match ($mAlign) {
+        'center' => 'mx-auto text-center',
+        'right' => 'ml-auto text-right',
+        default => 'text-left',
+    };
+
 @endphp
 
+
 <style>
-    @media (min-width: 768px){
+    @media(min-width:768px) {
         .text-{{ $block['id'] }} {
-            max-width: {{ $width }}%;
+
+            @if ($desktopWidthType === 'custom')
+                max-width: var(--desktop-width);
+            @endif
+
+            @if ($desktopWidthType === 'auto')
+                width: auto;
+            @endif
+
+            @if ($desktopWidthType === 'full')
+                width: 100%;
+            @endif
+
         }
     }
 </style>
 
-<p data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" 
-    style="
-        padding-top: {{ $pt }}px;
-        padding-bottom: {{ $pb }}px;
-        padding-left: {{ $pl }}px;
-        padding-right: {{ $pr }}px;
-        font-style: {{ $fontStyle }};
-        text-decoration: {{ $textDecoration }};
-    "
+
+<p data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
     class="
-        text-{{ $block['id'] }}
-        arzavo-{{ $textType }}
-        {{ $lineHeightClass }}
-        {{ $width === 'full' ? 'w-full' : 'max-w-fit' }}
-        {{ $mAlignmentClass }}
-        {{ $alignmentClass }}
-    "
->
-    {!!$text !!}
+text-{{ $block['id'] }}
+arzavo-{{ $type }}
+{{ $mAlignClass }}
+{{ $alignClass }}
+"
+    style="
+{{ $style }}
+padding: {{ $pt }}px {{ $pr }}px {{ $pb }}px {{ $pl }}px;
+">
+    {!! $text !!}
 </p>

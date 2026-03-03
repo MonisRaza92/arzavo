@@ -4,7 +4,7 @@
 'containerClass' => ''
 ])
 
-<div {{ $attributes->merge(['class' => "mb-4 w-full $containerClass"]) }}>
+<div {{ $attributes->merge(['class' => "w-full $containerClass"]) }}>
     @if($label)
     <label class="block text-sm font-medium mb-2 text-secondary">
         {{ $label }}
@@ -14,6 +14,6 @@
     {{ $slot }}
 
     @if($hint)
-    <p class="text-xs mt-1 text-gray-500">{{ $hint }}</p>
+    <p class="text-xs mt-2 text-gray-500">{{ $hint }}</p>
     @endif
 </div>

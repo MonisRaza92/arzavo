@@ -4,69 +4,60 @@
         class="bg-hover-secondary relative group/block border-rounded cursor-pointer select-none py-0.5 px-1 mt-1 flex justify-between items-center">
 
         @php
-            $blockRules = collect($availableBlocks)->mapWithKeys(function ($block) {
-                return [
-                    $block['type'] => [
-                        'max_blocks' => $block['max_blocks'] ?? null,
-                        'allowed_blocks' => $block['allowed_blocks'] ?? [],
-                        'moveable' => $block['moveable'] ?? "allow"
-                    ]
-                ];
-            });
+            $blockRules = $availableBlocks->firstWhere('schema', $block['schema'] ?? null) ?? $availableBlocks->firstWhere('type', $block['type'] ?? null) ?? [];
         @endphp
         <div class="flex items-center grow">
 
             {{-- NESTED TOGGLER --}}
-            @if (!empty($blockRules[$block['type']]['allowed_blocks']))
+            @if (!empty($blockRules['allowed_blocks']))
                 <button type="button" id="block-btn-{{ $block['id'] }}"
-                    class="text-tertiary bg-hover-secondary pt-0.5 pb-1.5 px-1.5 mr-1 border-rounded toggle-block-btn"
+                    class="text-tertiary bg-hover-secondary pt-0.5 pb-1.5 px-2 border-rounded toggle-block-btn"
                     data-id="{{ $block['id'] }}">
-                    <i id="block-btn-arrow-{{ $block['id'] }}" class="fa-solid fa-chevron-right text-[10px]"></i>
+                    <i id="block-btn-arrow-{{ $block['id'] }}" class="fa-solid fa-chevron-right text-[9px]"></i>
                 </button>
             @else
-                <span class="w-8"></span>
+                <span class="w-8 h-8"></span>
             @endif
-            <span class="text-sm cursor-pointer block-open-btn w-full" data-block-id="{{ $block['id'] }}"><i
+            <span class="text-[13px] cursor-pointer block-open-btn w-full" data-block-id="{{ $block['id'] }}"><i
                     class="fa-solid {{ $block['icon'] ?? 'fa-shapes' }} text-xs mr-2 text-tertiary"></i>{{ $block['name'] }}</span>
         </div>
 
         <div
             class="flex items-center opacity-0 pointer-events-none group-hover/block:opacity-100 group-hover/block:pointer-events-auto transition-all duration-200">
-            @php
-                $blockRule = $blockRules[$block['type']] ?? null;
-                $moveable = $blockRule['moveable'] ?? "allow";
-            @endphp
-            @if ($moveable === "allow")
+            @if ($blockRules['moveable'] ?? true)
                 <button
-                    class="cursor-drag text-hover-primary text-tertiary text-xs py-2 px-1 border-rounded block-drag-handle">
+                    class="cursor-drag text-hover-primary text-tertiary text-xs p-1 border-rounded block-drag-handle">
                     <i class="fa-solid fa-up-down"></i>
                 </button>
-            @else
-                <i class="fa-solid fa-lock text-tertiary text-xs my-2 mx-1"></i>
             @endif
+
+            @if ($blockRules['toggle'] ?? true)
             {{-- ACTIVE/INACTIVE --}}
             <button type="button"
-                class="toggle-block-active text-tertiary text-[13px] text-hover-primary py-2 px-1 border-rounded"
-                data-block-id="{{ $block['id'] }}" data-section-id="{{ $section['id'] }}">
-                @if($block['is_active'])
+            class="toggle-block-active text-tertiary text-[13px] text-hover-primary p-1 border-rounded"
+            data-block-id="{{ $block['id'] }}" data-section-id="{{ $section['id'] }}">
+            @if($block['is_active'])
                     <i class="fa-solid fa-eye"></i>
                 @else
                     <i class="fa-solid fa-eye-slash"></i>
                 @endif
             </button>
+            @endif
 
+            @if ($blockRules['deletable'] ?? true)
             {{-- DELETE --}}
             <form class="delete-block-form" data-block-id="{{ $block['id'] }}"
                 action="{{ route('admin.builder.sections.blocks.destroy', ['theme' => $theme->id, 'page' => $page->id, 'sectionId' => $section['id'], 'blockId' => $block['id']]) }}"
                 method="POST">
                 @csrf
                 @method('DELETE')
-
+                
                 <button type="button"
-                    class="delete-block-btn text-tertiary text-hover-primary py-2 px-1 border-rounded text-xs">
+                class="delete-block-btn text-tertiary text-hover-primary p-1 border-rounded text-xs">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </form>
+            @endif
 
         </div>
         
@@ -74,7 +65,7 @@
     </div>
 
     {{-- Nested Blocks --}}
-    <div id="nested-blocks-{{ $block['id'] }}" class="ml-[21px] hidden">
+    <div id="nested-blocks-{{ $block['id'] }}" class="ml-5.25 hidden">
         {{-- List of blocks --}}
         <ul class="nested-block-list" id="nested-block-list-{{ $block['id'] }}" data-parent-block-id="{{ $block['id'] }}" data-section-id="{{ $section['id'] }}">
             @foreach($block['blocks'] ?? [] as $child)
@@ -82,19 +73,18 @@
             @endforeach
         </ul>
         @php
-            $blockRule = $blockRules[$block['type']] ?? null;
-            $maxNestedBlocks = $blockRule['max_blocks'] ?? null;
+            $maxNestedBlocks = $blockRules['max_blocks'] ?? null;
             $currentNestedBlockCount = count($block['blocks'] ?? []);
         @endphp
         @if(is_null($maxNestedBlocks) || $currentNestedBlockCount < $maxNestedBlocks)
             <button type="button"
-                class="text-blue-600 text-left text-sm bg-hover-secondary mt-1 w-full block p-2.5 border-rounded"
+                class="text-blue-600 text-left text-sm bg-hover-secondary w-full block p-2 border-rounded"
                 onclick="document.getElementById('addNestedBlockContainer{{ $block['id'] }}').classList.remove('hidden')">
-                <i class="fa-regular fa-square-plus mr-1 ml-6 text-[13px]"></i> Add Block
+                <i class="fa-jelly fa-regular fa-circle-plus mr-1 ml-6 text-[13px]"></i> Add Block
             </button>
         @endif
     </div>
-    @include('tenant.admin.builder.blocks.nested-block-add')
+    @include('tenant.admin.builder.blocks.nested-block-add',['blockRule' => $blockRules])
 </li>
 
 

@@ -1,21 +1,20 @@
 {
     "type": "custom_section",
     "name": "Features: Center Image",
-    "icon": "fa-columns",
-    "category": "Features",
-    "order": 4,
-
+    "icon": "fa-table-rows-add-below",
+    "category": "Storytelling",
+    "order": 3,
     "settings": {
-        "background_type": "color",
         "direction": "vertical",
-        "mobile_direction": "vertical",
+        "mobile_direction": "1",
         "alignment": "center",
-        "position": "center",
-        "gap": 72,
-        "padding_top": 100,
-        "padding_bottom": 100
+        "position": "between",
+        "height": "auto",
+        "mobile_height": "auto",
+        "gap": 64,
+        "padding_top": 70,
+        "padding_bottom": 70
     },
-
     "default_blocks": [
         {
             "type": "header",
@@ -29,7 +28,7 @@
                     "type": "heading",
                     "settings": {
                         "text": "Built for institutions that want full control",
-                        "heading_type": "heading-3",
+                        "heading_type": "heading-5",
                         "alignment": "left",
                         "mobile_alignment": "left"
                     }
@@ -45,16 +44,16 @@
                 }
             ]
         },
-
         {
             "type": "group",
             "settings": {
                 "direction": "horizontal",
-                "mobile_direction": "vertical",
+                "mobile_direction": "1",
                 "alignment": "center",
                 "position": "between",
                 "gap": 40,
-                "width": "full"
+                "width": "full",
+                "mobile_width": "full"
             },
             "default_blocks": [
                 {
@@ -63,22 +62,22 @@
                         "direction": "vertical",
                         "alignment": "start",
                         "gap": 24,
-                        "width": "custom",
-                        "max_width": 32
+                        "width": "full",
+                        "mobile_width": "full"
                     },
                     "default_blocks": [
                         {
                             "type": "group",
                             "settings": {
-                                "border": "enable",
-                                "custom_border_radius": "1",
-                                "border_radius": 12,
+                                "border_width": 1,
                                 "padding_top": 16,
                                 "padding_bottom": 16,
                                 "padding_left": 16,
                                 "padding_right": 16,
                                 "direction": "vertical",
                                 "alignment": "start",
+                                "width": "full",
+                                "mobile_width": "full",
                                 "gap": 8
                             },
                             "default_blocks": [
@@ -109,20 +108,19 @@
                                 }
                             ]
                         },
-
                         {
                             "type": "group",
                             "settings": {
-                                "border": "enable",
-                                "custom_border_radius": "1",
-                                "border_radius": 12,
+                                "border_width": 1,
                                 "padding_top": 16,
                                 "padding_bottom": 16,
                                 "padding_left": 16,
                                 "padding_right": 16,
                                 "direction": "vertical",
                                 "alignment": "start",
-                                "gap": 8
+                                "gap": 8,
+                                "width": "full",
+                                "mobile_width": "full"
                             },
                             "default_blocks": [
                                 {
@@ -152,20 +150,19 @@
                                 }
                             ]
                         },
-
                         {
                             "type": "group",
                             "settings": {
-                                "border": "enable",
-                                "custom_border_radius": "1",
-                                "border_radius": 12,
+                                "border_width": 1,
                                 "padding_top": 16,
                                 "padding_bottom": 16,
                                 "padding_left": 16,
                                 "padding_right": 16,
                                 "direction": "vertical",
                                 "alignment": "start",
-                                "gap": 8
+                                "gap": 8,
+                                "width": "full",
+                                "mobile_width": "full"
                             },
                             "default_blocks": [
                                 {
@@ -197,41 +194,38 @@
                         }
                     ]
                 },
-
                 {
                     "type": "image",
                     "settings": {
                         "desktop_image": null,
                         "mobile_image": null,
                         "aspect_ratio": "portrait",
-                        "image_fit": "cover",
-                        "border_radius": "enable"
+                        "image_fit": "cover"
                     }
                 },
-
                 {
                     "type": "group",
                     "settings": {
                         "direction": "vertical",
                         "alignment": "start",
                         "gap": 24,
-                        "width": "custom",
-                        "max_width": 32
+                        "width": "full",
+                        "mobile_width": "full"
                     },
                     "default_blocks": [
                         {
                             "type": "group",
                             "settings": {
-                                "border": "enable",
-                                "custom_border_radius": "1",
-                                "border_radius": 12,
+                                "border_width": 1,
                                 "padding_top": 16,
                                 "padding_bottom": 16,
                                 "padding_left": 16,
                                 "padding_right": 16,
                                 "direction": "vertical",
                                 "alignment": "start",
-                                "gap": 8
+                                "gap": 8,
+                                "width": "full",
+                                "mobile_width": "full"
                             },
                             "default_blocks": [
                                 {
@@ -261,20 +255,19 @@
                                 }
                             ]
                         },
-
                         {
                             "type": "group",
                             "settings": {
-                                "border": "enable",
-                                "custom_border_radius": "1",
-                                "border_radius": 12,
+                                "border_width": 1,
                                 "padding_top": 16,
                                 "padding_bottom": 16,
                                 "padding_left": 16,
                                 "padding_right": 16,
                                 "direction": "vertical",
                                 "alignment": "start",
-                                "gap": 8
+                                "gap": 8,
+                                "width": "full",
+                                "mobile_width": "full"
                             },
                             "default_blocks": [
                                 {
@@ -304,20 +297,19 @@
                                 }
                             ]
                         },
-
                         {
                             "type": "group",
                             "settings": {
-                                "border": "enable",
-                                "custom_border_radius": "1",
-                                "border_radius": 12,
+                                "border_width": 1,
                                 "padding_top": 16,
                                 "padding_bottom": 16,
                                 "padding_left": 16,
                                 "padding_right": 16,
                                 "direction": "vertical",
                                 "alignment": "start",
-                                "gap": 8
+                                "gap": 8,
+                                "width": "full",
+                                "mobile_width": "full"
                             },
                             "default_blocks": [
                                 {

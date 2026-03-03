@@ -1,0 +1,83 @@
+{
+    "type": "data_image",
+    "name": "Media",
+    "icon": "fa-images",
+    "order": 4,
+    "max_blocks": 0,
+    "moveable": false,
+    "deletable": false,
+    "toggle": false,
+    "category": "Basic",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
+        {
+            "key": "aspect_ratio",
+            "label": "Aspect Radio",
+            "type": "select",
+            "default": "auto",
+            "options": [
+                "auto",
+                "square",
+                "portrait",
+                "wide"
+            ]
+        },
+        {
+            "key": "border_width",
+            "label": "Border Thickness",
+            "type": "range",
+            "min": 0,
+            "max": 5,
+            "default": 0
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Roundness",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        },
+        {
+            "key": "margin_left",
+            "label": "Margin Left",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        },
+        {
+            "key": "margin_right",
+            "label": "Margin Right",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        }
+    ]
+}

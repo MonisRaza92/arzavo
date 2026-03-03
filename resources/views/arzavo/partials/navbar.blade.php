@@ -9,7 +9,7 @@
                 <x-button :url="route('login.form')" variant="secondary" class="bg-white!">Login</x-button>
                 <x-button :url="route('register.form')" class="hidden md:flex">Register Now</x-button>
                 @else
-                <x-button :url="route('dashboard')" variant="icon" class="text-invert text-2xl md:text-xl" icon="bars-progress"></x-button>
+                <x-button :url="route('tenants.index')" variant="icon" class="text-invert text-2xl md:text-xl" icon="bars-progress"></x-button>
                 @endif
             </div>
         </div>

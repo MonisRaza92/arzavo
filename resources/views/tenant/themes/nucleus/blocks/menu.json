@@ -1,9 +1,10 @@
 {
     "type": "menu",
-    "name": "Menu: Links",
+    "name": "Menu",
     "icon": "fa-arrow-up-right-from-square",
     "order": 7,
     "category": "Basic",
+    "deletable": false,
     "max_blocks": 10,
     "allowed_blocks": "",
     "default_blocks": "",
@@ -57,19 +58,6 @@
             "type": "radio",
             "options": ["capitalize", "uppercase"],
             "default": "capitalize"
-        },
-        {
-            "key": "font_weight",
-            "label": "Font Weight",
-            "type": "font_weight",
-            "default": "normal"
-        },
-        {
-            "key": "icon_style",
-            "label": "Icon Style",
-            "type": "radio",
-            "options": ["regular", "solid"],
-            "default": "regular"
         },
 
         {

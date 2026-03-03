@@ -17,6 +17,10 @@
         --arzavo-secondary-text-font-family: {{ $customizes['secondary_text_font_family'] ?? '' }};
 
 
+        --arz-desktop-logo-size: {{ $customizes['logo_height_desktop'] ?? 40 }}px;
+        --arz-mobile-logo-size: {{ $customizes['logo_height_mobile'] ?? 40 }}px;
+
+
         /* ========================= */
         /*           H1              */
         /* ========================= */

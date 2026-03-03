@@ -2,30 +2,53 @@
     "type": "announcement",
     "name": "Announcement",
     "icon": "fa-bell",
-    "order": 1,
     "category": "Header",
-    "max_blocks": 0,
-    "allowed_blocks": "",
-    "default_blocks": "",
-    "moveable": "none",
+    "moveable": "allow",
     "fields": [
         {
             "key": "group",
             "type": "group",
-            "label": "Announcement",
+            "label": "Content",
             "icon": "fa-bell"
         },
         {
-            "key": "announcement",
+            "key": "text",
             "label": "Announcement Text",
-            "type": "text",
+            "type": "richtext",
             "default": "Welcome to our website!"
+        },
+        {
+            "key": "url",
+            "label": "Link URL",
+            "type": "url",
+            "placeholder": "https://..."
+        },
+        {
+            "key": "open_new",
+            "label": "Open in new tab",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Typography",
+            "icon": "fa-font"
         },
         {
             "key": "text_type",
             "label": "Text Type",
             "type": "select",
-            "options": ["heading-1", "heading-2", "heading-3", "heading-4", "heading-5", "heading-6", "paragraph", "secondary-text"],
+            "options": [
+                "heading-1",
+                "heading-2",
+                "heading-3",
+                "heading-4",
+                "heading-5",
+                "heading-6",
+                "paragraph",
+                "secondary-text"
+            ],
             "default": "paragraph"
         }
     ]

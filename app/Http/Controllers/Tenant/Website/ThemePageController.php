@@ -51,13 +51,13 @@ class ThemePageController extends Controller
     /**
      * PREVIEW (draft theme)
      */
-    public function preview($theme = 'nucleus', $slug = 'home')
+    public function preview($theme = 'nucleus', $themeId = null, $slug = 'home')
     {
         $page = Page::where('slug', $slug)->firstOrFail();
-        $themeId = TenantTheme::where('theme_slug', $theme)->first()->id;
 
         app()->instance('currentThemeId', $themeId);
         app()->instance('currentThemeSlug', $theme);
+        app()->instance('builderThemeId', $themeId);
         // preview theme id middleware / session se aata hai
         $design = ThemePageDesign::where('tenant_theme_id', $themeId)
             ->where('page_id', $page->id)

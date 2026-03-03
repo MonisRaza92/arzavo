@@ -1,12 +1,12 @@
 <div id="editorSidebar"
     class="w-90 pt-16 h-dvh border-right fixed flex top-0 left-0 bg-primary overflow-auto scrollbar">
     <div class="tab-btns flex flex-col border-right bg-primary z-30">
-        <button type="button" class="tab-btn font-semibold text-sm p-4 text-secondary bg-tertiary text-primary"
-            title="Settings" data-target="basics"><i class="fas fa-cog"></i></button>
-        <button type="button" class="tab-btn font-semibold text-sm p-4 text-secondary" title="Sections"
-            data-target="sections"><i class="fa-solid fa-code"></i></button>
-        <button type="button" class="tab-btn font-semibold text-sm p-4 text-secondary" title="Apps"
-            data-target="apps"><i class="fa-solid fa-layer-group"></i></button>
+        <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary bg-tertiary text-primary"
+            title="Settings" data-target="basics"><i class="fa-jelly fa-regular fa-gear"></i></button>
+        <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary" title="Sections"
+            data-target="sections"><i class="fa-regular fa-table-rows-add-below"></i></button>
+        <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary" title="Apps"
+            data-target="apps"><i class="fa-regular fa-grid-2-plus"></i></button>
     </div>
     <div class="tab-content w-full h-full overflow-auto scrollbar active relative" id="basics" data-content="basics">
         <form id="customize-form" action="{{ route('admin.customizes.store') }}" method="POST">
@@ -15,7 +15,7 @@
             @include('tenant.admin.builder.basics.logo-settings')
             @include('tenant.admin.builder.basics.color-schemes')
             @include('tenant.admin.builder.basics.typography-settings')
-            @include('tenant.admin.builder.basics.border-shadow-settings')
+            <!-- @include('tenant.admin.builder.basics.border-shadow-settings') -->
             @include('tenant.admin.builder.basics.buttons-settings')
             @include('tenant.admin.builder.basics.layout-settings')
             <!-- @include('tenant.admin.builder.basics.ui-elements-settings') -->

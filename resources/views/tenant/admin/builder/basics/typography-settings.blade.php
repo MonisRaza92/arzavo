@@ -5,7 +5,7 @@
         onclick="openCustomizesMenu('typography-settings-menu', 'arrow-typography')"
         type="button"
         class="p-4 flex justify-between items-center w-full text-sm font-semibold bg-hover-secondary">
-        <span>Typography</span>
+        <span><i class="fa-solid fa-text-size mr-1"></i> Typography</span>
         <i class="fas fa-angle-right transition-all duration-300" id="arrow-typography"></i>
     </button>
 

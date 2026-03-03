@@ -4,7 +4,7 @@
         <a href="{{ route('admin.themes.index') }}" title="Back to themes" class="text-xl"><i
                 class="fa-solid fa-right-from-bracket rotate-180"></i></a>
         <h3 class="text-primary font-semibold text-xl hidden md:block">{{ $theme->theme_name }}</h3>
-        @if($theme->theme_slug === $activeTheme->theme_slug)
+        @if($theme->status === 'published')
             <div class="badge bg-green-100 hidden md:block px-2 py-1 text-xs rounded-full"><i
                     class="fas fa-circle text-green-500"></i> Live</div>
         @else
@@ -12,15 +12,15 @@
                     class="fas fa-circle text-yellow-500"></i> Draft</div>
         @endif
     </div>
-    <div class="editor-navbar-center flex items-center gap-4">
+    <div class="editor-navbar-center flex grow items-center justify-center gap-4">
         <form action="{{ route('admin.builder.index', ['theme' => $theme->theme_slug]) }}" method="GET"
             id="pageSelectForm">
-            <div class="relative inline-block lg:w-56 w-auto">
+            <div class="relative inline-block lg:w-92 w-full">
                 <!-- Button -->
                 <button id="pageSelectBtn" type="button"
                     class="flex items-center justify-between w-full p-2 md:px-4 border border-gray-300 rounded font-semibold bg-white">
                     <span id="selectedPage" class="flex items-center gap-2">
-                        <i class="fa-solid fa-window-restore"></i>
+                        <i class="fa-duotone fa-solid fa-browser"></i>
                         {{ $page->name ?? 'Select Page' }}
                     </span>
                     <i class="fa-solid fa-chevron-down text-gray-500"></i>
@@ -32,7 +32,7 @@
                     @foreach($pages as $p)
                         <div class="dropdown-option flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
                             data-value="{{ $p->slug }}">
-                            <i class="fa-solid fa-window-restore"></i>
+                            <i class="fa-duotone fa-solid fa-browser"></i>
                             {{ $p->name }}
                         </div>
                     @endforeach
@@ -46,29 +46,26 @@
     <div class="editor-navbar-right flex items-center gap-2">
         <!-- //preview btn new tab -->
         <a title="See live preview"
-            href="{{ route('website.preview', ['theme' => $theme->theme_slug, 'slug' => $page->slug]) }}"
+            href="{{ route('website.preview', ['theme' => $theme->theme_slug, 'slug' => $page->slug, 'theme_id' => $theme->id]) }}"
             target="_blank" class="btn bg-tertiary shadow-inner text-lg p-1.5 pl-2.25 font-semibold border-rounded"><i
                 class="fa-solid fa-arrow-right hover:scale-110 transition-all duration-200 -rotate-45 mr-1"></i></a>
 
         <div
-            class="view-toggle md:flex items-center gap-2 border-rounded bg-tertiary p-1 hidden border-primary shadow-inner">
+            class="view-toggle md:flex items-center border-rounded bg-tertiary hidden overflow-hidden border-primary shadow-inner">
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="desktop" class="hidden peer" checked>
                 <span
-                    class="radio-label btn border-rounded p-1.25 pb-0.75 peer-checked:text-white peer-checked:bg-black!"><i
-                        class="text-xl fas fa-desktop"></i></span>
+                    class="radio-label btn border-rounded py-2 px-2.25 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-jelly fa-regular fa-desktop text-lg"></i></span>
             </label>
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="mobile" class="hidden peer">
                 <span
-                    class="radio-label btn border-rounded p-1.25 pb-0.75 peer-checked:text-white peer-checked:bg-black!"><i
-                        class="text-xl fas fa-mobile-alt"></i></span>
+                    class="radio-label btn border-rounded py-2 px-2.5 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-jelly fa-regular fa-mobile text-lg"></i></span>
             </label>
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="full-view" class="hidden peer">
                 <span
-                    class="radio-label btn border-rounded p-1.25 pb-0.75 peer-checked:text-white peer-checked:bg-black!"><i
-                        class="text-xl fas fa-expand"></i></span>
+                    class="radio-label btn border-rounded py-2 px-2.25 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-solid fa-expand text-lg"></i></span>
             </label>
         </div>
         <button id="saveBtn" class="btn bg-invert text-invert px-3 py-2 font-bold border-rounded">Save</button>

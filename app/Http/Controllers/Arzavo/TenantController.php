@@ -58,6 +58,7 @@ class TenantController
 
         // Run Tenant Migrations & Create Admin
         $this->initializeTenant($tenant, $user);
+        ping_google();
 
         return back()->with('success', 'Tenant created successfully!');
     }

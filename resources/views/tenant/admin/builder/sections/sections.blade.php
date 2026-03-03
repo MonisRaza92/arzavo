@@ -1,21 +1,10 @@
 <div class="sections-tab w-full overflow-auto scrollbar" id="section-tab-scroll">
-    @php
-        $rules = collect($availableSections)->mapWithKeys(function ($section) {
-            return [
-                $section['type'] => [
-                    'max_blocks' => $section['max_blocks'] ?? null,
-                    'allowed_blocks' => $section['allowed_blocks'] ?? [],
-                    'moveable' => $section['moveable'] ?? "allow",
-                ]
-            ];
-        });
-    @endphp
     {{-- HEADER --}}
     @include('tenant.admin.builder.sections.section-group', [
         'title' => 'Header',
         'sections' => $globalLayout['header']['sections'] ?? [],
         'target' => 'header',
-        'rules' => $rules
+        'rules' => $sectionRules
     ])
 
     {{-- PAGE / LAYOUT --}}
@@ -23,7 +12,7 @@
         'title' => 'Layout',
         'sections' => $layout['sections'] ?? [],
         'target' => 'page',
-        'rules' => $rules
+        'rules' => $sectionRules
     ])
 
     {{-- FOOTER --}}
@@ -31,7 +20,7 @@
         'title' => 'Footer',
         'sections' => $globalLayout['footer']['sections'] ?? [],
         'target' => 'footer',
-        'rules' => $rules
+        'rules' => $sectionRules
     ])
 
 </div>
@@ -40,13 +29,6 @@
 
 <script>
     window._ARZAVO_SECTION_TARGET = 'page';
-    function toggleSectionGroup(target) {
-        const sectionList = document.getElementById(target + "-section-list");
-        const chevron = document.getElementById(target + "-chevron");
-
-        const isOpen = sectionList.classList.toggle("hidden"); 
-        chevron.classList.toggle("-rotate-90", isOpen);
-    }
 
     function openAddSection(target) {
         const modal = document.getElementById('addSectionContainer');
@@ -267,6 +249,8 @@
 
     
 }
+
+
 function reloadPreview() {
     const iframe = document.getElementById("livePreviewContent");
     if (!iframe || !iframe.contentWindow) return;

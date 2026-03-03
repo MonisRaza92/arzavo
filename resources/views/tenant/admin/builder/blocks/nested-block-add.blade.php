@@ -1,6 +1,8 @@
-<div id="addNestedBlockContainer{{ $block['id'] }}" class="hidden z-200 fixed w-full max-w-5xl h-full md:h-10/12 border-rounded border-primary top-1/2 mt-4 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-primary md:shadow-2xl overflow-y-auto scrollbar">
+<div id="addNestedBlockContainer{{ $block['id'] }}"
+    class="hidden z-200 fixed w-full max-w-5xl h-full md:h-10/12 border-rounded border-primary top-1/2 mt-4 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-primary md:shadow-2xl overflow-y-auto scrollbar">
 
-    <h3 class="flex block-editor-header text-sm absolute w-full top-0 bg-primary justify-between items-center font-bold p-4 text-primary border-bottom">
+    <h3
+        class="flex block-editor-header text-sm absolute w-full top-0 bg-primary justify-between items-center font-bold p-4 text-primary border-bottom">
         <span>{{ $block['name'] }} Blocks</span>
         <i class="fa-solid fa-xmark cursor-pointer"
             onclick="document.getElementById('addNestedBlockContainer{{ $block['id'] }}').classList.add('hidden')"></i>
@@ -8,53 +10,54 @@
 
     <div class="flex h-full overflow-y-hidden">
         @php
-        $allowedNestedBlocks = $blockRule['allowed_blocks'] ?? [];
-        $groupedNestedBlocks = collect($availableBlocks)->groupBy('category')->map(function ($nestedBlocks) use ($allowedNestedBlocks) {
-        if (!empty($allowedNestedBlocks)) {
-        return $nestedBlocks->filter(fn($block) => in_array($block['type'], $allowedNestedBlocks));
-        }
-        return $nestedBlocks;
-        });
+            $allowedNestedBlocks = $blockRule['allowed_blocks'] ?? [];
+            $groupedNestedBlocks = collect($availableBlocks)
+                ->groupBy('category')
+                ->map(function ($nestedBlocks) use ($allowedNestedBlocks) {
+                    if (!empty($allowedNestedBlocks)) {
+                        return $nestedBlocks->filter(fn($block) => in_array($block['schema'] ?? $block['type'], $allowedNestedBlocks));
+                    }
+                    return $nestedBlocks;
+                });
         @endphp
 
         <div class="w-1/4 border-right pt-13 h-full overflow-y-auto scrollbar">
 
-            @foreach($groupedNestedBlocks as $category => $nestedBlocks)
+            @foreach ($groupedNestedBlocks as $category => $nestedBlocks)
+                @if ($nestedBlocks->count() > 0)
+                    {{-- Empty category hide --}}
+                    <div class="border-bottom Block-category" data-category="{{ $category }}">
 
-            @if($nestedBlocks->count() > 0) {{-- Empty category hide --}}
-            <div class="border-bottom Block-category" data-category="{{ $category }}">
-
-                <button type="button"
-                    class="flex justify-between items-center w-full text-left p-4 text-sm font-semibold bg-hover-secondary category-toggle">
-                    {{ $category }}
-                    <i class="fa-solid fa-angle-down transition-all duration-300"></i>
-                </button>
-
-                <div class="category-items transition-all duration-300">
-                    @foreach($nestedBlocks->sortBy('order') as $s)
-
-                    <form class="blockAddForm" id="nestedBlockAddForm{{ $block['id'] }}{{ $s['type'] }}"
-                        method="POST"
-                        action="{{ route('admin.builder.sections.blocks.nested.store', ['theme' => $theme->theme_slug, 'page' => $page->id, 'sectionId' => $section['id'], 'blockId' => $block['id']]) }}">
-                        @csrf
-
-                        <input type="hidden" name="block_type" value="{{ $s['type'] }}">
-                        <input type="hidden" name="block_name" value="{{ $s['name'] }}">
-
-                        <button type="button" onclick="handleNestedBlockAdd(event, '{{ $block['id'] }}', '{{ $s['type'] }}')"
-                            id="nestedBlockAddBtn{{ $block['id'] }}{{ $s['type'] }}"
-                            class="blockAddBtn w-full font-semibold text-xs text-left p-4 border-top bg-hover-secondary flex items-center gap-2">
-                            <i class="fa-solid {{ $s['icon'] ?? 'fa-code' }}"></i>
-                            {{ $s['name'] }}
+                        <button type="button"
+                            class="flex justify-between items-center w-full text-left p-4 text-sm font-semibold bg-hover-secondary category-toggle">
+                            {{ $category }}
+                            <i class="fa-solid fa-angle-down transition-all duration-300"></i>
                         </button>
-                    </form>
 
-                    @endforeach
-                </div>
+                        <div class="category-items transition-all duration-300">
+                            @foreach ($nestedBlocks->sortBy('order') as $s)
+                                <form class="blockAddForm" id="nestedBlockAddForm{{ $block['id'] }}{{ $s['schema'] ?? $s['type'] }}"
+                                    method="POST"
+                                    action="{{ route('admin.builder.sections.blocks.nested.store', ['theme' => $theme->theme_slug, 'page' => $page->id, 'sectionId' => $section['id'], 'blockId' => $block['id']]) }}">
+                                    @csrf
 
-            </div>
-            @endif
+                                    <input type="hidden" name="block_type" value="{{ $s['type'] }}">
+                                    <input type="hidden" name="block_name" value="{{ $s['name'] }}">
+                                    <input type="hidden" name="schema" value="{{ $s['schema'] ?? $s['type'] }}">
 
+                                    <button type="button"
+                                        onclick="handleNestedBlockAdd(event, '{{ $block['id'] }}', '{{ $s['schema'] ?? $s['type'] }}')"
+                                        id="nestedBlockAddBtn{{ $block['id'] }}{{  $s['schema'] ?? $s['type'] }}"
+                                        class="blockAddBtn w-full font-semibold text-xs text-left p-4 border-top bg-hover-secondary flex items-center gap-2">
+                                        <i class="fa-solid {{ $s['icon'] ?? 'fa-code' }}"></i>
+                                        {{ $s['name'] }}
+                                    </button>
+                                </form>
+                            @endforeach
+                        </div>
+
+                    </div>
+                @endif
             @endforeach
 
         </div>
@@ -94,6 +97,9 @@
 
                 document.getElementById(`addNestedBlockContainer${blockId}`).classList.add('hidden');
                 reloadPreview();
+                if (window.initBlockForms) {
+                    window.initBlockForms();
+                }
             } else {
                 alert('Error adding block. Please try again.');
             }

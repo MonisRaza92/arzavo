@@ -1,9 +1,9 @@
 {
     "type": "grid_images",
-    "name": "Grid Images",
-    "icon": "fa-images",
-    "order": 2,
-    "category": "Gallery",
+    "name": "Images: Grid Layout",
+    "icon": "fa-image-stack",
+    "order": 7,
+    "category": "Banners",
     "color_scheme": "scheme_1",
     "max_blocks": 0,
     "page": "home",
@@ -20,11 +20,11 @@
         },
         {
             "key": "section_padding",
-            "label": "Section Padding (Top & Bottom)",
+            "label": "Section Gap",
             "type": "range",
             "default": "6",
             "min": 0,
-            "max": 20
+            "max": 200
         },
 
         {
@@ -55,17 +55,19 @@
         },
         {
             "key": "image_border",
-            "label": "Image Border",
-            "type": "radio",
-            "options": ["enable", "disable"],
-            "default": "disable"
+            "label": "Border Thickness",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 20
         },
         {
             "key": "image_border_radius",
-            "label": "Border Radius",
-            "type": "radio",
-            "options": ["enable", "disable"],
-            "default": "disable"
+            "label": "Border Roundness",
+            "type": "range",
+            "default": "0",
+            "min": 0,
+            "max": 200
         }
     ]
 }

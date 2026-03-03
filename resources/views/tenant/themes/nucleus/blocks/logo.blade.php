@@ -1,7 +1,6 @@
 @php
     $s = $block['settings'] ?? [];
 
-    $logoSize = $s['logo_size'] ?? '35';
     $pt = $s['padding_top'] ?? '0';
     $pb = $s['padding_bottom'] ?? '0';
     $pl = $s['padding_left'] ?? '0';
@@ -21,18 +20,16 @@
         @endif
 
             @if($logo)
-                <img src="{{ media($logo) }}" alt="Logo" class="arzavo-logo-normal w-auto transition-opacity duration-300"
-                    style="height: {{ $logoSize }}px;">
+                <img src="{{ media($logo) }}" alt="Logo" class="arzavo-logo-normal w-auto transition-opacity duration-300 arz-logo-size">
             @endif
 
             @if($invertLogo)
                 <img src="{{ media($invertLogo) }}" alt="Invert Logo"
-                    class="arzavo-logo-invert w-auto absolute top-0 left-0 transition-opacity duration-300 opacity-0"
-                    style="height: {{ $logoSize }}px;">
+                    class="arzavo-logo-invert w-auto absolute top-0 left-0 transition-opacity duration-300 opacity-0 arz-logo-size">
             @endif
 
             @if(!$logo && !$invertLogo)
-                <h2 class="text-xl font-semibold" style="color: var(--arzavo-heading-color);">
+                <h2 class="text-xl font-semibold arz-logo-size" style="color: var(--arzavo-heading-color);">
                     {{ app('currentTenant')->name }}
                 </h2>
             @endif

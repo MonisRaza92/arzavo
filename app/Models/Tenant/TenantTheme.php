@@ -26,15 +26,12 @@ class TenantTheme extends Model
         'is_active' => 'boolean'
     ];
 
-
-    public function getThemeNameAttribute()
+    public function theme()
     {
-        return DB::connection('mysql')->table('themes')->where('id', $this->theme_id)->value('name');
-    }
-
-    public function getCategoryAttribute()
-    {
-        return DB::connection('mysql')->table('themes')->where('id', $this->theme_id)->value('category');
+        return $this->belongsTo(
+            \App\Models\Arzavo\Theme::class,
+            'theme_id'
+        )->setConnection('mysql');
     }
     public function globalDesign()
     {

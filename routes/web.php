@@ -31,6 +31,7 @@ use App\Http\Controllers\Tenant\Admin\CourseModuleLessonController;
 use App\Http\Controllers\Tenant\User\UserController;
 use App\Http\Controllers\Tenant\Students\StudentsController;
 use App\Http\Controllers\Tenant\Teachers\TeachersController;
+use App\Http\Controllers\Tenant\SitemapController;
 
 Route::view('/offline', 'offline');
 
@@ -69,6 +70,29 @@ function registerDomains($domain)
 {
 
     Route::domain($domain)->middleware('tenant')->group(function () {
+
+        Route::get('/robots.txt', function () {
+
+            $content = implode("\n", [
+                "User-agent: *",
+                "Allow: /",
+                "",
+                "Disallow: /admin/",
+                "Disallow: /account/",
+                "Disallow: /builder/",
+                "Disallow: /preview/",
+                "",
+                "Sitemap: " . url('/sitemap.xml'),
+            ]);
+
+            return response($content, 200)
+                ->header('Content-Type', 'text/plain');
+        });
+
+        Route::get('/sitemap.xml', SitemapController::class)
+            ->name('tenant.sitemap');
+
+
         //Tenant Auth Routes
         Route::get('/', function () {
             return app(ThemePageController::class)->system('home');
@@ -85,8 +109,9 @@ function registerDomains($domain)
         Route::get('/view/course/{slug}', function () {
             return app(ThemePageController::class)->system('view/course');
         })->name('tenant.view.course');
-        Route::get('/preview/{theme}/{slug}', function ($slug, $theme) {
-            return app(ThemePageController::class)->preview($slug, $theme);
+
+        Route::get('/preview/{theme}/{theme_id}/{slug}', function ($theme, $themeId = null, $slug = 'home') {
+            return app(ThemePageController::class)->preview($theme, $themeId, $slug);
         })
             ->where('slug', '[A-Za-z0-9-_]+')
             ->name('website.preview');
@@ -148,13 +173,13 @@ function registerDomains($domain)
                 Route::resource('subjects', SubjectController::class);
                 Route::get('/subjects/{id}/get', [SubjectController::class, 'get'])->name('subjects.get');
                 Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update');
-                
-                
+
+
                 //Admin Contents Routes
                 Route::resource('contents', ContentController::class);
 
                 Route::resource('blog', BlogController::class);
-                
+
                 //Admin Courses Routes
                 Route::resource('courses', CourseController::class);
                 Route::put('courses/{course}/status', [CourseController::class, 'status'])->name('course.status');
@@ -174,7 +199,7 @@ function registerDomains($domain)
 
                 // Admin Color Sheme Routes
                 Route::resource('scheme', ColorSchemeController::class);
-                
+
                 // Admin Pages Routes
                 Route::resource('pages', PageController::class);
 

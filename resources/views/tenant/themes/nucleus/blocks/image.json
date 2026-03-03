@@ -21,14 +21,15 @@
             "label": "Mobile Image",
             "type": "image",
             "default": null,
-            "help": "Optional image for mobile devices"
+            "help": "Optionally upload a different image for mobile devices. If left blank, the desktop image will be used."
         },
         {
             "key": "alt_text",
             "label": "Alt Text",
             "type": "text",
             "default": "",
-            "placeholder": "Describe the image (SEO & accessibility)"
+            "placeholder": "Describe the image (SEO & accessibility)",
+            "help": "This text will be used for SEO and accessibility purposes. It describes the content of the image."
         },
 
         {
@@ -38,7 +39,7 @@
         },
         {
             "key": "image_link",
-            "label": "Link URL",
+            "label": "Image Link",
             "type": "url",
             "default": ""
         },
@@ -64,33 +65,29 @@
             "label": "Aspect Radio",
             "type": "select",
             "default": "auto",
-            "options": ["auto", "sqaure", "portrait", "landscape", "wide"]
+            "options": ["auto", "square", "portrait", "landscape", "wide"]
         },
         {
             "key": "image_fit",
             "label": "Image Fit",
-            "type": "radio",
-            "options": ["cover", "contain"],
-            "default": "auto",
-             "conditional": {
-                "field": "aspect_ratio",
-                "operator": "!=",
-                "value": "auto"
-            }
+            "type": "select",
+            "default": "cover",
+            "options": ["cover", "contain", "auto"]
+        },
+        {
+            "key": "border_width",
+            "label": "Border Thickness",
+            "type": "range",
+            "min": 0,
+            "max": 20,
+            "default": "0"
         },
         {
             "key": "border_radius",
-            "label": "Border Radius",
-            "type": "radio",
-            "default": "disable",
-            "options": ["enable", "disable", "custom"]
-        },
-        {
-            "key": "custom_border_radius",
-            "label": "Border Radius (%)",
+            "label": "Border Roundness",
             "type": "range",
             "min": 0,
-            "max": 50,
+            "max": 200,
             "default": "0"
         },
         {
@@ -100,12 +97,6 @@
             "min": 10,
             "max": 100,
             "default": "100"
-        },
-        {
-            "key": "lazy_load",
-            "label": "Lazy Load",
-            "type": "switch",
-            "default": "1"
         },
 
         {
@@ -153,13 +144,13 @@
         },
         {
             "key": "hide_desktop",
-            "label": "Hide on Desktop",
+            "label": "Hide image on desktop",
             "type": "switch",
             "default": "0"
         },
         {
             "key": "hide_mobile",
-            "label": "Hide on Mobile",
+            "label": "Hide image on mobile",
             "type": "switch",
             "default": "0"
         }

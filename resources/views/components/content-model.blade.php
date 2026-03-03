@@ -1,7 +1,7 @@
-<div id="contentPickerModal"
-    class="fixed inset-0 bg-black/70 hidden z-199 flex justify-center items-start pt-20">
+<div id="contentPickerModal" class="fixed inset-0 bg-black/70 hidden z-199 flex justify-center items-start pt-20">
 
-    <div class="bg-primary border-primary border-rounded w-11/12 md:w-3/4 lg:w-1/2 max-h-[80vh] overflow-y-auto scrollbar">
+    <div
+        class="bg-primary border-primary border-rounded w-11/12 md:w-3/4 lg:w-1/2 max-h-[80vh] overflow-y-auto scrollbar">
 
         {{-- Header --}}
         <div class="flex justify-between items-center z-200 p-4 border-bottom sticky top-0 bg-primary">
@@ -15,48 +15,41 @@
 
         {{-- Content Grid --}}
         <div class="p-4 columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4" id="contentGrid">
-            @foreach($contents as $content)
-            <div
-                class="content-item group border-primary border-rounded overflow-hidden cursor-pointer bg-primary hover-primary transition"
-                data-type="{{ $content->type }}"
-                onclick="selectContent('{{ $content->filepath }}', '{{ $content->type }}')">
+            @foreach ($contents as $content)
+                <div class="content-item group border-primary border-rounded overflow-hidden cursor-pointer bg-primary hover-primary transition"
+                    data-type="{{ $content->type }}"
+                    onclick="selectContent('{{ $content->filepath }}', '{{ $content->type }}')">
 
-                {{-- Preview --}}
-                <div class="relative bg-secondary overflow-hidden" title="{{ $content->filename }}">
+                    {{-- Preview --}}
+                    <div class="relative bg-secondary overflow-hidden" title="{{ $content->filename }}">
 
-                    @if($content->type === 'image')
-                    <img src="{{ media($content->filepath) }}"
-                        class="w-full h-auto object-contain transition group-hover:scale-105">
+                        @if ($content->type === 'image')
+                            <img src="{{ media($content->filepath) }}"
+                                class="w-full h-auto object-contain transition group-hover:scale-105">
+                        @elseif($content->type === 'video')
+                            <video src="{{ media($content->filepath) }}" muted preload="metadata"
+                                class="w-full h-auto object-cover" onmouseenter="this.play()"
+                                onmouseleave="this.pause(); this.currentTime = 0;">
+                            </video>
+                        @else
+                            <div class="w-full h-full flex flex-col items-center justify-center text-tertiary">
+                                <i class="fa-solid fa-file text-2xl mb-1"></i>
+                                <span class="text-xs uppercase">{{ $content->type }}</span>
+                            </div>
+                        @endif
 
-                    @elseif($content->type === 'video')
-                    <video
-                        src="{{ media($content->filepath) }}"
-                        muted
-                        preload="metadata"
-                        class="w-full h-auto object-cover"
-                        onmouseenter="this.play()"
-                        onmouseleave="this.pause(); this.currentTime = 0;">
-                    </video>
-
-                    @else
-                    <div class="w-full h-full flex flex-col items-center justify-center text-tertiary">
-                        <i class="fa-solid fa-file text-2xl mb-1"></i>
-                        <span class="text-xs uppercase">{{ $content->type }}</span>
-                    </div>
-                    @endif
-
-                    {{-- Type Badge --}}
-                    <!-- <span class="absolute top-1 left-1 text-[10px] uppercase px-2 py-0.5 rounded-full
+                        {{-- Type Badge --}}
+                        <!-- <span class="absolute top-1 left-1 text-[10px] uppercase px-2 py-0.5 rounded-full
                     bg-invert text-invert">
                         {{ $content->type }}
                     </span> -->
-                </div>
+                    </div>
 
-                {{-- Meta --}}
-                <p class="text-xs font-medium text-primary truncate p-2" title="{{ $content->filename }}">
-                    {{ $content->filename }}
-                </p>
-            </div>
+                    {{-- Meta --}}
+                    <p class="text-xs font-medium text-primary truncate p-2" title="{{ $content->filename }}">
+                        {{ $content->filename }}
+                    </p>
+                </div>
             @endforeach
         </div>
         {{-- Footer --}}
@@ -70,11 +63,10 @@
             </a>
 
             <div class="flex gap-2">
-                <button class="px-4 py-2 text-sm border-rounded border-primary bg-hover-tertiary" onclick="closeContentPicker()">Close</button>
+                <button class="px-4 py-2 text-sm border-rounded border-primary bg-hover-tertiary"
+                    onclick="closeContentPicker()">Close</button>
                 {{-- Upload New --}}
-                <button type="button"
-                    id="uploadNewBtn"
-                    onclick="openUploadPicker()"
+                <button type="button" id="uploadNewBtn" onclick="openUploadPicker()"
                     class="px-4 py-2 text-sm border-rounded bg-invert text-invert hover:opacity-80 transition flex items-center gap-2">
                     <i class="fa-solid fa-upload"></i>
                     <span>Upload New</span>
@@ -84,10 +76,7 @@
         </div>
     </div>
 </div>
-<form id="quickUploadForm"
-    action="{{ route('admin.contents.store') }}"
-    method="POST"
-    enctype="multipart/form-data"
+<form id="quickUploadForm" action="{{ route('admin.contents.store') }}" method="POST" enctype="multipart/form-data"
     class="hidden">
 
     @csrf
@@ -159,6 +148,12 @@
 
         // 2️⃣ auto preview handling
         updatePreview(input, path, type);
+        input.dispatchEvent(new Event('input', {
+            bubbles: true
+        }));
+        input.dispatchEvent(new Event('change', {
+            bubbles: true
+        }));
 
         closeContentPicker();
 

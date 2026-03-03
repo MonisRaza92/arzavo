@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Models\Tenant\Content;
 
 class ContentModel extends Component
 {
@@ -21,6 +22,7 @@ class ContentModel extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.content-model');
+        $contents = Content::all();
+        return view('components.content-model', compact('contents'));
     }
 }

@@ -1,10 +1,15 @@
 @php
     $navbar = $section['settings'] ?? [];
     $scheme = $section['color_scheme'] ?? 'scheme_1';
+    $invertScheme = $navbar['invert_color_scheme'] ?? 'scheme_4';
 
     $behavior = $navbar['navbar_behavior'] ?? 'sticky';
-    $border = $navbar['divider'] ?? 1;
+    $border = $navbar['divider'] ?? '1';
     $transparent = $navbar['transparent'] ?? 0;
+    $isHomePage = request()->is('/') || request()->is('preview/*/home'); // real homepage // builder preview homepage
+
+    // transparent sirf home par allow
+    $transparentEnabled = $transparent == '1' && $isHomePage && $behavior === 'sticky';
     $navHeight = $navbar['navbar_height'] ?? 'standard';
     $linkPosition = $navbar['links_position'] ?? 'right';
     $iconS = $navbar['icon_style'] ?? 'outline';
@@ -22,21 +27,26 @@
     };
 
 @endphp
-<nav data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}" style=" {{ scheme($scheme) }}" class="py-0 z-50 w-full arzavo-navbar transition-all duration-300 ease-out
-    {{ $transparent === '0' ? 'arzavo-background' : 'bg-transparent' }} 
-    {{ $behavior === 'sticky' ? ($transparent === '1' ? 'fixed top-0 left-0' : 'sticky top-0 left-0') : '' }}
-    {{ $border === '1' ? 'arzavo-border-bottom' : '' }}">
-    <div
-        class="container navbar flex gap-8 justify-between items-center w-full {{ $navHeight === 'compact' ? 'py-2' : ($navHeight === 'standard' ? 'py-3' : 'py-4') }}">
-        <div class="flex items-center {{ $linkPositionClass }} grow">
-            {!! renderBlocks($section['blocks']) !!}
+<nav data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}" data-navbar-state="transparent"
+    data-navbar-state="{{ $transparentEnabled ? 'transparent' : 'normal' }}" data-normal-scheme="{{ scheme($scheme) }}"
+    data-transparent-scheme="{{ scheme($invertScheme) }}"
+    data-transparent-enabled="{{ $transparentEnabled ? '1' : '0' }}"
+    style=" {{ $transparentEnabled ? scheme($invertScheme) : scheme($scheme) }}; border-bottom-width: {{ $border }}px;"
+    class="py-0 z-50 w-full arzavo-navbar transition-all duration-300 ease-out
+    {{ $transparentEnabled ? 'arz-transparent-nav' : '' }}
+    {{ $behavior === 'sticky' ? 'sticky top-0 left-0' : '' }} arz-border-b arzavo-background">
+    <div class="container navbar flex gap-8 justify-between items-center w-full py-3">
+        <div class="flex items-center gap-6 {{ $linkPositionClass }} grow">
+            {!! renderBlocks($section['blocks'], ['scheme' => $scheme,]) !!}
         </div>
         <div class="right-menu hidden md:flex items-center gap-4">
             @if (!Auth::guard('tenant')->check())
-                <a href="{{ route('tenant.login') }}"><i class="fa-{{ $iconStyle }} fa-user text-xl arzavo-icons"></i></a>
+                <a href="{{ route('tenant.login') }}"><i class="fa-{{ $iconStyle }} fa-user text-xl"
+                        style="color: var(--arzavo-heading-color);"></i></a>
             @else
                 <div class="menu relative" onclick="toggleModel('authMenu')">
-                    <i class="fa-{{ $iconStyle }} fa-user text-xl arzavo-icons" style="color: var(--arzavo-heading-color);"></i>
+                    <i class="fa-{{ $iconStyle }} fa-user text-xl arzavo-icons"
+                        style="color: var(--arzavo-heading-color);"></i>
                     <div class="auth-menu arzavo-background hidden absolute top-full right-0 border-rounded border-primary min-w-50"
                         id="authMenu">
                         <div class=" user-info arzavo-border-bottom py-2 px-4" style="color: var(--arzavo-heading-color);">
@@ -60,45 +70,81 @@
         </div>
     </div>
 </nav>
+
 <script>
-    document.addEventListener('turbo:load', () => {
-        const navbar = document.querySelector('.arzavo-navbar');
-        if (!navbar) return;
+    document.addEventListener('turbo:load', initNavbarScheme);
+    document.addEventListener('DOMContentLoaded', initNavbarScheme);
 
-        // ✅ IMPORTANT: sirf wahi navbar handle karo jo initially transparent ho
-        const isInitiallyTransparent = navbar.classList.contains('bg-transparent');
-        if (!isInitiallyTransparent) return;
+    function initNavbarScheme() {
 
-        const targets = navbar.querySelectorAll('.arzavo-icons, .arzavo-menu');
+        document.querySelectorAll('.arzavo-navbar')
+            .forEach(navbar => {
 
-        let ticking = false;
+                const transparentEnabled =
+                    navbar.dataset.transparentEnabled === '1';
 
-        function updateNavbar() {
-            const scrolled = window.scrollY > 20;
+                // ✅ STOP if transparent disabled
+                if (!transparentEnabled) return;
 
-            // Navbar background
-            navbar.classList.toggle('bg-transparent', !scrolled);
-            navbar.classList.toggle('arzavo-background', scrolled);
+                const transparentScheme =
+                    navbar.dataset.transparentScheme;
 
-            // Text / icon colors
-            targets.forEach(el => {
-                el.classList.toggle('arzavo-invert-filter', !scrolled);
-                el.classList.toggle('arzavo-text', scrolled);
+                const normalScheme =
+                    navbar.dataset.normalScheme;
+
+                let current = null;
+
+                function apply(vars) {
+
+                    vars.split(';').forEach(rule => {
+
+                        const [prop, value] =
+                            rule.split(':');
+
+                        if (!prop || !value) return;
+
+                        navbar.style.setProperty(
+                            prop.trim(),
+                            value.trim()
+                        );
+                    });
+                }
+
+                function update() {
+
+                    const state =
+                        window.scrollY > 20
+                            ? 'normal'
+                            : 'transparent';
+
+                    if (state === current) return;
+
+                    apply(
+                        state === 'normal'
+                            ? normalScheme
+                            : transparentScheme
+                    );
+
+                    navbar.dataset.navbarState = state;
+
+                    navbar.dispatchEvent(
+                        new CustomEvent('arzavo:navbar-change', {
+                            detail: { state },
+                            bubbles: true
+                        })
+                    );
+
+
+                    current = state;
+                }
+
+                requestAnimationFrame(update);
+
+                window.addEventListener(
+                    'scroll',
+                    update,
+                    { passive: true }
+                );
             });
-
-            ticking = false;
-        }
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(updateNavbar);
-                ticking = true;
-            }
-        }, {
-            passive: true
-        });
-
-        // initial state
-        updateNavbar();
-    });
+    }
 </script>
