@@ -15,6 +15,7 @@ class ThemeController
     public function index()
     {
         $themes = Theme::active()->get();
+        $activeTheme = app('activeTheme');
 
         $installedThemes = TenantTheme::all()->keyBy('theme_id');
         $tenantThemes = TenantTheme::latest()->get();
@@ -22,7 +23,8 @@ class ThemeController
         return view('tenant.admin.themes.index', compact(
             'themes',
             'installedThemes',
-            'tenantThemes'
+            'tenantThemes',
+            'activeTheme'
         ));
     }
 

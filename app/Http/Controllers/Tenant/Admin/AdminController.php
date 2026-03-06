@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Tenant\Admin;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use App\Models\Tenant\User;
+use App\Models\Tenant\Course;
 
 class AdminController extends Controller
 {
@@ -12,15 +14,18 @@ class AdminController extends Controller
         // 1. Financial Stats
         $revenue = '1234567';
         $pendingFees = '1234567';
+        $students = User::where('role', 'student')->get();
+        $teachers = User::where('role', 'teacher')->get();
+        $users = User::where('role', 'users')->get();
+        $staff = User::where('role', 'staff')->get();
+        $courses = Course::all();
 
         // 2. Academic Stats
         $totalEnrollments = \App\Models\Tenant\CourseEnrollment::count();
-        $activeStudents = \App\Models\Tenant\User::where('role', 'student')->where('status', 1)->count();
-        $totalCourses = \App\Models\Tenant\Course::count();
+        $activeStudents = User::where('role', 'student')->where('status', 1)->count();
+        $totalCourses = Course::count();
 
-        // 3. Content Stats
-        $totalQuizzes = \App\Models\Tenant\Content::where('type', 'quiz')->count();
-        $totalAssignments = \App\Models\Tenant\Content::where('type', 'assignment')->count();
+
 
         // 4. Chart Data (Mocking monthly data for demonstration if no real historical data exists easily)
         // In a real scenario, you'd group by created_at
@@ -35,9 +40,12 @@ class AdminController extends Controller
             'totalEnrollments',
             'activeStudents',
             'totalCourses',
-            'totalQuizzes',
-            'totalAssignments',
-            'revenueChartData'
+            'revenueChartData',
+            'users',
+            'students',
+            'teachers',
+            'staff',
+            'courses'
         ));
     }
 }

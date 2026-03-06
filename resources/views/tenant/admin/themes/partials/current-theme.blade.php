@@ -18,8 +18,8 @@
                     Current Theme
                 </p>
 
-                <h2 class="text-xl font-semibold text-gray-900">
-                    {{ $activeTheme->theme_name }}
+                <h2 class="text-xl font-semibold capitalize text-gray-900">
+                    {{ $activeTheme->theme_slug }}
                 </h2>
 
                 @if($activeTheme)

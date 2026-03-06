@@ -3,7 +3,7 @@
     <div class="editor-navbar-left flex items-center gap-4">
         <a href="{{ route('admin.themes.index') }}" title="Back to themes" class="text-xl"><i
                 class="fa-solid fa-right-from-bracket rotate-180"></i></a>
-        <h3 class="text-primary font-semibold text-xl hidden md:block">{{ $theme->theme_name }}</h3>
+        <h3 class="text-primary font-semibold text-xl capitalize hidden md:block">{{ $theme->theme_slug }}</h3>
         @if($theme->status === 'published')
             <div class="badge bg-green-100 hidden md:block px-2 py-1 text-xs rounded-full"><i
                     class="fas fa-circle text-green-500"></i> Live</div>
