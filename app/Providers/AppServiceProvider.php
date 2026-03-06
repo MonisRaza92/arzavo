@@ -23,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
             if (!app()->bound('currentTenant')) {
                 return $view->with([
                     'settings' => [],
-                    'customizes' => []
+                    'customizes' => [],
+                    'user' => $user = Auth::guard('web')->user() ?? null,
                 ]);
             }
 
@@ -66,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             if ($user === null) {
-                $user = Auth::guard('web')->user() ?? Auth::guard('tenant')->user();
+                $user = Auth::guard('tenant')->user() ?? null;
             }
 
             return $view->with([
