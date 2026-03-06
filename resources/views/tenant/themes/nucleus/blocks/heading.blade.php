@@ -74,14 +74,14 @@
 </style>
 
 
-<{{ $tag }} data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
-    class="
-arzavo-{{ $type }} w-full {{ $desktopWidthType === 'full' ? 'md:w-full' : 'md:w-auto' }}
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" class="
+arzavo-{{ $type }}
 heading-{{ $block['id'] }}
+w-full
+{{ $desktopWidthType === 'full' ? 'md:w-full' : 'md:w-auto' }}
 {{ $mAlignClass }}
 {{ $alignClass }}
-"
-    style="
+" style="
 {{ $widthStyle }}
 margin:{{ $mt }}px {{ $mr }}px {{ $mb }}px {{ $ml }}px;
 padding:{{ $pt }}px {{ $pr }}px {{ $pb }}px {{ $pl }}px;
@@ -89,4 +89,4 @@ padding:{{ $pt }}px {{ $pr }}px {{ $pb }}px {{ $pl }}px;
 
     {!! $text !!}
 
-    </{{ $tag }}>
+</div>
