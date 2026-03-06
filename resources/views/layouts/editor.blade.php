@@ -3,6 +3,7 @@
 
 <head>
     <x-header />
+    @vite('resources/js/builder.js')
 </head>
 
 <body id="builder-editor-body">
@@ -14,7 +15,6 @@
     <script>
         window.ARZAVO_EDITOR_MODE = true;
     </script>
-    @vite('resources/js/builder.js')
 </body>
 
 </html>
