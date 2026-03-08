@@ -58,7 +58,9 @@ if (!function_exists('image')) {
             return media($path);
         }
 
-        $files = glob(public_path('images/tenant/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}'), GLOB_BRACE);
+        $files = cache()->remember('tenant_demo_images', 3600, function () {
+            return glob(public_path('images/tenant/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}'), GLOB_BRACE);
+        });
 
         if (!$files) {
             return null;
@@ -74,31 +76,20 @@ if (!function_exists('video')) {
 
     function video(?string $path = null): ?string
     {
-        static $randomVideos = null;
-
-        // Agar path hai to direct media helper use karo
         if ($path) {
             return media($path);
         }
 
-        // Random fallback
-        if ($randomVideos === null) {
+        $files = cache()->remember('tenant_demo_videos', 3600, function () {
+            return glob(public_path('videos/tenant/*.{mp4,webm,ogg,MP4,WEBM,OGG}'), GLOB_BRACE);
+        });
 
-            $dir = public_path('videos/tenant');
-
-            $randomVideos = collect(
-                glob($dir . '/*.{mp4,MP4,webm,WEBM,ogg,OGG}', GLOB_BRACE)
-            )->shuffle()->values();
-        }
-
-        $file = $randomVideos->shift();
-
-        if (!$file) {
+        if (!$files) {
             return null;
         }
 
-        $relative = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $file);
+        $file = $files[array_rand($files)];
 
-        return media($relative);
+        return asset('videos/tenant/' . basename($file));
     }
 }
