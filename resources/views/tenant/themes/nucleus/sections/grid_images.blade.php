@@ -14,12 +14,12 @@
     class="flex w-full arzavo-background">
     <div class="container grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2">
-            <img src="{{ image($img_1) }}" alt="hero image"
+            <img src="{{ image($img_1 ?? null) }}" alt="hero image"
                 class="h-full object-cover arz-border"
                 style="border-width: {{ $imgBorder }}px; border-radius: {{ $imgRadius }}px;">
         </div>
         <div class="flex scrollbar lg:flex-col gap-6 lg:col-span-1 overflow-auto scrollbar">
-            <img src="{{ image($img_2) }}" alt="hero image"
+            <img src="{{ image(null) }}" alt="hero image"
                 class="w-11/12 lg:w-full object-cover arz-border"
                 style="border-width: {{ $imgBorder }}px; border-radius: {{ $imgRadius }}px;">
             <img src="{{ image($img_3) }}" alt="hero image"

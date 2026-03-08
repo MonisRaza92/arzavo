@@ -48,94 +48,57 @@ if (!function_exists('media')) {
         return Storage::url($path);
     }
 }
+
 if (!function_exists('image')) {
 
     function image(?string $path = null): ?string
     {
-        static $randomImages = null;
-
-        /*
-        |--------------------------------------------------------------------------
-        | RANDOM IMAGE FALLBACK
-        |--------------------------------------------------------------------------
-        */
-        if (!$path) {
-
-            if ($randomImages === null) {
-
-                $dir = public_path('images/tenant');
-
-                $randomImages = collect(
-                    glob($dir . '/*.{jpg,jpeg,png,webp}', GLOB_BRACE)
-                )
-                    ->shuffle()
-                    ->values();
-            }
-
-            $file = $randomImages->shift();
-
-            return $file
-                ? asset('images/tenant/' . basename($file))
-                : null;
+        // Agar path diya hai to media helper use karo
+        if ($path) {
+            return media($path);
         }
 
-        $path = ltrim($path, '/');
+        $files = glob(public_path('images/tenant/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}'), GLOB_BRACE);
 
-        // External URL
-        if (Str::startsWith($path, ['http://', 'https://'])) {
-            return $path;
+        if (!$files) {
+            return null;
         }
 
-        // Public file
-        if (file_exists(public_path($path))) {
-            return asset($path);
-        }
+        $file = $files[array_rand($files)];
 
-        // Storage fallback
-        return Storage::url($path);
+        return asset('images/tenant/' . basename($file));
     }
 }
+
 if (!function_exists('video')) {
 
     function video(?string $path = null): ?string
     {
         static $randomVideos = null;
 
-        /*
-        |--------------------------------------------------------------------------
-        | RANDOM VIDEO FALLBACK
-        |--------------------------------------------------------------------------
-        */
-        if (!$path) {
-
-            if ($randomVideos === null) {
-
-                $dir = public_path('videos/tenant');
-
-                $randomVideos = collect(
-                    glob($dir . '/*.{mp4,webm,ogg}', GLOB_BRACE)
-                )
-                    ->shuffle()
-                    ->values();
-            }
-
-            $file = $randomVideos->shift();
-
-            return $file
-                ? asset('videos/tenant/' . basename($file))
-                : null;
+        // Agar path hai to direct media helper use karo
+        if ($path) {
+            return media($path);
         }
 
-        $path = ltrim($path, '/');
+        // Random fallback
+        if ($randomVideos === null) {
 
-        if (Str::startsWith($path, ['http://', 'https://'])) {
-            return $path;
+            $dir = public_path('videos/tenant');
+
+            $randomVideos = collect(
+                glob($dir . '/*.{mp4,MP4,webm,WEBM,ogg,OGG}', GLOB_BRACE)
+            )->shuffle()->values();
         }
 
-        if (file_exists(public_path($path))) {
-            return asset($path);
+        $file = $randomVideos->shift();
+
+        if (!$file) {
+            return null;
         }
 
-        return Storage::url($path);
+        $relative = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $file);
+
+        return media($relative);
     }
 }

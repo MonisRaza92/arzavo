@@ -289,11 +289,3 @@
 
 @endif
 </div>
-
-<script>
-    document.addEventListener("turbo:load", () => {
-        BuilderSection.init(
-            document.querySelector('#edit-form-{{ $section['id'] }} .editSectionForm')
-        );
-    });
-</script>
