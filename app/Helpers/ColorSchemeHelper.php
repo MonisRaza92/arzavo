@@ -11,19 +11,15 @@ if (!function_exists('scheme')) {
      */
     function scheme($key = 'scheme_1')
     {
-        $themeId = activeThemeId();
 
-        $schemes = app('view')->getShared()['colorSchemes'] ?? [];
+        $schemes = app('view')->getShared()['colorSchemes'] ?? null;
+
 
         if (!$schemes || !isset($schemes[$key])) {
             return '';
         }
 
         $scheme = $schemes[$key];
-
-        if ($scheme->theme_id != $themeId) {
-            return '';
-        }
 
         // ⚠️ colors structure AS-IS (no change)
         $colors = $scheme->scheme_colors;

@@ -56,10 +56,14 @@ class AppServiceProvider extends ServiceProvider
 
                 $themeId = activeThemeId();
 
-                $schemes = \App\Models\Tenant\ColorScheme
-                    ::where('theme_id', $themeId)
-                    ->get()
-                    ->keyBy('key');
+                $schemes = cache()->remember(
+                    "tenant_schemes_$themeId",
+                    3600,
+                    fn() => \App\Models\Tenant\ColorScheme
+                        ::where('theme_id', $themeId)
+                        ->get()
+                        ->keyBy('key')
+                );
             }
 
             if ($menus === null) {
@@ -70,13 +74,15 @@ class AppServiceProvider extends ServiceProvider
                 $user = Auth::guard('tenant')->user() ?? null;
             }
 
-            return $view->with([
-                'settings'      => $settings,
-                'customizes'    => $customizes,
-                'colorSchemes'  => $schemes,
-                'menus'         => $menus,
-                'user'          => $user
+            \View::share([
+                'settings' => $settings,
+                'customizes' => $customizes,
+                'colorSchemes' => $schemes,
+                'menus' => $menus,
+                'user' => $user
             ]);
+
+            return $view;
         });
     }
 }
