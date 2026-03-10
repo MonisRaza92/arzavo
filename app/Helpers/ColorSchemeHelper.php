@@ -23,6 +23,7 @@ if (!function_exists('scheme')) {
 
         // ⚠️ colors structure AS-IS (no change)
         $colors = $scheme->scheme_colors;
+        dd($colors);
         $primaryBtn = $scheme->primary_btn;
         $secondaryBtn = $scheme->secondary_btn;
         $input = $scheme->input;

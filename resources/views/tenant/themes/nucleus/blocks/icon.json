@@ -25,7 +25,7 @@
             "label": "Icon Size (px)",
             "type": "range",
             "default": 40,
-            "min": 10,
+            "min": 5,
             "max": 200
         },
         {
