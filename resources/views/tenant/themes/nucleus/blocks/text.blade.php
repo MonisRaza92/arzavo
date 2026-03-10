@@ -63,7 +63,7 @@
 </style>
 
 
-<p data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
     class="
 text-{{ $block['id'] }}
 arzavo-{{ $type }}
@@ -75,4 +75,4 @@ arzavo-{{ $type }}
 padding: {{ $pt }}px {{ $pr }}px {{ $pb }}px {{ $pl }}px;
 ">
     {!! $text !!}
-</p>
+</div>
