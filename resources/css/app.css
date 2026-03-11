@@ -843,106 +843,94 @@ input[type="number"] {
     background-color: #fff !important;
 }
 
-/* Solid Color Input Styles */
-.solid-color-input {
+
+/**
+ * Color Picker – Additional CSS
+ * Add this to your main stylesheet or inside a <style> tag
+ */
+
+/* Hue / Alpha range sliders – cross-browser reset */
+[data-hue-track] input[type=range],
+[data-alpha-track] input[type=range] {
     -webkit-appearance: none;
-    padding: 0;
+    appearance: none;
+    background: transparent;
     cursor: pointer;
-    border: none;
+    width: 100%;
 }
 
-.solid-color-input::-webkit-color-swatch-wrapper {
-    padding: 0;
+/* Gradient stop rows scrollbar */
+[data-stops]::-webkit-scrollbar {
+    width: 4px;
 }
 
-.solid-color-input::-webkit-color-swatch {
-    border: none;
-    border-radius: var(--border-rounded);
+[data-stops]::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.solid-color-input::-moz-color-swatch {
-    border: none;
-    border-radius: var(--border-rounded);
-}
-
-/* Gradient Picker Styles */
-.gradient-input {
-    -webkit-appearance: none;
-    padding: 0;
-    cursor: pointer;
-    color: transparent !important;
-    background-size: cover;
-}
-
-.gradient-picker-popup {
-    font-family: system-ui, -apple-system, sans-serif;
-}
-
-.gradient-picker-popup input[type="range"] {
-    -webkit-appearance: none;
-    height: 6px;
+[data-stops]::-webkit-scrollbar-thumb {
     background: #e5e7eb;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.gradient-picker-popup input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: #111;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.gradient-picker-popup input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: #111;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-}
-
-.gradient-picker-popup input[type="color"] {
-    -webkit-appearance: none;
-    cursor: pointer;
-}
-
-.gradient-picker-popup input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 2px;
-}
-
-.gradient-picker-popup input[type="color"]::-webkit-color-swatch {
-    border: none;
     border-radius: 4px;
 }
 
-.gradient-picker-popup button:hover {
-    opacity: 0.9;
-}
-
-.tiptap-editor {
-    outline: none;
+/* Color input reset */
+input[type=color] {
+    -webkit-appearance: none;
+    padding: 0;
     border: none;
-    box-shadow: none;
+    border-radius: 6px;
+    cursor: pointer;
+    overflow: hidden;
 }
 
-.tiptap-editor:focus {
-    outline: none;
+input[type=color]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type=color]::-webkit-color-swatch {
     border: none;
-    box-shadow: none;
+    border-radius: 6px;
 }
 
-.tiptap-editor *:focus {
-    outline: none;
-    box-shadow: none;
+/* Number input arrows hide */
+[data-r],
+[data-g],
+[data-b],
+[data-h],
+[data-s],
+[data-l],
+[data-alpha-input],
+[data-angle-input] {
+    -moz-appearance: textfield;
 }
 
-.tiptap-editor[contenteditable="true"] {
-    outline: none !important;
-    -webkit-user-modify: read-write-plaintext-only;
+[data-r]::-webkit-outer-spin-button,
+[data-r]::-webkit-inner-spin-button,
+[data-g]::-webkit-outer-spin-button,
+[data-g]::-webkit-inner-spin-button,
+[data-b]::-webkit-outer-spin-button,
+[data-b]::-webkit-inner-spin-button,
+[data-h]::-webkit-outer-spin-button,
+[data-h]::-webkit-inner-spin-button,
+[data-s]::-webkit-outer-spin-button,
+[data-s]::-webkit-inner-spin-button,
+[data-l]::-webkit-outer-spin-button,
+[data-l]::-webkit-inner-spin-button,
+[data-alpha-input]::-webkit-outer-spin-button,
+[data-alpha-input]::-webkit-inner-spin-button,
+[data-angle-input]::-webkit-outer-spin-button,
+[data-angle-input]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
+
+/* Range accent */
+input[type=range] {
+    accent-color: #6366f1;
+}
+
+
+
 
 
 @keyframes smooth-shake {

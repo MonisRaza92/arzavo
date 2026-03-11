@@ -1,5 +1,5 @@
 @props([
-'name',
+'name' => '',
 'value' => '',
 'gradient' => false,
 ])
@@ -14,7 +14,7 @@ $id = 'cp_' . Str::random(8);
     {{-- Trigger --}}
     <div class="group flex items-center gap-2 cursor-pointer" data-trigger>
         <div class="w-10 h-8.5 border-rounded border-primary" data-preview></div>
-        <div class="flex-1">
+        <div class="flex-1 hidden">
             <input type="text"
                 data-input
                 class="w-full text-xs font-medium p-2 border-rounded border-primary"

@@ -4,6 +4,8 @@
 <head>
     <x-header />
     @vite('resources/js/builder.js')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
 </head>
 
 <body id="builder-editor-body">

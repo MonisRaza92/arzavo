@@ -56,14 +56,11 @@ class AppServiceProvider extends ServiceProvider
 
                 $themeId = activeThemeId();
 
-                $schemes = cache()->remember(
-                    "tenant_schemes_$themeId",
-                    3600,
-                    fn() => \App\Models\Tenant\ColorScheme
-                        ::where('theme_id', $themeId)
-                        ->get()
-                        ->keyBy('key')
-                );
+                $schemes = \App\Models\Tenant\ColorScheme
+                    ::where('theme_id', $themeId)
+                    ->orderBy('created_at', 'asc')
+                    ->get()
+                    ->keyBy('key');
             }
 
             if ($menus === null) {
