@@ -14,7 +14,7 @@
         ])    @endforeach
         </ul>
 @endif
-<button class="cursor-pointer border-rounded mx-2 mb-2 text-blue-600 text-sm bg-hover-secondary p-2 w-[calc(100%-1rem)] text-left" onclick="openAddSection('{{ $target }}')"> <i class="fa-jelly fa-regular fa-circle-plus ml-5.75 mr-1 text-[13px]"></i>
+<button class="cursor-pointer border-rounded mx-2 mb-2 text-blue-600 text-sm bg-hover-secondary p-2 w-[calc(100%-1rem)] text-left" onclick="openAddSection('{{ $target }}')"> <i class="fa-solid fa-circle-plus ml-5.75 mr-1 text-[13px]"></i>
         Add Section
 </button>
 

@@ -625,6 +625,12 @@ button {
 
 .arz-logo-size {
     height: var(--arz-desktop-logo-size);
+    font-size: var(--arz-desktop-logo-size);
+}
+
+.arz-logo {
+    height: var(--arz-desktop-logo-size);
+    font-size: var(--arz-desktop-logo-size);
 }
 
 .arz-transparent-nav {
@@ -632,31 +638,35 @@ button {
 }
 
 .arzavo-background {
-    background: var(--arzavo-background);
+    background: var(--arz-bg);
+}
+
+.arz-bg {
+    background: var(--arz-bg);
 }
 
 .arzavo-border {
-    border: var(--arzavo-border-width) solid var(--arzavo-border-color);
+    border: var(--arzavo-border-width) solid var(--arz-border);
 }
 
 .arzavo-border-top {
-    border-top: var(--arzavo-border-width) solid var(--arzavo-border-color);
+    border-top: var(--arzavo-border-width) solid var(--arz-border);
 }
 
 .arzavo-border-bottom {
-    border-bottom: 1px solid var(--arzavo-border-color);
+    border-bottom: 1px solid var(--arz-border);
 }
 
 .arzavo-border-right {
-    border-right: var(--arzavo-border-width) solid var(--arzavo-border-color);
+    border-right: var(--arzavo-border-width) solid var(--arz-border);
 }
 
 .arz-border {
-    border: 1px solid var(--arzavo-border-color);
+    border: 1px solid var(--arz-border);
 }
 
 .arz-border-b {
-    border-bottom: 1px solid var(--arzavo-border-color);
+    border-bottom: 1px solid var(--arz-border);
 }
 
 .arzavo-border-invert {
@@ -671,88 +681,140 @@ button {
     box-shadow: 0 2px var(--arzavo-shadow-blur) var(--arzavo-shadow-spread) var(--arzavo-shadow-color);
 }
 
-.arzavo-heading-1 {
-    color: var(--arzavo-heading-color);
-    font-family: var(--arzavo-heading-font-family) !important;
-    font-weight: var(--arzavo-heading-1-font-weight);
-    font-size: var(--arzavo-heading-1-font-size);
-    line-height: var(--arzavo-heading-1-line-height);
-    text-transform: var(--arzavo-heading-1-text-transform);
+
+
+/* ========================= */
+/* Heading Base Style */
+/* ========================= */
+
+.arz-h1,
+.arz-h2,
+.arz-h3,
+.arz-h4,
+.arz-h5,
+.arz-h6 {
+    color: var(--arz-heading);
+    font-family: var(--arz-heading-font);
 }
 
-.arzavo-heading-2 {
-    color: var(--arzavo-heading-color);
-    font-family: var(--arzavo-heading-font-family) !important;
-    font-weight: var(--arzavo-heading-2-font-weight);
-    font-size: var(--arzavo-heading-2-font-size);
-    line-height: var(--arzavo-heading-2-line-height);
-    text-transform: var(--arzavo-heading-2-text-transform);
+/* ========================= */
+/* H1 */
+/* ========================= */
+
+.arz-h1 {
+    font-size: clamp(calc(var(--arz-h1-size) * 0.5),
+            calc(var(--arz-h1-size) * 0.5 + 2vw),
+            calc(var(--arz-h1-size) * 1.1));
+    line-height: var(--arz-h1-line);
+    font-weight: var(--arz-h1-weight);
+    text-transform: var(--arz-h1-transform);
 }
 
-.arzavo-heading-3 {
-    color: var(--arzavo-heading-color);
-    font-family: var(--arzavo-heading-font-family) !important;
-    font-weight: var(--arzavo-heading-3-font-weight);
-    font-size: var(--arzavo-heading-3-font-size);
-    line-height: var(--arzavo-heading-3-line-height);
-    text-transform: var(--arzavo-heading-3-text-transform);
+/* ========================= */
+/* H2 */
+/* ========================= */
+
+.arz-h2 {
+    font-size: clamp(calc(var(--arz-h2-size) * 0.5),
+            calc(var(--arz-h2-size) * 0.5 + 2vw),
+            calc(var(--arz-h2-size) * 1.1));
+    line-height: var(--arz-h2-line);
+    font-weight: var(--arz-h2-weight);
+    text-transform: var(--arz-h2-transform);
 }
 
-.arzavo-heading-4 {
-    color: var(--arzavo-heading-color);
-    font-family: var(--arzavo-heading-font-family) !important;
-    font-weight: var(--arzavo-heading-4-font-weight);
-    font-size: var(--arzavo-heading-4-font-size);
-    line-height: var(--arzavo-heading-4-line-height);
-    text-transform: var(--arzavo-heading-4-text-transform);
+/* ========================= */
+/* H3 */
+/* ========================= */
+
+.arz-h3 {
+    font-size: clamp(calc(var(--arz-h3-size) * 0.5),
+            calc(var(--arz-h3-size) * 0.5 + 2vw),
+            calc(var(--arz-h3-size) * 1.1));
+    line-height: var(--arz-h3-line);
+    font-weight: var(--arz-h3-weight);
+    text-transform: var(--arz-h3-transform);
 }
 
-.arzavo-heading-5 {
-    color: var(--arzavo-heading-color);
-    font-family: var(--arzavo-heading-font-family) !important;
-    font-weight: var(--arzavo-heading-5-font-weight);
-    font-size: var(--arzavo-heading-5-font-size);
-    line-height: var(--arzavo-heading-5-line-height);
-    text-transform: var(--arzavo-heading-5-text-transform);
+/* ========================= */
+/* H4 */
+/* ========================= */
+
+.arz-h4 {
+    font-size: clamp(calc(var(--arz-h4-size) * 0.5),
+            calc(var(--arz-h4-size) * 0.5 + 2vw),
+            calc(var(--arz-h4-size) * 1.1));
+    line-height: var(--arz-h4-line);
+    font-weight: var(--arz-h4-weight);
+    text-transform: var(--arz-h4-transform);
 }
 
-.arzavo-heading-6 {
-    color: var(--arzavo-heading-color);
-    font-family: var(--arzavo-heading-font-family) !important;
-    font-weight: var(--arzavo-heading-6-font-weight);
-    font-size: var(--arzavo-heading-6-font-size);
-    line-height: var(--arzavo-heading-6-line-height);
-    text-transform: var(--arzavo-heading-6-text-transform);
+/* ========================= */
+/* H5 */
+/* ========================= */
+
+.arz-h5 {
+    font-size: clamp(calc(var(--arz-h5-size) * 0.5),
+            calc(var(--arz-h5-size) * 0.5 + 2vw),
+            calc(var(--arz-h5-size) * 1.1));
+    line-height: var(--arz-h5-line);
+    font-weight: var(--arz-h5-weight);
+    text-transform: var(--arz-h5-transform);
 }
 
-.arzavo-paragraph {
-    color: var(--arzavo-paragraph-color);
-    font-family: var(--arzavo-paragraph-font-family) !important;
-    font-weight: var(--arzavo-paragraph-font-weight);
-    font-size: var(--arzavo-paragraph-font-size);
-    text-transform: var(--arzavo-paragraph-text-transform);
+/* ========================= */
+/* H6 */
+/* ========================= */
+
+.arz-h6 {
+    font-size: clamp(calc(var(--arz-h6-size) * 0.5),
+            calc(var(--arz-h6-size) * 0.5 + 2vw),
+            calc(var(--arz-h6-size) * 1.1));
+    line-height: var(--arz-h6-line);
+    font-weight: var(--arz-h6-weight);
+    text-transform: var(--arz-h6-transform);
 }
 
-.arzavo-secondary-text {
-    color: var(--arzavo-secondary-text-color);
-    font-family: var(--arzavo-secondary-text-font-family) !important;
-    font-weight: var(--arzavo-secondary-text-font-weight);
-    font-size: var(--arzavo-secondary-text-font-size);
-    text-transform: var(--arzavo-secondary-text-text-transform);
+/* ========================= */
+/* Paragraph */
+/* ========================= */
+
+.arz-paragraph {
+    color: var(--arz-paragraph);
+    font-family: var(--arz-paragraph-font) !important;
+    font-weight: var(--arz-paragraph-weight);
+    font-size: clamp(calc(var(--arz-paragraph-size) * 0.9),
+            calc(var(--arz-paragraph-size) * 0.6 + 0.5vw),
+            var(--arz-paragraph-size));
+    text-transform: var(--arz-paragraph-transform);
 }
 
-.arzavo-text {
-    color: var(--arzavo-paragraph-color);
+
+/* ========================= */
+/* Body Text */
+/* ========================= */
+
+.arz-body-text {
+    color: var(--arz-body-text-color);
+    font-family: var(--arz-body-text-font) !important;
+    font-weight: var(--arz-body-text-weight);
+    font-size: clamp(calc(var(--arz-body-text-size) * 0.9),
+            calc(var(--arz-body-text-size) * 0.6 + 0.4vw),
+            var(--arz-body-text-size));
+    text-transform: var(--arz-body-text-transform);
 }
 
+/* ========================= */
+/* Links */
+/* ========================= */
 .arz-link {
-    color: var(--arzavo-link-color);
-    font-family: var(--arzavo-link-font-family);
+    color: var(--arz-link);
+    font-family: var(--arz-link-font);
     display: block;
     transition: all 0.3s ease;
 
     &:hover {
-        color: var(--arzavo-link-hover-color);
+        color: var(--arz-link-hover);
     }
 }
 
@@ -760,44 +822,69 @@ button {
     filter: invert(1);
 }
 
-.arzavo-primary-btn {
-    background: var(--arzavo-primary-btn-background);
-    color: var(--arzavo-primary-btn-text);
-    border: var(--arzavo-primary-btn-border-width) solid var(--arzavo-primary-btn-border);
-    border-radius: var(--arzavo-primary-btn-shape);
-    font-size: var(--arzavo-primary-btn-font-size);
-    font-family: var(--arzavo-primary-btn-font-family);
-    font-weight: var(--arzavo-primary-btn-font-weight);
-    text-transform: var(--arzavo-primary-btn-text-transform);
-    display: block;
-    padding: 8px var(--arzavo-primary-btn-size);
-    transition: all 0.3s ease;
+/* ========================= */
+/* Primary Button */
+/* ========================= */
 
-    &:hover {
-        background: var(--arzavo-primary-btn-hover-background);
-        color: var(--arzavo-primary-btn-hover-text);
-        border-color: var(--arzavo-primary-btn-hover-border);
-    }
+.arz-primary {
+    background: var(--arz-btn-bg);
+    color: var(--arz-btn-text);
+
+    border: var(--arz-btn-border-w) solid var(--arz-btn-border);
+    border-radius: var(--arz-btn-radius);
+
+    font-size: var(--arz-btn-size);
+    font-family: var(--arz-btn-font);
+    font-weight: var(--arz-btn-weight);
+    text-transform: var(--arz-btn-transform);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--arz-btn-py) var(--arz-btn-px);
+
+    transition: all .25s ease;
+    cursor: pointer;
 }
 
-.arzavo-secondary-btn {
-    background: var(--arzavo-secondary-btn-background);
-    color: var(--arzavo-secondary-btn-text);
-    border: var(--arzavo-secondary-btn-border-width) solid var(--arzavo-secondary-btn-border);
-    border-radius: var(--arzavo-secondary-btn-shape);
-    font-size: var(--arzavo-secondary-btn-font-size);
-    font-family: var(--arzavo-secondary-btn-font-family);
-    font-weight: var(--arzavo-secondary-btn-font-weight);
-    text-transform: var(--arzavo-secondary-btn-text-transform);
-    display: block;
-    padding: 8px var(--arzavo-secondary-btn-size);
-    transition: all 0.3s ease;
+.arz-primary:hover {
+    background: var(--arz-btn-hover-bg);
+    color: var(--arz-btn-hover-text);
+    border-color: var(--arz-btn-hover-border);
+}
 
-    &:hover {
-        background: var(--arzavo-secondary-btn-hover-background);
-        color: var(--arzavo-secondary-btn-hover-text);
-        border-color: var(--arzavo-secondary-btn-hover-border);
-    }
+
+/* ========================= */
+/* Secondary Button */
+/* ========================= */
+
+.arz-secondary {
+    background: var(--arz-btn2-bg);
+    color: var(--arz-btn2-text);
+
+    border: var(--arz-btn2-border-w) solid var(--arz-btn2-border);
+    border-radius: var(--arz-btn2-radius);
+
+    font-size: var(--arz-btn2-size);
+    font-family: var(--arz-btn2-font);
+    font-weight: var(--arz-btn2-weight);
+    text-transform: var(--arz-btn2-transform);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--arz-btn2-py) var(--arz-btn2-px);
+
+    transition: all .25s ease;
+    cursor: pointer;
+}
+
+.arz-secondary:hover {
+    background: var(--arz-btn2-hover-bg);
+    color: var(--arz-btn2-hover-text);
+    border-color: var(--arz-btn2-hover-border);
 }
 
 .fade-out {
@@ -967,70 +1054,22 @@ input[type=range] {
     }
 }
 
-/* Tablet */
-@media (max-width: 1047px) {
-    .arzavo-heading-1 {
-        font-size: var(--arzavo-heading-1-font-size-tablet);
-    }
-
-    .arzavo-heading-2 {
-        font-size: var(--arzavo-heading-2-font-size-tablet);
-    }
-
-    .arzavo-heading-3 {
-        font-size: var(--arzavo-heading-3-font-size-tablet);
-    }
-
-    .arzavo-heading-4 {
-        font-size: var(--arzavo-heading-4-font-size-tablet);
-    }
-
-    .arzavo-heading-5 {
-        font-size: var(--arzavo-heading-5-font-size-tablet);
-    }
-
-    .arzavo-heading-6 {
-        font-size: var(--arzavo-heading-6-font-size-tablet);
-    }
-}
 
 /* Mobile */
 @media (max-width: 768px) {
     .arz-logo-size {
         height: var(--arz-mobile-logo-size);
+        font-size: var(--arz-mobile-logo-size);
+    }
+
+    .arz-logo {
+        height: var(--arz-mobile-logo-size);
+        font-size: var(--arz-mobile-logo-size);
     }
 
 
     .arz-transparent-nav {
         margin-bottom: calc(-1 * var(--arz-mobile-logo-size) - 25px);
-    }
-
-    .arzavo-heading-1 {
-        font-size: var(--arzavo-heading-1-font-size-mobile);
-    }
-
-    .arzavo-heading-2 {
-        font-size: var(--arzavo-heading-2-font-size-mobile);
-    }
-
-    .arzavo-heading-3 {
-        font-size: var(--arzavo-heading-3-font-size-mobile);
-    }
-
-    .arzavo-heading-4 {
-        font-size: var(--arzavo-heading-4-font-size-mobile);
-    }
-
-    .arzavo-heading-5 {
-        font-size: var(--arzavo-heading-5-font-size-mobile);
-    }
-
-    .arzavo-heading-6 {
-        font-size: var(--arzavo-heading-6-font-size-mobile);
-    }
-
-    .arzavo-paragraph {
-        font-size: var(--arzavo-paragraph-font-size-mobile);
     }
 }
 

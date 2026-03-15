@@ -20,7 +20,7 @@
                 <button id="pageSelectBtn" type="button"
                     class="flex items-center justify-between w-full p-2 md:px-4 border border-gray-300 rounded font-semibold bg-white">
                     <span id="selectedPage" class="flex items-center gap-2">
-                        <i class="fa-duotone fa-solid fa-browser"></i>
+                        <i class="fa-solid fa-window-restore"></i>
                         {{ $page->name ?? 'Select Page' }}
                     </span>
                     <i class="fa-solid fa-chevron-down text-gray-500"></i>
@@ -32,7 +32,7 @@
                     @foreach($pages as $p)
                         <div class="dropdown-option flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
                             data-value="{{ $p->slug }}">
-                            <i class="fa-duotone fa-solid fa-browser"></i>
+                            <i class="fa-solid fa-window-maximize"></i>
                             {{ $p->name }}
                         </div>
                     @endforeach
@@ -55,12 +55,12 @@
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="desktop" class="hidden peer" checked>
                 <span
-                    class="radio-label btn border-rounded py-2 px-2.25 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-jelly fa-regular fa-desktop text-lg"></i></span>
+                    class="radio-label btn border-rounded py-2 px-2.25 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-solid fa-desktop text-lg"></i></span>
             </label>
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="mobile" class="hidden peer">
                 <span
-                    class="radio-label btn border-rounded py-2 px-2.5 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-jelly fa-regular fa-mobile text-lg"></i></span>
+                    class="radio-label btn border-rounded py-2 px-2.5 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-solid fa-mobile-screen-button text-lg"></i></span>
             </label>
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="full-view" class="hidden peer">

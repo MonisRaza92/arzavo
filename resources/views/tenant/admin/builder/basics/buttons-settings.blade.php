@@ -23,7 +23,12 @@
 
 
         [
-        'key'=>'size','label'=>'Size','type'=>'range',
+        'key'=>'padding_vertical','label'=>'Padding Vertical','type'=>'range',
+        'min'=>8,'max'=>80,'step'=>2,'unit'=>'px',
+        'value'=>10
+        ],
+        [
+        'key'=>'padding_horizontal','label'=>'Padding Horizontal','type'=>'range',
         'min'=>8,'max'=>80,'step'=>2,'unit'=>'px',
         'value'=>16
         ],

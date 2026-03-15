@@ -1,8 +1,7 @@
 {
     "type": "footer",
     "name": "Footer",
-    "icon": "fa-table-rows-add-below",
-    "order": 99,
+    "icon": "fa-tv",
     "category": "Footer",
     "color_scheme": "scheme_1",
     "max_blocks": 20,

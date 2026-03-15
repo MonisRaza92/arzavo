@@ -9,6 +9,10 @@ class ThemeLayoutInstaller
     {
         foreach ($pages as $pageSlug => $items) {
 
+            if (empty($items) || !is_array($items)) {
+                continue;
+            }
+
             $page = \App\Models\Tenant\Page::where('slug', $pageSlug)->first();
             if (!$page)
                 continue;
@@ -17,14 +21,14 @@ class ThemeLayoutInstaller
 
             foreach ($items as $item) {
 
-                if ($item['kind'] === 'section') {
+                if (($item['kind'] ?? null) === 'section') {
                     $sections[] = ThemeSectionFactory::fromSectionType(
                         $item['name'],
                         $themeSlug
                     );
                 }
 
-                if ($item['kind'] === 'template') {
+                if (($item['kind'] ?? null) === 'template') {
                     foreach (
                         ThemeTemplateExpander::expand($item['name'], $themeSlug)
                         as $section

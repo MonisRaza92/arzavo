@@ -26,7 +26,6 @@
     padding:{{$padding}}px;
 @endif
 ">
-
     <div class="flex flex-col" style="gap:{{$gap}}px">
 
         {{-- ✅ CARD CONTENT BLOCKS --}}

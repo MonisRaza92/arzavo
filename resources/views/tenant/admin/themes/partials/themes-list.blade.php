@@ -61,7 +61,7 @@
                         <a data-turbo="false"
                             href="{{ route('admin.builder.index', ['theme' => $tenantT->theme_slug, 'status' => $tenantT->status, 'theme_id' => $tenantT->id, 'is_active' => $tenantT->is_active, 'page' => 'home']) }}"
                             class="block px-3 py-2 text-sm hover:bg-gray-100">
-                            <i class="fa-regular fa-sliders mr-1"></i> Customize
+                            <i class="fa-solid fa-sliders mr-1"></i> Customize
                         </a>
 
                         <form method="POST" action="{{ route('admin.themes.copy', $tenantT->id) }}">
@@ -76,14 +76,14 @@
                         </button>
 
                         <!-- <button class="w-full text-left px-3 mb-1 py-2 text-sm hover:bg-gray-100">
-                            <i class="fa-regular fa-gear mr-1"></i> Default Content
-                        </button> -->
+                                    <i class="fa-regular fa-gear mr-1"></i> Default Content
+                                </button> -->
 
                         <form action="{{ route('admin.themes.destroy', $tenantT->id) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button class="w-full text-left px-3 py-2 border-top text-sm text-red-600 hover:bg-red-50">
-                                <i class="fa-regular fa-trash mr-1"></i> Delete Theme
+                                <i class="fa-solid fa-trash mr-1"></i> Delete Theme
                             </button>
                         </form>
 
@@ -133,8 +133,9 @@
                     @else
                         <form method="POST" action="{{ route('admin.themes.install', $theme->id) }}">
                             @csrf
-                            <button class="w-full text-sm text-blue-600 hover:text-blue-800">
-                                Install <i class="fa-regular fa-rectangle-history-circle-plus text-xs ml-1"></i>
+                            <button onclick="this.innerHTML='Installing <i class=&quot;fa-solid fa-spinner fa-spin&quot;></i>'"
+                                class="w-full text-sm text-blue-600 hover:text-blue-800">
+                                Install <i class="fa-solid fa-cloud-arrow-down"></i>
                             </button>
                         </form>
                     @endif

@@ -44,5 +44,5 @@ $mAlignmentClass = match($mAlignment) {
         {{ $alignmentClass }}
     "
 >
-    {{ Str::limit($data->title ?? $data->name ?? 'This is the example title for courses', 50) }}
+    {{ Str::limit($data->title ?? $data->name, 50) }}
 </h2>

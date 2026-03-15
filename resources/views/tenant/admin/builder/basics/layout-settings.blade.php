@@ -2,7 +2,7 @@
     <button onclick="openCustomizesMenu('layout-settings-menu', 'arrow-layout')"
         type="button"
         class="p-4 flex justify-between items-center w-full text-sm font-semibold bg-hover-secondary">
-        <span><i class="fa-solid fa-table-layout mr-1"></i> Layout</span>
+        <span><i class="fa-solid fa-border-all mr-1"></i> Layout</span>
         <i class="fas fa-angle-right transition-all duration-300" id="arrow-layout"></i>
     </button>
 

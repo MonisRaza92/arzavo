@@ -1,7 +1,7 @@
 {
     "type": "header",
     "name": "Header",
-    "icon": "fa-frame",
+    "icon": "fa-text-height",
     "order": 2,
     "category": "Layout",
     "max_blocks": 3,

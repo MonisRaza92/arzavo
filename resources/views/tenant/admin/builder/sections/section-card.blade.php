@@ -63,7 +63,7 @@
             <button type="button"
                 class="text-blue-600 text-left text-sm bg-hover-secondary w-full block p-2 border-rounded"
                 onclick="document.getElementById('addBlockContainer{{ $section['id'] }}').classList.remove('hidden')">
-                <i class="fa-jelly fa-regular fa-circle-plus mr-1 ml-6 text-[13px]"></i> Add Block
+                <i class="fa-solid fa-circle-plus mr-1 ml-6 text-[13px]"></i> Add Block
             </button>
         @endif
 

@@ -1,4 +1,4 @@
-@php($settings = section($section))
+@php($settings = sectionResolve($section))
 
 <div data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
     class="section relative overflow-hidden {{ $settings['visibility'] }}"

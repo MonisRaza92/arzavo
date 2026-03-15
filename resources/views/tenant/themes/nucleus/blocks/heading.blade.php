@@ -75,7 +75,7 @@
 
 
 <div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" class="
-arzavo-{{ $type }}
+arz-{{ $tag }}
 heading-{{ $block['id'] }}
 w-full
 {{ $desktopWidthType === 'full' ? 'md:w-full' : 'md:w-auto' }}

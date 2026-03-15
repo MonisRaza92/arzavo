@@ -2,11 +2,11 @@
     class="w-90 pt-16 h-dvh border-right fixed flex top-0 left-0 bg-primary overflow-auto scrollbar">
     <div class="tab-btns flex flex-col border-right bg-primary z-30">
         <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary bg-tertiary text-primary"
-            title="Settings" data-target="basics"><i class="fa-jelly fa-regular fa-gear"></i></button>
+            title="Settings" data-target="basics"><i class="fa-solid fa-cog"></i></button>
         <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary" title="Sections"
-            data-target="sections"><i class="fa-regular fa-table-rows-add-below"></i></button>
+            data-target="sections"><i class="fa-solid fa-indent"></i></button>
         <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary" title="Apps"
-            data-target="apps"><i class="fa-regular fa-grid-2-plus"></i></button>
+            data-target="apps"><i class="fa-brands fa-google-play"></i></button>
     </div>
     <div class="tab-content w-full h-full overflow-auto scrollbar active relative" id="basics" data-content="basics">
         <form id="customize-form" action="{{ route('admin.customizes.store') }}" method="POST">

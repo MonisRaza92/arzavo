@@ -45,7 +45,7 @@ class SectionResolver
         ];
 
         if ($type === 'none') {
-            $bg['style'] = 'background: var(--arzavo-background);';
+            $bg['style'] = 'background: var(--arz-bg);';
         }
 
         if ($type === 'image') {

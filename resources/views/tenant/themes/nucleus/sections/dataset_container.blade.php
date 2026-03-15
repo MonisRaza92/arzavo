@@ -146,9 +146,9 @@ margin-bottom:{{$mb}}px;
                             $section['blocks'],
                             ['data_card', 'data_card_course'],
                             [
-                                'data' => [
-                                    'title' => "This is a demo title",
-                                    'name' => "This is a demo name",
+                                'data' => (object) [
+                                    'title' => "Demo Title",
+                                    'name' => "Demo Name",
                                     'description' => "this is a demo description for the card. It gives a brief overview of what the the is about. and it should be concise and engaging to attract users to click and learn more.",
                                     'image' => null,
                                     'url' => '#',
@@ -200,9 +200,9 @@ margin-bottom:{{$mb}}px;
                                 $section['blocks'],
                                 ['data_card', 'data_card_course'],
                                 [
-                                    'data' => [
-                                        'title' => "This is a demo title",
-                                        'name' => "This is a demo name",
+                                    'data' => (object) [
+                                        'title' => "Demo Title",
+                                        'name' => "Demo Name",
                                         'description' => "this is a demo description for the card. It gives a brief overview of what the the is about. and it should be concise and engaging to attract users to click and learn more.",
                                         'image' => null,
                                         'url' => '#',

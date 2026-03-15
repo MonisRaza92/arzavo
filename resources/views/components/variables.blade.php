@@ -2,142 +2,139 @@
     :root {
         --container-width: {{ $customizes['container_width'] ?? '1400' }}px;
         --global-padding: {{ $customizes['global_padding'] ?? '16' }}px;
-        --arzavo-background: #ffffff;
-        --arzavo-heading-color: #000000;
-        --arzavo-subheading-color: #000000;
-        --arzavo-invert-text-color: #000000;
-        --arzavo-border-color: #d4d4d4;
-        --arzavo-shadow-color: #000000;
-        --arzavo-shadow-spread: {{ $customizes['shadow_spread'] ?? '2px' }};
-        --arzavo-shadow-blur: {{ $customizes['shadow_blur'] ?? '10px' }};
         --arzavo-border-width: {{ $customizes['border_width'] ?? '1px' }};
         --arzavo-border-radius: {{ $customizes['border_radius']  ?? '0' }};
-        --arzavo-heading-font-family: {{ $customizes['heading_font_family'] ?? '' }};
-        --arzavo-paragraph-font-family: {{ $customizes['paragraph_font_family'] ?? '' }};
-        --arzavo-secondary-text-font-family: {{ $customizes['secondary_text_font_family'] ?? '' }};
-
-
+        
+        
         --arz-desktop-logo-size: {{ $customizes['logo_height_desktop'] ?? 40 }}px;
         --arz-mobile-logo-size: {{ $customizes['logo_height_mobile'] ?? 40 }}px;
-
+        
+        /* ========================= */
+        /*      Colors & Fonts       */
+        /* ========================= */
+        --arz-heading: #000000;
+        --arz-bg: #ffffff;
+        --arz-subheading: #000000;
+        --arz-paragraph: #525252;
+        --arz-body-text: #858585;
+        --arz-border: #d4d4d4;
+        --arz-link: #1d4ed8;
+        --arz-link-hover: #2563eb;
+        --arz-heading-font: {{ $customizes['heading_font_family'] ?? '' }};
+        --arz-paragraph-font: {{ $customizes['paragraph_font_family'] ?? '' }};
+        --arz-body-text-font: {{ $customizes['body_text_font_family'] ?? '' }};
+        --arz-link-font: {{ $customizes['link_font_family'] ?? 'Outfit' }};
 
         /* ========================= */
         /*           H1              */
         /* ========================= */
-        --arzavo-heading-1-font-size: {{ $customizes['heading_1_font_size'] ?? '40' }}px;
-        --arzavo-heading-1-font-size-tablet: {{ $customizes['heading_1_font_size_tablet'] ?? '32' }}px;
-        --arzavo-heading-1-font-size-mobile: {{ $customizes['heading_1_font_size_mobile'] ?? '26' }}px;
-        --arzavo-heading-1-line-height: {{ $customizes['heading_1_line_height'] ?? '1.1' }};
-        --arzavo-heading-1-text-transform: {{ $customizes['heading_1_text_transform'] ?? 'default' }};
-        --arzavo-heading-1-font-weight: {{ $customizes['heading_1_text_weight'] ?? 'bold' }};
-
+        --arz-h1-size: {{ $customizes['heading_1_font_size'] ?? '40' }}px;
+        --arz-h1-line: {{ $customizes['heading_1_line_height'] ?? '1.1' }};
+        --arz-h1-transform: {{ $customizes['heading_1_text_transform'] ?? 'default' }};
+        --arz-h1-weight: {{ $customizes['heading_1_text_weight'] ?? 'bold' }};
+        
         /* ========================= */
         /*           H2              */
         /* ========================= */
-        --arzavo-heading-2-font-size: {{ $customizes['heading_2_font_size'] ?? '36' }}px;
-        --arzavo-heading-2-font-size-tablet: {{ $customizes['heading_2_font_size_tablet'] ?? '30' }}px;
-        --arzavo-heading-2-font-size-mobile: {{ $customizes['heading_2_font_size_mobile'] ?? '24' }}px;
-        --arzavo-heading-2-line-height: {{ $customizes['heading_2_line_height'] ?? '1.1' }};
-        --arzavo-heading-2-text-transform: {{ $customizes['heading_2_text_transform'] ?? 'default' }};
-        --arzavo-heading-2-font-weight: {{ $customizes['heading_2_text_weight'] ?? 'bold' }};
+        --arz-h2-size: {{ $customizes['heading_2_font_size'] ?? '36' }}px;
+        --arz-h2-line: {{ $customizes['heading_2_line_height'] ?? '1.1' }};
+        --arz-h2-transform: {{ $customizes['heading_2_text_transform'] ?? 'default' }};
+        --arz-h2-weight: {{ $customizes['heading_2_text_weight'] ?? 'bold' }};
 
         /* ========================= */
         /*           H3              */
         /* ========================= */
-        --arzavo-heading-3-font-size: {{ $customizes['heading_3_font_size'] ?? '32' }}px;
-        --arzavo-heading-3-font-size-tablet: {{ $customizes['heading_3_font_size_tablet'] ?? '26' }}px;
-        --arzavo-heading-3-font-size-mobile: {{ $customizes['heading_3_font_size_mobile'] ?? '22' }}px;
-        --arzavo-heading-3-line-height: {{ $customizes['heading_3_line_height'] ?? '1.1' }};
-        --arzavo-heading-3-text-transform: {{ $customizes['heading_3_text_transform'] ?? 'default' }};
-        --arzavo-heading-3-font-weight: {{ $customizes['heading_3_text_weight'] ?? 'bold' }};
-
+        --arz-h3-size: {{ $customizes['heading_3_font_size'] ?? '32' }}px;
+        --arz-h3-line: {{ $customizes['heading_3_line_height'] ?? '1.1' }};
+        --arz-h3-transform: {{ $customizes['heading_3_text_transform'] ?? 'default' }};
+        --arz-h3-weight: {{ $customizes['heading_3_text_weight'] ?? 'bold' }};
+        
         /* ========================= */
         /*           H4              */
         /* ========================= */
-        --arzavo-heading-4-font-size: {{ $customizes['heading_4_font_size'] ?? '28' }}px;
-        --arzavo-heading-4-font-size-tablet: {{ $customizes['heading_4_font_size_tablet'] ?? '24' }}px;
-        --arzavo-heading-4-font-size-mobile: {{ $customizes['heading_4_font_size_mobile'] ?? '20' }}px;
-        --arzavo-heading-4-line-height: {{ $customizes['heading_4_line_height'] ?? '1.1' }};
-        --arzavo-heading-4-text-transform: {{ $customizes['heading_4_text_transform'] ?? 'default' }};
-        --arzavo-heading-4-font-weight: {{ $customizes['heading_4_text_weight'] ?? 'bold' }};
+        --arz-h4-size: {{ $customizes['heading_4_font_size'] ?? '28' }}px;
+        --arz-h4-line: {{ $customizes['heading_4_line_height'] ?? '1.1' }};
+        --arz-h4-transform: {{ $customizes['heading_4_text_transform'] ?? 'default' }};
+        --arz-h4-weight: {{ $customizes['heading_4_text_weight'] ?? 'bold' }};
 
         /* ========================= */
         /*           H5              */
         /* ========================= */
-        --arzavo-heading-5-font-size: {{ $customizes['heading_5_font_size'] ?? '24' }}px;
-        --arzavo-heading-5-font-size-tablet: {{ $customizes['heading_5_font_size_tablet'] ?? '20' }}px;
-        --arzavo-heading-5-font-size-mobile: {{ $customizes['heading_5_font_size_mobile'] ?? '18' }}px;
-        --arzavo-heading-5-line-height: {{ $customizes['heading_5_line_height'] ?? '1.1' }};
-        --arzavo-heading-5-text-transform: {{ $customizes['heading_5_text_transform'] ?? 'default' }};
-        --arzavo-heading-5-font-weight: {{ $customizes['heading_5_text_weight'] ?? 'bold' }};
+        --arz-h5-size: {{ $customizes['heading_5_font_size'] ?? '24' }}px;
+        --arz-h5-line: {{ $customizes['heading_5_line_height'] ?? '1.1' }};
+        --arz-h5-transform: {{ $customizes['heading_5_text_transform'] ?? 'default' }};
+        --arz-h5-weight: {{ $customizes['heading_5_text_weight'] ?? 'bold' }};
 
         /* ========================= */
         /*           H6              */
         /* ========================= */
-        --arzavo-heading-6-font-size: {{ $customizes['heading_6_font_size'] ?? '20' }}px;
-        --arzavo-heading-6-font-size-tablet: {{ $customizes['heading_6_font_size_tablet'] ?? '18' }}px;
-        --arzavo-heading-6-font-size-mobile: {{ $customizes['heading_6_font_size_mobile'] ?? '16' }}px;
-        --arzavo-heading-6-line-height: {{ $customizes['heading_6_line_height'] ?? '1.1' }};
-        --arzavo-heading-6-text-transform: {{ $customizes['heading_6_text_transform'] ?? 'default' }};
-        --arzavo-heading-6-font-weight: {{ $customizes['heading_6_text_weight'] ?? 'bold' }};
+        --arz-h6-size: {{ $customizes['heading_6_font_size'] ?? '20' }}px;
+        --arz-h6-line: {{ $customizes['heading_6_line_height'] ?? '1.1' }};
+        --arz-h6-transform: {{ $customizes['heading_6_text_transform'] ?? 'default' }};
+        --arz-h6-weight: {{ $customizes['heading_6_text_weight'] ?? 'bold' }};
 
 
         /* ========================= */
         /*        Paragraph          */
         /* ========================= */
-        --arzavo-paragraph-color: #525252;
-        --arzavo-paragraph-font-size: {{ $customizes['paragraph_font_size'] ?? '16' }}px;
-        --arzavo-paragraph-font-size-mobile: {{ $customizes['paragraph_font_size_mobile'] ?? '14' }}px;
-        --arzavo-paragraph-text-transform: {{ $customizes['paragraph_text_transform'] ?? 'default' }};
-        --arzavo-paragraph-font-weight: {{ $customizes['paragraph_text_weight'] ?? 'normal' }};
+        --arz-paragraph-size: {{ $customizes['paragraph_font_size'] ?? '16' }}px;
+        --arz-paragraph-transform: {{ $customizes['paragraph_text_transform'] ?? 'default' }};
+        --arz-paragraph-weight: {{ $customizes['paragraph_text_weight'] ?? 'normal' }};
         
 
         /* ========================= */
-        /*       Secondary Text      */
+        /*        Body Text          */
         /* ========================= */
-        --arzavo-secondary-text-color: #858585;
-        --arzavo-secondary-text-font-size: {{ $customizes['secondary_text_font_size'] ?? '12' }}px;
-        --arzavo-secondary-text-text-transform: {{ $customizes['secondary_text_text_transform'] ?? 'default' }};
-        --arzavo-secondary-text-font-weight: {{ $customizes['secondary_text_font_weight'] ?? 'normal' }};
+        --arz-body-text-size: {{ $customizes['body_text_font_size'] ?? '12' }}px;
+        --arz-body-text-transform: {{ $customizes['body_text_text_transform'] ?? 'default' }};
+        --arz-body-text-weight: {{ $customizes['body_text_font_weight'] ?? 'normal' }};
 
         /* ========================= */
         /*       Primary Btn         */
         /* ========================= */
-        --arzavo-primary-btn-background: #000000;
-        --arzavo-primary-btn-text: #ffffff;
-        --arzavo-primary-btn-hover-background: #ffffff;
-        --arzavo-primary-btn-hover-text: #000000;
-        --arzavo-primary-btn-border: #000000;
-        --arzavo-primary-btn-hover-border: #000000;
-        --arzavo-primary-btn-size: {{ $customizes['primary_button_size'] ?? '12' }}px;
-        --arzavo-primary-btn-font-size: {{ $customizes['primary_button_font_size'] ?? '16' }}px;
-        --arzavo-primary-btn-shape: {{ $customizes['primary_button_shape'] ?? ($customizes['border_radius'] ?? '0') }}px;
-        --arzavo-primary-btn-border-width: {{ $customizes['primary_button_border_width'] ?? '0' }}px;
-        --arzavo-primary-btn-font-family: {{ $customizes['primary_button_font_family'] ?? 'Outfit' }};
-        --arzavo-primary-btn-font-weight: {{ $customizes['primary_button_font_weight'] ?? 'bold' }};
-        --arzavo-primary-btn-text-transform: {{ $customizes['primary_button_text_transform'] ?? 'default' }};
 
-        
+        --arz-btn-bg: #000000;
+        --arz-btn-text: #ffffff;
+        --arz-btn-hover-bg: #ffffff;
+        --arz-btn-hover-text: #000000;
+        --arz-btn-border: #000000;
+        --arz-btn-hover-border: #000000;
+
+        --arz-btn-py: {{ $customizes['primary_button_padding_vertical'] ?? '12' }}px;
+        --arz-btn-px: {{ $customizes['primary_button_padding_horizontal'] ?? '12' }}px;
+
+        --arz-btn-size: {{ $customizes['primary_button_font_size'] ?? '16' }}px;
+        --arz-btn-radius: {{ $customizes['primary_button_shape'] ?? ($customizes['border_radius'] ?? '0') }}px;
+        --arz-btn-border-w: {{ $customizes['primary_button_border_width'] ?? '0' }}px;
+
+        --arz-btn-font: {{ $customizes['primary_button_font_family'] ?? 'Outfit' }};
+        --arz-btn-weight: {{ $customizes['primary_button_font_weight'] ?? 'bold' }};
+        --arz-btn-transform: {{ $customizes['primary_button_text_transform'] ?? 'default' }};
+
+
+
         /* ========================= */
         /*      Secondary Btn        */
         /* ========================= */
-        --arzavo-secondary-btn-background: #f3f4f6;
-        --arzavo-secondary-btn-text: #000000;
-        --arzavo-secondary-btn-hover-background: #000000;
-        --arzavo-secondary-btn-hover-text: #ffffff;
-        --arzavo-secondary-btn-border: #000000;
-        --arzavo-secondary-btn-hover-border: #000000;
-        --arzavo-secondary-btn-size: {{ $customizes['secondary_button_size'] ?? '12' }}px;
-        --arzavo-secondary-btn-font-size: {{ $customizes['secondary_button_font_size'] ?? '16' }}px;
-        --arzavo-secondary-btn-shape: {{ $customizes['secondary_button_shape'] ?? ($customizes['border_radius'] ?? '0') }}px;
-        --arzavo-secondary-btn-border-width: {{ $customizes['secondary_button_border_width'] ?? '0' }}px;
-        --arzavo-secondary-btn-font-family: {{ $customizes['secondary_button_font_family'] ?? 'Outfit' }};
-        --arzavo-secondary-btn-font-weight: {{ $customizes['secondary_button_font_weight'] ?? 'normal' }};
-        --arzavo-secondary-btn-text-transform: {{ $customizes['secondary_button_text_transform'] ?? 'default' }};
 
-        --arzavo-link-color: #1d4ed8;
-        --arzavo-link-hover-color: #2563eb;
-        --arzavo-link-font-family: {{ $customizes['link_font_family'] ?? 'Outfit' }};
+        --arz-btn2-bg: #f3f4f6;
+        --arz-btn2-text: #000000;
+        --arz-btn2-hover-bg: #000000;
+        --arz-btn2-hover-text: #ffffff;
+        --arz-btn2-border: #000000;
+        --arz-btn2-hover-border: #000000;
+
+        --arz-btn2-py: {{ $customizes['secondary_button_padding_vertical'] ?? '12' }}px;
+        --arz-btn2-px: {{ $customizes['secondary_button_padding_horizontal'] ?? '12' }}px;
+
+        --arz-btn2-size: {{ $customizes['secondary_button_font_size'] ?? '16' }}px;
+        --arz-btn2-radius: {{ $customizes['secondary_button_shape'] ?? ($customizes['border_radius'] ?? '0') }}px;
+        --arz-btn2-border-w: {{ $customizes['secondary_button_border_width'] ?? '0' }}px;
+
+        --arz-btn2-font: {{ $customizes['secondary_button_font_family'] ?? 'Outfit' }};
+        --arz-btn2-weight: {{ $customizes['secondary_button_font_weight'] ?? 'normal' }};
+        --arz-btn2-transform: {{ $customizes['secondary_button_text_transform'] ?? 'default' }};
+
 
 
     }

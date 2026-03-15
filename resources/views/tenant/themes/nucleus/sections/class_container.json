@@ -1,8 +1,8 @@
 {
     "type": "dataset_container",
-    "name": "Collections: Grid",
-    "icon": "fa-grid-2-plus",
-    "category": "Collections",
+    "name": "Classes: Grid",
+    "icon": "fa-layer-group",
+    "category": "Classes",
     "color_scheme": "scheme_1",
     "max_blocks": 20,
     "allowed_blocks": [
@@ -110,7 +110,7 @@
             "label": "Mobile Columns",
             "type": "range",
             "min": 1,
-            "max": 4,
+            "max": 3,
             "default": 2,
             "conditional": {
                 "field": "layout_style",

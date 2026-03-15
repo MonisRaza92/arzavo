@@ -40,8 +40,8 @@
                         "paragraph": "#4a4a4a",
                         "secondary_text": "#6b6b6b",
                         "invert_text": "#ffffff",
-                        "link": "#2563eb",
-                        "link_hover": "#1d4ed8",
+                        "link": "#000000",
+                        "link_hover": "#222222",
                         "border": "rgba(0,0,0,0.1)",
                         "shadow": "rgba(0,0,0,0.05)"
                     },

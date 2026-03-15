@@ -31,35 +31,34 @@ if (!function_exists('scheme')) {
 
         // 🎨 Base colors
         if ($colors) {
-            $css .= "--arzavo-background: " . ($colors->background ?? '#ffffff') . ";";
-            $css .= "--arzavo-border-color: " . ($colors->border ?? '#cccccc') . ";";
-            $css .= "--arzavo-heading-color: " . ($colors->heading ?? '#000000') . ";";
-            $css .= "--arzavo-subheading-color: " . ($colors->subheading ?? '#333333') . ";";
-            $css .= "--arzavo-paragraph-color: " . ($colors->paragraph ?? '#666666') . ";";
-            $css .= "--arzavo-secondary-text-color: " . ($colors->secondary_text ?? '#999999') . ";";
-            $css .= "--arzavo-invert-text-color: " . ($colors->invert_text ?? '#ffffff') . ";";
-            $css .= "--arzavo-link-color: " . ($colors->link ?? '#0066cc') . ";";
-            $css .= "--arzavo-link-hover-color: " . ($colors->link_hover ?? '#004499') . ";";
+            $css .= "--arz-bg: " . ($colors->background ?? '#ffffff') . ";";
+            $css .= "--arz-border: " . ($colors->border ?? '#cccccc') . ";";
+            $css .= "--arz-heading: " . ($colors->heading ?? '#000000') . ";";
+            $css .= "--arz-subheading: " . ($colors->subheading ?? '#333333') . ";";
+            $css .= "--arz-paragraph: " . ($colors->paragraph ?? '#666666') . ";";
+            $css .= "--arz-body-text: " . ($colors->secondary_text ?? '#999999') . ";";
+            $css .= "--arz-link: " . ($colors->link ?? '#0066cc') . ";";
+            $css .= "--arz-link-hover: " . ($colors->link_hover ?? '#004499') . ";";
         }
 
         // 🔘 Primary button
         if ($primaryBtn) {
-            $css .= "--arzavo-primary-btn-background: " . ($primaryBtn->background ?? '#007bff') . ";";
-            $css .= "--arzavo-primary-btn-text: " . ($primaryBtn->text ?? '#ffffff') . ";";
-            $css .= "--arzavo-primary-btn-border: " . ($primaryBtn->border ?? '#007bff') . ";";
-            $css .= "--arzavo-primary-btn-hover-background: " . ($primaryBtn->hover_background ?? '#0056b3') . ";";
-            $css .= "--arzavo-primary-btn-hover-text: " . ($primaryBtn->hover_text ?? '#ffffff') . ";";
-            $css .= "--arzavo-primary-btn-hover-border: " . ($primaryBtn->hover_border ?? '#0056b3') . ";";
+            $css .= "--arz-btn-bg: " . ($primaryBtn->background ?? '#007bff') . ";";
+            $css .= "--arz-btn-text: " . ($primaryBtn->text ?? '#ffffff') . ";";
+            $css .= "--arz-btn-border: " . ($primaryBtn->border ?? '#007bff') . ";";
+            $css .= "--arz-btn-hover-bg: " . ($primaryBtn->hover_background ?? '#0056b3') . ";";
+            $css .= "--arz-btn-hover-text: " . ($primaryBtn->hover_text ?? '#ffffff') . ";";
+            $css .= "--arz-btn-hover-border: " . ($primaryBtn->hover_border ?? '#0056b3') . ";";
         }
 
         // 🔘 Secondary button
         if ($secondaryBtn) {
-            $css .= "--arzavo-secondary-btn-background: " . ($secondaryBtn->background ?? '#6c757d') . ";";
-            $css .= "--arzavo-secondary-btn-text: " . ($secondaryBtn->text ?? '#ffffff') . ";";
-            $css .= "--arzavo-secondary-btn-border: " . ($secondaryBtn->border ?? '#6c757d') . ";";
-            $css .= "--arzavo-secondary-btn-hover-background: " . ($secondaryBtn->hover_background ?? '#545b62') . ";";
-            $css .= "--arzavo-secondary-btn-hover-text: " . ($secondaryBtn->hover_text ?? '#ffffff') . ";";
-            $css .= "--arzavo-secondary-btn-hover-border: " . ($secondaryBtn->hover_border ?? '#545b62') . ";";
+            $css .= "--arz-btn2-bg: " . ($secondaryBtn->background ?? '#6c757d') . ";";
+            $css .= "--arz-btn2-text: " . ($secondaryBtn->text ?? '#ffffff') . ";";
+            $css .= "--arz-btn2-border: " . ($secondaryBtn->border ?? '#6c757d') . ";";
+            $css .= "--arz-btn2-hover-bg: " . ($secondaryBtn->hover_background ?? '#545b62') . ";";
+            $css .= "--arz-btn2-hover-text: " . ($secondaryBtn->hover_text ?? '#ffffff') . ";";
+            $css .= "--arz-btn2-hover-border: " . ($secondaryBtn->hover_border ?? '#545b62') . ";";
         }
 
         // 🧾 Input

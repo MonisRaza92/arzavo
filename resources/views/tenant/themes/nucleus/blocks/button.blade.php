@@ -36,7 +36,7 @@
 
     $unique = 'btn-' . $block['id'];
 
-    $classes = [$unique, 'items-center justify-center', 'arzavo-' . $type . '-btn', 'transition-all duration-200'];
+    $classes = [$unique, 'items-center justify-center', 'arz-' . $type, 'transition-all duration-200'];
     $classes[] = 'md:text-' . $alignD;
     $classes[] = 'text-' . $alignM;
 

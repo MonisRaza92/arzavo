@@ -5,7 +5,7 @@
         onclick="openCustomizesMenu('typography-settings-menu', 'arrow-typography')"
         type="button"
         class="p-4 flex justify-between items-center w-full text-sm font-semibold bg-hover-secondary">
-        <span><i class="fa-solid fa-text-size mr-1"></i> Typography</span>
+        <span><i class="fa-solid fa-language mr-1"></i> Typography</span>
         <i class="fas fa-angle-right transition-all duration-300" id="arrow-typography"></i>
     </button>
 
@@ -47,8 +47,6 @@
 
         'Heading 1' => [
         ['key'=>'heading_1_font_size','label'=>'Font Size','type'=>'range','value'=>44],
-        ['key'=>'heading_1_font_size_tablet','label'=>'Font Size Tablet','type'=>'range','value'=>40],
-        ['key'=>'heading_1_font_size_mobile','label'=>'Font Size Mobile','type'=>'range','value'=>36],
         ['key'=>'heading_1_line_height','label'=>'Line Height','type'=>'select','options'=>['1.1'=>'Compact','1.3'=>'Standard','1.8'=>'Spacious'],'value'=>'1.1'],
         ['key'=>'heading_1_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','uppercase'],'value'=>'default'],
         ['key'=>'heading_1_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'600'],
@@ -56,40 +54,30 @@
 
         'Heading 2' => [
         ['key'=>'heading_2_font_size','label'=>'Font Size','type'=>'range','value'=>40],
-        ['key'=>'heading_2_font_size_tablet','label'=>'Font Size Tablet','type'=>'range','value'=>36],
-        ['key'=>'heading_2_font_size_mobile','label'=>'Font Size Mobile','type'=>'range','value'=>32],
         ['key'=>'heading_2_line_height','label'=>'Line Height','type'=>'select','options'=>['1.1'=>'Compact','1.3'=>'Standard','1.8'=>'Spacious'],'value'=>'1.1'],
         ['key'=>'heading_2_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','uppercase'],'value'=>'default'],
         ['key'=>'heading_2_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'600'],
         ],
         'Heading 3' => [
-        ['key'=>'heading_3_font_size','label'=>'Font Size','type'=>'range','value'=>40],
-        ['key'=>'heading_3_font_size_tablet','label'=>'Font Size Tablet','type'=>'range','value'=>36],
-        ['key'=>'heading_3_font_size_mobile','label'=>'Font Size Mobile','type'=>'range','value'=>32],
+        ['key'=>'heading_3_font_size','label'=>'Font Size','type'=>'range','value'=>36],
         ['key'=>'heading_3_line_height','label'=>'Line Height','type'=>'select','options'=>['1.1'=>'Compact','1.3'=>'Standard','1.8'=>'Spacious'],'value'=>'1.1'],
         ['key'=>'heading_3_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','uppercase'],'value'=>'default'],
         ['key'=>'heading_3_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'600'],
         ],
         'Heading 4' => [
-        ['key'=>'heading_4_font_size','label'=>'Font Size','type'=>'range','value'=>40],
-        ['key'=>'heading_4_font_size_tablet','label'=>'Font Size Tablet','type'=>'range','value'=>36],
-        ['key'=>'heading_4_font_size_mobile','label'=>'Font Size Mobile','type'=>'range','value'=>32],
+        ['key'=>'heading_4_font_size','label'=>'Font Size','type'=>'range','value'=>32],
         ['key'=>'heading_4_line_height','label'=>'Line Height','type'=>'select','options'=>['1.1'=>'Compact','1.3'=>'Standard','1.8'=>'Spacious'],'value'=>'1.1'],
         ['key'=>'heading_4_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','uppercase'],'value'=>'default'],
         ['key'=>'heading_4_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'600'],
         ],
         'Heading 5' => [
-        ['key'=>'heading_5_font_size','label'=>'Font Size','type'=>'range','value'=>40],
-        ['key'=>'heading_5_font_size_tablet','label'=>'Font Size Tablet','type'=>'range','value'=>36],
-        ['key'=>'heading_5_font_size_mobile','label'=>'Font Size Mobile','type'=>'range','value'=>32],
+        ['key'=>'heading_5_font_size','label'=>'Font Size','type'=>'range','value'=>28],
         ['key'=>'heading_5_line_height','label'=>'Line Height','type'=>'select','options'=>['1.1'=>'Compact','1.3'=>'Standard','1.8'=>'Spacious'],'value'=>'1.1'],
         ['key'=>'heading_5_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','uppercase'],'value'=>'default'],
         ['key'=>'heading_5_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'600'],
         ],
         'Heading 6' => [
-        ['key'=>'heading_6_font_size','label'=>'Font Size','type'=>'range','value'=>40],
-        ['key'=>'heading_6_font_size_tablet','label'=>'Font Size Tablet','type'=>'range','value'=>36],
-        ['key'=>'heading_6_font_size_mobile','label'=>'Font Size Mobile','type'=>'range','value'=>32],
+        ['key'=>'heading_6_font_size','label'=>'Font Size','type'=>'range','value'=>24],
         ['key'=>'heading_6_line_height','label'=>'Line Height','type'=>'select','options'=>['1.1'=>'Compact','1.3'=>'Standard','1.8'=>'Spacious'],'value'=>'1.1'],
         ['key'=>'heading_6_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','uppercase'],'value'=>'default'],
         ['key'=>'heading_6_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'600'],
@@ -97,15 +85,14 @@
 
         'Paragraph' => [
         ['key'=>'paragraph_font_size','label'=>'Font Size','type'=>'range','value'=>16],
-        ['key'=>'paragraph_font_size_mobile','label'=>'Font Size Mobile','type'=>'range','value'=>14],
         ['key'=>'paragraph_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','capitalize'],'value'=>'default'],
         ['key'=>'paragraph_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'400'],
         ],
 
         'Body' => [
-        ['key'=>'secondary_text_font_size','label'=>'Font Size','type'=>'range','value'=>12],
-        ['key'=>'secondary_text_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','capitalize'],'value'=>'default'],
-        ['key'=>'secondary_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'400'],
+        ['key'=>'body_text_font_size','label'=>'Font Size','type'=>'range','value'=>12],
+        ['key'=>'body_text_text_transform','label'=>'Transform','type'=>'radio','options'=>['default','capitalize'],'value'=>'default'],
+        ['key'=>'body_text_weight','label'=>'Weight','type'=>'select','options'=>$weights,'value'=>'400'],
         ],
         ];
         @endphp

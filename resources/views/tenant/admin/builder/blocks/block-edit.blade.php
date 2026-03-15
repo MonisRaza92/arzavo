@@ -43,7 +43,7 @@
             @method('PUT')
 
             @foreach ($fields as $field)
-                <div class="field-item mb-6" data-field-key="{{ $field['key'] }}"
+                <div class="field-item mb-6" data-field-key="{{ $field['key'] ?? null }}"
                     @if (isset($field['conditional'])) data-conditions='@json($field['conditional'])' @endif>
 
                     @switch($field['type'])
@@ -58,6 +58,7 @@
                         @break
 
                         {{-- COLOR SCHEME --}}
+                        @case('scheme')
                         @case('color_scheme_selector')
                             <div class="flex items-center justify-between gap-6">
 
@@ -84,6 +85,7 @@
                         @break
 
                         @case('menu')
+                        @case('menu_selector')
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-8/12 text-secondary block">

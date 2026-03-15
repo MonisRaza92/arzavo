@@ -24,7 +24,7 @@
             "key": "text_type",
             "label": "Text Type",
             "type": "select",
-            "options": ["paragraph", "secondary-text"],
+            "options": ["paragraph", "body-text"],
             "default": "paragraph"
         },
 
