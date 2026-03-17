@@ -24,7 +24,7 @@ class CheckSubscription
         $subscription = $tenant->subscription;
 
         if (!$subscription || !$subscription->isActive()) {
-            return redirect()->route('billing')
+            return redirect()->route('tenants.index')
                 ->with('error', 'Your plan has expired. Please upgrade.');
         }
 
