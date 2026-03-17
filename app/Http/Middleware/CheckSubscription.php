@@ -15,7 +15,7 @@ class CheckSubscription
      */
     public function handle(Request $request, Closure $next)
     {
-        $tenant = app('currentTenant'); // tum already bind kar rahe ho
+        $tenant = app('currentTenant');
 
         if (!$tenant) {
             return $next($request);
@@ -23,11 +23,25 @@ class CheckSubscription
 
         $subscription = $tenant->subscription;
 
-        if (!$subscription || !$subscription->isActive()) {
+        // ❌ no subscription
+        if (!$subscription) {
             return redirect()->route('tenants.index')
-                ->with('error', 'Your plan has expired. Please upgrade.');
+                ->with('error', 'No active subscription found.');
         }
 
-        return $next($request);
+        // ✅ active → allow
+        if ($subscription->isActive()) {
+            return $next($request);
+        }
+
+        // ⚠️ grace period → allow but warn
+        if ($subscription->isInGracePeriod()) {
+            session()->flash('warning', 'Your plan has expired. Please renew soon.');
+            return $next($request);
+        }
+
+        // ❌ fully expired → block
+        return redirect()->route('tenants.index')
+            ->with('error', 'Your plan has expired. Please upgrade.');
     }
 }

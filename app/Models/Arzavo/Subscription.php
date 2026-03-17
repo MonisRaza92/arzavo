@@ -30,15 +30,37 @@ class Subscription extends Model
     // 🔥 Active check (VERY IMPORTANT)
     public function isActive()
     {
-        if ($this->status === 'active')
+        // active plan
+        if ($this->status === 'active' && $this->ends_at && now()->lessThanOrEqualTo($this->ends_at)) {
             return true;
+        }
 
-        if ($this->status === 'trial' && $this->trial_ends_at > now()) {
+        // trial plan
+        if ($this->status === 'trial' && $this->trial_ends_at && now()->lessThanOrEqualTo($this->trial_ends_at)) {
             return true;
         }
 
         return false;
     }
+
+    // 🔥 GRACE PERIOD CHECK (MAIN HELPER)
+    public function isInGracePeriod($days = 3)
+    {
+        // only apply to expired active subscriptions
+        if ($this->status !== 'active' || !$this->ends_at) {
+            return false;
+        }
+
+        return now()->greaterThan($this->ends_at) &&
+            now()->lessThanOrEqualTo($this->ends_at->copy()->addDays($days));
+    }
+
+    // 🔥 FINAL ACCESS HELPER (USE THIS EVERYWHERE)
+    public function canAccess($graceDays = 3)
+    {
+        return $this->isActive() || $this->isInGracePeriod($graceDays);
+    }
+    
     public function overrides()
     {
         return $this->hasMany(\App\Models\Arzavo\SubscriptionOverride::class);
