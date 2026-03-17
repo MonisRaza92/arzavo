@@ -18,6 +18,21 @@ class TenantController
         return view('arzavo.tenants.index', compact('tenants'));
     }
 
+    public function create()
+    {
+        $tenants = Auth::guard('web')->user()->tenants;
+
+        return view('arzavo.tenants.create', compact('tenants'));
+    }
+
+    public function checkSubdomain(Request $request)
+    {
+        $exists = Tenant::where('subdomain', $request->subdomain . '.' . config('app.domain'))->exists();
+
+        return response()->json([
+            'available' => !$exists
+        ]);
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -41,16 +56,16 @@ class TenantController
         $user = Auth::user();
         // Create Tenant
         $tenant = Tenant::create([
-            'admin_id'   => $user->id,
-            'name'       => $request->name,
-            'logo'       => '',
-            'banner'     => '',
-            'heading'    => $request->name,
-            'about'      => 'Coming soon...',
-            'subdomain'  => strtolower($request->subdomain). '.' . config('app.domain'),
-            'custom_domain'  => $request->custom_domain,
+            'admin_id' => $user->id,
+            'name' => $request->name,
+            'logo' => '',
+            'banner' => '',
+            'heading' => $request->name,
+            'about' => 'Coming soon...',
+            'subdomain' => strtolower($request->subdomain) . '.' . config('app.domain'),
+            'custom_domain' => $request->custom_domain,
             'domain_verified' => false,
-            'status'     => 'active',
+            'status' => 'active',
         ]);
 
         // Create Database for tenant
@@ -60,7 +75,14 @@ class TenantController
         $this->initializeTenant($tenant, $user);
         ping_google();
 
-        return back()->with('success', 'Tenant created successfully!');
+        $tenantUrl = $tenant->custom_domain && $tenant->domain_verified
+            ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
+            : 'https://' . $tenant->subdomain . '/admin/dashboard';
+
+        return response()->json([
+            'success' => true,
+            'redirect' => $tenantUrl
+        ]);
     }
 
     // Create tenant DB
@@ -79,7 +101,7 @@ class TenantController
 
         // Save db info in tenant record
         $tenant->update([
-            'db_name'     => $dbName,
+            'db_name' => $dbName,
             'db_username' => env('DB_USERNAME'),
             'db_password' => env('DB_PASSWORD'),
         ]);
@@ -92,9 +114,9 @@ class TenantController
         // 1. Set tenant DB connection
         config([
             'database.connections.tenant' => [
-                'driver'   => 'mysql',
-                'host'     => env('DB_HOST'),
-                'port'     => env('DB_PORT'),
+                'driver' => 'mysql',
+                'host' => env('DB_HOST'),
+                'port' => env('DB_PORT'),
                 'database' => $tenant->db_name,
                 'username' => $tenant->db_username,
                 'password' => $tenant->db_password,
@@ -107,18 +129,18 @@ class TenantController
         // 2. Run tenant migrations
         Artisan::call('tenant:migrate', [
             'tenant_id' => $tenant->id,
-            '--seed'    => true, // ONLY for default tenant data
+            '--seed' => true, // ONLY for default tenant data
         ]);
 
         // 3. Create tenant admin user
         DB::connection('tenant')->table('users')->insert([
-            'fname'      => $mainUser->fname,
-            'lname'      => $mainUser->lname,
-            'email'      => $mainUser->email,
-            'number'     => $mainUser->number,
-            'username'   => $mainUser->username,
-            'password'   => $mainUser->password, // Already hashed
-            'role'       => 'admin',
+            'fname' => $mainUser->fname,
+            'lname' => $mainUser->lname,
+            'email' => $mainUser->email,
+            'number' => $mainUser->number,
+            'username' => $mainUser->username,
+            'password' => $mainUser->password, // Already hashed
+            'role' => 'admin',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -139,12 +161,12 @@ class TenantController
     public function destroy($id)
     {
         $tenant = Tenant::findOrFail($id);
-        
+
         // Drop the tenant database
         if ($tenant->db_name) {
             DB::statement("DROP DATABASE IF EXISTS `{$tenant->db_name}`");
         }
-        
+
         $tenant->delete();
 
         return back()->with('success', 'Tenant deleted successfully!');

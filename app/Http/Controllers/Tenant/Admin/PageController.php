@@ -10,7 +10,7 @@ class PageController
 {
     public function index()
     {
-        $pages = Page::whereNotIn('slug', ['home', 'courses', 'view-course'])->get();
+        $pages = Page::where('is_system_page', false)->get();
         return view('tenant.admin.pages.index', compact('pages'));
     }
 

@@ -1,0 +1,39 @@
+[
+    {
+        "type": "group",
+        "label": "Margin",
+        "help": "Margin controls the space outside the block. Increasing margin creates more space between this block and the blocks above or below it."
+    },
+    {
+        "key": "margin_top",
+        "label": "Top",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "key": "margin_right",
+        "label": "Right",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "key": "margin_bottom",
+        "label": "Bottom",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "key": "margin_left",
+        "label": "Left",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    }
+]

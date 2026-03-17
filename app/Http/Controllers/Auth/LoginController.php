@@ -49,10 +49,37 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        if (Auth::user()->role === 'admin') {
-            return route('tenants.index');
+        $user = Auth::guard('web')->user();
+
+        if (!$user) {
+            return url('/');
         }
-        return '/';
+
+        // tenants load karo (safe way)
+        $tenants = $user->tenants()->get();
+
+        // ❌ No tenant
+        if ($tenants->isEmpty()) {
+            return route('tenants.create');
+        }
+
+        // ✅ Single tenant → direct redirect
+        if ($tenants->count() === 1) {
+            $tenant = $tenants->first();
+            return $this->tenantDashboardUrl($tenant);
+        }
+
+        // ✅ Multiple tenants → selector page
+        return route('tenants.index');
+    }
+
+    private function tenantDashboardUrl($tenant)
+    {
+        if ($tenant->custom_domain && $tenant->domain_verified) {
+            return "https://{$tenant->custom_domain}/admin/dashboard";
+        }
+
+        return "https://{$tenant->subdomain}/admin/dashboard";
     }
     public function register()
     {

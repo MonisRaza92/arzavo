@@ -18,6 +18,11 @@ class Plan extends Model
         'is_popular',
         'short_description',
         'description',
+        'trial_days'
+    ];
+    protected $casts = [
+        'features' => 'array',
+        'limits' => 'array', // 🔥 THIS IS MISSING
     ];
 
     /**

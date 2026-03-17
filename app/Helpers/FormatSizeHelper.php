@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+
+
 if (!function_exists('formatSize')) {
 
     function formatSize($bytes, $precision = 2)

@@ -13,8 +13,9 @@
         @endif
     </div>
     <div class="editor-navbar-center flex grow items-center justify-center gap-4">
-        <form action="{{ route('admin.builder.index', ['theme' => $theme->theme_slug]) }}" method="GET"
-            id="pageSelectForm">
+        <form
+            action="{{ route('admin.builder.index', ['theme' => $activeTheme->theme_slug, 'status' => $activeTheme->status, 'theme_id' => $activeTheme->id, 'is_active' => $activeTheme->is_active]) }}"
+            method="GET" id="pageSelectForm">
             <div class="relative inline-block lg:w-92 w-full">
                 <!-- Button -->
                 <button id="pageSelectBtn" type="button"
@@ -39,6 +40,9 @@
                 </div>
 
                 <!-- Hidden input to submit -->
+                <input type="hidden" name="status" value="{{ request('status') }}">
+                <input type="hidden" name="theme_id" value="{{ request('theme_id') }}">
+                <input type="hidden" name="is_active" value="{{ request('is_active') }}">
                 <input type="hidden" name="page" id="pageInput" value="{{ $page->slug }}">
             </div>
         </form>
@@ -55,17 +59,20 @@
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="desktop" class="hidden peer" checked>
                 <span
-                    class="radio-label btn border-rounded py-2 px-2.25 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-solid fa-desktop text-lg"></i></span>
+                    class="radio-label btn border-rounded py-2 px-2.25 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i
+                        class="fa-solid fa-desktop text-lg"></i></span>
             </label>
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="mobile" class="hidden peer">
                 <span
-                    class="radio-label btn border-rounded py-2 px-2.5 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-solid fa-mobile-screen-button text-lg"></i></span>
+                    class="radio-label btn border-rounded py-2 px-2.5 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i
+                        class="fa-solid fa-mobile-screen-button text-lg"></i></span>
             </label>
             <label class="flex items-center cursor-pointer">
                 <input type="radio" name="view-mode" value="full-view" class="hidden peer">
                 <span
-                    class="radio-label btn border-rounded py-2 px-2.25 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i class="fa-solid fa-expand text-lg"></i></span>
+                    class="radio-label btn border-rounded py-2 px-2.25 peer-checked:text-black peer-checked:shadow peer-checked:bg-white!"><i
+                        class="fa-solid fa-expand text-lg"></i></span>
             </label>
         </div>
         <button id="saveBtn" class="btn bg-invert text-invert px-3 py-2 font-bold border-rounded">Save</button>

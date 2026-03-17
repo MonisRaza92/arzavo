@@ -1,6 +1,6 @@
 <div class="relative h-screen w-full pb-12 pt-24">
     <video
-        src="{{ media('videos/hero-video.mp4') }}"
+        src="{{ media('videos/tenant/hero-video.mp4') }}"
         autoplay
         muted
         loop

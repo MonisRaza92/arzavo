@@ -1,0 +1,39 @@
+[
+    {
+        "type": "group",
+        "label": "Padding",
+        "help": "Padding controls the space inside the block. Increasing padding adds more space between the content (text, images, buttons) and the edges of the block."
+    },
+    {
+        "key": "padding_top",
+        "label": "Top",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "key": "padding_right",
+        "label": "Right",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "key": "padding_bottom",
+        "label": "Bottom",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "key": "padding_left",
+        "label": "Left",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    }
+]

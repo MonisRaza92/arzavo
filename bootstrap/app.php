@@ -12,10 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->validateCsrfTokens(except: [
+            'cashfree/webhook',
+        ]);
+
         $middleware->alias([
             'tenant' => \App\Http\Middleware\TenantMiddleware::class,
-            'auth'   => \App\Http\Middleware\Authenticate::class,
-            'role'   => \App\Http\Middleware\RoleMiddleware::class,
+            'auth' => \App\Http\Middleware\Authenticate::class,
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'subscription' => \App\Http\Middleware\CheckSubscription::class,
         ]);
 
         $middleware->priority([

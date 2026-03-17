@@ -54,7 +54,7 @@ class Tenant extends Model
      */
     public function subscription()
     {
-        return $this->hasOne(TenantSubscription::class, 'tenant_id');
+        return $this->hasOne(Subscription::class);
     }
 
     /**
@@ -62,7 +62,10 @@ class Tenant extends Model
      */
     public function plan()
     {
-        return $this->subscription?->plan();
+        return $this->hasOneThrough(
+            Plan::class,
+            Subscription::class
+        );
     }
 
     /**
@@ -81,5 +84,23 @@ class Tenant extends Model
         }
 
         return null;
+    }
+    public function users()
+    {
+        return $this->hasMany(\App\Models\Tenant\User::class);
+    }
+    public function students()
+    {
+        return $this->users()->where('role', 'student');
+    }
+
+    public function usages()
+    {
+        return $this->hasMany(\App\Models\Arzavo\Usage::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(\App\Models\Arzavo\Invoice::class);
     }
 }

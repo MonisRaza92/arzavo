@@ -1,23 +1,131 @@
-<div class="admin-navbar w-full sticky top-0 right-0 z-99 flex items-center justify-between px-4 py-3 bg-primary border-bottom">
-    <a href="{{ route('tenant.home') }}">
+<div
+    class="admin-navbar w-full sticky top-0 right-0 z-99 flex gap-8 items-center justify-between px-4 py-3 bg-primary border-bottom">
+    <a href="{{ route('tenant.home') }}" class="shrink-0">
         <img id="logo" src="{{ media($customizes['logo'] ?? 'images/logo/arzavo-dark.png') }}" alt="Logo" class="logo">
     </a>
-    <div class="search-bar relative hidden md:block text-sm lg:w-1/2">
-        <input type="text" placeholder="Search..." class="search-input w-full border-rounded px-3 py-2 input-focus bg-primary border-primary">
-        <button class="search-button absolute right-0 top-0 mt-1.5 mr-1.5 bg-secondary text-xs border-primary py-1 px-2 border-rounded text-tertiary">Ctrl + k</button>
+    <div class="search-bar relative hidden md:block text-sm grow">
+        <input type="text" placeholder="Search..."
+            class="search-input w-full border-rounded px-3 py-2.25 bg-primary border-primary">
+        <button
+            class="search-button absolute right-0 top-0 mt-1.5 mr-1.5 bg-secondary text-xs border-primary py-1.25 px-2 border-rounded text-tertiary">Ctrl
+            + k</button>
     </div>
-    <div class="admin-user-actions flex items-center gap-4">
-        <div class="relative flex items-center gap-2">
-            <button title="Notifications" class="bg-invert hidden lg:block text-invert logo aspect-square border-rounded"><i class="fas fa-bell text-base"></i></button>
-            <button class="flex items-center gap-2 btn uppercase font-bold border-rounded" onclick="document.getElementById('adminDropdown').classList.toggle('hidden');">
-                @if ($user->profile_picture) <img src="{{ media($user->profile_picture) }}" class="border-rounded logo aspect-square object-cover" alt="{{ $user->fname }}"> @else <h2 class="font-bold border-rounded text-xl flex justify-center items-center logo aspect-square bg-invert text-invert">{{ strtoupper(substr($user->fname, 0, 1)) }}</h2> @endif
+    <div class="flex items-center gap-4">
+
+        <!-- Help -->
+        <button title="Help" class="text-2xl text-secondary">
+            <i class="fa-regular fa-circle-question"></i>
+        </button>
+
+        <!-- Notifications -->
+        <button class="relative text-2xl text-secondary">
+            <i class="fa-regular fa-bell"></i>
+            <span class="absolute -top-1 -right-1 text-[10px] bg-accent text-invert px-1 border-rounded">
+                2
+            </span>
+        </button>
+
+        <!-- USER -->
+        <div class="relative ml-2">
+
+            <button onclick="toggleModel('tenantUserAction')" class="flex items-center gap-2">
+                <x-profile-image :user="$user" />
             </button>
-            <div id="adminDropdown" class="absolute right-0 top-2 mt-2 w-48 p-2 rounded-md hidden z-10 bg-primary">
-                <form id="logout-form" method="POST" action="{{ route('tenant.logout') }}" class="hidden">
-                    @csrf
-                </form>
+
+            <!-- DROPDOWN -->
+            <div id="tenantUserAction"
+                class="absolute hidden right-0 mt-2 w-64 bg-primary border-primary border-rounded shadow-md overflow-hidden">
+
+                <!-- USER INFO -->
+                <div class="px-3 py-3 border-bottom">
+                    <p class="text-sm font-semibold">
+                        {{ ($user->fname ?? '') . ' ' . ($user->lname ?? '') }}
+                    </p>
+                    <p class="text-xs text-tertiary">{{ $user->email }}</p>
+                </div>
+
+                <!-- TENANTS SECTION -->
+                <div>
+                    @php
+                        $globalUser = $user->globalUser ?? null;
+                        $tenants = $globalUser ? $globalUser->tenants : collect();
+                    @endphp
+
+                    <div class="max-h-40 overflow-auto">
+
+                        @forelse($tenants as $tenant)
+                                            <a href="{{ $tenant->custom_domain && $tenant->domain_verified
+                            ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
+                            : 'https://' . $tenant->subdomain . '/admin/dashboard' }}"
+                                                class="flex items-center gap-2 p-3 text-sm border-bottom bg-hover-secondary">
+
+                                                <i class="fa-solid fa-building-columns text-tertiary text-sm"></i>
+                                                <span class="truncate">{{ $tenant->name }}</span>
+                                            </a>
+                        @empty
+                            <p class="px-3 py-2 text-xs text-tertiary">
+                                No tenants found
+                            </p>
+                        @endforelse
+
+                    </div>
+
+                    <!-- CREATE TENANT -->
+                    <a href="{{ route('tenants.create') }}"
+                        class="flex items-center gap-2 p-3 text-sm text-secondary bg-hover-secondary border-bottom">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        Create New
+                    </a>
+                </div>
+
+                <!-- ACCOUNT SECTION -->
+                <div class="pt-2">
+
+
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
+                        <i class="fa-solid fa-user text-tertiary text-sm"></i>
+                        Profile
+                    </a>
+
+                    <!-- <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
+                        <i class="fa-solid fa-gear text-tertiary text-sm"></i>
+                        Account Settings
+                    </a> -->
+
+                    <a href="{{ route('tenants.index') }}"
+                        class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
+                        <i class="fa-solid fa-building-columns text-tertiary text-sm"></i>
+                        Manage Tenants
+                    </a>
+
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
+                        <i class="fa-solid fa-credit-card text-tertiary text-sm"></i>
+                        Billing & Plans
+                    </a>
+
+                    <!-- <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
+                        <i class="fa-regular fa-clock text-tertiary text-sm"></i>
+                        Activity
+                    </a>
+
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
+                        <i class="fa-regular fa-circle-question text-tertiary text-sm"></i>
+                        Help & Support
+                    </a> -->
+
+                </div>
+
+                <!-- LOGOUT -->
+                <div class="border-top mt-2">
+                    <a href="{{ route('tenant.logout') }}"
+                        class="flex items-center gap-2 px-3 py-3 text-sm hover-primary">
+                        <i class="fa-solid fa-right-from-bracket text-tertiary text-sm"></i>
+                        Logout
+                    </a>
+                </div>
+
             </div>
-            <button id="adminSidebarToggle" class="lg:hidden bg-invert text-invert text-xl aspect-square border-rounded flex items-center justify-center p-2" onclick="document.getElementById('adminMobileMenu').classList.toggle('-translate-x-full')"><i class="fa-solid fa-bars"></i></button>
         </div>
+
     </div>
 </div>

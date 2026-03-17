@@ -4,8 +4,7 @@
     "icon": "fa-arrow-up-right-from-square",
     "order": 7,
     "category": "Basic",
-    "deletable": false,
-    "max_blocks": 10,
+    "max_blocks": 0,
     "allowed_blocks": "",
     "default_blocks": "",
     "fields": [
@@ -21,24 +20,6 @@
             "type": "menu",
             "default": "1"
         },
-        {
-            "key": "separate_mobile_menu",
-            "label": "Separate Mobile Menu",
-            "type": "switch",
-            "default": "0",
-            "text": "To use different menu on mobile"
-        },
-        {
-            "key": "mobile_menu_id",
-            "label": "Select Mobile Menu",
-            "type": "menu",
-            "default": "1",
-            "conditional": {
-                "field": "separate_mobile_menu",
-                "value": "1"
-            }
-        },
-
         
         {
             "key": "group",

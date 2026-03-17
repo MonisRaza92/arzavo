@@ -29,7 +29,7 @@
     </div>
     @php
         $schema = collect($availableBlocks)->firstWhere('schema', $block['schema'] ?? null) ?? collect($availableBlocks)->firstWhere('type', $block['type'] ?? null) ?? [];
-        $fields = $schema['fields'] ?? [];
+        $fields = resolveFieldPresets($schema['fields'] ?? []);
     @endphp
 
 
@@ -279,7 +279,7 @@
 
 
                     @if (isset($field['help']) && $field['type'] !== 'group')
-                        <p class="text-[11px] text-secondary mt-1">{{ $field['help'] }}</p>
+                        <p class="text-[11px] text-secondary mt-3">{{ $field['help'] }}</p>
                     @endif
 
                 </div>

@@ -1,0 +1,19 @@
+[
+    {
+        "type": "group",
+        "label": "Visibility",
+        "help": "Control where this section/block appears. Avoid hiding it on both desktop and mobile, or it will not be visible anywhere. If you want to hide it completely, use the Active/Status toggle instead."
+    },
+    {
+        "key": "hide_desktop",
+        "label": "Hide this on desktop",
+        "type": "switch",
+        "default": "0"
+    },
+    {
+        "key": "hide_mobile",
+        "label": "Hide this on Mobile",
+        "type": "switch",
+        "default": "0"
+    }
+]

@@ -43,6 +43,7 @@ class SectionController
             'activeTheme' => $activeTheme,
         ]);
     }
+    
 
 
     public function store(Request $request, $themeSlug, $page)

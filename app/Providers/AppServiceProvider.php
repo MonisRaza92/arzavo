@@ -6,6 +6,8 @@ use Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 
+use App\Models\Arzavo\Tenant;
+use App\Observers\TenantObserver;
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -14,10 +16,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Tenant::observe(TenantObserver::class);
+        
         if (app()->environment('production')) {
             URL::forceScheme('https');
         }
-
         view()->composer('*', function ($view) {
 
             if (!app()->bound('currentTenant')) {

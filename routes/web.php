@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Arzavo\HomeController;
 use App\Http\Controllers\Arzavo\TenantController;
 use App\Http\Controllers\Arzavo\DomainController;
+use App\Http\Controllers\Arzavo\PaymentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\ProfileController;
@@ -34,6 +35,7 @@ use App\Http\Controllers\Tenant\Teachers\TeachersController;
 use App\Http\Controllers\Tenant\SitemapController;
 
 Route::view('/offline', 'offline');
+Route::post('/cashfree/webhook', [PaymentController::class, 'webhook']);
 
 Route::domain(config('app.domain'))->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -44,6 +46,10 @@ Route::domain(config('app.domain'))->group(function () {
     Route::get('/features', [HomeController::class, 'features'])->name('features');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
+
+
+    Route::get('/pay', [PaymentController::class, 'index']);
+    Route::get('/pay/{tenant}', [PaymentController::class, 'pay']);
 
     //Auth Routes
     Route::prefix('auth')->group(function () {
@@ -61,6 +67,7 @@ Route::domain(config('app.domain'))->group(function () {
 
         //Admin Tenant Routes
         Route::resource('tenants', TenantController::class);
+        Route::get('/check-subdomain', [TenantController::class, 'checkSubdomain']);
         Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
         Route::get('/verify-domain/{tenant}', [DomainController::class, 'verifyDomain'])->name('domain.verify');
     });
@@ -69,7 +76,7 @@ Route::domain(config('app.domain'))->group(function () {
 function registerDomains($domain)
 {
 
-    Route::domain($domain)->middleware('tenant')->group(function () {
+    Route::domain($domain)->middleware(['tenant', 'subscription'])->group(function () {
 
         Route::get('/robots.txt', function () {
 
@@ -106,9 +113,33 @@ function registerDomains($domain)
             return app(ThemePageController::class)->system('courses');
         })->name('tenant.courses');
 
-        Route::get('/view/course/{slug}', function () {
-            return app(ThemePageController::class)->system('view/course');
-        })->name('tenant.view.course');
+        Route::get('course', function () {
+            return app(ThemePageController::class)->system('course');
+        })->name('tenant.course');
+
+        Route::get('/blogs', function () {
+            return app(ThemePageController::class)->system('blogs');
+        })->name('tenant.blogs');
+
+        Route::get('blog', function () {
+            return app(ThemePageController::class)->system('blog');
+        })->name('tenant.course');
+
+        Route::get('/content-store', function () {
+            return app(ThemePageController::class)->system('content-store');
+        })->name('tenant.content-store');
+
+        Route::get('content', function () {
+            return app(ThemePageController::class)->system('content');
+        })->name('tenant.content');
+
+        Route::get('/privacy-policy', function () {
+            return app(ThemePageController::class)->system('privacy-policy');
+        })->name('tenant.privacy-policy');
+
+        Route::get('/terms-conditions', function () {
+            return app(ThemePageController::class)->system('terms-conditions');
+        })->name('tenant.terms-conditions');
 
         Route::get('/preview/{theme}/{theme_id}/{slug}', function ($theme, $themeId = null, $slug = 'home') {
             return app(ThemePageController::class)->preview($theme, $themeId, $slug);
@@ -121,6 +152,7 @@ function registerDomains($domain)
         })
             ->where('slug', '[A-Za-z0-9-_]+')
             ->name('tenant.pages');
+
 
 
         Route::prefix('account')->group(function () {

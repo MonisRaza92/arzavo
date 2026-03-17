@@ -1,5 +1,5 @@
 <?php
-namespace App\View\Components\Input;
+namespace App\View\Components\input;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 use App\Models\Tenant\Page;
 use App\Models\Tenant\Course;
 
-class Url extends Component
+class url extends Component
 {
     public $urls;
 

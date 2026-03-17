@@ -97,34 +97,7 @@
             }
         },
         {
-            "key": "group",
-            "type": "group",
-            "label": "Spacing",
-            "icon": "fa-arrows-alt-v"
-        },
-        {
-            "key": "padding_top",
-            "label": "Padding Top",
-            "type": "range",
-            "default": 60,
-            "min": 0,
-            "max": 200
-        },
-        {
-            "key": "padding_bottom",
-            "label": "Padding Bottom",
-            "type": "range",
-            "default": 40,
-            "min": 0,
-            "max": 200
-        },
-        {
-            "key": "margin_top",
-            "label": "Margin Top",
-            "type": "range",
-            "default": 0,
-            "min": 0,
-            "max": 200
+            "preset": "section_spacing"
         },
         {
             "key": "group",
@@ -147,24 +120,6 @@
                 "field": "show_copyright",
                 "value": "1"
             }
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Visibility",
-            "icon": "fa-eye-slash"
-        },
-        {
-            "key": "hide_desktop",
-            "label": "Hide on Desktop",
-            "type": "switch",
-            "default": "0"
-        },
-        {
-            "key": "hide_mobile",
-            "label": "Hide on Mobile",
-            "type": "switch",
-            "default": "0"
         }
     ]
 }

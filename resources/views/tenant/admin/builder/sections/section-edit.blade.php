@@ -30,7 +30,7 @@
 
     @php
         $schema = collect($availableSections)->firstWhere('schema', $section['schema'] ?? null) ?? collect($availableSections)->firstWhere('type', $section['type'] ?? null) ?? [];
-        $fields = $schema['fields'] ?? [];
+        $fields = resolveFieldPresets($schema['fields'] ?? []);
     @endphp
 
     @if (count($fields) > 0)
@@ -280,7 +280,7 @@
                 @endswitch
 
                 @if (isset($field['help']) && $field['type'] !== 'group')
-                    <p class="text-[11px] text-secondary mt-1">{{ $field['help'] }}</p>
+                    <p class="text-[11px] text-secondary mt-3">{{ $field['help'] }}</p>
                 @endif
 
 </div>

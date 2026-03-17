@@ -45,7 +45,7 @@ class TenantSeeder extends Seeder
             ['name' => 'Blogs', 'slug' => 'blogs', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
             ['name' => 'View Blog', 'slug' => 'blog', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
             ['name' => 'Content Store', 'slug' => 'content-store', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'View Content', 'slug' => 'view-content', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'View Content', 'slug' => 'content', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
             ['name' => 'Privacy Policy', 'slug' => 'privacy-policy', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
             ['name' => 'Terms & Conditions', 'slug' => 'terms-conditions', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
         ]);

@@ -2,124 +2,111 @@
 @section('title', 'Manage Tenants - ' . config('app.name'))
 
 @section('content')
-<div class="flex items-start justify-start relative h-dvh w-full">
-    <div class="border-right bg-primary z-10 h-full w-full md:w-96 overflow-auto pb-4 scrollbar">
-        <div class="logo-container sticky top-0 bg-primary flex justify-between items-center border-bottom p-4 mb-4">
-            <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="Arzavo Logo" class="logo">
-            <a href="#" class="font-bold bg-invert text-invert border-rounded px-4 py-2">Upgrade</a>
-        </div>
-        <div class="content px-4 w-full">
-            <!-- Notification Badge -->
-            <div id="tenant-notification" class="w-full border-primary bg-hover-primary cursor-default border-rounded p-2 flex justify-between items-center text-sm transition-all duration-200">
-                <div class="text flex gap-2 items-center">
-                    <i class="fa-regular fa-check-circle text-2xl text-green-500"></i>
-                    <p class="text-xs text-tertiary">You can create only one tenant.<br> Please upgrade your plan to add more tenants.</p>
-                </div>
-                <button onclick="document.getElementById('tenant-notification').classList.add('hidden')" class="text-tertiary text-lg"> <i class="fa-solid fa-xmark"></i> </button>
+
+    <div class="min-h-screen bg-linear-to-br from-black via-[#230147] to-[#0a001b] py-12 px-4 flex justify-center">
+
+        <div class="w-full max-w-6xl">
+
+            <!-- HEADER -->
+            <div class="text-center mb-10">
+                <h1 class="text-2xl font-bold text-invert mb-2">Your Workspaces</h1>
+
+                <p class="text-sm text-invert-secondary max-w-xl mx-auto">
+                    Each workspace is a complete system to manage your institute, courses, students and operations
+                    independently.
+                </p>
             </div>
-            <!-- Tenant List -->
-            @if($tenants->count() > 0)
-            @foreach($tenants as $tenant)
-            <div class="tenant-item border-primary border-rounded mt-4 w-full">
 
-                <!-- Header -->
-                <div class="flex justify-between items-center p-3 border-bottom">
-                    <h2 class="text-lg font-bold text--primary flex items-center gap-2">
-                        <i class="fa-solid fa-building-columns text-base"></i>
-                        {{ $tenant->name }}
-                    </h2>
+            <!-- GRID -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
-                    <!-- Status Toggle Button -->
-                    <button onclick="toggleTenantStatus({{ $tenant->id }});"
-                        class="text-[10px] font-semibold px-2 py-1 rounded-full
-                        {{ $tenant->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-700' }}">
-                        {{ $tenant->status }}
-                    </button>
-                </div>
+                @foreach($tenants as $tenant)
 
-                <!-- domain -->
-                <div class="flex items-center text-sm py-1 border-bottom">
-                    <div class="p-3 border-right mr-3">
-                        <i class="fa-solid fa-globe text-tertiary"></i>
-                    </div>
-                    <div>
-                        <strong class="text-secondary text-xs leading-none">Subdomain:</strong><br>
-                        <a target="_blank"
-                            href="https://{{$tenant->subdomain}}"
-                            class="text-xs font-medium text-indigo-600 leading-none hover:underline">
-                            {{ $tenant->subdomain }}
-                        </a>
-                    </div>
-                </div>
+                        <div
+                            class="bg-primary aspect-video border-primary border-rounded p-4 flex flex-col justify-between hover:shadow-2xl transition duration-300">
 
-                <!-- Custom Domain -->
-                <div class="flex items-center text-sm py-1 border-bottom">
-                    <div class="p-3 border-right mr-3">
-                        <i class="fa-solid fa-link text-tertiary"></i>
-                    </div>
-                    <div>
-                        <strong class="text-secondary text-xs leading-none">Custom Domain:</strong><br>
+                            <!-- TOP -->
+                            <div>
 
-                        @if($tenant->custom_domain && $tenant->domain_verified)
-                        <a target="_blank"
-                            href="https://{{ $tenant->custom_domain }}"
-                            class="text-xs font-medium text-indigo-600 leading-none hover:underline">
-                            {{ $tenant->custom_domain }}
-                        </a>
-                        <span class="text-[10px] text-green-600 font-semibold ml-1">✔ Verified</span>
-                        @else
-                        <div class="flex items-center gap-2">
-                            <span class="text-[11px] text-red-600 font-medium">
-                                {{ $tenant->custom_domain ?? 'Not Connected' }}
-                            </span>
-                            <div class="text-xs text-gray-500">
-                                <button type="button" id="connectDomainBtn-{{ $tenant->id }}"
-                                    class="text-indigo-600 hover:underline font-semibold">
-                                    <i class="fa-solid fa-link text-[11px]"></i> Verify Domain
-                                </button>
+                                <!-- TITLE -->
+                                <h2 class="text-base font-semibold text-primary mb-4 truncate flex items-center gap-2">
+                                    <i class="fa-solid fa-building-columns text-tertiary text-xs"></i>
+                                    {{ $tenant->name }}
+                                </h2>
+
+                                <!-- STATUS -->
+                                <div class="flex items-center gap-2 text-[11px] mb-6">
+                                    <span class="flex items-center gap-1
+                            {{ $tenant->status === 'active' ? 'text-green-600' : 'text-red-500' }}">
+                                        <i class="fa-solid fa-circle text-[8px]"></i>
+                                        {{ ucfirst($tenant->status) }}
+                                    </span>
+
+                                    <span class="text-tertiary">•</span>
+
+                                    <span class="text-tertiary flex items-center gap-1">
+                                        <i class="fa-regular fa-clock text-[10px]"></i>
+                                        {{ $tenant->created_at->diffForHumans() }}
+                                    </span>
+                                </div>
+
+                                <!-- DESCRIPTION -->
+                                <p class="text-xs text-secondary leading-relaxed">
+                                    Manage students, courses, payments and analytics inside this workspace.
+                                </p>
+
                             </div>
+
+                            <!-- ACTIONS -->
+                            <div class="flex justify-between items-center mt-4 pt-2 border-top">
+
+                                <!-- DELETE -->
+                                <form action="{{ route('tenants.destroy', $tenant->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button onclick="return confirm('Delete this workspace?')"
+                                        class="text-[11px] text-tertiary hover:text-accent transition flex items-center gap-1">
+                                        <i class="fa-solid fa-trash text-[10px]"></i>
+                                        Delete
+                                    </button>
+                                </form>
+
+                                <!-- OPEN -->
+                                <a target="_blank" href="{{ $tenant->custom_domain && $tenant->domain_verified
+                    ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
+                    : 'https://' . $tenant->subdomain . '/admin/dashboard' }}"
+                                    class="text-[11px] text-invert bg-invert px-3 py-1.5 border-rounded flex items-center gap-1 hover-invert">
+
+                                    Open
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+
+                            </div>
+
                         </div>
-                        @include('arzavo.tenants.domain-verify')
-                        @endif
-                    </div>
-                </div>
 
-                <!-- Action Buttons -->
-                <div class="flex justify-between items-center p-1">
-                    <div class="flex">
+                @endforeach
 
-                        <a href="#" class="text-sm text-tertiary p-2 pr-3 border-right"><i class="fa-solid fa-pen-to-square"></i></a>
 
-                        <form action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-sm py-2 px-3 text-tertiary border-right" onclick="return confirm('Are you sure you want to delete this tenant?');">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </form>
+                <!-- CREATE CARD (LAST) -->
+                <a href="{{ route('tenants.create') }}"
+                    class="border-dashed border-primary border-rounded aspect-video p-4 flex flex-col items-center justify-center text-center text-invert-secondary hover:text-invert transition">
 
-                    </div>
-                    @if($tenant->custom_domain && $tenant->domain_verified )
-                    <a target="_blank" href="https://{{$tenant->custom_domain}}/admin/dashboard"
-                        class="text-sm text-indigo-600 hover:underline p-2 border-left font-medium flex items-center gap-1">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        View Dashboard
-                    </a>
-                    @else
-                    <a target="_blank" href="https://{{$tenant->subdomain}}/admin/dashboard"
-                        class="text-sm text-indigo-600 hover:underline p-2 border-left font-medium flex items-center gap-1">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        View Dashboard
-                    </a>
-                    @endif
-                </div>
+                    <i class="fa-solid fa-plus text-xl mb-2"></i>
+
+                    <p class="text-sm font-semibold">Create Workspace</p>
+
+                    <p class="text-[11px] mt-1">
+                        Start a new tenant for your institute
+                    </p>
+
+                </a>
 
             </div>
-            @endforeach
-            @endif
-            @include('arzavo.tenants.create')
+
         </div>
+
     </div>
-</div>
 
 @endsection

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
+    protected $connection = 'mysql';
+    
     use HasFactory, Notifiable;
 
     protected $fillable = [

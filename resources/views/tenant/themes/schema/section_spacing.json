@@ -1,0 +1,44 @@
+[
+    {
+        "type": "group",
+        "label": "Padding",
+        "help": "Padding controls the space inside the section. Increasing padding adds more space between the content (text, images, buttons) and the edges of the section."
+    },
+    {
+        "key": "padding_top",
+        "label": "Top",
+        "type": "range",
+        "default": 16,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "key": "padding_bottom",
+        "label": "Bottom",
+        "type": "range",
+        "default": 16,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "type": "group",
+        "label": "Margin",
+        "help": "Margin controls the space outside the section. Increasing margin creates more space between this section and the sections above or below it."
+    },
+    {
+        "key": "margin_top",
+        "label": "Top",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    },
+    {
+        "key": "margin_bottom",
+        "label": "Bottom",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200
+    }
+]

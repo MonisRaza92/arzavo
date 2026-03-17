@@ -24,37 +24,14 @@
             "key": "text_type",
             "label": "Text Type",
             "type": "select",
+            "help": "Select the text type. To change the font, size, weight, or text casing of headings, go to Settings>Typography.",
             "options": ["paragraph", "body-text"],
             "default": "paragraph"
         },
 
         {
-            "key": "group",
-            "label": "Layout",
-            "type": "group"
-        },
-        {
-            "key": "desktop_width_type",
-            "label": "Heading Width",
-            "type": "radio",
-            "options": [
-                "auto",
-                "full",
-                "custom"
-            ],
-            "default": "auto"
-        },
-        {
-            "key": "desktop_width",
-            "label": "Desktop Custom Width",
-            "type": "range",
-            "default": 100,
-            "min": 10,
-            "max": 100,
-            "conditional": {
-                "field": "desktop_width_type",
-                "value": "custom"
-            }
+            "type": "group",
+            "label": "Alignment"
         },
         {
             "key": "alignment",
@@ -80,41 +57,7 @@
         },
         
         {
-            "key": "group",
-            "label": "Spacing",
-            "type": "group"
-        },
-        {
-            "key": "padding_top",
-            "label": "Padding Top",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": "0"
-        },
-        {
-            "key": "padding_bottom",
-            "label": "Padding Bottom",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": "0"
-        },
-        {
-            "key": "padding_left",
-            "label": "Padding Left",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": "0"
-        },
-        {
-            "key": "padding_right",
-            "label": "Padding Right",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": "0"
+           "preset": "margin"
         }
     ]
 }

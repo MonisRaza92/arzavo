@@ -24,6 +24,7 @@
             "key": "heading_type",
             "label": "Heading Type",
             "type": "select",
+            "help": "Select the heading type. To change the font, size, weight, or text casing of headings, go to Settings>Typography.",
             "options": [
                 "heading-1",
                 "heading-2",
@@ -35,9 +36,8 @@
             "default": "heading-2"
         },
         {
-            "key": "group",
-            "label": "Layout",
-            "type": "group"
+            "type": "group",
+            "label": "Alignment"
         },
         {
             "key": "desktop_width_type",
@@ -71,15 +71,7 @@
                 "center",
                 "right"
             ],
-            "default": "left",
-            "conditional": {
-                "field": "desktop_width_type",
-                "value": [
-                    "full",
-                    "custom"
-                ],
-                "operator": "in"
-            }
+            "default": "left"
         },
         {
             "key": "mobile_alignment",
@@ -93,78 +85,7 @@
             "default": "left"
         },
         {
-            "key": "group",
-            "label": "Spacing",
-            "type": "group"
-        },
-        {
-            "key": "margin_top",
-            "label": "Margin Top",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
-        },
-        {
-            "key": "margin_bottom",
-            "label": "Margin Bottom",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
-        },
-        {
-            "key": "margin_left",
-            "label": "Margin Top",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
-        },
-        {
-            "key": "margin_right",
-            "label": "Margin Bottom",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
-        },
-        {
-            "key": "group",
-            "label": "Padding",
-            "type": "group"
-        },
-        {
-            "key": "padding_top",
-            "label": "Padding Top",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
-        },
-        {
-            "key": "padding_bottom",
-            "label": "Padding Bottom",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
-        },
-        {
-            "key": "padding_left",
-            "label": "Padding Left",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
-        },
-        {
-            "key": "padding_right",
-            "label": "Padding Right",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
+            "preset": "margin"
         }
     ]
 }

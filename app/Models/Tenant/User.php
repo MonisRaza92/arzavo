@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Tenant;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
@@ -112,5 +113,13 @@ class User extends Authenticatable
     public function class()
     { // "class" reserved word hai
         return $this->belongsTo(ClassCourse::class, 'class_id');
+    }
+    public function globalUser()
+    {
+        return $this->belongsTo(
+            \App\Models\Arzavo\User::class,
+            'email',
+            'email'
+        );
     }
 }
