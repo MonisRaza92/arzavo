@@ -80,18 +80,10 @@ class Tenant extends Model
 
         // Subdomain (tenant.arzavo.in)
         if ($this->subdomain) {
-            return "https://{$this->subdomain}." . config('app.domain');
+            return "https://{$this->subdomain}";
         }
 
         return null;
-    }
-    public function users()
-    {
-        return $this->hasMany(\App\Models\Tenant\User::class);
-    }
-    public function students()
-    {
-        return $this->users()->where('role', 'student');
     }
 
     public function usages()
@@ -103,4 +95,9 @@ class Tenant extends Model
     {
         return $this->hasMany(\App\Models\Arzavo\Invoice::class);
     }
+    public function stats()
+    {
+        return $this->hasOne(\App\Models\Arzavo\TenantStat::class);
+    }
+
 }

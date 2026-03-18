@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Arzavo\HomeController;
 use App\Http\Controllers\Arzavo\TenantController;
 use App\Http\Controllers\Arzavo\DomainController;
+use App\Http\Controllers\Arzavo;
 use App\Http\Controllers\Arzavo\PaymentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TenantLoginController;
@@ -70,6 +71,12 @@ Route::domain(config('app.domain'))->group(function () {
         Route::get('/check-subdomain', [TenantController::class, 'checkSubdomain']);
         Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
         Route::get('/verify-domain/{tenant}', [DomainController::class, 'verifyDomain'])->name('domain.verify');
+
+        Route::prefix('admin')->middleware('role:admin')->as('arzavo.admin.')->group(function () {
+            Route::resource('plans', Arzavo\Admin\PlanController::class);
+            Route::resource('users', Arzavo\Admin\UserController::class);
+            Route::resource('tenants', Arzavo\Admin\TenantController::class);
+        });
     });
 });
 

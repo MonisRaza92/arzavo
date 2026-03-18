@@ -4,6 +4,7 @@ namespace App\Models\Arzavo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Arzavo\Plan;
 
 class PlanFeature extends Model
 {

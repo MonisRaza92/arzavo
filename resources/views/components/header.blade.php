@@ -52,19 +52,6 @@
 
 <!-- fontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/fontawesome.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/jelly-duo-regular.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/jelly-fill-regular.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/jelly-regular.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/regular.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/light.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/brands.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/solid.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/thin.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/duotone-regular.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/duotone-light.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/duotone.css" />
-<link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/duotone-thin.css" />
 
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#ffffff">

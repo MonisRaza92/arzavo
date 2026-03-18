@@ -44,7 +44,7 @@ class Subscription extends Model
     }
 
     // 🔥 GRACE PERIOD CHECK (MAIN HELPER)
-    public function isInGracePeriod($days = 3)
+    public function isInGracePeriod($days = 7)
     {
         // only apply to expired active subscriptions
         if ($this->status !== 'active' || !$this->ends_at) {
@@ -56,11 +56,11 @@ class Subscription extends Model
     }
 
     // 🔥 FINAL ACCESS HELPER (USE THIS EVERYWHERE)
-    public function canAccess($graceDays = 3)
+    public function canAccess($graceDays = 7)
     {
         return $this->isActive() || $this->isInGracePeriod($graceDays);
     }
-    
+
     public function overrides()
     {
         return $this->hasMany(\App\Models\Arzavo\SubscriptionOverride::class);

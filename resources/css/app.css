@@ -123,6 +123,9 @@ button {
 .bg-invert {
     background-color: var(--bg-invert);
 }
+.bg-hover-invert:hover {
+    background-color: var(--bg-invert);
+}
 
 .bg-gradient-card {
     background: var(--bg-graient-card);

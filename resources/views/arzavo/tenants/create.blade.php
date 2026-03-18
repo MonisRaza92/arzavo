@@ -5,10 +5,12 @@
 
     <div class="min-h-screen flex items-center justify-center bg-linear-to-br from-black via-[#230147] to-[#0a001b] px-4">
 
+        <a href="{{ route('tenants.index') }}" class="text-invert absolute top-4 left-4"><i
+                class="fa-solid fa-right-from-bracket rotate-180 mr-1"></i> Exit</a>
         <div x-data="tenantWizard()" class="w-full max-w-2xl bg-primary border-primary border-rounded p-8 shadow-2xl">
 
             <!-- HEADER -->
-            <div class="mb-6">
+            <div class="my-6">
                 <p class="text-xs text-tertiary mb-1">
                     Step <span x-text="step"></span> of <span x-text="totalSteps"></span>
                 </p>
@@ -31,21 +33,22 @@
 
                 <div class="relative">
                     <input x-model="form.subdomain" @input="
-                                                        form.subdomain = form.subdomain.toLowerCase().replace(/[^a-z0-9-]/g, '');
+                                                                form.subdomain = form.subdomain.toLowerCase().replace(/[^a-z0-9-]/g, '');
 
-                                                        if(form.subdomain.length >= 3){
-                                                            checking = true;
+                                                                if(form.subdomain.length >= 3){
+                                                                    checking = true;
 
-                                                            fetch(`/check-subdomain?subdomain=${form.subdomain}`)
-                                                                .then(res => res.json())
-                                                                .then(data => {
-                                                                    available = data.available;
-                                                                    checking = false;
-                                                                });
-                                                        } else {
-                                                            available = null;
-                                                        }
-                                                    " type="text" placeholder="yourinstitute" class="w-full border-primary border-rounded p-3 pr-28">
+                                                                    fetch(`/check-subdomain?subdomain=${form.subdomain}`)
+                                                                        .then(res => res.json())
+                                                                        .then(data => {
+                                                                            available = data.available;
+                                                                            checking = false;
+                                                                        });
+                                                                } else {
+                                                                    available = null;
+                                                                }
+                                                            " type="text" placeholder="yourinstitute"
+                        class="w-full border-primary border-rounded p-3 pr-28">
                     <span class="absolute right-0 top-0 p-3 text-tertiary">
                         .{{ config('app.domain') }}
                     </span>
@@ -162,8 +165,8 @@
                 <div class="grid grid-cols-1 gap-3">
                     <template x-for="item in goals">
                         <button @click="toggle('goal', item)" :class="isSelected('goal', item) 
-                                                                            ? 'bg-invert text-invert border-invert' 
-                                                                            : 'border-primary hover-primary'"
+                                                                                    ? 'bg-invert text-invert border-invert' 
+                                                                                    : 'border-primary hover-primary'"
                             class="border-rounded p-3 text-sm text-left flex justify-between items-center">
 
                             <span x-text="item"></span>

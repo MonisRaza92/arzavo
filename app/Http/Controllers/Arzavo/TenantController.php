@@ -15,7 +15,13 @@ class TenantController
     {
         $tenants = Auth::guard('web')->user()->tenants;
 
-        return view('arzavo.tenants.index', compact('tenants'));
+        $tenantIds = $tenants->pluck('id');
+
+        $pendingAmount = \App\Models\Arzavo\Invoice::whereIn('tenant_id', $tenantIds)
+            ->where('status', 'pending')
+            ->sum('total_amount');
+
+        return view('arzavo.tenants.index', compact('tenants', 'pendingAmount'));
     }
 
     public function create()

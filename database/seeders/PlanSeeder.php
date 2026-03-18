@@ -45,7 +45,7 @@ class PlanSeeder extends Seeder
             'monthly_price' => 4999,
             'yearly_price' => 49999,
             'trial_days' => 7,
-            'features' => ['all'],
+            'features' => ['all'], 
             'limits' => [
                 'students' => 999999,
                 'storage_gb' => 100,
