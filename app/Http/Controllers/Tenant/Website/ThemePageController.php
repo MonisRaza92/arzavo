@@ -5,28 +5,27 @@ namespace App\Http\Controllers\Tenant\Website;
 use Illuminate\Routing\Controller;
 use App\Models\Tenant\Page;
 use App\Models\Tenant\ThemePageDesign;
-use App\Models\Tenant\TenantTheme;
-use App\Models\Arzavo\Theme;
 
 class ThemePageController extends Controller
 {
     /**
-     * SYSTEM PAGES (home, about, courses, etc.)
+     * SYSTEM PAGES
      */
     public function system(string $slug, string|null $view = null)
     {
-        $page = Page::where('slug', $slug)->first();
+        $state = $this->resolveState();
 
-        if (! $page) {
-            return view('tenant.themes.pages.coming-soon');
+        if ($state !== 'active') {
+            return $this->handleState($state);
         }
 
-        $layout = $this->getLayoutForPage($page);
+        $page = Page::where('slug', $slug)->first();
 
-        $theme = app('currentThemeSlug');
-        $themeId = app('currentThemeId');
+        if (!$page) {
+            return $this->comingSoon();
+        }
 
-        return view($view ?? 'tenant.themes.render', compact('page', 'layout', 'theme' ,'themeId'));
+        return $this->render($page, $view);
     }
 
     /**
@@ -34,22 +33,23 @@ class ThemePageController extends Controller
      */
     public function page(string $slug)
     {
+        $state = $this->resolveState();
+
+        if ($state !== 'active') {
+            return $this->handleState($state);
+        }
+
         $page = Page::where('slug', $slug)->firstOrFail();
 
         if ($page->is_system_page) {
             abort(404);
         }
 
-        $layout = $this->getLayoutForPage($page);
-
-        $theme = app('currentThemeSlug');
-        $themeId = app('currentThemeId');
-
-        return view('tenant.themes.render', compact('page', 'layout', 'theme', 'themeId'));
+        return $this->render($page);
     }
 
     /**
-     * PREVIEW (draft theme)
+     * PREVIEW (always bypass subscription)
      */
     public function preview($theme = 'nucleus', $themeId = null, $slug = 'home')
     {
@@ -58,24 +58,96 @@ class ThemePageController extends Controller
         app()->instance('currentThemeId', $themeId);
         app()->instance('currentThemeSlug', $theme);
         app()->instance('builderThemeId', $themeId);
-        // preview theme id middleware / session se aata hai
+
         $design = ThemePageDesign::where('tenant_theme_id', $themeId)
             ->where('page_id', $page->id)
             ->first();
+
         $layout = $design?->layout ?? ['sections' => []];
-        
+
         return view('tenant.themes.render', compact('page', 'layout', 'theme', 'themeId'));
     }
 
     /**
-     * CORE LOGIC — THIS IS PART 5
+     * CENTRAL STATE RESOLVER
      */
-    private function getLayoutForPage(Page $page, bool $preview = false): array
+    private function resolveState(): string
     {
-        // middleware ne set kiya hua
+        if (request()->routeIs('website.preview')) {
+            return 'active';
+        }
+
+        $tenant = app('currentTenant');
+        $subscription = $tenant?->subscription;
+
+        if (!$subscription) {
+            return 'expired';
+        }
+
+        if ($subscription->isTrial()) {
+            return 'trial';
+        }
+
+        if ($subscription->isActive()) {
+            return 'active';
+        }
+
+        return 'expired';
+    }
+
+    /**
+     * HANDLE STATES
+     */
+    private function handleState(string $state)
+    {
+        return match ($state) {
+            'trial' => $this->comingSoon(),
+            'expired' => $this->expired(),
+            default => abort(403),
+        };
+    }
+
+    /**
+     * RENDER PAGE
+     */
+    private function render(Page $page, ?string $view = null)
+    {
+        $layout = $this->getLayoutForPage($page);
+
+        $theme = app('currentThemeSlug');
+        $themeId = app('currentThemeId');
+
+        return view($view ?? 'tenant.themes.render', compact('page', 'layout', 'theme', 'themeId'));
+    }
+
+    /**
+     * COMING SOON (TRIAL)
+     */
+    public function comingSoon()
+    {
+        return response()->view('coming-soon', [
+            'tenant' => app('currentTenant')
+        ], 200);
+    }
+
+    /**
+     * EXPIRED
+     */
+    public function expired()
+    {
+        return response()->view('subscription-expired', [
+            'tenant' => app('currentTenant')
+        ], 403);
+    }
+
+    /**
+     * GET PAGE LAYOUT
+     */
+    private function getLayoutForPage(Page $page): array
+    {
         $tenantThemeId = app('currentThemeId');
 
-        if (! $tenantThemeId) {
+        if (!$tenantThemeId) {
             return ['sections' => []];
         }
 

@@ -46,7 +46,9 @@ Route::domain(config('app.domain'))->group(function () {
         Route::get('/', [DocumentationController::class, 'index'])->name('index');
         Route::get('/{slug}', [DocumentationController::class, 'show'])->name('show');
     });
-    Route::get('/docs', function () { return redirect()->route('documentation.index'); })->name('docs');
+    Route::get('/docs', function () {
+        return redirect()->route('documentation.index');
+    })->name('docs');
     Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
     Route::get('/features', [HomeController::class, 'features'])->name('features');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
@@ -89,7 +91,7 @@ Route::domain(config('app.domain'))->group(function () {
 function registerDomains($domain)
 {
 
-    Route::domain($domain)->middleware(['tenant', 'subscription'])->group(function () {
+    Route::domain($domain)->middleware('tenant')->group(function () {
 
         Route::get('/robots.txt', function () {
 
@@ -112,6 +114,11 @@ function registerDomains($domain)
         Route::get('/sitemap.xml', SitemapController::class)
             ->name('tenant.sitemap');
 
+        // 🔥 IMPORTANT: expired page (theme controlled)
+        Route::get('/subscription-expired', function () {
+            return app(ThemePageController::class)
+                ->expired();
+        })->name('subscription.expired');
 
         //Tenant Auth Routes
         Route::get('/', function () {
@@ -167,7 +174,6 @@ function registerDomains($domain)
             ->name('tenant.pages');
 
 
-
         Route::prefix('account')->group(function () {
             Route::get('/login', [TenantLoginController::class, 'login'])->name('tenant.login');
             Route::post('/login', [TenantLoginController::class, 'loginHandle'])->name('tenant.login.handle');
@@ -194,7 +200,7 @@ function registerDomains($domain)
             //Teachers Routes
             Route::get('/teachers-dashboard', [TeachersController::class, 'dashboard'])->name('teachers-dashboard');
 
-            Route::prefix('admin')->middleware('role:admin')->as('admin.')->group(function () {
+            Route::prefix('admin')->middleware(['role:admin', 'subscription'])->as('admin.')->group(function () {
                 Route::resource('dashboard', AdminController::class);
                 //Admin Students Routes
                 Route::get('/students', [AdminStudentsController::class, 'adminStudents'])->name('admin-students');

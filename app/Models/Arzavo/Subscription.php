@@ -43,6 +43,17 @@ class Subscription extends Model
         return false;
     }
 
+    public function isTrial()
+    {
+        return $this->status === 'trial'
+            && $this->trial_ends_at
+            && now()->lessThanOrEqualTo($this->trial_ends_at);
+    }
+    public function getIsTrialAttribute()
+    {
+        return $this->isTrial();
+    }
+
     // 🔥 GRACE PERIOD CHECK (MAIN HELPER)
     public function isInGracePeriod($days = 7)
     {

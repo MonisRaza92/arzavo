@@ -25,7 +25,7 @@ class CheckSubscription
 
         // ❌ no subscription
         if (!$subscription) {
-            return redirect()->route('tenants.index')
+            return redirect()->route('subscription.expired')
                 ->with('error', 'No active subscription found.');
         }
 
@@ -41,7 +41,7 @@ class CheckSubscription
         }
 
         // ❌ fully expired → block
-        return redirect()->route('tenants.index')
+        return redirect()->route('subscription.expired')
             ->with('error', 'Your plan has expired. Please upgrade.');
     }
 }
