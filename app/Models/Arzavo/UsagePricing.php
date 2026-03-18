@@ -12,11 +12,38 @@ class UsagePricing extends Model
         'key',
         'price_per_unit',
         'plan_id',
+        'tenant_id',
+        'unit',
     ];
 
-    // 🔹 Relations
+    /**
+     * Relations
+     */
     public function plan()
     {
-        return $this->belongsTo(\App\Models\Arzavo\Plan::class);
+        return $this->belongsTo(Plan::class);
+    }
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+    /**
+     * 🔥 Get pricing with priority:
+     * tenant > plan
+     */
+    public static function getPrice($tenantId, $planId, $key)
+    {
+        return self::where('key', $key)
+            ->where(function ($q) use ($tenantId, $planId) {
+                $q->where('tenant_id', $tenantId)
+                    ->orWhere(function ($q2) use ($planId) {
+                        $q2->whereNull('tenant_id')
+                            ->where('plan_id', $planId);
+                    });
+            })
+            ->orderByRaw('tenant_id IS NOT NULL DESC') // tenant override first
+            ->first();
     }
 }

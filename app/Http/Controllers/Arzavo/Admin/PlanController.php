@@ -24,27 +24,38 @@ class PlanController
             'trial_days' => 'nullable|integer',
             'short_description' => 'nullable',
             'description' => 'nullable',
-            'is_active' => 'boolean',
-            'is_popular' => 'boolean',
+            'is_active' => 'nullable',
+            'is_popular' => 'nullable',
         ]);
 
-        $plan = Plan::create($data);
+        // ✅ boolean fix (checkbox issue)
+        $data['is_active'] = $request->has('is_active');
+        $data['is_popular'] = $request->has('is_popular');
 
-        // 🔥 features (table based)
-        if ($request->features) {
-            foreach ($request->features as $key => $value) {
-                $plan->features()->create([
-                    'key' => $key,
-                    'value' => $value
-                ]);
+        // ✅ features transform
+        $features = [];
+        foreach ($request->features ?? [] as $item) {
+            if (!empty($item['key'])) {
+                $features[$item['key']] = (bool) $item['value'];
             }
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Plan created',
-            'data' => $plan
+        // ✅ limits transform
+        $limits = [];
+        foreach ($request->limits ?? [] as $item) {
+            if (!empty($item['key'])) {
+                $limits[$item['key']] = (int) $item['value'];
+            }
+        }
+
+        // ✅ create plan
+        Plan::create([
+            ...$data,
+            'features' => $features,
+            'limits' => $limits,
         ]);
+
+        return back()->with('success', 'Plan created successfully.');
     }
 
     public function edit(Plan $plan)
@@ -64,45 +75,47 @@ class PlanController
             'trial_days' => 'nullable|integer',
             'short_description' => 'nullable',
             'description' => 'nullable',
-            'is_active' => 'boolean',
-            'is_popular' => 'boolean',
+            'is_active' => 'nullable',
+            'is_popular' => 'nullable',
         ]);
 
-        $plan->update($data);
+        $data['is_active'] = $request->has('is_active');
+        $data['is_popular'] = $request->has('is_popular');
 
-        // 🔥 features sync
-        $plan->features()->delete();
-
-        if ($request->features) {
-            foreach ($request->features as $key => $value) {
-                $plan->features()->create([
-                    'key' => $key,
-                    'value' => $value
-                ]);
+        // features
+        $features = [];
+        foreach ($request->features ?? [] as $item) {
+            if (!empty($item['key'])) {
+                $features[$item['key']] = (bool) $item['value'];
             }
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Plan updated'
+        // limits
+        $limits = [];
+        foreach ($request->limits ?? [] as $item) {
+            if (!empty($item['key'])) {
+                $limits[$item['key']] = (int) $item['value'];
+            }
+        }
+
+        $plan->update([
+            ...$data,
+            'features' => $features,
+            'limits' => $limits,
         ]);
+
+        return back()->with('success', 'Plan updated successfully.');
     }
 
     public function destroy(Plan $plan)
     {
         // ❗ safety check
         if ($plan->subscriptions()->exists()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Plan is in use'
-            ], 400);
+            return back()->with('error', 'Plan is already in use and cannot be deleted.');
         }
 
         $plan->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Plan deleted'
-        ]);
+        return back()->with('success', 'Plan deleted successfully.');
     }
 }

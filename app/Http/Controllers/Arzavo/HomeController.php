@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Arzavo;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Arzavo\Plan;
 
 class HomeController
 {
@@ -24,7 +25,11 @@ class HomeController
 
     public function pricing()
     {
-        return view('arzavo.pricing.index');
+        $plans = Plan::where('is_active', true)
+            ->orderByDesc('is_popular')
+            ->orderBy('monthly_price')
+            ->get();
+        return view('arzavo.pricing.index', compact('plans'));
     }
 
     public function features()
@@ -57,7 +62,7 @@ class HomeController
 
         // Here you can add logic to save contact form data or send email
         // For now, we'll just redirect back with success message
-        
+
         return redirect()->back()->with('success', 'Thank you for your message! We will get back to you within 24 hours.');
     }
 }

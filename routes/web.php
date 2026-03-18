@@ -68,6 +68,8 @@ Route::domain(config('app.domain'))->group(function () {
 
         //Admin Tenant Routes
         Route::resource('tenants', TenantController::class);
+        Route::resource('plans', Arzavo\PlanController::class);
+        Route::post('plans/subscribe', [Arzavo\PlanController::class, 'subscribe'])->name('plans.subscribe');
         Route::get('/check-subdomain', [TenantController::class, 'checkSubdomain']);
         Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
         Route::get('/verify-domain/{tenant}', [DomainController::class, 'verifyDomain'])->name('domain.verify');

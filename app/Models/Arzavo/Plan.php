@@ -4,6 +4,8 @@ namespace App\Models\Arzavo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Arzavo\Subscription;
+use App\Models\Arzavo\UsagePricing;
 
 class Plan extends Model
 {
@@ -18,35 +20,74 @@ class Plan extends Model
         'is_popular',
         'short_description',
         'description',
-        'trial_days'
+        'trial_days',
+        'features',   // ✅ add
+        'limits',     // ✅ add
     ];
+
     protected $casts = [
         'features' => 'array',
-        'limits' => 'array', // 🔥 THIS IS MISSING
+        'limits' => 'array',
+        'is_active' => 'boolean',
+        'is_popular' => 'boolean',
+        'monthly_price' => 'float',
+        'yearly_price' => 'float',
     ];
 
     /**
-     * A plan has many features
-     */
-    public function features()
-    {
-        return $this->hasMany(PlanFeature::class);
-    }
-
-    /**
-     * Returns feature value by key
-     * Example: $plan->feature('max_students')
-     */
-    public function feature($key)
-    {
-        return $this->features()->where('key', $key)->value('value');
-    }
-
-    /**
-     * Tenants currently using this plan
+     * Subscriptions using this plan
      */
     public function subscriptions()
     {
-        return $this->hasMany(TenantSubscription::class);
+        return $this->hasMany(Subscription::class, 'plan_id');
+    }
+
+    /**
+     * Check if feature is enabled
+     */
+    public function hasFeature($key): bool
+    {
+        return (bool) ($this->features[$key] ?? false);
+    }
+
+    /**
+     * Get feature value (raw)
+     */
+    public function feature($key, $default = null)
+    {
+        return $this->features[$key] ?? $default;
+    }
+
+    /**
+     * Get limit value
+     */
+    public function limit($key, $default = null)
+    {
+        return $this->limits[$key] ?? $default;
+    }
+
+    /**
+     * Check if limit is exceeded
+     */
+    public function isLimitReached($key, $currentValue): bool
+    {
+        $limit = $this->limit($key);
+
+        if (is_null($limit)) {
+            return false; // unlimited
+        }
+
+        return $currentValue >= $limit;
+    }
+    public function usagePricing()
+    {
+        return $this->hasMany(UsagePricing::class, 'plan_id');
+    }
+    public function getUsagePrice($key)
+    {
+        return $this->usagePricing()
+            ->where('key', $key)
+            ->whereNull('tenant_id')
+            ->value('price_per_unit') ?? 0;
     }
 }
