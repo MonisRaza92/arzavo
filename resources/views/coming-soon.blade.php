@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div class="min-h-screen bg-primary flex flex-col justify-between px-4 py-10">
+<div class="min-h-dvh bg-primary flex flex-col justify-between px-4 py-10">
 
     {{-- 🔝 CENTER CONTENT --}}
     <div class="flex-1 flex items-center justify-center">
