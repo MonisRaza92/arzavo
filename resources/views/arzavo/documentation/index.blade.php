@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Documentation - Arzavo Educational Platform')
 @section('content')
-@include('arzavo.partials.navbar')
+@include('arzavo.website.partials.navbar')
 
 <!-- Documentation Header -->
 <section class="bg-secondary py-16">
@@ -634,5 +634,5 @@
     </div>
 </section>
 
-@include('arzavo.partials.footer')
+@include('arzavo.website.partials.footer')
 @endsection

@@ -1,0 +1,13 @@
+@extends('layouts.app')
+@section('title', 'Welcome to Arzavo - Educational Management Platform')
+@section('content')
+@include('arzavo.website.partials.navbar')
+@include('arzavo.website.home.partials.hero')
+@include('arzavo.website.home.partials.features')
+@include('arzavo.website.home.partials.how-it-works')
+@include('arzavo.website.home.partials.use-cases')
+@include('arzavo.website.home.partials.testimonials')
+@include('arzavo.website.home.partials.pricing')
+@include('arzavo.website.home.partials.documentation')
+@include('arzavo.website.partials.footer')
+@endsection

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Arzavo\HomeController;
+use App\Http\Controllers\Arzavo\DocumentationController;
 use App\Http\Controllers\Arzavo\TenantController;
 use App\Http\Controllers\Arzavo\DomainController;
 use App\Http\Controllers\Arzavo;
@@ -41,8 +42,11 @@ Route::post('/cashfree/webhook', [PaymentController::class, 'webhook']);
 Route::domain(config('app.domain'))->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/about', [HomeController::class, 'about'])->name('about');
-    Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
-    Route::get('/docs', [HomeController::class, 'documentation'])->name('docs');
+    Route::prefix('documentation')->as('documentation.')->group(function () {
+        Route::get('/', [DocumentationController::class, 'index'])->name('index');
+        Route::get('/{slug}', [DocumentationController::class, 'show'])->name('show');
+    });
+    Route::get('/docs', function () { return redirect()->route('documentation.index'); })->name('docs');
     Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
     Route::get('/features', [HomeController::class, 'features'])->name('features');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');

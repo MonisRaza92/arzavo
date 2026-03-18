@@ -353,15 +353,16 @@ button {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: rgb(72, 72, 72)
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #ffffff;
+    border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
