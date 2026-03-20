@@ -208,7 +208,7 @@ function registerDomains($domain)
                 Route::post('/plans/subscribe', [BillingController::class, 'subscribe'])->name('plan.subscribe');
                 Route::get('/billing/checkout', [BillingController::class, 'checkout'])->name('billing.checkout');
                 Route::post('/billing/checkout', [BillingController::class, 'cancelDowngrade'])->name('plan.cancel-downgrade');
-                Route::get('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
+                Route::post('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
 
             });
             Route::prefix('admin')->middleware(['role:admin', 'subscription'])->as('admin.')->group(function () {
