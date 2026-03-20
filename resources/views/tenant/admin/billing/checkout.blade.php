@@ -18,6 +18,9 @@
     </div>
 
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+    <script>
+        window.CASHFREE_MODE = "{{ config('services.cashfree.env') === 'production' ? 'production' : 'sandbox' }}";
+    </script>
 
     <script>
         (function () {
@@ -31,7 +34,7 @@
                 if (btn.dataset.bound === "true") return;
                 btn.dataset.bound = "true";
 
-                const cashfree = Cashfree({ mode: "sandbox" });
+                const cashfree = Cashfree({ mode: window.CASHFREE_MODE });
 
                 btn.addEventListener("click", async () => {
 
