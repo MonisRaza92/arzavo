@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+
 @section('content')
     <div class="text-center space-y-4 flex flex-col pt-30 items-center justify-center">
 
@@ -15,56 +16,68 @@
         </button>
 
     </div>
+
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 
     <script>
-        document.addEventListener("turbo:load", () => {
+        (function () {
 
-            const btn = document.getElementById("pay-btn");
+            function initPayment() {
+                const btn = document.getElementById("pay-btn");
 
-            if (!btn) return; // 🔥 IMPORTANT
+                if (!btn) return;
 
-            const cashfree = Cashfree({ mode: "sandbox" });
+                // ❌ duplicate binding rokne ke liye
+                if (btn.dataset.bound === "true") return;
+                btn.dataset.bound = "true";
 
-            document.addEventListener("click", async (e) => {
+                const cashfree = Cashfree({ mode: "sandbox" });
 
-                if (!e.target.matches("#pay-btn")) return;
+                btn.addEventListener("click", async () => {
 
-                const btn = e.target;
+                    btn.disabled = true;
+                    btn.innerText = "Processing...";
 
-                btn.disabled = true;
-                btn.innerText = "Processing...";
+                    try {
+                        const res = await fetch("{{ route('admin.payment.session', $plan->id) }}", {
+                            method: "POST",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                                "Accept": "application/json"
+                            }
+                        });
 
-                try {
-                    const res = await fetch("{{ route('admin.payment.session', $plan->id) }}");
+                        const data = await res.json();
 
-                    if (!res.ok) {
-                        const text = await res.text();
-                        console.error("Server Error:", text);
-                        throw new Error("Server failed");
+                        console.log("Payment Response:", data);
+
+                        if (!data.payment_session_id || data.payment_session_id.length < 10) {
+                            throw new Error("Invalid payment session");
+                        }
+
+                        await cashfree.checkout({
+                            paymentSessionId: data.payment_session_id,
+                            redirectTarget: "_self"
+                        });
+
+                    } catch (err) {
+                        console.error("Payment Error:", err);
+
+                        alert("Payment failed. Try again.");
+
+                        btn.disabled = false;
+                        btn.innerText = "Pay Now";
                     }
+                });
+            }
 
-                    const data = await res.json();
+            // ✅ Normal page load
+            document.addEventListener("DOMContentLoaded", initPayment);
 
-                    if (!data.payment_session_id) {
-                        throw new Error("Session failed");
-                    }
+            // ✅ Turbo navigation
+            document.addEventListener("turbo:load", initPayment);
 
-                    const cashfree = Cashfree({ mode: "sandbox" });
-
-                    cashfree.checkout({
-                        paymentSessionId: data.payment_session_id,
-                        redirectTarget: "_self"
-                    });
-
-                } catch (err) {
-                    console.error(err);
-                    alert("Payment failed");
-                    btn.disabled = false;
-                    btn.innerText = "Pay Now";
-                }
-
-            });
-        });
+        })();
     </script>
+
 @endsection
