@@ -24,31 +24,16 @@ class PlanController
             'trial_days' => 'nullable|integer',
             'short_description' => 'nullable',
             'description' => 'nullable',
-            'is_active' => 'nullable',
-            'is_popular' => 'nullable',
         ]);
 
-        // ✅ boolean fix (checkbox issue)
+        // ✅ boolean fix
         $data['is_active'] = $request->has('is_active');
         $data['is_popular'] = $request->has('is_popular');
 
-        // ✅ features transform
-        $features = [];
-        foreach ($request->features ?? [] as $item) {
-            if (!empty($item['key'])) {
-                $features[$item['key']] = (bool) $item['value'];
-            }
-        }
+        // ✅ NEW STRUCTURE (DIRECT)
+        $features = $request->input('features', []);
+        $limits = $request->input('limits', []);
 
-        // ✅ limits transform
-        $limits = [];
-        foreach ($request->limits ?? [] as $item) {
-            if (!empty($item['key'])) {
-                $limits[$item['key']] = (int) $item['value'];
-            }
-        }
-
-        // ✅ create plan
         Plan::create([
             ...$data,
             'features' => $features,
@@ -61,7 +46,7 @@ class PlanController
     public function edit(Plan $plan)
     {
         return response()->json([
-            'data' => $plan->load('features')
+            'data' => $plan // ✅ no load()
         ]);
     }
 
@@ -75,28 +60,13 @@ class PlanController
             'trial_days' => 'nullable|integer',
             'short_description' => 'nullable',
             'description' => 'nullable',
-            'is_active' => 'nullable',
-            'is_popular' => 'nullable',
         ]);
 
         $data['is_active'] = $request->has('is_active');
         $data['is_popular'] = $request->has('is_popular');
 
-        // features
-        $features = [];
-        foreach ($request->features ?? [] as $item) {
-            if (!empty($item['key'])) {
-                $features[$item['key']] = (bool) $item['value'];
-            }
-        }
-
-        // limits
-        $limits = [];
-        foreach ($request->limits ?? [] as $item) {
-            if (!empty($item['key'])) {
-                $limits[$item['key']] = (int) $item['value'];
-            }
-        }
+        $features = $request->input('features', []);
+        $limits = $request->input('limits', []);
 
         $plan->update([
             ...$data,
@@ -109,7 +79,6 @@ class PlanController
 
     public function destroy(Plan $plan)
     {
-        // ❗ safety check
         if ($plan->subscriptions()->exists()) {
             return back()->with('error', 'Plan is already in use and cannot be deleted.');
         }

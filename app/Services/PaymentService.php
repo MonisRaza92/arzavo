@@ -37,7 +37,7 @@ class PaymentService
             'status' => 'pending',
         ]);
 
-        $user = Auth::guard('web')->user();
+        $user = Auth::guard('web')->user() ?? Auth::guard('tenant')->user();
 
         $payload = [
             "order_id" => $orderId,

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Addon extends Model
 {
+    protected $connection = 'mysql';
     protected $fillable = [
         'name',
         'type',

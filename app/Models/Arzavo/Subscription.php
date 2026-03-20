@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
 {
+    protected $connection = 'mysql';
     protected $fillable = [
         'tenant_id',
         'plan_id',
@@ -14,7 +15,26 @@ class Subscription extends Model
         'ends_at',
         'trial_ends_at',
         'custom_price',
+        'pending_plan_id'
     ];
+
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'trial_ends_at' => 'datetime',
+    ];
+    public function applyPendingPlan()
+    {
+        if ($this->pending_plan_id) {
+
+            $this->update([
+                'plan_id' => $this->pending_plan_id,
+                'pending_plan_id' => null,
+                'starts_at' => now(),
+                'ends_at' => null,
+            ]);
+        }
+    }
 
     // Relations
     public function tenant()

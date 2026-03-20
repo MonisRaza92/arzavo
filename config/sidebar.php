@@ -242,6 +242,7 @@ return [
                     ['icon' => 'fa-sliders', 'text' => 'General Settings', 'route' => 'admin.settings.index', 'active' => 'admin/settings'],
                     ['icon' => 'fa-lock', 'text' => 'Roles & Permissions', 'route' => '#'],
                     ['icon' => 'fa-shield-halved', 'text' => 'Security', 'route' => '#'],
+                    ['icon' => 'fa-credit-card', 'text' => 'Billing & Plans', 'route' => 'admin.billing.index', 'active' => 'admin/billing*'],
                     ['icon' => 'fa-globe', 'text' => 'Language', 'route' => '#'],
                     ['icon' => 'fa-headset', 'text' => 'Support Center', 'route' => '#'],
                 ],

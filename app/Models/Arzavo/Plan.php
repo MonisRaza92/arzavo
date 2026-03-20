@@ -10,6 +10,7 @@ use App\Models\Arzavo\UsagePricing;
 class Plan extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql';
 
     protected $fillable = [
         'name',
@@ -61,9 +62,11 @@ class Plan extends Model
     /**
      * Get limit value
      */
-    public function limit($key, $default = null)
+    public function limit($key)
     {
-        return $this->limits[$key] ?? $default;
+        $value = $this->limits[$key] ?? null;
+
+        return $value === null || $value === '' ? null : $value;
     }
 
     /**

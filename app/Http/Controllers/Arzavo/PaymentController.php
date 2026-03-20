@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Arzavo\Invoice;
 use App\Services\PaymentService;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Arzavo\Plan;
+use App\Models\Arzavo\Payment;
 
 class PaymentController
 {
@@ -72,7 +74,7 @@ class PaymentController
             return response()->json(['status' => 'invalid']);
         }
 
-        $payment = \App\Models\Arzavo\Payment::where('order_id', $orderId)->first();
+        $payment = Payment::where('order_id', $orderId)->first();
 
         if (!$payment) {
             return response()->json(['status' => 'payment not found']);
@@ -90,17 +92,102 @@ class PaymentController
                 'payment_id' => $paymentData['cf_payment_id'] ?? null
             ]);
 
-            $payment->invoice->update([
+            $invoice = $payment->invoice;
+
+            $invoice->update([
                 'status' => 'paid'
             ]);
-        }
 
-        if ($status === 'FAILED') {
-            $payment->update([
-                'status' => 'failed'
-            ]);
+            // 🔥 NEW: ACTIVATE PLAN
+            $meta = $invoice->meta ?? [];
+
+            if (($meta['type'] ?? null) === 'plan_upgrade') {
+
+                $planId = $meta['plan_id'] ?? null;
+
+                if ($planId) {
+                    $tenant = $invoice->tenant;
+                    $subscription = $tenant->subscription;
+
+                    if ($subscription) {
+                        $subscription->update([
+                            'plan_id' => $planId,
+                            'status' => 'active',
+                            'starts_at' => now(),
+                            'ends_at' => now()->addDays(30),
+                            'trial_ends_at' => null,
+                        ]);
+                    } else {
+                        \App\Models\Arzavo\Subscription::create([
+                            'tenant_id' => $tenant->id,
+                            'plan_id' => $planId,
+                            'status' => 'active',
+                            'starts_at' => now(),
+                            'ends_at' => now()->addDays(30),
+                        ]);
+                    }
+                }
+            }
         }
 
         return response()->json(['status' => 'ok']);
+    }
+    public function planSession(Plan $plan)
+    {
+        try {
+            $tenant = app('currentTenant');
+
+            if (!$tenant) {
+                return response()->json([
+                    'error' => 'Tenant not found'
+                ], 400);
+            }
+
+            // ❌ Same plan dubara purchase mat hone do
+            if ($tenant->subscription && $tenant->subscription->plan_id == $plan->id) {
+                return response()->json([
+                    'error' => 'You are already on this plan'
+                ], 400);
+            }
+
+            // ✅ STEP 1: CREATE INVOICE
+            $invoice = Invoice::create([
+                'tenant_id' => $tenant->id,
+                'total_amount' => $plan->monthly_price,
+                'status' => 'pending',
+                'meta' => [
+                    'plan_id' => $plan->id,
+                    'type' => 'plan_upgrade'
+                ]
+            ]);
+
+            // ✅ STEP 2: CALL PAYMENT SERVICE FIRST
+            $response = app(PaymentService::class)->createPayment($invoice);
+
+            if (
+                empty($response['payment_session_id']) ||
+                empty($response['order_id'])
+            ) {
+                throw new \Exception('Invalid payment response from gateway');
+            }
+
+
+            return response()->json([
+                'payment_session_id' => $response['payment_session_id']
+            ]);
+
+        } catch (\Throwable $e) {
+
+            \Log::error('PLAN SESSION ERROR', [
+                'message' => $e->getMessage(),
+                'tenant_id' => $tenant->id ?? null,
+                'plan_id' => $plan->id ?? null,
+            ]);
+
+            return response()->json([
+                'error' => 'Payment initialization failed',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

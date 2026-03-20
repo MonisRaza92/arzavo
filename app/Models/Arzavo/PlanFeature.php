@@ -9,6 +9,7 @@ use App\Models\Arzavo\Plan;
 class PlanFeature extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql';
 
     protected $fillable = [
         'plan_id',

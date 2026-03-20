@@ -10,7 +10,7 @@
                 <p class="text-sm text-gray-500">Define pricing, features and limits for your SaaS plan</p>
             </div>
 
-            <button onclick="closeModal()" class="text-gray-600 hover:text-black text-xl"><i
+            <button onclick="closeModel('planModal')" class="text-gray-600 hover:text-black text-xl"><i
                     class="fa-solid fa-xmark"></i></button>
         </div>
 
@@ -79,51 +79,55 @@
             </div>
 
 
-            <!-- FEATURES -->
             <div class="bg-blue-100 p-4 border-rounded mt-4">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h3 class="font-semibold text-lg flex items-center gap-2">
-                            <i class="fa-solid fa-chart-simple"></i> Features
-                        </h3>
-                        <p class="text-xs text-gray-500">
-                            Enable or disable features available in this plan
-                        </p>
-                    </div>
+                <h3 class="font-semibold text-lg mb-4">Features</h3>
 
-                    <button type="button" onclick="addFeature()"
-                        class="bg-blue-500 text-white p-3 w-30 border-rounded text-sm hover:opacity-90">
-                        + Add Feature
-                    </button>
+                <div class="space-y-3">
+
+                    @foreach(config('plan.features') as $key => $label)
+
+                        <div class="flex justify-between items-center bg-white p-2 border-rounded border-primary">
+
+                            <div>
+                                <p class="font-medium">{{ $label }}</p>
+                            </div>
+
+                            <x-input.switch name="features[{{ $key }}]" containerClass="w-auto!" />
+
+                        </div>
+
+                    @endforeach
+
                 </div>
-
-                <div id="featuresWrapper" class="space-y-2"></div>
             </div>
 
             <!-- LIMITS -->
             <div class="bg-purple-100 p-4 border-rounded mt-4">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h3 class="font-semibold text-lg flex items-center gap-2">
-                            <i class="fa-regular fa-circle-pause"></i> Limits
-                        </h3>
-                        <p class="text-xs text-gray-500">
-                            Define usage limits like students, storage, etc.
-                        </p>
-                    </div>
+                <h3 class="font-semibold text-lg mb-4">Limits</h3>
 
-                    <button type="button" onclick="addLimit()"
-                        class="bg-purple-500 text-white p-3 w-30 border-rounded text-sm hover:opacity-90">
-                        + Add Limit
-                    </button>
+                <div class="space-y-3">
+
+                    @foreach(config('plan.limits') as $key => $label)
+
+                        <div class="flex justify-between items-center bg-white p-1 px-2 border-rounded border-primary">
+
+                            <div>
+                                <p class="font-medium">{{ $label }}</p>
+                            </div>
+
+                            <input type="number" name="limits[{{ $key }}]" placeholder="Unlimited"
+                                class="input border-primary border-rounded p-1 px-2 text-sm bg-primary w-34">
+
+                        </div>
+
+                    @endforeach
+
                 </div>
-
-                <div id="limitsWrapper" class="space-y-2"></div>
             </div>
 
             <!-- ACTION -->
             <div class="flex justify-end gap-3 pt-4">
-                <button type="button" onclick="closeModal()" class="px-4 py-2 border-rounded border-primary">
+                <button type="button" onclick="closeModel('planModal')"class="px-4 py-2 border-rounded border-primary">
                     Cancel
                 </button>
 
@@ -135,35 +139,3 @@
         </form>
     </div>
 </div>
-<script>
-    function addFeature() {
-        let index = Date.now();
-
-        let html = `
-        <div class="flex gap-2 items-center text-sm bg-white p-2 border-rounded border-primary mt-4">
-            <input name="features[${index}][key]" placeholder="Feature (e.g. blogs)" class="input border-primary border-rounded p-2 bg-primary flex-1">
-            <select name="features[${index}][value]" class="input border-primary border-rounded p-2 bg-primary w-28">
-                <option value="1" selected>ALLOW</option>
-                <option value="0">BLOCK</option>
-            </select>
-            <button type="button" onclick="this.parentElement.remove()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button>
-        </div>
-    `;
-
-        document.getElementById('featuresWrapper').insertAdjacentHTML('beforeend', html);
-    }
-
-    function addLimit() {
-        let index = Date.now();
-
-        let html = `
-        <div class="flex gap-2 text-sm items-center bg-white p-2 border-rounded border-primary mt-4">
-            <input name="limits[${index}][key]" placeholder="Limit (e.g. students)" class="input border-primary border-rounded p-2 bg-primary flex-1">
-            <input type="number" name="limits[${index}][value]" placeholder="Value" class="input border-primary border-rounded p-2 bg-primary w-28">
-            <button type="button" onclick="this.parentElement.remove()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button>
-        </div>
-    `;
-
-        document.getElementById('limitsWrapper').insertAdjacentHTML('beforeend', html);
-    }
-</script>

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UsagePricing extends Model
 {
+    protected $connection = 'mysql';
     protected $table = 'usage_pricing';
 
     protected $fillable = [

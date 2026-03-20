@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usage extends Model
 {
+    protected $connection = 'mysql';
     protected $fillable = [
         'tenant_id',
         'key',

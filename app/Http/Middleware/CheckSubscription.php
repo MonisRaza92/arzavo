@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CheckSubscription
 {
@@ -25,8 +26,14 @@ class CheckSubscription
 
         // ❌ no subscription
         if (!$subscription) {
-            return redirect()->route('subscription.expired')
-                ->with('error', 'No active subscription found.');
+
+            // 🔥 admin check
+            if (!Auth::check()) {
+                return redirect()->route('admin.billing.index')
+                    ->with('error', 'No active subscription found. Please select a plan');
+            }
+
+            return redirect()->route('subscription.expired');
         }
 
         // ✅ active → allow
@@ -40,8 +47,12 @@ class CheckSubscription
             return $next($request);
         }
 
-        // ❌ fully expired → block
-        return redirect()->route('subscription.expired')
-            ->with('error', 'Your plan has expired. Please upgrade.');
+        // ❌ fully expired
+        if (!Auth::check()) {
+            return redirect()->route('admin.billing.index')
+                ->with('error', 'Your plan has expired. Please upgrade.');
+        }
+
+        return redirect()->route('subscription.expired');
     }
 }

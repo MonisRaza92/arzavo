@@ -8,9 +8,10 @@
     @php
         $globalUser = $user->globalUser ?? null;
         $tenants = $globalUser ? $globalUser->tenants : collect();
+        $currentTenant = app('currentTenant');
     @endphp
     <div class="sticky top-0 z-9 bg-primary pt-6">
-        <div x-data="{ open: false }" class="relative mb-3">
+        <div class="relative mb-3">
 
             <!-- Label -->
             <label class="text-[10px] absolute left-1 -top-2 px-1 text-secondary bg-primary">
@@ -18,13 +19,13 @@
             </label>
 
             <!-- Trigger -->
-            <button @click="open = !open"
+            <button onclick="toggleModel('TenantList')"
                 class="mt-2 w-full flex items-center justify-between border-rounded p-2 text-sm border-primary bg-primary">
 
                 <div class="flex items-center gap-2 truncate">
                     <i class="fa-solid fa-building-columns text-tertiary text-sm"></i>
                     <span class="truncate">
-                        {{ $tenants->first()->name ?? 'Select Tenant' }}
+                        {{ $currentTenant->name ?? 'Select Tenant' }}
                     </span>
                 </div>
 
@@ -32,8 +33,8 @@
             </button>
 
             <!-- Dropdown -->
-            <div x-show="open" @click.outside="open = false" x-transition
-                class="absolute z-50 mt-2 w-full border-rounded bg-primary shadow-xl border border-primary overflow-hidden">
+            <div id="TenantList"
+                class="absolute hidden z-50 mt-2 w-full border-rounded bg-primary shadow-xl border border-primary overflow-hidden">
 
                 @forelse($tenants as $tenant)
                             <a href="{{ $tenant->custom_domain && $tenant->domain_verified

@@ -10,10 +10,10 @@
             class="search-button absolute right-0 top-0 mt-1.5 mr-1.5 bg-secondary text-xs border-primary py-1.25 px-2 border-rounded text-tertiary">Ctrl
             + k</button>
     </div>
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2 md:gap-4">
 
         <!-- Help -->
-        <button title="Help" class="text-2xl text-secondary">
+        <button title="Help" class="text-2xl text-secondary hidden md:block">
             <i class="fa-regular fa-circle-question"></i>
         </button>
 
@@ -49,6 +49,7 @@
                     @php
                         $globalUser = $user->globalUser ?? null;
                         $tenants = $globalUser ? $globalUser->tenants : collect();
+                        $currentTenant = app('currentTenant');
                     @endphp
 
                     <div class="max-h-40 overflow-auto">
@@ -57,10 +58,16 @@
                                             <a href="{{ $tenant->custom_domain && $tenant->domain_verified
                             ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
                             : 'https://' . $tenant->subdomain . '/admin/dashboard' }}"
-                                                class="flex items-center gap-2 p-3 text-sm border-bottom bg-hover-secondary">
-
-                                                <i class="fa-solid fa-building-columns text-tertiary text-sm"></i>
-                                                <span class="truncate">{{ $tenant->name }}</span>
+                                                class="flex items-center justify-between gap-2 p-3 text-sm border-bottom bg-hover-secondary">
+                                                <span class="truncate"><i
+                                                        class="fa-solid fa-building-columns text-tertiary text-sm mr-1"></i>
+                                                    {{ $tenant->name }}</span>
+                                                @if ($currentTenant->id === $tenant->id)
+                                                    <span class="flex items-center gap-1 text-xs text-green-600">
+                                                        <i class="fa-solid fa-check"></i>
+                                                        Active
+                                                    </span>
+                                                @endif
                                             </a>
                         @empty
                             <p class="px-3 py-2 text-xs text-tertiary">
@@ -98,7 +105,8 @@
                         Manage Tenants
                     </a>
 
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
+                    <a href="{{ route('admin.billing.index') }}"
+                        class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
                         <i class="fa-solid fa-credit-card text-tertiary text-sm"></i>
                         Billing & Plans
                     </a>
@@ -126,6 +134,8 @@
 
             </div>
         </div>
+        <button onclick="document.getElementById('adminMobileMenu').classList.toggle('-translate-x-full')" class="lg:hidden border-rounded text-xl flex justify-center items-center logo aspect-square bg-invert text-invert"><i
+                class="fa-solid fa-bars"></i></button>
 
     </div>
 </div>

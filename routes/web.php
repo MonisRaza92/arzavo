@@ -20,6 +20,7 @@ use App\Http\Controllers\Tenant\Admin\CourseController;
 use App\Http\Controllers\Tenant\Admin\CustomizesController;
 use App\Http\Controllers\Tenant\Admin\ColorSchemeController;
 use App\Http\Controllers\Tenant\Admin\SettingsController;
+use App\Http\Controllers\Tenant\Admin\BillingController;
 use App\Http\Controllers\Tenant\Admin\PageController;
 use App\Http\Controllers\Tenant\Admin\ThemeController;
 use App\Http\Controllers\Tenant\Admin\SectionController;
@@ -200,6 +201,16 @@ function registerDomains($domain)
             //Teachers Routes
             Route::get('/teachers-dashboard', [TeachersController::class, 'dashboard'])->name('teachers-dashboard');
 
+            Route::prefix('admin')->middleware('role:admin')->as('admin.')->group(function () {
+
+                Route::get('/billing', [BillingController::class, 'index'])->name('billing.index');
+                Route::get('/billing/checkout', [BillingController::class, 'checkout'])->name('billing.checkout');
+                Route::post('/plans/subscribe', [BillingController::class, 'subscribe'])->name('plan.subscribe');
+                Route::get('/billing/checkout', [BillingController::class, 'checkout'])->name('billing.checkout');
+                Route::post('/billing/checkout', [BillingController::class, 'cancelDowngrade'])->name('plan.cancel-downgrade');
+                Route::get('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
+
+            });
             Route::prefix('admin')->middleware(['role:admin', 'subscription'])->as('admin.')->group(function () {
                 Route::resource('dashboard', AdminController::class);
                 //Admin Students Routes

@@ -12,3 +12,4 @@ Artisan::command('inspire', function () {
 Schedule::command('subscriptions:expire')->daily();
 Schedule::command('invoices:generate')->monthly();
 Schedule::command('tenants:sync-stats')->everyFiveMinutes()->withoutOverlapping()->runInBackground();
+Schedule::command('subscriptions:process')->everyMinute();
