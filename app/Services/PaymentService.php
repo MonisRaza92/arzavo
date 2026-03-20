@@ -17,17 +17,16 @@ class PaymentService
 
         if ($existingPayment && $existingPayment->payment_session_id) {
             return [
-                'payment_session_id' => $existingPayment->payment_session_id
+                'payment_session_id' => $existingPayment->payment_session_id,
+                'order_id' => $existingPayment->order_id,
             ];
         }
 
-        // ❗ agar session_id null hai → delete karo
-        if ($existingPayment && !$existingPayment->payment_session_id) {
+        if ($existingPayment) {
             $existingPayment->delete();
         }
 
-
-        $orderId = 'order_' . Str::random(10);
+        $orderId = 'order_' . Str::random(12);
 
         $payment = Payment::create([
             'tenant_id' => $invoice->tenant_id,
@@ -50,28 +49,44 @@ class PaymentService
             ]
         ];
 
-        // 🔥 ONLY CHANGE (URL switch)
-        $baseUrl = env('CASHFREE_ENV') === 'production'
+        // 🔥 CONFIG BASED (NOT env())
+        $env = config('services.cashfree.env');
+
+        $baseUrl = $env === 'production'
             ? 'https://api.cashfree.com'
             : 'https://sandbox.cashfree.com';
 
         $response = Http::withHeaders([
-            "x-client-id" => env('CASHFREE_APP_ID'),
-            "x-client-secret" => env('CASHFREE_SECRET_KEY'),
+            "x-client-id" => config('services.cashfree.app_id'),
+            "x-client-secret" => config('services.cashfree.secret'),
             "x-api-version" => "2022-09-01",
             "Content-Type" => "application/json",
         ])->post($baseUrl . '/pg/orders', $payload);
 
-        $responseData = $response->json();
+        $data = $response->json();
+
         \Log::info('Cashfree Debug', [
             'status' => $response->status(),
             'body' => $response->body(),
         ]);
 
+        // ❌ FAIL SAFE
+        if (!$response->successful() || empty($data['payment_session_id'])) {
+
+            $payment->delete();
+
+            throw new \Exception(
+                $data['message'] ?? 'Payment gateway error'
+            );
+        }
+
         $payment->update([
-            'payment_session_id' => $responseData['payment_session_id'] ?? null
+            'payment_session_id' => $data['payment_session_id']
         ]);
 
-        return $responseData;
+        return [
+            'payment_session_id' => $data['payment_session_id'],
+            'order_id' => $orderId,
+        ];
     }
 }

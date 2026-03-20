@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'cashfree' => [
+        'env' => env('CASHFREE_ENV', 'sandbox'),
+        'app_id' => env('CASHFREE_APP_ID'),
+        'secret' => env('CASHFREE_SECRET_KEY'),
+    ],
+
 ];
