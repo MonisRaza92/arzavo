@@ -35,18 +35,34 @@ class AssignDefaultSubscriptions extends Command
             return;
         }
 
-        $tenants = Tenant::all();
+        $tenants = Tenant::with('subscription')->get();
 
         foreach ($tenants as $tenant) {
-            Subscription::updateOrCreate([
-                'tenant_id' => $tenant->id,
-                'plan_id' => $plan->id,
-                'status' => 'active',
-                'starts_at' => now(),
-                'trial_ends_at' => now()->addDays($plan->trial_days),
-            ]);
+
+            // ✅ अगर subscription already hai → update
+            if ($tenant->subscription) {
+
+                $tenant->subscription->update([
+                    'plan_id' => $plan->id,
+                    'status' => 'active',
+                    'starts_at' => now(),
+                    'ends_at' => null,
+                    'pending_plan_id' => null,
+                ]);
+
+            } else {
+                // ✅ अगर nahi hai → create
+
+                Subscription::create([
+                    'tenant_id' => $tenant->id,
+                    'plan_id' => $plan->id,
+                    'status' => 'active',
+                    'starts_at' => now(),
+                    'ends_at' => null,
+                ]);
+            }
         }
 
-        $this->info('Subscriptions assigned successfully');
+        $this->info('All subscriptions activated successfully 🚀');
     }
 }
