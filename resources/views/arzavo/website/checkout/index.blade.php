@@ -589,7 +589,7 @@
                 btn.classList.remove('bg-zinc-950', 'hover:bg-zinc-800');
             }
         }
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('turbo:load', () => {
 
             document.querySelectorAll('#checkoutForm input').forEach(input => {
                 input.addEventListener('input', togglePayButton);
@@ -677,7 +677,7 @@
         }
 
         // ─── On Load: restore old() value ─────────────
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('turbo:load', () => {
             const old = document.getElementById('selectedTenantId').value;
             if (old) {
                 const item = document.querySelector(`.tenant-item[data-id="${old}"]`);
