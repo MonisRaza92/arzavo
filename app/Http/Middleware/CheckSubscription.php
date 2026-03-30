@@ -24,33 +24,27 @@ class CheckSubscription
 
         $subscription = $tenant->subscription;
 
-        // ❌ no subscription
-        if (!$subscription) {
-
-            // 🔥 admin check
-            if (!Auth::check()) {
-                return redirect()->route('admin.billing.index')
-                    ->with('error', 'No active subscription found. Please select a plan');
-            }
-
-            return redirect()->route('subscription.expired');
-        }
-
-        // ✅ active → allow
-        if ($subscription->isActive()) {
+        // ✅ ACTIVE SUBSCRIPTION → allow
+        if ($subscription && $subscription->isActive()) {
             return $next($request);
         }
 
-        // ⚠️ grace period → allow but warn
-        if ($subscription->isInGracePeriod()) {
+        // ⚠️ GRACE PERIOD → allow with warning
+        if ($subscription && $subscription->isInGracePeriod()) {
             session()->flash('warning', 'Your plan has expired. Please renew soon.');
             return $next($request);
         }
 
-        // ❌ fully expired
+        // 🟢 TRIAL (tenant level) → allow
+        if ($tenant->isTrialActive()) {
+            session()->flash('warning', 'You are on a free trial');
+            return $next($request);
+        }
+
+        // ❌ NO ACCESS (expired + no trial)
         if (!Auth::check()) {
             return redirect()->route('admin.billing.index')
-                ->with('error', 'Your plan has expired. Please upgrade.');
+                ->with('error', 'Your trial or plan has expired. Please upgrade.');
         }
 
         return redirect()->route('subscription.expired');

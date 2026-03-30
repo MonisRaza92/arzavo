@@ -1,161 +1,197 @@
-{{-- PLANS GRID --}}
-<div class="grid md:grid-cols-3 gap-5">
+<div class="grid xl:grid-cols-3 gap-4">
 
-    @foreach($plans as $plan)
+    {{-- 🔥 BIG PLAN CARD --}}
+    <div class="xl:col-span-2 border-rounded border-primary bg-primary p-6 relative overflow-hidden">
 
-        @php
-            $isCurrent = $subscription && $subscription->plan_id === $plan->id;
-            $isFree = $plan->monthly_price == 0;
-
-            $currentPrice = $subscription?->plan?->monthly_price ?? 0;
-            $isUpgrade = $subscription?->plan?->monthly_price > $currentPrice;
-        @endphp
-
-        <div class="relative bg-primary border-primary border-rounded p-6 flex flex-col justify-between
-                                    {{ $isCurrent ? 'border-invert' : '' }}">
-
-            {{-- 🔶 BADGES --}}
-            <div class="absolute top-3 right-3 flex gap-2">
-
-                @if($isCurrent)
-                    <span class="text-xs bg-tertiary px-2 py-1 border-rounded text-tertiary">
-                        Current
-                    </span>
-                @endif
-
-                @if($plan->is_popular)
-                    <span class="text-xs bg-tertiary px-2 py-1 border-rounded text-primary">
-                        Popular
-                    </span>
-                @endif
-
-            </div>
+        <div class="flex items-start justify-between mb-6">
 
             <div>
+                <h2 class="text-sm uppercase tracking-wider text-tertiary mb-2">Current Plan</h2>
 
-                {{-- PLAN NAME --}}
-                <h3 class="text-lg font-semibold text-primary mb-1">
-                    {{ $plan->name }}
-                </h3>
+                @if($subscription)
+                    <h3 class="text-3xl font-bold text-primary">
+                        {{ $subscription->plan->name }}
+                    </h3>
 
-                {{-- DESCRIPTION --}}
-                <p class="text-tertiary text-sm mb-5">
-                    {{ $plan->short_description }}
-                </p>
-
-                {{-- PRICE --}}
-                <div class="mb-5">
-
-                    @if($isFree)
-                        <div class="text-3xl font-bold text-primary">
-                            Free
-                        </div>
-                    @else
-                        <div class="text-3xl font-bold text-primary">
-                            ₹{{ $plan->monthly_price }}
-                            <span class="text-sm font-normal text-tertiary">/month</span>
-                        </div>
-
-                        @if($plan->yearly_price)
-                            <div class="text-xs text-tertiary mt-1">
-                                ₹{{ $plan->yearly_price }} / year
-                            </div>
-                        @endif
-                    @endif
-
-                </div>
-                <div class="mb-5">
-                    <h4 class="text-xs font-semibold text-tertiary mb-2 uppercase tracking-wide">
-                        Features
-                    </h4>
-
-                    <div class="space-y-1 text-sm">
-
-                        @forelse(config('plan.features') as $key => $label)
-
-                            @php
-                                $enabled = $plan->features[$key] ?? false;
-                            @endphp
-
-                            <div class="flex items-center gap-2">
-
-                                <i class="fa-solid {{ $enabled ? 'fa-check text-primary' : 'fa-xmark text-tertiary' }}"></i>
-
-                                <span class="{{ $enabled ? 'text-primary' : 'text-tertiary line-through' }}">
-                                    {{ $label }}
-                                </span>
-
-                            </div>
-
-                        @empty
-                            <p class="text-tertiary text-xs">No features</p>
-                        @endforelse
-
-                    </div>
-                </div>
-
-                {{-- FEATURES + LIMITS --}}
-                <div class="space-y-2 text-sm mb-6">
-
-                    @foreach(config('plan.limits') as $key => $label)
-                        @php
-                            $value = $plan->limits[$key] ?? null;
-                        @endphp
-
-                        <div class="flex justify-between">
-                            <span class="text-tertiary">{{ $label }}</span>
-                            <span class="text-primary font-medium">
-                                {{ ($value === null || $value === '') ? 'Unlimited' : $value }}
-                                @if($key === 'storage') GB @endif
-                            </span>
-                        </div>
-                    @endforeach
-
-                </div>
-
+                    <p class="text-tertiary mt-1">
+                        ₹{{ $subscription->plan->monthly_price }} / month
+                    </p>
+                @endif
             </div>
 
-            {{-- ACTION --}}
-            {{-- ACTION --}}
-            @if($isCurrent)
+            @php
+                $price = $subscription->plan->monthly_price ?? 0;
+            @endphp
 
-                <button disabled class="w-full bg-tertiary text-tertiary py-2 border-rounded cursor-not-allowed">
-                    Current Plan
-                </button>
+            <div class="bg-white/10 p-3 rounded-xl">
 
-            @elseif($subscription && $subscription->pending_plan_id === $plan->id)
+                @if($price == 0)
+                    {{-- BASIC --}}
+                    <i class="fa-solid fa-leaf text-xl text-green-400"></i>
 
-                {{-- 🔥 CANCEL DOWNGRADE --}}
-                <form method="POST" action="{{ route('admin.plan.cancel-downgrade') }}">
-                    @csrf
+                @elseif($price > 0 && $price <= 2000)
+                    {{-- PRO --}}
+                    <i class="fa-solid fa-bolt text-xl text-blue-400"></i>
 
-                    <button class="w-full border-primary py-2 border-rounded hover-primary transition">
-                        Cancel Downgrade
-                    </button>
-                </form>
+                @else
+                    {{-- PREMIUM --}}
+                    <i class="fa-solid fa-crown text-xl text-yellow-400"></i>
 
-            @else
+                @endif
 
-                {{-- NORMAL ACTION --}}
-                <form method="POST" action="{{ route('admin.plan.subscribe') }}">
-                    @csrf
-                    <input type="hidden" name="plan_id" value="{{ $plan->id }}">
-
-                    <button class="w-full bg-invert border-primary text-invert py-2 border-rounded hover-primary transition">
-                        {{ $isUpgrade ? 'Upgrade Plan' : 'Select Plan' }}
-                    </button>
-                </form>
-
-            @endif
-
-            @if($subscription->pending_plan_id ?? null && $subscription->pending_plan_id === $plan->id)
-                <p class="text-xs text-center text-tertiary pt-3">
-                    Scheduled to activate after {{ $subscription->ends_at->format('d M Y') }}
-                </p>
-            @endif
+            </div>
 
         </div>
 
-    @endforeach
+        @if($subscription)
+            <div class="flex flex-wrap gap-6 text-sm">
+
+                <div>
+                    <p class="text-tertiary">Status</p>
+                    <p class="text-primary font-medium">{{ ucfirst($subscription->status) }}</p>
+                </div>
+
+                <div>
+                    <p class="text-tertiary">Started</p>
+                    <p class="text-primary font-medium">{{ $subscription->starts_at?->format('d M Y') }}</p>
+                </div>
+
+                @if($subscription->ends_at)
+                    <div>
+                        <p class="text-tertiary">Next Billing</p>
+                        <p class="text-primary font-medium">{{ $subscription->ends_at->format('d M Y') }}</p>
+                    </div>
+                @endif
+
+            </div>
+
+            <a href="{{ config('app.url') }}/pricing"
+                class="mt-8 inline-flex items-center gap-2 bg-invert text-invert px-5 py-2.5 border-rounded font-medium hover:scale-105 transition">
+
+                Upgrade Plan
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        @endif
+
+    </div>
+
+    {{-- ⚡ QUICK INFO --}}
+    <div class="bg-primary border border-rounded p-6 flex flex-col justify-between">
+
+        <div>
+            <h2 class="text-sm uppercase font-semibold tracking-wider text-tertiary mb-4">Billing</h2>
+
+            <p class="text-sm text-tertiary mb-2">
+                Subscription renews automatically.
+            </p>
+
+            <p class="text-sm text-tertiary">
+                Upgrade anytime, downgrade later.
+            </p>
+        </div>
+
+        <a href="#" class="mt-6 text-sm flex items-center gap-2 text-primary">
+            Get Help
+            <i class="fa-solid fa-headset"></i>
+        </a>
+
+    </div>
+
+    {{-- 📊 USAGE --}}
+    <div class="xl:col-span-2 bg-primary border border-white/10 border-rounded p-6">
+
+        <h2 class="text-sm uppercase tracking-wider text-tertiary mb-6">Usage</h2>
+
+        <div class="space-y-5">
+
+            <div>
+                <div class="flex justify-between text-sm mb-1">
+                    <span>Students</span>
+                    <span>120 / 500</span>
+                </div>
+
+                <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                    <div class="h-2 bg-gradient-to-r from-white to-white/60 rounded-full" style="width: 24%"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-between text-sm mb-1">
+                    <span>Storage</span>
+                    <span>2GB / 10GB</span>
+                </div>
+
+                <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                    <div class="h-2 bg-gradient-to-r from-white to-white/60 rounded-full" style="width: 20%"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- ⚙️ FEATURES --}}
+    <div class="bg-primary border border-white/10 border-rounded p-6">
+
+        <h2 class="text-sm uppercase tracking-wider text-tertiary mb-6">Features</h2>
+
+        <div class="space-y-3 text-sm">
+
+            @foreach(config('plan.features') as $key => $label)
+                @php
+                    $enabled = $subscription->plan->features[$key] ?? false;
+                @endphp
+
+                <div class="flex items-center gap-3">
+
+                    <div class="w-6 h-6 flex items-center justify-center rounded-full 
+                                    {{ $enabled ? 'bg-green-500/20' : 'bg-white/10' }}">
+
+                        <i class="fa-solid {{ $enabled ? 'fa-check text-green-400' : 'fa-xmark text-gray-500' }}"></i>
+                    </div>
+
+                    <span class="{{ $enabled ? 'text-primary' : 'text-tertiary line-through' }}">
+                        {{ $label }}
+                    </span>
+
+                </div>
+            @endforeach
+
+        </div>
+
+    </div>
+
+    {{-- 📦 LIMITS --}}
+    <div class="bg-primary border border-white/10 border-rounded p-6">
+
+        <h2 class="text-sm uppercase tracking-wider text-tertiary mb-6">Limits</h2>
+
+        <div class="space-y-4 text-sm">
+
+            @foreach(config('plan.limits') as $key => $label)
+
+                @php
+                    $value = $subscription->plan->limits[$key] ?? null;
+                @endphp
+
+                <div class="flex items-center justify-between">
+
+                    <div class="flex items-center gap-2 text-tertiary">
+                        <i class="fa-solid fa-layer-group text-xs"></i>
+                        {{ $label }}
+                    </div>
+
+                    <div class="text-primary font-medium">
+                        {{ $value ?? 'Unlimited' }}
+                        @if($key === 'storage') GB @endif
+                    </div>
+
+                </div>
+
+            @endforeach
+
+        </div>
+
+    </div>
 
 </div>

@@ -58,6 +58,8 @@ Route::domain(config('app.domain'))->group(function () {
 
     Route::get('/pay', [PaymentController::class, 'index']);
     Route::get('/pay/{tenant}', [PaymentController::class, 'pay']);
+    Route::get('/billing/checkout', [PaymentController::class, 'checkout'])->name('billing.checkout');
+    Route::post('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
 
     //Auth Routes
     Route::prefix('auth')->group(function () {
@@ -75,8 +77,9 @@ Route::domain(config('app.domain'))->group(function () {
 
         //Admin Tenant Routes
         Route::resource('tenants', TenantController::class);
-        Route::resource('plans', Arzavo\PlanController::class);
-        Route::post('plans/subscribe', [Arzavo\PlanController::class, 'subscribe'])->name('plans.subscribe');
+        Route::get('/checkout/plan/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout');
+        Route::get('/checkout/process/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout.process');
+        Route::post('/plans/{slug}/subscribe', [BillingController::class, 'subscribe'])->name('subscribe');
         Route::get('/check-subdomain', [TenantController::class, 'checkSubdomain']);
         Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
         Route::get('/verify-domain/{tenant}', [DomainController::class, 'verifyDomain'])->name('domain.verify');
@@ -204,11 +207,8 @@ function registerDomains($domain)
             Route::prefix('admin')->middleware('role:admin')->as('admin.')->group(function () {
 
                 Route::get('/billing', [BillingController::class, 'index'])->name('billing.index');
-                Route::get('/billing/checkout', [BillingController::class, 'checkout'])->name('billing.checkout');
-                Route::post('/plans/subscribe', [BillingController::class, 'subscribe'])->name('plan.subscribe');
-                Route::get('/billing/checkout', [BillingController::class, 'checkout'])->name('billing.checkout');
-                Route::post('/billing/checkout', [BillingController::class, 'cancelDowngrade'])->name('plan.cancel-downgrade');
-                Route::post('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
+                // Route::get('/billing/checkout', [BillingController::class, 'checkout'])->name('billing.checkout');
+                Route::post('/cancel-downgrade', [BillingController::class, 'cancelDowngrade'])->name('plan.cancel-downgrade');
 
             });
             Route::prefix('admin')->middleware(['role:admin', 'subscription'])->as('admin.')->group(function () {

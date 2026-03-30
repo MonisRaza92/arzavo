@@ -42,7 +42,7 @@
                     btn.innerText = "Processing...";
 
                     try {
-                        const res = await fetch("{{ route('admin.payment.session', $plan->id) }}", {
+                        const res = await fetch("{{ route('payment.session', $plan->id) }}", {
                             method: "POST",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}",

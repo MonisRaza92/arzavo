@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Arzavo;
 
+use App\Models\Arzavo\Tenant;
 use Illuminate\Http\Request;
 use App\Models\Arzavo\Invoice;
 use App\Services\PaymentService;
@@ -132,22 +133,38 @@ class PaymentController
 
         return response()->json(['status' => 'ok']);
     }
-    public function planSession(Plan $plan)
+    public function planSession(Request $request, Plan $plan)
     {
         try {
-            $tenant = app('currentTenant');
+            $tenantId = $request->tenant_id;
 
-            if (!$tenant) {
-                return response()->json([
-                    'error' => 'Tenant not found'
-                ], 400);
+            if (!$tenantId) {
+                return response()->json(['error' => 'Tenant required'], 422);
             }
 
+            $tenant = Tenant::findOrFail($tenantId);
+
             // ❌ Same plan dubara purchase mat hone do
-            if ($tenant->subscription && $tenant->subscription->plan_id == $plan->id) {
+            if (
+                $tenant->subscription &&
+                $tenant->subscription->plan_id == $plan->id &&
+                $tenant->subscription->status === 'active' &&
+                (!$tenant->subscription->ends_at || now()->lessThan($tenant->subscription->ends_at))
+            ) {
                 return response()->json([
                     'error' => 'You are already on this plan'
                 ], 400);
+            }
+
+            $existingInvoice = Invoice::where('tenant_id', $tenant->id)
+                ->where('status', 'pending')
+                ->latest()
+                ->first();
+
+            if ($existingInvoice) {
+                return response()->json([
+                    'payment_session_id' => app(PaymentService::class)->createPayment($existingInvoice)['payment_session_id']
+                ]);
             }
 
             // ✅ STEP 1: CREATE INVOICE
@@ -190,4 +207,11 @@ class PaymentController
             ], 500);
         }
     }
+    // public function checkout(Request $request)
+    // {
+    //     dd($request->all());
+    //     $plan = Plan::findOrFail($request->plan_id);
+
+    //     return view('tenant.admin.billing.checkout', compact('plan'));
+    // }
 }

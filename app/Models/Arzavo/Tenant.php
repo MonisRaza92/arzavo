@@ -44,6 +44,35 @@ class Tenant extends Model
      * Tenant Admin User Relation
      * Main Platform User who created/owns the tenant
      */
+    public function isTrialActive($days = 3)
+    {
+        return $this->created_at
+            && now()->lessThanOrEqualTo($this->created_at->copy()->addDays($days));
+    }
+    public function trialDaysLeft($days = 3)
+    {
+        if (!$this->created_at)
+            return 0;
+
+        return now()->diffInDays(
+            $this->created_at->copy()->addDays($days),
+            false
+        );
+    }
+    public function canAccess()
+    {
+        // paid plan active
+        if ($this->subscription && $this->subscription->isActive()) {
+            return true;
+        }
+
+        // trial active
+        if ($this->isTrialActive()) {
+            return true;
+        }
+
+        return false;
+    }
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');

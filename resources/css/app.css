@@ -48,6 +48,14 @@
     --logo-size: 40px;
 }
 
+@layer utilities {
+    .border {
+        border-width: var(--border-width);
+        border-color: var(--border-primary);
+        border-style: solid;
+    }
+}
+
 html {
     line-height: 1.5;
     -webkit-text-size-adjust: 100%;
@@ -123,6 +131,7 @@ button {
 .bg-invert {
     background-color: var(--bg-invert);
 }
+
 .bg-hover-invert:hover {
     background-color: var(--bg-invert);
 }

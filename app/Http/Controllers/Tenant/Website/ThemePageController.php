@@ -80,16 +80,14 @@ class ThemePageController extends Controller
         $tenant = app('currentTenant');
         $subscription = $tenant?->subscription;
 
-        if (!$subscription) {
-            return 'expired';
-        }
-
-        if ($subscription->isTrial()) {
-            return 'trial';
-        }
-
-        if ($subscription->isActive()) {
+        // ✅ If user has active subscription → ignore trial completely
+        if ($subscription && $subscription->isActive()) {
             return 'active';
+        }
+
+        // ✅ No active subscription → check trial (tenant level)
+        if ($tenant && $tenant->isTrialActive()) {
+            return 'trial';
         }
 
         return 'expired';

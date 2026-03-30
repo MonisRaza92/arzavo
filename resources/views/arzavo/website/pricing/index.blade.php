@@ -99,7 +99,7 @@
                             @endforeach
                         </ul>
 
-                        <a href="{{ route('register.form') }}" class="mt-auto w-full py-4 text-center text-sm font-bold uppercase tracking-widest rounded-xl transition-all duration-300
+                        <a href="{{ route('checkout', ['slug' => $plan->slug]) }}" class="mt-auto w-full py-4 text-center text-sm font-bold uppercase tracking-widest rounded-xl transition-all duration-300
                             {{ $plan->is_popular 
                                 ? 'bg-white text-slate-900 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-slate-200 hover:scale-[1.02]' 
                                 : 'bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20' }}">
