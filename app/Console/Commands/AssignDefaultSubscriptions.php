@@ -35,10 +35,10 @@ class AssignDefaultSubscriptions extends Command
             return;
         }
 
-        $tenants = Tenant::doesntHave('subscription')->get();
+        $tenants = Tenant::all();
 
         foreach ($tenants as $tenant) {
-            Subscription::create([
+            Subscription::updateOrCreate([
                 'tenant_id' => $tenant->id,
                 'plan_id' => $plan->id,
                 'status' => 'active',
