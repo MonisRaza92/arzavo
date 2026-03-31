@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Arzavo\User;
 use App\Models\Arzavo\SocialAccount;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
@@ -206,6 +207,48 @@ class LoginController extends Controller
         Auth::guard('web')->login($user);
 
         return redirect($this->redirectTo());
+    }
+
+    public function oneTap(Request $request)
+    {
+        $token = $request->credential;
+
+        // verify token with Google
+        $response = Http::get("https://oauth2.googleapis.com/tokeninfo", [
+            'id_token' => $token
+        ]);
+
+        if (!$response->ok()) {
+            return response()->json(['success' => false], 401);
+        }
+
+        $data = $response->json();
+
+        // verify audience
+        if ($data['aud'] !== config('services.google.client_id')) {
+            return response()->json(['success' => false], 401);
+        }
+
+        // verify email
+        if (!($data['email_verified'] ?? false)) {
+            return response()->json(['success' => false], 403);
+        }
+
+        // find or create user
+        $user = User::where('email', $data['email'])->first();
+
+        if (!$user) {
+            $user = User::create([
+                'fname' => $data['given_name'] ?? '',
+                'lname' => $data['family_name'] ?? '',
+                'email' => $data['email'],
+                'password' => null,
+            ]);
+        }
+
+        Auth::guard('web')->login($user);
+
+        return response()->json(['success' => true]);
     }
 
 
