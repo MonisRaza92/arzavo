@@ -10,7 +10,6 @@ use App\Http\Controllers\Arzavo\PaymentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TenantLoginController;
 use App\Http\Controllers\Auth\ProfileController;
-use App\Http\Controllers\Tenant\TenantWebsiteController;
 use App\Http\Controllers\Tenant\Website\ThemePageController;
 use App\Http\Controllers\Tenant\Admin\AdminController;
 use App\Http\Controllers\Tenant\Admin\StudentsController as AdminStudentsController;
@@ -68,6 +67,8 @@ Route::domain(config('app.domain'))->group(function () {
         Route::get('/register', [LoginController::class, 'register'])->name('register.form');
         Route::post('/register', [LoginController::class, 'registerHandle'])->name('register.handle');
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+        Route::get('/{provider}', [LoginController::class, 'redirect'])->name('social.redirect');
+        Route::get('/{provider}/callback', [LoginController::class, 'callback'])->name('social.callback');
     });
 
     //Admin Routes

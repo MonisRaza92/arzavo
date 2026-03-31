@@ -57,6 +57,12 @@ class Subscription extends Model
     {
         return $this->status === 'canceled' && $this->ends_at && now()->lessThan($this->ends_at);
     }
+
+    public function aboutToExpire()
+    {
+        return $this->status === 'active' && $this->ends_at && now()->diffInDays($this->ends_at) <= 7;
+    }
+    
     public function overrides()
     {
         return $this->hasMany(\App\Models\Arzavo\SubscriptionOverride::class);

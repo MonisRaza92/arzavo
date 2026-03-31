@@ -22,9 +22,8 @@ class TenantObserver
         Subscription::create([
             'tenant_id' => $tenant->id,
             'plan_id' => $plan->id,
-            'status' => 'trial',
+            'status' => 'active',
             'starts_at' => now(),
-            'trial_ends_at' => now()->addDays($plan->trial_days),
         ]);
     }
 

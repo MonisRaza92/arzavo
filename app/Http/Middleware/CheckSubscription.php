@@ -40,6 +40,11 @@ class CheckSubscription
             session()->flash('warning', 'You are on a free trial');
             return $next($request);
         }
+        
+        if ($subscription && $subscription->aboutToExpire()) {
+            session()->flash('warning', 'Your subscription is about to expire soon. Please renew.');
+            return $next($request);
+        }
 
         // ❌ NO ACCESS (expired + no trial)
         if (!Auth::check()) {

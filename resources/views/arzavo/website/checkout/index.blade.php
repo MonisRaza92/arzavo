@@ -495,194 +495,236 @@
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 
     <script>
-        const cashfree = Cashfree({
-            mode: "{{ config('services.cashfree.env') === 'production' ? 'production' : 'sandbox' }}"
-        });
+    const cashfree = Cashfree({
+        mode: "{{ config('services.cashfree.env') === 'production' ? 'production' : 'sandbox' }}"
+    });
 
-        document.getElementById("pay-btn").addEventListener("click", async function () {
+    // ─── VALIDATION ─────────────────────────────
+    function validateCheckout() {
+        const tenantId = document.getElementById('selectedTenantId')?.value;
+        const firstName = document.querySelector('[name="first_name"]')?.value.trim();
+        const lastName = document.querySelector('[name="last_name"]')?.value.trim();
+        const email = document.querySelector('[name="email"]')?.value.trim();
 
-    if (!validateCheckout()) {
-        alert("Please fill all required details");
-        return;
+        return tenantId && firstName && lastName && email;
+    }
+    function watchFormChanges() {
+    const form = document.getElementById('checkoutForm');
+    if (!form) return;
+
+    const observer = new MutationObserver(() => {
+        togglePayButton();
+    });
+
+    observer.observe(form, {
+        childList: true,
+        subtree: true
+    });
+}
+
+    function togglePayButton() {
+        const btn = document.getElementById('pay-btn');
+        if (!btn) return;
+
+        if (validateCheckout()) {
+            btn.disabled = false;
+            btn.classList.remove('bg-zinc-400', 'cursor-not-allowed');
+            btn.classList.add('bg-zinc-950', 'hover:bg-zinc-800');
+        } else {
+            btn.disabled = true;
+            btn.classList.add('bg-zinc-400', 'cursor-not-allowed');
+            btn.classList.remove('bg-zinc-950', 'hover:bg-zinc-800');
+        }
     }
 
-    const btn = this;
-    const isFree = btn.dataset.free === "true";
+    // ─── PAY BUTTON BIND ─────────────────────────
+    function bindPayButton() {
+        const btn = document.getElementById("pay-btn");
+        if (!btn || btn.dataset.bound === "true") return;
 
-    btn.disabled = true;
-    btn.innerText = isFree ? "Activating..." : "Processing...";
+        btn.dataset.bound = "true";
 
-    try {
+        btn.addEventListener("click", async function () {
 
-        const form = document.getElementById("checkoutForm");
-        const formData = new FormData(form);
-
-        // 🔥 FREE PLAN FLOW
-        if (isFree) {
-
-            const res = await fetch("{{ route('subscribe', $plan->slug) }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: formData
-            });
-
-            const data = await res.text();
-
-            // simple reload / redirect
-            window.location.reload();
-
-            return;
-        }
-
-        // 🔥 PAID FLOW (existing)
-        const res = await fetch("{{ route('payment.session', $plan->id) }}", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            body: formData
-        });
-
-        const data = await res.json();
-
-        if (!data.payment_session_id) {
-            throw new Error("Session error");
-        }
-
-        await cashfree.checkout({
-            paymentSessionId: data.payment_session_id,
-            redirectTarget: "_self"
-        });
-
-    } catch (err) {
-        console.error(err);
-        alert("Something went wrong");
-
-        btn.disabled = false;
-        btn.innerText = isFree ? "Activate Free Plan" : "Confirm & Pay";
-    }
-});
-    </script>
-    <script>
-
-        function validateCheckout() {
-            const tenantId = document.getElementById('selectedTenantId').value;
-            const firstName = document.querySelector('[name="first_name"]').value.trim();
-            const lastName = document.querySelector('[name="last_name"]').value.trim();
-            const email = document.querySelector('[name="email"]').value.trim();
-
-            return tenantId && firstName && lastName && email;
-        }
-
-        function togglePayButton() {
-            const btn = document.getElementById('pay-btn');
-
-            if (validateCheckout()) {
-                btn.disabled = false;
-                btn.classList.remove('bg-zinc-400', 'cursor-not-allowed');
-                btn.classList.add('bg-zinc-950', 'hover:bg-zinc-800');
-            } else {
-                btn.disabled = true;
-                btn.classList.add('bg-zinc-400', 'cursor-not-allowed');
-                btn.classList.remove('bg-zinc-950', 'hover:bg-zinc-800');
+            if (!validateCheckout()) {
+                alert("Please fill all required details");
+                return;
             }
-        }
-        document.addEventListener('turbo:load', () => {
 
-            document.querySelectorAll('#checkoutForm input').forEach(input => {
-                input.addEventListener('input', togglePayButton);
-            });
+            const isFree = btn.dataset.free === "true";
 
-            togglePayButton(); // initial check
-        });
-        // ─── Pricing ───────────────────────────────────
-        const planPricing = {
-            monthly: {{ $plan->monthly_price ?? $plan->price ?? 0 }},
-            yearly:  {{ $plan->yearly_price ?? (($plan->monthly_price ?? $plan->price ?? 0) * 12 * 0.8) }},
-        };
-        let currentCycle = 'monthly';
+            btn.disabled = true;
+            btn.innerText = isFree ? "Activating..." : "Processing...";
 
-        function setCycle(cycle) {
-            currentCycle = cycle;
-            document.getElementById('billingCycleInput').value = cycle;
+            try {
 
-            const active = 'flex-1 py-2 text-sm font-semibold bg-white text-slate-800 border-rounded shadow-sm transition-all duration-200';
-            const inactive = 'flex-1 py-2 text-sm font-medium text-slate-500 border-rounded transition-all duration-200 flex items-center justify-center gap-1.5';
+                const form = document.getElementById("checkoutForm");
+                const formData = new FormData(form);
 
-            document.getElementById('btn-monthly').className = cycle === 'monthly' ? active : inactive;
-            document.getElementById('btn-yearly').className = cycle === 'yearly' ? active : inactive;
+                // 🔥 FREE PLAN FLOW
+                if (isFree) {
 
-            // Re-add badge to yearly if it becomes inactive
-            if (cycle === 'monthly') {
-                const btn = document.getElementById('btn-yearly');
-                if (!btn.querySelector('span')) {
-                    btn.innerHTML = 'Yearly <span class="text-[10px] font-bold bg-amber-400 text-amber-900 rounded px-1.5 py-0.5">-20%</span>';
+                    const res = await fetch("{{ route('subscribe', $plan->slug) }}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: formData
+                    });
+
+                    await res.text();
+                    window.location.reload();
+                    return;
                 }
-            }
 
-            updatePriceDisplay();
-        }
+                // 🔥 PAID FLOW
+                const res = await fetch("{{ route('payment.session', $plan->id) }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: formData
+                });
 
-        function updatePriceDisplay() {
-            const base = planPricing[currentCycle];
-            const tax = Math.round(base * 0.18);
-            const total = Math.round(base + tax);
-            const fmt = n => new Intl.NumberFormat('en-IN').format(n);
+                const data = await res.json();
 
-            document.getElementById('displayPrice').textContent = fmt(base);
-            document.getElementById('displayPeriod').textContent = currentCycle === 'monthly' ? '/ mo' : '/ yr';
-            document.getElementById('subtotalDisplay').textContent = '₹' + fmt(base);
-            document.getElementById('taxDisplay').textContent = '₹' + fmt(tax);
-            document.getElementById('totalDisplay').textContent = '₹' + fmt(total);
-        }
+                if (!data.payment_session_id) {
+                    throw new Error("Session error");
+                }
 
-        // ─── Tenant Selection ──────────────────────────
-        function selectTenant(id, name) {
-            document.getElementById('selectedTenantId').value = id;
+                await cashfree.checkout({
+                    paymentSessionId: data.payment_session_id,
+                    redirectTarget: "_self"
+                });
 
-            document.querySelectorAll('.tenant-item').forEach(el => el.classList.remove('selected'));
-            document.querySelector(`.tenant-item[data-id="${id}"]`)?.classList.add('selected');
+            } catch (err) {
+                console.error(err);
+                alert("Something went wrong");
 
-            const initials = name.substring(0, 2).toUpperCase();
-            document.getElementById('tenantConfirmAvatar').textContent = initials;
-            document.getElementById('tenantConfirmName').textContent = name + ' · #' + id;
-
-            const confirm = document.getElementById('tenantConfirm');
-            confirm.classList.remove('hidden');
-            confirm.classList.add('flex');
-            togglePayButton();
-        }
-
-        // ─── Tenant Search ─────────────────────────────
-        function filterTenants(q) {
-            q = q.toLowerCase().trim();
-            let visible = 0;
-            document.querySelectorAll('.tenant-item').forEach(el => {
-                const show = !q || el.dataset.search.includes(q);
-                el.style.display = show ? '' : 'none';
-                if (show) visible++;
-            });
-            document.getElementById('tenantEmpty').classList.toggle('hidden', visible > 0);
-        }
-
-        // ─── Billing Address Toggle ────────────────────
-        function toggleBilling() {
-            const sec = document.getElementById('billingSection');
-            const btn = document.getElementById('billingToggleBtn');
-            const hidden = sec.classList.contains('hidden');
-            sec.classList.toggle('hidden', !hidden);
-            btn.textContent = hidden ? '− Hide Address' : '+ Add Address';
-        }
-
-        // ─── On Load: restore old() value ─────────────
-        document.addEventListener('turbo:load', () => {
-            const old = document.getElementById('selectedTenantId').value;
-            if (old) {
-                const item = document.querySelector(`.tenant-item[data-id="${old}"]`);
-                if (item) selectTenant(old, item.dataset.name);
+                btn.disabled = false;
+                btn.innerText = isFree ? "Activate Free Plan" : "Confirm & Pay";
             }
         });
-    </script>
+    }
+
+    // ─── INIT FUNCTION (MAIN FIX) ────────────────
+    function initCheckout() {
+
+        // bind inputs
+        document.querySelectorAll('#checkoutForm input').forEach(input => {
+        input.removeEventListener('input', togglePayButton);
+        input.removeEventListener('change', togglePayButton);
+
+        input.addEventListener('input', togglePayButton);
+        input.addEventListener('change', togglePayButton);
+    });
+
+        togglePayButton();
+        bindPayButton();
+        watchFormChanges();
+
+        // restore old tenant
+        const old = document.getElementById('selectedTenantId')?.value;
+        if (old) {
+            const item = document.querySelector(`.tenant-item[data-id="${old}"]`);
+            if (item) selectTenant(old, item.dataset.name);
+        }
+    }
+
+    // ─── EVENTS (CRITICAL FIX) ───────────────────
+    document.addEventListener('DOMContentLoaded', initCheckout);
+    document.addEventListener('turbo:load', initCheckout);
+
+
+    // ─── Pricing ─────────────────────────────────
+    const planPricing = {
+        monthly: {{ $plan->monthly_price ?? $plan->price ?? 0 }},
+        yearly:  {{ $plan->yearly_price ?? (($plan->monthly_price ?? $plan->price ?? 0) * 12 * 0.8) }},
+    };
+
+    let currentCycle = 'monthly';
+
+    function setCycle(cycle) {
+        currentCycle = cycle;
+        document.getElementById('billingCycleInput').value = cycle;
+
+        const active = 'flex-1 py-2 text-sm font-semibold bg-white text-slate-800 border-rounded shadow-sm transition-all duration-200';
+        const inactive = 'flex-1 py-2 text-sm font-medium text-slate-500 border-rounded transition-all duration-200 flex items-center justify-center gap-1.5';
+
+        document.getElementById('btn-monthly').className = cycle === 'monthly' ? active : inactive;
+        document.getElementById('btn-yearly').className = cycle === 'yearly' ? active : inactive;
+
+        if (cycle === 'monthly') {
+            const btn = document.getElementById('btn-yearly');
+            if (!btn.querySelector('span')) {
+                btn.innerHTML = 'Yearly <span class="text-[10px] font-bold bg-amber-400 text-amber-900 rounded px-1.5 py-0.5">-20%</span>';
+            }
+        }
+
+        updatePriceDisplay();
+    }
+
+    function updatePriceDisplay() {
+        const base = planPricing[currentCycle];
+        const tax = Math.round(base * 0.18);
+        const total = Math.round(base + tax);
+        const fmt = n => new Intl.NumberFormat('en-IN').format(n);
+
+        document.getElementById('displayPrice').textContent = fmt(base);
+        document.getElementById('displayPeriod').textContent = currentCycle === 'monthly' ? '/ mo' : '/ yr';
+        document.getElementById('subtotalDisplay').textContent = '₹' + fmt(base);
+        document.getElementById('taxDisplay').textContent = '₹' + fmt(tax);
+        document.getElementById('totalDisplay').textContent = '₹' + fmt(total);
+    }
+
+    // ─── Tenant Selection ────────────────────────
+    function selectTenant(id, name) {
+
+    const el = document.querySelector(`.tenant-item[data-id="${id}"]`);
+    if (el?.dataset.disabled === "true") return;
+
+    const input = document.getElementById('selectedTenantId');
+    input.value = id;
+
+    // 🔥 FORCE EVENT TRIGGER
+    input.dispatchEvent(new Event('change'));
+
+    document.querySelectorAll('.tenant-item').forEach(el => el.classList.remove('selected'));
+    el.classList.add('selected');
+
+    const initials = name.substring(0, 2).toUpperCase();
+    document.getElementById('tenantConfirmAvatar').textContent = initials;
+    document.getElementById('tenantConfirmName').textContent = name + ' · #' + id;
+
+    const confirm = document.getElementById('tenantConfirm');
+    confirm.classList.remove('hidden');
+    confirm.classList.add('flex');
+
+    togglePayButton(); // backup
+}
+
+    // ─── Tenant Search ───────────────────────────
+    function filterTenants(q) {
+        q = q.toLowerCase().trim();
+        let visible = 0;
+
+        document.querySelectorAll('.tenant-item').forEach(el => {
+            const show = !q || el.dataset.search.includes(q);
+            el.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        document.getElementById('tenantEmpty').classList.toggle('hidden', visible > 0);
+    }
+
+    // ─── Billing Toggle ──────────────────────────
+    function toggleBilling() {
+        const sec = document.getElementById('billingSection');
+        const btn = document.getElementById('billingToggleBtn');
+        const hidden = sec.classList.contains('hidden');
+
+        sec.classList.toggle('hidden', !hidden);
+        btn.textContent = hidden ? '− Hide Address' : '+ Add Address';
+    }
+</script>
 @endsection

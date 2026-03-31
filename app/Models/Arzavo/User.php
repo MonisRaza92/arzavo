@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class User extends Authenticatable
 {
     protected $connection = 'mysql';
-    
+
     use HasFactory, Notifiable;
 
     protected $fillable = [
@@ -54,5 +54,9 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->fname . ' ' . $this->lname;
+    }
+    public function socialAccounts()
+    {
+        return $this->hasMany(SocialAccount::class);
     }
 }

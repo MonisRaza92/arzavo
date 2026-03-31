@@ -6,6 +6,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Arzavo\User;
+use App\Models\Arzavo\SocialAccount;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -143,6 +145,48 @@ class LoginController extends Controller
         }
 
         return $username;
+    }
+
+    public function redirect($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    public function callback($provider)
+    {
+        $socialUser = Socialite::driver($provider)->user();
+
+        // 1. check social account
+        $account = SocialAccount::where('provider', $provider)
+            ->where('provider_id', $socialUser->getId())
+            ->first();
+
+        if ($account) {
+            Auth::guard('web')->login($account->user);
+            return redirect($this->redirectTo());
+        }
+
+        // 2. check email match
+        $user = User::where('email', $socialUser->getEmail())->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'password' => null,
+            ]);
+        }
+
+        // 3. create social account
+        SocialAccount::create([
+            'user_id' => $user->id,
+            'provider' => $provider,
+            'provider_id' => $socialUser->getId(),
+        ]);
+
+        Auth::guard('web')->login($user);
+
+        return redirect($this->redirectTo());
     }
 
 
