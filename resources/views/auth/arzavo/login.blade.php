@@ -37,18 +37,10 @@
                 </div>
             </form>
             <div class="mt-6 text-center">
-                <p class="mb-2">Or login with</p>
+                <div class="h-0.5 w-full bg-tertiary border-rounded my-4 flex items-center justify-center"><span class="text-primary bg-primary text-xs py-1 px-2">Login With</span></div>
                 <a href="{{ route('social.redirect', 'google') }}"
-                    class="inline-block mx-2 p-2 border-primary border-rounded hover:bg-gray-100">
-                    <i class="fab fa-google"></i>
-                </a>
-                <a href="{{ route('social.redirect', 'facebook') }}"
-                    class="inline-block mx-2 p-2 border-primary border-rounded hover:bg-gray-100">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="{{ route('social.redirect', 'github') }}"
-                    class="inline-block mx-2 p-2 border-primary border-rounded hover:bg-gray-100">
-                    <i class="fab fa-github"></i>
+                    class="inline-block p-2 border-primary w-full border-rounded relative hover:bg-gray-100">
+                    <i class="fab fa-google absolute left-2 top-1/2 transform -translate-y-1/2"></i> Login with Google
                 </a>
             </div>
         </div>
