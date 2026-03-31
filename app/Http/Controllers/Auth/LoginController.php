@@ -234,21 +234,64 @@ class LoginController extends Controller
             return response()->json(['success' => false], 403);
         }
 
-        // find or create user
-        $user = User::where('email', $data['email'])->first();
+        $provider = 'google';
+        $providerId = $data['sub']; // unique Google ID
 
-        if (!$user) {
-            $user = User::create([
-                'fname' => $data['given_name'] ?? '',
-                'lname' => $data['family_name'] ?? '',
-                'email' => $data['email'],
-                'password' => null,
+        // 🔥 1. check social account (same as callback)
+        $account = SocialAccount::where('provider', $provider)
+            ->where('provider_id', $providerId)
+            ->first();
+
+        if ($account) {
+            Auth::guard('web')->login($account->user);
+            return response()->json([
+                'success' => true,
+                'redirect' => $this->redirectTo()
             ]);
         }
 
+        // 🔥 2. check email match
+        $user = User::where('email', $data['email'])->first();
+
+        $fname = $data['given_name'] ?? null;
+        $lname = $data['family_name'] ?? null;
+
+        // fallback name split
+        if (!$fname && isset($data['name'])) {
+            $parts = explode(' ', $data['name'], 2);
+            $fname = $parts[0];
+            $lname = $parts[1] ?? null;
+        }
+
+        if (!$user) {
+            $user = User::create([
+                'fname' => $fname,
+                'lname' => $lname,
+                'profile_picture' => $data['picture'] ?? null,
+                'username' => $this->generateUniqueUsername($fname, $lname),
+                'email' => $data['email'],
+                'number' => null,
+                'password' => bcrypt(uniqid()),
+                'role' => 'user',
+                'status' => 'active',
+                'email_verified_at' => now(),
+                'last_login' => now(),
+            ]);
+        }
+
+        // 🔥 3. create social account (IMPORTANT – missing tha tumhare code me)
+        SocialAccount::create([
+            'user_id' => $user->id,
+            'provider' => $provider,
+            'provider_id' => $providerId,
+        ]);
+
         Auth::guard('web')->login($user);
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true,
+            'redirect' => $this->redirectTo()
+        ]);
     }
 
 

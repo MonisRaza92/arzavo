@@ -6,7 +6,8 @@
         <div class="hidden lg:block w-3/4 h-full">
             <img src="{{ asset('images/auth/register.jpg') }}" alt="" class="inset-0 object-cover w-full h-full">
         </div>
-        <div class="auth-form w-full flex flex-col items-center gap-4 lg:gap-0 lg:w-1/4 h-full relative border-primary bg-primary">
+        <div
+            class="auth-form w-full flex flex-col items-center gap-4 lg:gap-0 lg:w-1/4 h-full relative border-primary bg-primary">
             <div class="bg-primary max-w-lg p-4 lg:px-6 border-bottom w-full">
                 <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="Arzavo Logo" class="logo">
             </div>
@@ -64,11 +65,12 @@
                             class="text-primary bg-primary text-xs py-1 px-2">OR CONTINUE WITH</span></div>
                     <a href="{{ route('social.redirect', 'google') }}"
                         class="p-2 flex items-center justify-center border-primary w-full border-rounded relative hover:bg-gray-100">
-                        <img src="{{ asset('images/auth/google.svg') }}" alt="" class="h-5 absolute left-2 top-1/2 transform -translate-y-1/2"> Continue with Google
+                        <img src="{{ asset('images/auth/google.svg') }}" alt=""
+                            class="h-5 absolute left-2 top-1/2 transform -translate-y-1/2"> Continue with Google
                     </a>
                     <!-- <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
-                        data-text="continue_with" data-shape="pill">
-                    </div> -->
+                            data-text="continue_with" data-shape="pill">
+                        </div> -->
                 </div>
             </div>
         </div>
@@ -92,7 +94,7 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = '/dashboard';
+                        window.location.href = data.redirect;
                     }
                 });
         }
