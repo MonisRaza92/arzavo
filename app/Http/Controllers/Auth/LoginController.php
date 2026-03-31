@@ -185,6 +185,7 @@ class LoginController extends Controller
                 'fname' => $fname,
                 'lname' => $lname,
                 'profile_picture' => $socialUser->getAvatar(),
+                'username' => $this->generateUniqueUsername($fname, $lname),
                 'email' => $socialUser->getEmail(),
                 'password' => bcrypt(uniqid()), // random password
                 'role' => 'user',
