@@ -169,11 +169,28 @@ class LoginController extends Controller
         // 2. check email match
         $user = User::where('email', $socialUser->getEmail())->first();
 
+        $fname = $socialUser->user['given_name'] ?? null;
+        $lname = $socialUser->user['family_name'] ?? null;
+        $verified = $socialUser->user['verified_email'] ?? false;
+
+        // fallback agar ye nahi mile
+        if (!$fname && $socialUser->getName()) {
+            $parts = explode(' ', $socialUser->getName(), 2);
+            $fname = $parts[0];
+            $lname = $parts[1] ?? null;
+        }
+
         if (!$user) {
             $user = User::create([
-                'name' => $socialUser->getName(),
+                'fname' => $fname,
+                'lname' => $lname,
+                'profile_picture' => $socialUser->getAvatar(),
                 'email' => $socialUser->getEmail(),
-                'password' => null,
+                'password' => bcrypt(uniqid()), // random password
+                'role' => 'user',
+                'status' => 'active',
+                'email_verified_at' => $verified ? now() : null,
+                'last_login' => now(),
             ]);
         }
 
