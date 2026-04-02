@@ -78,7 +78,7 @@ Route::domain(config('app.domain'))->group(function () {
         Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
         //Admin Tenant Routes
-        Route::resource('tenants', TenantController::class);
+        Route::resource('tenants', TenantController::class)->except(['show']);
         Route::get('/checkout/plan/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout');
         Route::get('/checkout/process/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout.process');
         Route::post('/plans/{slug}/subscribe', [BillingController::class, 'subscribe'])->name('subscribe');
