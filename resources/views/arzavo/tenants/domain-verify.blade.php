@@ -66,7 +66,7 @@
 
                         <div class="bg-gray-50 border p-2 rounded-md text-xs">
                             <strong>A Record:</strong><br>
-                            @ → 15.207.111.21
+                            @ → 15.207.223.117
                         </div>
 
                         <div class="bg-gray-50 border p-2 rounded-md text-xs">
@@ -76,7 +76,7 @@
 
                         <div class="bg-gray-50 border p-2 rounded-md text-xs">
                             <strong>A Record (www):</strong><br>
-                            www → 15.207.111.21
+                            www → 15.207.223.117
                         </div>
 
                     </div>
