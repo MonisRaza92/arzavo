@@ -108,8 +108,8 @@ class TenantController
         // Save db info in tenant record
         $tenant->update([
             'db_name' => $dbName,
-            'db_username' => env('DB_USERNAME'),
-            'db_password' => env('DB_PASSWORD'),
+            'db_username' => config('database.connections.mysql.username'),
+            'db_password' => config('database.connections.mysql.password'),
         ]);
     }
 
