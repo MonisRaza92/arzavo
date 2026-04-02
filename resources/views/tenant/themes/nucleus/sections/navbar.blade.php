@@ -11,7 +11,7 @@
             <!-- <a href=""><i class="fa-regular fa-camera"
                     style="font-size: {{ $s->icon_size ?? '20' }}px;"></i></a> -->
             <button onclick="toggleMobileMenu()" class="lg:hidden">
-                <i class="fa-solid fa-bars" style="font-size: calc({{ $s->icon_size ?? '20' }}px + 4px);"></i>
+                <i class="fa-solid fa-bars" style="font-size: calc({{ $s->icon_size ?? '20' }}px + 5px);"></i>
             </button>
         </div>
     </div>
