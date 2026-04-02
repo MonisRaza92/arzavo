@@ -85,10 +85,7 @@ class TenantController
             ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
             : 'https://' . $tenant->subdomain . '/admin/dashboard';
 
-        return response()->json([
-            'success' => true,
-            'redirect' => $tenantUrl
-        ]);
+        return redirect()->to($tenantUrl)->with('success', 'Tenant created successfully! You are being redirected to the tenant dashboard...');
     }
 
     // Create tenant DB
