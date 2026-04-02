@@ -305,10 +305,6 @@ function registerDomains($domain)
 
                 //Admin Settings Routes
                 Route::resource('settings', SettingsController::class);
-
-
-                Route::get('/reviews', [AdminController::class, 'reviews'])->name('admin-reviews');
-                Route::get('/reports', [AdminController::class, 'reports'])->name('admin-reports');
             });
         });
     });
