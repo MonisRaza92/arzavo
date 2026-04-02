@@ -56,64 +56,39 @@ class TenantController
                 'max:50',
                 Rule::unique('tenants', 'custom_domain')
             ],
+
         ]);
 
-        DB::beginTransaction();
+        $user = Auth::guard('web')->user();
+        // Create Tenant
+        $tenant = Tenant::create([
+            'admin_id' => $user->id,
+            'name' => $request->name,
+            'logo' => '',
+            'banner' => '',
+            'heading' => $request->name,
+            'about' => 'Coming soon...',
+            'subdomain' => strtolower($request->subdomain) . '.' . config('app.domain'),
+            'custom_domain' => $request->custom_domain,
+            'domain_verified' => false,
+            'status' => 'active',
+        ]);
 
-        try {
-            $user = Auth::guard('web')->user();
+        // Create Database for tenant
+        $this->createTenantDatabase($tenant);
 
-            // 1. Create tenant
-            $tenant = Tenant::create([
-                'admin_id' => $user->id,
-                'name' => $request->name,
-                'logo' => '',
-                'banner' => '',
-                'heading' => $request->name,
-                'about' => 'Coming soon...',
-                'subdomain' => strtolower($request->subdomain) . '.' . config('app.domain'),
-                'custom_domain' => $request->custom_domain,
-                'domain_verified' => false,
-                'status' => 'active',
-            ]);
+        // Run Tenant Migrations & Create Admin
+        $this->initializeTenant($tenant, $user);
+        ping_google();
 
-            // 2. Create DB
-            $this->createTenantDatabase($tenant);
+        $tenantUrl = $tenant->custom_domain && $tenant->domain_verified
+            ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
+            : 'https://' . $tenant->subdomain . '/admin/dashboard';
 
-            // 3. Init tenant
-            $this->initializeTenant($tenant, $user);
-
-            DB::commit();
-
-            $tenantUrl = $tenant->custom_domain && $tenant->domain_verified
-                ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
-                : 'https://' . $tenant->subdomain . '/admin/dashboard';
-
-            return response()->json([
-                'success' => true,
-                'redirect' => $tenantUrl
-            ]);
-
-        } catch (\Throwable $e) {
-
-            DB::rollBack();
-
-            // ❗ DB bhi delete karo agar create ho gayi thi
-            if (!empty($tenant->db_name)) {
-                DB::statement("DROP DATABASE IF EXISTS `{$tenant->db_name}`");
-            }
-
-            // ❗ tenant bhi delete karo
-            if (!empty($tenant->id)) {
-                $tenant->delete();
-            }
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Tenant creation failed',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'redirect' => $tenantUrl
+        ]);
     }
 
     // Create tenant DB
@@ -133,8 +108,8 @@ class TenantController
         // Save db info in tenant record
         $tenant->update([
             'db_name' => $dbName,
-            'db_username' => config('database.connections.mysql.username'),
-            'db_password' => config('database.connections.mysql.password'),
+            'db_username' => env('DB_USERNAME'),
+            'db_password' => env('DB_PASSWORD'),
         ]);
     }
 
