@@ -1,5 +1,5 @@
 @php($s = section($section))
-<div {!! $s->attributes() !!} class="{{ $s->visibility }}"
+<div {!! $s->attributes() !!} class="arz-core {{ $s->visibility }}"
     style="{{ $s->spacing }}">
     {{-- Background Layers --}}
     {!! $s->bg_layers() !!}

@@ -12,7 +12,7 @@
                 class="arzavo-logo-invert w-auto absolute top-0 left-0 transition-opacity duration-300 opacity-0 arz-logo-size">
         @endif
 
-        @if(!$customizes['logo'] && !$customizes['invert_Logo'])
+        @if((!$customizes['logo'] ?? false) && (!$customizes['invert_Logo'] ?? false))
             <h2 class="text-xl font-semibold arz-logo-size" style="color: var(--arzavo-heading-color);">
                 {{ app('currentTenant')->name }}
             </h2>
