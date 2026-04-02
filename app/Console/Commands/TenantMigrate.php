@@ -36,7 +36,8 @@ class TenantMigrate extends Command
             // Switch database connection for this tenant
             Config::set('database.connections.tenant', [
                 'driver' => 'mysql',
-                'host' => env('DB_HOST'),
+                'host' => config('database.connections.mysql.host'),
+                'port' => config('database.connections.mysql.port'),
                 'database' => $tenant->db_name,
                 'username' => $tenant->db_username,
                 'password' => $tenant->db_password,
