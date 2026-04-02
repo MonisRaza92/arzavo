@@ -24,7 +24,7 @@ class Block implements ArrayAccess
     {
         // computed helpers
         $helpers = [
-            'data' => 'data',
+            'attributes' => 'attributes',
             'scheme' => 'scheme',
             'flexClass' => 'flexClass',
             'flexStyle' => 'flexStyle',
@@ -33,6 +33,7 @@ class Block implements ArrayAccess
             'visibility' => 'visibility',
             'menu' => 'menu',
             'mobileMenu' => 'mobileMenu',
+            'blocks' => 'blocks',
         ];
 
         if (isset($helpers[$key])) {
@@ -47,7 +48,7 @@ class Block implements ArrayAccess
         // fallback section data
         return $this->block[$key] ?? null;
     }
-    public function data(): string
+    public function attributes(): string
     {
         $attrs = [
             'data-block-id' => $this->block['id'] ?? '',
@@ -65,9 +66,12 @@ class Block implements ArrayAccess
         $scheme = $scheme
             ?? $this->block['color_scheme']
             ?? $this->block['scheme']
-            ?? 'scheme_1';
+            ?? null;
 
-        return scheme($scheme);
+        if ($scheme) {
+            return scheme($scheme);
+        }
+        return '';
     }
     /* --------------------------------
        ARRAY ACCESS

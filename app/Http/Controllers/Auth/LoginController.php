@@ -17,7 +17,7 @@ class LoginController extends Controller
         if (Auth::check()) {
             return redirect($this->redirectTo());
         }
-        return view('auth.arzavo.login');
+        return view('arzavo.auth.login');
     }
     public function loginHandle(Request $request)
     {
@@ -89,7 +89,7 @@ class LoginController extends Controller
         if (Auth::check()) {
             return redirect($this->redirectTo());
         }
-        return view('auth.arzavo.register');
+        return view('arzavo.auth.register');
     }
     public function registerHandle(Request $request)
     {
@@ -172,7 +172,6 @@ class LoginController extends Controller
 
         $fname = $socialUser->user['given_name'] ?? null;
         $lname = $socialUser->user['family_name'] ?? null;
-        $verified = $socialUser->user['verified_email'] ?? false;
 
         // fallback agar ye nahi mile
         if (!$fname && $socialUser->getName()) {
@@ -192,7 +191,7 @@ class LoginController extends Controller
                 'password' => bcrypt(uniqid()), // random password
                 'role' => 'user',
                 'status' => 'active',
-                'email_verified_at' => $verified ? now() : null,
+                'email_verified_at' => now(),
                 'last_login' => now(),
             ]);
         }
@@ -270,7 +269,7 @@ class LoginController extends Controller
                 'profile_picture' => $data['picture'] ?? null,
                 'username' => $this->generateUniqueUsername($fname, $lname),
                 'email' => $data['email'],
-                'number' => null,
+                'number' => 00000000000, // dummy number
                 'password' => bcrypt(uniqid()),
                 'role' => 'user',
                 'status' => 'active',

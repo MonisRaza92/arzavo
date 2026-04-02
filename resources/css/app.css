@@ -4,11 +4,14 @@
     --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
-}
 
-.container {
-    @apply mx-auto relative px-(--global-padding);
-    max-width: var(--container-width);
+    --color-primary: #ffffff;
+    --color-secondary: #f1f1f1;
+    --color-tertiary: #e6e6e6;
+    --color-accent: #920000;
+    --color-secondary-accent: #c58400;
+    --color-dark: #000000;
+    --color-dark-secondary: #717171;
 }
 
 .outfit-font {
@@ -49,10 +52,26 @@
 }
 
 @layer utilities {
+    .container {
+        @apply mx-auto relative;
+        max-width: var(--container-width);
+    }
+
+    .arz-core {
+        padding-left: var(--global-padding);
+        padding-right: var(--global-padding);
+        position: relative;
+        background: var(--arz-bg);
+    }
+
     .border {
         border-width: var(--border-width);
         border-color: var(--border-primary);
         border-style: solid;
+    }
+
+    .rounded {
+        border-radius: var(--border-rounded);
     }
 }
 
@@ -320,6 +339,17 @@ button {
     text-transform: capitalize;
     pointer-events: none;
     z-index: 10;
+}
+
+.preview-active::before,
+.preview-hover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid #3b82f6;
+    pointer-events: none;
+    z-index: 9999;
+    /* 🔥 sabse upar */
 }
 
 /* ADVANCED PREMIUM TOKENS */
@@ -893,7 +923,7 @@ button {
 /* Primary Button */
 /* ========================= */
 
-.arz-primary {
+.arz-btn-primary {
     background: var(--arz-btn-bg);
     color: var(--arz-btn-text);
 
@@ -915,7 +945,7 @@ button {
     cursor: pointer;
 }
 
-.arz-primary:hover {
+.arz-btn-primary:hover {
     background: var(--arz-btn-hover-bg);
     color: var(--arz-btn-hover-text);
     border-color: var(--arz-btn-hover-border);
@@ -926,7 +956,7 @@ button {
 /* Secondary Button */
 /* ========================= */
 
-.arz-secondary {
+.arz-btn-secondary {
     background: var(--arz-btn2-bg);
     color: var(--arz-btn2-text);
 
@@ -948,7 +978,7 @@ button {
     cursor: pointer;
 }
 
-.arz-secondary:hover {
+.arz-btn-secondary:hover {
     background: var(--arz-btn2-hover-bg);
     color: var(--arz-btn2-hover-text);
     border-color: var(--arz-btn2-hover-border);

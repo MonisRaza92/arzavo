@@ -107,12 +107,18 @@
             "icon": "fa-arrows-left-right"
         },
         {
-            "key": "content_width",
+            "key": "width",
             "label": "Content Width",
             "type": "radio",
             "options": [
-                "container",
-                "full"
+                {
+                    "label": "Full Width",
+                    "value": "w-full"
+                },
+                {
+                    "label": "Container",
+                    "value": "container"
+                }
             ],
             "default": "container"
         },
@@ -249,10 +255,17 @@
             "label": "Overlay Color",
             "type": "color",
             "default": "#000000",
-            "conditional": {
-                "field": "background_overlay",
-                "value": "1"
-            }
+            "conditional": [
+                {
+                    "field": "background_overlay",
+                    "value": "1"
+                },
+                {
+                    "field": "background_type",
+                    "operator": "!=",
+                    "value": "none"
+                }
+            ]
         },
         {
             "key": "overlay_opacity",
@@ -261,10 +274,17 @@
             "default": 50,
             "min": 0,
             "max": 100,
-            "conditional": {
-                "field": "background_overlay",
-                "value": "1"
-            }
+            "conditional": [
+                {
+                    "field": "background_overlay",
+                    "value": "1"
+                },
+                {
+                    "field": "background_type",
+                    "operator": "!=",
+                    "value": "none"
+                }
+            ]
         },
         {
             "preset": "section_spacing"

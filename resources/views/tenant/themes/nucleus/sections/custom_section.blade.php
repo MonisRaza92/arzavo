@@ -1,13 +1,10 @@
-@php($settings = sectionResolve($section))
+@php($s = section($section))
+<div {!! $s->attributes() !!} class="{{ $s->visibility }}"
+    style="{{ $s->spacing }}">
+    {{-- Background Layers --}}
+    {!! $s->bg_layers() !!}
 
-<div data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
-    class="section relative overflow-hidden {{ $settings['visibility'] }}"
-    style="{{ scheme($section['color_scheme']) }} {{ $settings['background']['style'] }}">
-
-    <x-section.background :bg="$settings['background']" />
-
-    <div class="section-content relative z-30 {{ $settings['layout']['class'] }} {{ $settings['spacing']['class'] }}"
-        style="{{ $settings['spacing']['style'] }}">
-        {!! renderBlocks($section['blocks']) !!}
+    <div class="section-content relative z-10 {{ $s->flexClass . ' ' . $s->width }}" style="{{ $s->flexStyle }}">
+        {!! $s->blocks() !!}
     </div>
 </div>

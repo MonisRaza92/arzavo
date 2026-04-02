@@ -3,6 +3,7 @@
 
 <head>
     <x-header />
+    @vite('resources/js/theme.js')
 </head>
 
 <body style="background: {{ $customizes['background_color'] ?? 'fafafa' }} !important;">

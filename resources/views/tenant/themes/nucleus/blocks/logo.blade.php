@@ -1,41 +1,20 @@
-@php
-    $s = $block['settings'] ?? [];
+@php($b = block($block))
+<div {!! $b->attributes() !!} class="w-auto shrink-0" style="{{ $b->spacing }}">
+    <a href="{{ route('tenant.home') }}" class="block relative">
 
-    $pt = $s['padding_top'] ?? '0';
-    $pb = $s['padding_bottom'] ?? '0';
-    $pl = $s['padding_left'] ?? '0';
-    $pr = $s['padding_right'] ?? '0';
-    $clickableLogo = $s['clickable_logo'] ?? '0';
-
-    $logo = $customizes['logo'] ?? null;
-    $invertLogo = $customizes['invert_logo'] ?? $logo;
-@endphp
-
-<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" class="arzavo-logo-wrapper w-fit shrink-0"
-    style="padding-top: {{ $pt }}px; padding-right: {{ $pr }}px; padding-bottom: {{ $pb }}px; padding-left: {{ $pl }}px;">
-    @if ($clickableLogo === '1')
-        <a href="{{ route('tenant.home') }}" class="block relative">
-    @else
-            <div class="block relative">
+        @if($customizes['logo'] ?? false)
+            <img src="{{ media($customizes['logo']) }}" alt="Logo"
+                class="arzavo-logo-normal w-auto transition-opacity duration-300 arz-logo-size">
         @endif
 
-            @if($logo)
-                <img src="{{ media($logo) }}" alt="Logo" class="arzavo-logo-normal w-auto transition-opacity duration-300 arz-logo-size">
-            @endif
+        @if($customizes['invert_Logo'] ?? false)
+            <img src="{{ media($customizes['invert_Logo']) }}" alt="Invert Logo"
+                class="arzavo-logo-invert w-auto absolute top-0 left-0 transition-opacity duration-300 opacity-0 arz-logo-size">
+        @endif
 
-            @if($invertLogo)
-                <img src="{{ media($invertLogo) }}" alt="Invert Logo"
-                    class="arzavo-logo-invert w-auto absolute top-0 left-0 transition-opacity duration-300 opacity-0 arz-logo-size">
-            @endif
-
-            @if(!$logo && !$invertLogo)
-                <h2 class="text-xl font-semibold arz-logo-size" style="color: var(--arzavo-heading-color);">
-                    {{ app('currentTenant')->name }}
-                </h2>
-            @endif
-            @if ($clickableLogo === '1')
-                </a>
-            @else
-        </div>
-    @endif
+        @if(!$customizes['logo'] && !$customizes['invert_Logo'])
+            <h2 class="text-xl font-semibold arz-logo-size" style="color: var(--arzavo-heading-color);">
+                {{ app('currentTenant')->name }}
+            </h2>
+        @endif
 </div>

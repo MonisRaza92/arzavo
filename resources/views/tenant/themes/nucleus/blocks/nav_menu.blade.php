@@ -1,42 +1,13 @@
-@php
-    $s = $block['settings'] ?? [];
+@php($b = block($block))
 
-    $menuId = $s['menu_id'] ?? 1;
-    $separatorMobileMenu = $s['separate_mobile_menu'] ?? 1;
-    $mobileMenuId = $s['mobile_menu_id'] ?? 1;
-    $itemSpacing = $s['item_spacing'] ?? 16;
-    $fontSize = $s['text_size'] ?? 'small';
-    $dropdownStyle = $s['dropdown_style'] ?? 'hover';
-    $textTransform = $s['text_transform'] ?? 'capitalize';
-    $fontWeight = $s['font_weight'] ?? 'normal';
-    $pl = $s['padding_left'] ?? '16';
-    $pr = $s['padding_right'] ?? '16';
-    $iconStyle = $s['icon_style'] ?? 'regular';
+@if($b->menu)
+    <div {!! $b->attributes() !!} class="w-auto" style="{{ $b->spacing }}">
+        <ul class=" hidden md:flex font-{{ $b->font_weight }}"
+            style="{{ $b->flexStyle . $b->spacing }}">
 
-    $menu = $menus->firstWhere('id', $menuId);
-    if ($separatorMobileMenu === "1") {
-        $mobileMenu = $menus->firstWhere('id', $mobileMenuId);
-    } else {
-        $mobileMenu = $menu;
-    }
-
-    $size = match ($fontSize) {
-        'small' => 'text-sm',
-        'medium' => 'text-base',
-        'large' => 'text-lg'
-    };
-
-@endphp
-
-@if($menu)
-    <div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}">
-        <ul class="hidden md:flex
-        font-{{ $fontWeight }}"
-            style="text-transform: {{ $textTransform }}; gap: {{ $itemSpacing }}px; padding-left: {{ $pl }}px; padding-right: {{ $pr }}px;">
-
-            @foreach($menu->items as $item)
+            @foreach($b->menu->items as $item)
                 <li class="relative group">
-                    <a href="{{ $item->link }}" class="inline-flex items-center {{ $size }} arz-link" @if ($item->children->count()) onclick="event.preventDefault()" @endif>
+                    <a href="{{ $item->link }}" class="inline-flex items-center arz-link" @if ($item->children->count()) onclick="event.preventDefault()" @endif>
                         {{ $item->name }}
                     </a>
 
@@ -55,16 +26,16 @@
                 </li>
             @endforeach
         </ul>
-        <button class="text-xl md:hidden" onclick="toggleMobileMenu()" style="color: var(--arzavo-heading-color);"><i class="fa-solid fa-bars arzavo-icons"></i></button>
-        <ul class="flex md:hidden flex-col fixed right-0 border-0 transform translate-x-full hidden transition-all duration-300 top-0 w-3/4 h-dvh arzavo-background z-30 overflow-y-auto scrollbar"
-            id="mobileMenu" style="{{ scheme($scheme) }}">
+        <ul class="flex md:hidden flex-col fixed right-0 border-0 transform translate-x-full hidden transition-all duration-300 ease-out top-0 w-3/4 h-dvh arzavo-background z-30 overflow-y-auto scrollbar"
+            id="mobileMenu">
             <div class="header flex px-4 py-3.5 justify-between arzavo-border-bottom">
                 <img src="{{ media($customizes['logo'] ?? '') }}" alt="logo" class="arz-logo-size shrink-0">
-                <button class="text-2xl" onclick="toggleMobileMenu()" style="color: var(--arzavo-heading-color);"><i class="fa-solid fa-xmark"></i></button>
+                <button class="text-2xl" onclick="toggleMobileMenu()" style="color: var(--arzavo-heading-color);"><i
+                        class="fa-solid fa-xmark"></i></button>
             </div>
-            @foreach($mobileMenu->items as $item)
+            @foreach($b->mobileMenu->items as $item)
                 <li class="relative group px-4 py-3 arzavo-border-bottom">
-                    <a href="{{ $item->link }}" class="inline-flex items-center arz-link {{ $size }}" @if ($item->children->count()) onclick="event.preventDefault()" @endif>
+                    <a href="{{ $item->link }}" class="inline-flex items-center arz-link" @if ($item->children->count()) onclick="event.preventDefault()" @endif>
                         {{ $item->name }}
                     </a>
 
@@ -82,33 +53,6 @@
                     @endif
                 </li>
             @endforeach
-            <div class="absolute p-4 arzavo-border-top bottom-0 left-0 w-full">
-                @if (!Auth::guard('tenant')->check())
-                    <a href="{{ route('tenant.login') }}"><i class="fa-{{ $iconStyle }} fa-user text-xl" style="color: var(--arzavo-heading-color);"></i></a>
-                @else
-                    <div class="menu relative" onclick="toggleModel('authMenuMobile')">
-                        <i class="fa-{{ $iconStyle }} fa-user text-xl" style="color: var(--arzavo-heading-color);"></i>
-                        <div class="auth-menu hidden arzavo-background absolute bottom-full left-0 border-rounded border-primary min-w-50"
-                            id="authMenuMobile">
-                            <div class=" user-info arzavo-border-bottom py-2 px-4" style="color: var(--arzavo-heading-color);">
-                                <h4 class="text-base font-semibold">{{ $user->fname ?? 'Guest' }} {{ $user->lname ?? '' }}
-                                </h4>
-                                <p class="text-xs">{{ $user->email ?? 'N/A' }}</p>
-                            </div>
-                            <div class="links py-2 px-4 space-y-2" style="color: var(--arzavo-subheading-color);">
-                                <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-user"></i>Profile</a>
-                                <a href="" class="flex gap-2 items-center"><i
-                                        class="fa-solid fa-bars-progress"></i>Dashboard</a>
-                                <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-video"></i>Courses</a>
-                                <a href="" class="flex gap-2 items-center"><i class="fa-solid fa-file-pdf"></i>Notes
-                                    & Book</a>
-                                <a href="" class="flex gap-2 items-center text-red-500 arzavo-border-top pt-2"><i
-                                        class="fa-solid fa-right-from-bracket"></i>Logout</a>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
         </ul>
     </div>
 @endif

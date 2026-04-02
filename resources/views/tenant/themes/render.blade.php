@@ -6,7 +6,40 @@
 
 @php
     $globalDesign = globalThemeDesign($themeId)->layout;
+
+    $allSections = collect();
+
+    // header
+    if (!empty($globalDesign['header']['sections'])) {
+        $allSections = $allSections->merge($globalDesign['header']['sections']);
+    }
+
+    // page
+    if (!empty($layout['sections'])) {
+        $allSections = $allSections->merge($layout['sections']);
+    }
+
+    // footer
+    if (!empty($globalDesign['footer']['sections'])) {
+        $allSections = $allSections->merge($globalDesign['footer']['sections']);
+    }
+
+    $schemesUsed = $allSections
+    ->pluck('color_scheme')
+    ->filter()
+    ->unique();
+    
+    foreach($allSections as $section){
+    $schemeMap[$section['id']] = $section['color_scheme'] ?? 'scheme_1';
+}
 @endphp
+<style>
+@foreach($schemesUsed as $schemeKey)
+.arz-{{ $schemeKey }} {
+    {!! scheme($schemeKey) !!}
+}
+@endforeach
+</style>
 
 {{-- ========================= --}}
 {{-- 🔵 GLOBAL HEADER --}}
@@ -95,6 +128,17 @@
             window.ARZAVO_EDITOR_MODE = e.data.enabled === true;
         }
     });
+
+document.querySelectorAll('[data-section-id]').forEach(el => {
+    const id = el.getAttribute('data-section-id');
+
+    // section data inject karna padega
+    const schemeMap = @json($schemeMap);
+
+    if (schemeMap[id]) {
+        el.classList.add('arz-' + schemeMap[id]);
+    }
+});
 </script>
 
 @endsection

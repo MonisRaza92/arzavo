@@ -11,6 +11,9 @@
     $author = $admin
         ? trim(($admin->fname ?? '') . ' ' . ($admin->lname ?? ''))
         : 'Arzavo Team';
+
+    $firstLetter = strtoupper(substr($siteName, 0, 1));
+    $textToImageUrl = "https://ui-avatars.com/api/?name={$firstLetter}&background=000000&color=ffffff&size=100&font-size=0.7&bold=true";
 @endphp
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -33,11 +36,11 @@
 <meta property="og:description"
     content="{{ $settings['meta_description'] ?? 'Run your school or coaching institute smarter with Arzavo. Manage admissions, fees, staff, students, online classes, reports & more in one simple platform' }}">
 <meta property="og:url" content="{{ url()->current() }}">
-<meta property="og:image" content="{{ url(media($customizes['logo'] ?? 'images/logo/icon-dark.png')) }}">
+<meta property="og:image" content="{{ url(media($customizes['logo'] ?? $textToImageUrl)) }}">
 
 
-<link rel="icon" type="image/x-icon" href="{{ media($customizes['favicon'] ?? 'images/logo/icon-dark.png') }}">
-<link rel="shortcut icon" href="{{ url(media($customizes['favicon'] ?? 'images/logo/icon-dark.png')) }}">
+<link rel="icon" type="image/x-icon" href="{{ media($customizes['favicon'] ?? $textToImageUrl) }}">
+<link rel="shortcut icon" href="{{ url(media($customizes['favicon'] ?? $textToImageUrl)) }}">
 <title>
     @hasSection('title')
         @yield('title') • {{ $siteName }}
@@ -57,7 +60,7 @@
 <meta name="theme-color" content="#ffffff">
 
 <!-- iOS support -->
-<link rel="apple-touch-icon" href="{{ url(media($customizes['favicon'] ?? 'images/logo/icon-dark.png')) }}">
+<link rel="apple-touch-icon" href="{{ url(media($customizes['favicon'] ?? $textToImageUrl)) }}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -80,7 +83,7 @@
         "@type" => "EducationalOrganization",
         "name" => $siteName ?? 'Arzavo',
         "url" => tenant_url(),
-        "logo" => url(media($customizes['logo'] ?? 'images/logo/icon-dark.png')),
+        "logo" => url(media($customizes['logo'] ?? $textToImageUrl)),
     ];
 @endphp
 

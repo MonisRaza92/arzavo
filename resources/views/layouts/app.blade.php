@@ -2,152 +2,62 @@
 <html lang="en">
 
 <head>
-    <x-header />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="keywords"
+        content="school, coaching institute, education management, admissions, fees, staff, students, online classes, reports, Arzavo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Run your school or coaching institute smarter with Arzavo. Manage admissions, fees, staff, students, online classes, reports & more in one simple platform">
+    <meta name="author" content="Monis Raza Khan">
+    <meta name="robots" content="index,follow">
+    <link rel="alternate" hreflang="en" href="https://arzavo.com{{ request()->getRequestUri() }}" />
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Arzavo - Smarter School & Coaching Management Software">
+    <meta property="og:description"
+        content="Run your school or coaching institute smarter with Arzavo. Manage admissions, fees, staff, students, online classes, reports & more in one simple platform">
+    <meta property="og:url" content="https://arzavo.com{{ request()->getRequestUri() }}">
+    <meta property="og:image" content="{{ url(media('images/logo/icon-dark.png')) }}">
+
+
+    <link rel="icon" type="image/x-icon" href="{{ media('images/logo/icon-dark.png') }}">
+    <link rel="shortcut icon" href="{{ url(media('images/logo/icon-dark.png')) }}">
+    <title>Arzavo - Smarter School & Coaching Management Software</title>
+    <x-variables :customizes="$customizes" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- fontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- iOS support -->
+    <link rel="apple-touch-icon" href="{{ url('images/logo/icon-dark.png') }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="canonical" href="https://arzavo.com{{ request()->getRequestUri() }}">
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Chart Js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 
 <body class="mesh-bg">
-    <!-- V4 Noise Texture -->
-    <div class="noise-overlay"></div>
-
     <x-alert />
     {{-- Main content --}}
     <main>
         @yield('content')
     </main>
-
-    <style>
-        /* Ultra Modern Animations & Utilities */
-        @keyframes gradient-mesh {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .animate-gradient-mesh {
-            background-size: 200% 200%;
-            animation: gradient-mesh 15s ease infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float-delayed {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(-5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        .animate-float-delayed {
-            animation: float-delayed 7s ease-in-out infinite 1s;
-        }
-        
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(var(--accent-rgb), 0); }
-            100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0); }
-        }
-        .animate-pulse-glow {
-            animation: pulse-glow 2s infinite;
-        }
-
-        /* 3D Tilt Utilities */
-        .perspective-1000 { perspective: 1000px; }
-        .transform-style-3d { transform-style: preserve-3d; }
-        
-        /* Glassmorphism */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-        .glass-panel-dark {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Typewriter Cursor */
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        .typewriter-cursor::after {
-            content: '|';
-            animation: blink 1s step-end infinite;
-            color: var(--accent);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
-
-    <!-- Global V4 Scripts -->
-    <script>
-        document.addEventListener('turbo:load', () => {
-            const observerOptions = {
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.reveal-on-scroll').forEach(el => {
-                observer.observe(el);
-            });
-
-            // Counter Animation Logic
-            const counterObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const target = entry.target;
-                        const endValue = parseInt(target.getAttribute('data-target'));
-                        const duration = 2000; // 2 seconds
-                        const frameRate = 1000 / 60; // 60fps
-                        const totalFrames = Math.round(duration / frameRate);
-                        let currentFrame = 0;
-                        
-                        const counter = setInterval(() => {
-                            currentFrame++;
-                            const progress = currentFrame / totalFrames;
-                            // Ease out current progress
-                            const currentCount = Math.round(endValue * (1 - Math.pow(1 - progress, 3)));
-                            
-                            // Add formatting if needed (K, +, etc)
-                            let suffix = target.getAttribute('data-suffix') || '';
-                            let prefix = target.getAttribute('data-prefix') || '';
-                            
-                            target.innerText = prefix + currentCount + suffix;
-                            
-                            if (currentFrame === totalFrames) {
-                                clearInterval(counter);
-                                target.innerText = prefix + endValue + suffix;
-                            }
-                        }, frameRate);
-                        
-                        counterObserver.unobserve(target);
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.animate-counter').forEach(el => {
-                counterObserver.observe(el);
-            });
-        });
-    </script>
 </body>
 
 </html>

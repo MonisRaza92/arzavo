@@ -69,7 +69,7 @@ Route::domain(config('app.domain'))->group(function () {
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
         Route::get('/{provider}', [LoginController::class, 'redirect'])->name('social.redirect');
         Route::get('/{provider}/callback', [LoginController::class, 'callback'])->name('social.callback');
-        Route::post('/google/onetap', [LoginController::class, 'oneTap'])->name('social.onetap');
+        Route::post('/google/onetap', [LoginController::class, 'oneTap'])->name('google.onetap');
     });
 
     //Admin Routes

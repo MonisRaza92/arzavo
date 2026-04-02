@@ -137,7 +137,7 @@ class SectionController
             'name' => $request->section_name,
             'icon' => $schema['icon'] ?? 'fa-shapes',
             'settings' => $settings,
-            'color_scheme' => $schema['color_scheme'] ?? null,
+            'color_scheme' => $schema['color_scheme'] ?? 'scheme_1',
             'is_active' => true,
             'order' => count($sections) + 1,
             'blocks' => [],

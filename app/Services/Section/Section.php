@@ -24,13 +24,16 @@ class Section implements ArrayAccess
     {
         // computed helpers
         $helpers = [
-            'data' => 'data',
+            'attributes' => 'attributes',
             'scheme' => 'scheme',
             'flexClass' => 'flexClass',
             'flexStyle' => 'flexStyle',
             'spacing' => 'spacing',
             'background' => 'background',
+            'bg_layers' => 'bg_layers',
             'visibility' => 'visibility',
+            'container' => 'container',
+            'blocks' => 'blocks',
         ];
 
         if (isset($helpers[$key])) {
@@ -45,7 +48,7 @@ class Section implements ArrayAccess
         // fallback section data
         return $this->section[$key] ?? null;
     }
-    public function data(): string
+    public function attributes(): string
     {
         $attrs = [
             'data-section-id' => $this->section['id'] ?? '',
@@ -88,6 +91,17 @@ class Section implements ArrayAccess
     {
     }
 
+    protected function container(): string
+    {
+        $container = $this->settings['container'] ?? $this->settings['width'] ?? 'full';
+
+        if ($container === 'container' || $container === 'contained') {
+            return 'container padding';
+        }
+
+        return 'w-full padding';
+    }
+
     /* --------------------------------
        FLEX / LAYOUT
     -------------------------------- */
@@ -125,8 +139,8 @@ class Section implements ArrayAccess
            JUSTIFY
         ------------------------- */
 
-        $justify = $this->settings['justify'] ?? 'center';
-        $mobileJustify = $this->settings['mobile_justify'] ?? $justify;
+        $justify = $this->settings['position'] ?? 'center';
+        $mobileJustify = $this->settings['mobile_position'] ?? $justify;
 
         $justifyMap = [
             'start' => 'justify-start',
@@ -149,8 +163,8 @@ class Section implements ArrayAccess
            ALIGN
         ------------------------- */
 
-        $align = $this->settings['align'] ?? 'center';
-        $mobileAlign = $this->settings['mobile_align'] ?? $align;
+        $align = $this->settings['alignment'] ?? 'center';
+        $mobileAlign = $this->settings['mobile_alignment'] ?? $align;
 
         $alignMap = [
             'start' => 'items-start',
@@ -290,6 +304,7 @@ class Section implements ArrayAccess
             }
         }
 
+
         return implode(' ', $css);
     }
 
@@ -311,7 +326,7 @@ class Section implements ArrayAccess
         ----------------------------- */
 
         if ($type === 'none') {
-            $style[] = "background: var(--arzavo-background);";
+            $style[] = "background: var(--arz-bg);";
         }
 
         if ($type === 'image') {
@@ -365,6 +380,13 @@ class Section implements ArrayAccess
         ];
     }
 
+    public function bg_layers(): string
+    {
+        $bg = $this->background(); // existing method :contentReference[oaicite:0]{index=0}
+
+        return view('components.section.background', ['bg' => $bg ?? null]);
+    }
+
     /* --------------------------------
        VISIBILITY
     -------------------------------- */
@@ -380,6 +402,45 @@ class Section implements ArrayAccess
             return 'hidden md:block';
 
         return '';
+    }
+
+    private function cssify($styles): string
+    {
+        return collect($styles)
+            ->map(fn($v, $k) => "$k: $v;")
+            ->implode(' ');
+    }
+
+    public function css($config): string
+    {
+        if (empty($config) || !is_array($config))
+            return '';
+
+        $id = $this->section['id'] ?? 'section_' . uniqid();
+        $selector = ".arz-section-{$id}";
+
+        $css = '';
+
+        // Desktop (default)
+        if (!empty($config['base'])) {
+            $css .= "{$selector} { " . $this->cssify($config['base']) . " }";
+        }
+
+        // Mobile
+        if (!empty($config['mobile'])) {
+            $css .= "@media (max-width: 767px) {
+            {$selector} { " . $this->cssify($config['mobile']) . " }
+        }";
+        }
+
+        // Tablet
+        if (!empty($config['tablet'])) {
+            $css .= "@media (min-width: 768px) and (max-width: 1024px) {
+            {$selector} { " . $this->cssify($config['tablet']) . " }
+        }";
+        }
+
+        return "<style>{$css}</style>";
     }
 
     /* --------------------------------

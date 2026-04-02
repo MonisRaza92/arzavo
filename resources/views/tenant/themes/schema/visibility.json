@@ -2,18 +2,20 @@
     {
         "type": "group",
         "label": "Visibility",
-        "help": "Control where this section/block appears. Avoid hiding it on both desktop and mobile, or it will not be visible anywhere. If you want to hide it completely, use the Active/Status toggle instead."
+        "help": "Control the visibility of this section/block on different devices."
     },
     {
         "key": "hide_desktop",
         "label": "Hide this on desktop",
         "type": "switch",
-        "default": "0"
+        "default": "0",
+        "help": "Hides this section/block on desktop devices. It will still be visible only on mobile devices."
     },
     {
         "key": "hide_mobile",
         "label": "Hide this on Mobile",
         "type": "switch",
-        "default": "0"
+        "default": "0",
+        "help": "Hides this section/block on mobile devices. It will still be visible only on desktop devices."
     }
 ]

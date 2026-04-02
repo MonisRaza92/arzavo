@@ -1,14 +1,5 @@
 <?php
 
-use App\Services\Section\SectionResolver;
-
-if (!function_exists('sectionResolve')) {
-    function sectionResolve(array $section): array
-    {
-        return (new SectionResolver($section))->resolve();
-    }
-}
-
 if (!function_exists('section')) {
     function section($section)
     {
