@@ -56,7 +56,7 @@
 
         @if(!empty($section['type']) && View::exists($viewPath))
             @includeIf($viewPath, [
-                'section' => $section,
+                'section' => section($section),
                 'theme' => $theme,
                 'context' => 'global-header'
             ])
@@ -84,7 +84,7 @@
 
         @if(!empty($section['type']) && View::exists($viewPath))
             @includeIf($viewPath, [
-                'section' => $section,
+                'section' => section($section),
                 'theme' => $theme,
                 'context' => 'page'
             ])
@@ -108,7 +108,7 @@
 
         @if(!empty($section['type']) && View::exists($viewPath))
             @includeIf($viewPath, [
-                'section' => $section,
+                'section' => section($section),
                 'theme' => $theme,
                 'context' => 'global-footer'
             ])
@@ -134,6 +134,11 @@ document.querySelectorAll('[data-section-id]').forEach(el => {
 
     // section data inject karna padega
     const schemeMap = @json($schemeMap);
+
+    el.classList.add('arz-core');
+    if (id) {
+        el.classList.add('arz-' + id);
+    }
 
     if (schemeMap[id]) {
         el.classList.add('arz-' + schemeMap[id]);

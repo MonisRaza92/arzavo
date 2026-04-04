@@ -1,0 +1,35 @@
+[
+    {
+        "type": "group",
+        "label": "Background Blur",
+        "help": "Apply blur effect to image or video backgrounds to reduce distraction and improve content focus.",
+        "conditional": {
+            "field": "background_type",
+            "operator": "!=",
+            "value": "none"
+        }
+    },
+    {
+        "key": "background_blur",
+        "label": "Background blur for image or video",
+        "type": "switch",
+        "default": "0",
+        "conditional": {
+            "field": "background_type",
+            "operator": "!=",
+            "value": "none"
+        }
+    },
+    {
+        "key": "background_blur_intensity",
+        "label": "Blur Intensity",
+        "type": "range",
+        "default": 8,
+        "min": 0,
+        "max": 30,
+        "conditional": {
+            "field": "background_blur",
+            "value": "1"
+        }
+    }
+]

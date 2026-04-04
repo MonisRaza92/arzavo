@@ -1,0 +1,161 @@
+[
+    {
+        "type": "group",
+        "label": "Layout & Style",
+        "help": "Control layout with responsive flex settings. Direction defines behavior of alignment and positioning across devices."
+    },
+    {
+        "key": "direction",
+        "label": "Direction",
+        "type": "radio",
+        "options": [
+            {
+                "label": "Vertical",
+                "value": "col"
+            },
+            {
+                "label": "Horizontal",
+                "value": "row"
+            }
+        ],
+        "default": "col"
+    },
+    {
+        "key": "mobile_direction",
+        "label": "Stack on Mobile",
+        "type": "switch",
+        "default": "1",
+        "conditional": {
+            "field": "direction",
+            "value": "row"
+        }
+    },
+    {
+        "key": "alignment",
+        "label": "Alignment",
+        "type": "radio",
+        "options": [
+            {
+                "label": "Left",
+                "value": "start"
+            },
+            {
+                "label": "Center",
+                "value": "center"
+            },
+            {
+                "label": "Right",
+                "value": "end"
+            }
+        ],
+        "default": "center",
+        "conditional": {
+            "field": "direction",
+            "value": "col"
+        }
+    },
+    {
+        "key": "alignment",
+        "label": "Alignment",
+        "type": "radio",
+        "options": [
+            {
+                "label": "Top",
+                "value": "start"
+            },
+            {
+                "label": "Center",
+                "value": "center"
+            },
+            {
+                "label": "Bottom",
+                "value": "end"
+            }
+        ],
+        "default": "center",
+        "conditional": {
+            "field": "direction",
+            "value": "row"
+        }
+    },
+    {
+        "key": "position",
+        "label": "Content Position",
+        "type": "select",
+        "options": [
+            {
+                "label": "Start",
+                "value": "start"
+            },
+            {
+                "label": "Center",
+                "value": "center"
+            },
+            {
+                "label": "End",
+                "value": "end"
+            },
+            {
+                "label": "Space Between",
+                "value": "between"
+            },
+            {
+                "label": "Space Evenly",
+                "value": "evenly"
+            }
+        ],
+        "default": "center"
+    },
+    {
+        "key": "mobile_alignment",
+        "label": "Mobile Alignment",
+        "type": "radio",
+        "options": [
+            {
+                "label": "Top",
+                "value": "start"
+            },
+            {
+                "label": "Center",
+                "value": "center"
+            },
+            {
+                "label": "Bottom",
+                "value": "end"
+            }
+        ],
+        "default": "center",
+        "conditional": {
+            "field": "mobile_direction",
+            "value": "0"
+        }
+    },
+    {
+        "key": "mobile_position",
+        "label": "Mobile Position",
+        "type": "radio",
+        "options": [
+            {
+                "label": "Top",
+                "value": "start"
+            },
+            {
+                "label": "Center",
+                "value": "center"
+            },
+            {
+                "label": "Bottom",
+                "value": "end"
+            }
+        ],
+        "default": "center"
+    },
+    {
+        "key": "gap",
+        "label": "Blocks Spacing",
+        "type": "range",
+        "default": "16",
+        "min": 0,
+        "max": 200
+    }
+]

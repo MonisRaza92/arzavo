@@ -1,10 +1,47 @@
-@php($s = section($section))
-<div {!! $s->attributes() !!} class="arz-core {{ $s->visibility }}"
-    style="{{ $s->spacing }}">
-    {{-- Background Layers --}}
-    {!! $s->bg_layers() !!}
+<div {!! $section->attributes() !!} class="{{ $section->visibility }}">
 
-    <div class="section-content relative z-10 {{ $s->flexClass . ' ' . $s->width }}" style="{{ $s->flexStyle }}">
-        {!! $s->blocks() !!}
+    {{-- Background Layers --}}
+    {!! $section->backgrounds() !!}
+
+    <div class="section-content {{ $section->container }}">
+        {!! $section->blocks() !!}
     </div>
+
 </div>
+
+<style>
+    /* -------------------------
+       DESKTOP (default)
+    ------------------------- */
+
+    .arz-{{ $section->id }} {
+        {{ $section->margin }}
+    }
+
+    .arz-{{ $section->id }} .section-content {
+        position: relative;
+        z-index: 10;
+
+        {{ $section->padding }}
+        {{ $section->flex }}
+        {{ $section->height }}
+    }
+
+    /* -------------------------
+       MOBILE
+    ------------------------- */
+
+    @media (max-width: 767px) {
+
+        .arz-{{ $section->id }} {
+            {{ $section->marginMobile }}
+        }
+
+        .arz-{{ $section->id }} .section-content {
+            {{ $section->paddingMobile }}
+            {{ $section->flexMobile }}
+            {{ $section->heightMobile }}
+        }
+
+    }
+</style>

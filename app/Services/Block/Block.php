@@ -417,8 +417,12 @@ class Block implements ArrayAccess
        BLOCKS
     -------------------------------- */
 
-    public function blocks($extra = [])
+    public function blocks(): BlockQuery
     {
-        return renderBlocks($this->block['blocks'] ?? [], $extra);
+        return new BlockQuery($this);
+    }
+    public function getBlocks(): array
+    {
+        return $this->block['blocks'] ?? [];
     }
 }

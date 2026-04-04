@@ -1,0 +1,103 @@
+[
+    {
+        "type": "group",
+        "label": "Size & Width",
+        "help": "Control section width and height across devices. Values are applied directly as CSS styles."
+    },
+    {
+        "key": "width",
+        "label": "Content Width",
+        "type": "radio",
+        "options": [
+            {
+                "label": "Full Width",
+                "value": "w-full"
+            },
+            {
+                "label": "Container",
+                "value": "container"
+            }
+        ],
+        "default": "1200px"
+    },
+    {
+        "key": "height",
+        "label": "Section Height",
+        "type": "select",
+        "options": [
+            {
+                "label": "Auto",
+                "value": "auto"
+            },
+            {
+                "label": "Small",
+                "value": "40vh"
+            },
+            {
+                "label": "Medium",
+                "value": "60vh"
+            },
+            {
+                "label": "Large",
+                "value": "80vh"
+            },
+            {
+                "label": "Full Screen",
+                "value": "100vh"
+            },
+            {
+                "label": "Custom",
+                "value": "custom"
+            }
+        ],
+        "default": "60vh"
+    },
+    {
+        "key": "custom_height",
+        "label": "Custom Height",
+        "type": "range",
+        "default": 60,
+        "min": 10,
+        "max": 100,
+        "conditional": {
+            "field": "height",
+            "value": "custom"
+        }
+    },
+    {
+        "key": "mobile_height_mode",
+        "label": "Mobile Height",
+        "type": "select",
+        "options": [
+            {
+                "label": "Auto",
+                "value": "auto"
+            },
+            {
+                "label": "Same as Desktop",
+                "value": "inherit"
+            },
+            {
+                "label": "Full Screen",
+                "value": "100vh"
+            },
+            {
+                "label": "Custom",
+                "value": "custom"
+            }
+        ],
+        "default": "inherit"
+    },
+    {
+        "key": "mobile_custom_height",
+        "label": "Mobile Custom Height",
+        "type": "range",
+        "default": 60,
+        "min": 10,
+        "max": 100,
+        "conditional": {
+            "field": "mobile_height_mode",
+            "value": "custom"
+        }
+    }
+]

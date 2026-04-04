@@ -1,0 +1,59 @@
+[
+    {
+        "type": "group",
+        "label": "Background Overlay",
+        "help": "Add a color overlay to improve text readability and visual contrast. Adjust color and opacity to control the intensity.",
+        "conditional": {
+            "field": "background_type",
+            "operator": "!=",
+            "value": "none"
+        }
+    },
+    {
+        "key": "background_overlay",
+        "label": "Add overlay for image or video",
+        "type": "switch",
+        "default": "0",
+        "conditional": {
+            "field": "background_type",
+            "operator": "!=",
+            "value": "none"
+        }
+    },
+    {
+        "key": "overlay_color",
+        "label": "Overlay Color",
+        "type": "color",
+        "default": "#000000",
+        "conditional": [
+            {
+                "field": "background_overlay",
+                "value": "1"
+            },
+            {
+                "field": "background_type",
+                "operator": "!=",
+                "value": "none"
+            }
+        ]
+    },
+    {
+        "key": "overlay_opacity",
+        "label": "Overlay Opacity",
+        "type": "range",
+        "default": 50,
+        "min": 0,
+        "max": 100,
+        "conditional": [
+            {
+                "field": "background_overlay",
+                "value": "1"
+            },
+            {
+                "field": "background_type",
+                "operator": "!=",
+                "value": "none"
+            }
+        ]
+    }
+]

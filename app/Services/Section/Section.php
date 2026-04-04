@@ -26,10 +26,14 @@ class Section implements ArrayAccess
         $helpers = [
             'attributes' => 'attributes',
             'scheme' => 'scheme',
-            'flexClass' => 'flexClass',
-            'flexStyle' => 'flexStyle',
-            'spacing' => 'spacing',
-            'background' => 'background',
+            'flex' => 'flex',
+            'flexMobile' => 'flexMobile',
+            'height' => 'height',
+            'heightMobile' => 'heightMobile',
+            'padding' => 'padding',
+            'paddingMobile' => 'paddingMobile',
+            'margin' => 'margin',
+            'marginMobile' => 'marginMobile',
             'bg_layers' => 'bg_layers',
             'visibility' => 'visibility',
             'container' => 'container',
@@ -96,223 +100,343 @@ class Section implements ArrayAccess
         $container = $this->settings['container'] ?? $this->settings['width'] ?? 'full';
 
         if ($container === 'container' || $container === 'contained') {
-            return 'container padding';
+            return 'container';
         }
 
-        return 'w-full padding';
+        return 'w-full';
     }
 
     /* --------------------------------
        FLEX / LAYOUT
     -------------------------------- */
 
-    protected function flex(): array
+    protected function flexStyles(): array
     {
-        $classes = ['flex'];
+        /* -------------------------
+           INIT
+        ------------------------- */
+
         $style = [];
+        $styleMobile = [];
+
+        /* -------------------------
+           BASE
+        ------------------------- */
+
+        $style[] = "display: flex;";
+        $styleMobile[] = "display: flex;";
 
         /* -------------------------
            DIRECTION
         ------------------------- */
 
-        $direction = $this->settings['direction'] ?? 'vertical';
-        $mobileVertical = ($this->settings['mobile_direction'] ?? '0') === '1';
+        $direction = $this->settings['direction'] ?? 'col';
+        $mobileStack = ($this->settings['mobile_direction'] ?? '1') === '1';
 
-        if ($direction === 'horizontal') {
+        $desktopDirection = $direction === 'row' ? 'row' : 'column';
 
-            if ($mobileVertical) {
-                $classes[] = 'flex-col md:flex-row';
-            } else {
-                $classes[] = 'flex-row';
-            }
+        $mobileDirection = ($direction === 'row' && $mobileStack)
+            ? 'column'
+            : $desktopDirection;
 
-        } else {
-
-            if ($mobileVertical) {
-                $classes[] = 'flex-col';
-            } else {
-                $classes[] = 'flex-col md:flex-row';
-            }
-        }
+        $style[] = "flex-direction: {$desktopDirection};";
+        $styleMobile[] = "flex-direction: {$mobileDirection};";
 
         /* -------------------------
            JUSTIFY
         ------------------------- */
 
+        $justifyMap = [
+            'start' => 'flex-start',
+            'center' => 'center',
+            'end' => 'flex-end',
+            'between' => 'space-between',
+            'evenly' => 'space-evenly',
+        ];
+
         $justify = $this->settings['position'] ?? 'center';
         $mobileJustify = $this->settings['mobile_position'] ?? $justify;
 
-        $justifyMap = [
-            'start' => 'justify-start',
-            'center' => 'justify-center',
-            'end' => 'justify-end',
-            'between' => 'justify-between',
-            'around' => 'justify-around',
-            'evenly' => 'justify-evenly',
-        ];
+        $desktopJustify = $justifyMap[$justify] ?? 'center';
+        $mobileJustify = $justifyMap[$mobileJustify] ?? $desktopJustify;
 
-        if (isset($justifyMap[$mobileJustify])) {
-            $classes[] = $justifyMap[$mobileJustify];
-        }
-
-        if (isset($justifyMap[$justify])) {
-            $classes[] = 'md:' . $justifyMap[$justify];
-        }
+        $style[] = "justify-content: {$desktopJustify};";
+        $styleMobile[] = "justify-content: {$mobileJustify};";
 
         /* -------------------------
            ALIGN
         ------------------------- */
 
+        $alignMap = [
+            'start' => 'flex-start',
+            'center' => 'center',
+            'end' => 'flex-end',
+        ];
+
         $align = $this->settings['alignment'] ?? 'center';
         $mobileAlign = $this->settings['mobile_alignment'] ?? $align;
 
-        $alignMap = [
-            'start' => 'items-start',
-            'center' => 'items-center',
-            'end' => 'items-end',
-            'stretch' => 'items-stretch',
-            'baseline' => 'items-baseline',
-        ];
+        $desktopAlign = $alignMap[$align] ?? 'center';
+        $mobileAlign = $alignMap[$mobileAlign] ?? $desktopAlign;
 
-        if (isset($alignMap[$mobileAlign])) {
-            $classes[] = $alignMap[$mobileAlign];
-        }
-
-        if (isset($alignMap[$align])) {
-            $classes[] = 'md:' . $alignMap[$align];
-        }
+        $style[] = "align-items: {$desktopAlign};";
+        $styleMobile[] = "align-items: {$mobileAlign};";
 
         /* -------------------------
-           GAP (dynamic)
+           GAP
         ------------------------- */
 
         if (!empty($this->settings['gap'])) {
             $gap = (int) $this->settings['gap'];
             $style[] = "gap: {$gap}px;";
+            $styleMobile[] = "gap: {$gap}px;";
         }
 
+        /* -------------------------
+           RETURN
+        ------------------------- */
+
         return [
-            'class' => implode(' ', $classes),
-            'style' => implode(' ', $style),
+            'flex' => implode(' ', $style),
+            'flex_mobile' => implode(' ', $styleMobile),
         ];
     }
-    protected function flexClass(): string
+    protected function flex(): string
     {
-        return $this->flex()['class'] ?? '';
+        return $this->flexStyles()['flex'] ?? '';
     }
 
-    protected function flexStyle(): string
+    protected function flexMobile(): string
     {
-        return $this->flex()['style'] ?? '';
+        return $this->flexStyles()['flex_mobile'] ?? '';
+    }
+
+    protected function heightStyles(): array
+    {
+        /* -------------------------
+           INIT
+        ------------------------- */
+
+        $height = [];
+        $heightMobile = [];
+
+        /* -------------------------
+           DESKTOP HEIGHT
+        ------------------------- */
+
+        $desktop = $this->settings['height'] ?? '60vh';
+
+        if ($desktop === 'custom') {
+            $desktop = ($this->settings['custom_height'] ?? 60) . 'vh';
+        }
+
+        // auto case
+        if ($desktop === 'auto') {
+            $desktop = 'auto';
+        }
+
+        $height[] = "min-height: {$desktop};";
+
+        /* -------------------------
+           MOBILE HEIGHT
+        ------------------------- */
+
+        $mobile = $this->settings['mobile_height_mode'] ?? 'inherit';
+
+        if ($mobile === 'custom') {
+            $mobile = ($this->settings['mobile_custom_height'] ?? 60) . 'vh';
+        } elseif ($mobile === 'inherit') {
+            $mobile = $desktop;
+        }
+
+        $heightMobile[] = "min-height: {$mobile};";
+
+        /* -------------------------
+           RETURN
+        ------------------------- */
+
+        return [
+            'height' => implode(' ', $height),
+            'height_mobile' => implode(' ', $heightMobile),
+        ];
+    }
+
+    protected function height(): string
+    {
+        return $this->heightStyles()['height'] ?? '';
+    }
+
+    protected function heightMobile(): string
+    {
+        return $this->heightStyles()['height_mobile'] ?? '';
     }
 
     /* --------------------------------
        SPACING
     -------------------------------- */
 
-    protected function spacing(): string
+    protected function spacingStyles(): array
     {
-        $map = [
-            'pt' => ['pt', 'padding_top', 'p_top', 'padding_t'],
-            'pb' => ['pb', 'padding_bottom', 'p_bottom', 'padding_b'],
-            'pl' => ['pl', 'padding_left', 'p_left', 'padding_l'],
-            'pr' => ['pr', 'padding_right', 'p_right', 'padding_r'],
-            'px' => ['px', 'padding_x', 'padding_horizontal'],
-            'py' => ['py', 'padding_y', 'padding_vertical'],
-            'p' => ['p', 'padding'],
+        $padding = [];
+        $paddingMobile = [];
 
-            'mt' => ['mt', 'margin_top', 'm_top', 'margin_t'],
-            'mb' => ['mb', 'margin_bottom', 'm_bottom', 'margin_b'],
-            'ml' => ['ml', 'margin_left', 'm_left', 'margin_l'],
-            'mr' => ['mr', 'margin_right', 'm_right', 'margin_r'],
-            'mx' => ['mx', 'margin_x', 'margin_horizontal'],
-            'my' => ['my', 'margin_y', 'margin_vertical'],
-            'm' => ['m', 'margin'],
+        $margin = [];
+        $marginMobile = [];
+
+        $enableMobile = ($this->settings['enable_mobile_spacing'] ?? '0') === '1';
+
+        /* -------------------------
+           MAP
+        ------------------------- */
+
+        $map = [
+            'pt' => ['padding_top'],
+            'pb' => ['padding_bottom'],
+            'pl' => ['padding_left'],
+            'pr' => ['padding_right'],
+            'px' => ['padding_x'],
+            'py' => ['padding_y'],
+            'p' => ['padding'],
+
+            'mt' => ['margin_top'],
+            'mb' => ['margin_bottom'],
+            'ml' => ['margin_left'],
+            'mr' => ['margin_right'],
+            'mx' => ['margin_x'],
+            'my' => ['margin_y'],
+            'm' => ['margin'],
         ];
 
-        $css = [];
+        /* -------------------------
+           LOOP
+        ------------------------- */
 
         foreach ($map as $dir => $keys) {
 
-            $value = null;
+            $desktopValue = null;
+            $mobileValue = null;
 
             foreach ($keys as $key) {
+
                 if (isset($this->settings[$key])) {
-                    $value = $this->settings[$key];
-                    break;
+                    $desktopValue = $this->settings[$key];
+                }
+
+                if ($enableMobile && isset($this->settings["mobile_{$key}"])) {
+                    $mobileValue = $this->settings["mobile_{$key}"];
                 }
             }
 
-            if ($value === null || $value === '')
-                continue;
+            /* ---------- DESKTOP ---------- */
 
-            switch ($dir) {
+            if ($desktopValue !== null && $desktopValue !== '') {
 
-                case 'pt':
-                    $css[] = "padding-top: {$value}px;";
-                    break;
-                case 'pb':
-                    $css[] = "padding-bottom: {$value}px;";
-                    break;
-                case 'pl':
-                    $css[] = "padding-left: {$value}px;";
-                    break;
-                case 'pr':
-                    $css[] = "padding-right: {$value}px;";
-                    break;
+                $css = $this->buildSpacingCSS($dir, $desktopValue);
 
-                case 'px':
-                    $css[] = "padding-left: {$value}px;";
-                    $css[] = "padding-right: {$value}px;";
-                    break;
+                if (str_starts_with($dir, 'p')) {
+                    $padding = array_merge($padding, $css);
+                } else {
+                    $margin = array_merge($margin, $css);
+                }
+            }
 
-                case 'py':
-                    $css[] = "padding-top: {$value}px;";
-                    $css[] = "padding-bottom: {$value}px;";
-                    break;
+            /* ---------- MOBILE ---------- */
 
-                case 'p':
-                    $css[] = "padding: {$value}px;";
-                    break;
+            // 🔥 fallback logic
+            $finalMobile = $mobileValue ?? $desktopValue;
 
-                case 'mt':
-                    $css[] = "margin-top: {$value}px;";
-                    break;
-                case 'mb':
-                    $css[] = "margin-bottom: {$value}px;";
-                    break;
-                case 'ml':
-                    $css[] = "margin-left: {$value}px;";
-                    break;
-                case 'mr':
-                    $css[] = "margin-right: {$value}px;";
-                    break;
+            if ($finalMobile !== null && $finalMobile !== '') {
 
-                case 'mx':
-                    $css[] = "margin-left: {$value}px;";
-                    $css[] = "margin-right: {$value}px;";
-                    break;
+                $css = $this->buildSpacingCSS($dir, $finalMobile);
 
-                case 'my':
-                    $css[] = "margin-top: {$value}px;";
-                    $css[] = "margin-bottom: {$value}px;";
-                    break;
-
-                case 'm':
-                    $css[] = "margin: {$value}px;";
-                    break;
+                if (str_starts_with($dir, 'p')) {
+                    $paddingMobile = array_merge($paddingMobile, $css);
+                } else {
+                    $marginMobile = array_merge($marginMobile, $css);
+                }
             }
         }
 
+        /* -------------------------
+           RETURN
+        ------------------------- */
 
-        return implode(' ', $css);
+        return [
+            'padding' => implode(' ', $padding),
+            'padding_mobile' => implode(' ', $paddingMobile),
+            'margin' => implode(' ', $margin),
+            'margin_mobile' => implode(' ', $marginMobile),
+        ];
+    }
+    protected function buildSpacingCSS($dir, $value): array
+    {
+        $value = (int) $value . 'px';
+
+        return match ($dir) {
+
+            'pt' => ["padding-top: $value;"],
+            'pb' => ["padding-bottom: $value;"],
+            'pl' => ["padding-left: $value;"],
+            'pr' => ["padding-right: $value;"],
+
+            'px' => [
+                "padding-left: $value;",
+                "padding-right: $value;"
+            ],
+
+            'py' => [
+                "padding-top: $value;",
+                "padding-bottom: $value;"
+            ],
+
+            'p' => ["padding: $value;"],
+
+            'mt' => ["margin-top: $value;"],
+            'mb' => ["margin-bottom: $value;"],
+            'ml' => ["margin-left: $value;"],
+            'mr' => ["margin-right: $value;"],
+
+            'mx' => [
+                "margin-left: $value;",
+                "margin-right: $value;"
+            ],
+
+            'my' => [
+                "margin-top: $value;",
+                "margin-bottom: $value;"
+            ],
+
+            'm' => ["margin: $value;"],
+
+            default => []
+        };
+    }
+    protected function padding(): string
+    {
+        return $this->spacingStyles()['padding'] ?? '';
+    }
+
+    protected function paddingMobile(): string
+    {
+
+        return $this->spacingStyles()['padding_mobile'] ?? '';
+    }
+
+    protected function margin(): string
+    {
+        return $this->spacingStyles()['margin'] ?? '';
+    }
+
+    protected function marginMobile(): string
+    {
+        return $this->spacingStyles()['margin_mobile'] ?? '';
     }
 
     /* --------------------------------
        BACKGROUND
     -------------------------------- */
 
-    protected function background(): object
+    protected function bg(): object
     {
         $type = $this->settings['background_type'] ?? $this->settings['background'] ?? 'none';
 
@@ -380,9 +504,9 @@ class Section implements ArrayAccess
         ];
     }
 
-    public function bg_layers(): string
+    public function backgrounds(): string
     {
-        $bg = $this->background(); // existing method :contentReference[oaicite:0]{index=0}
+        $bg = $this->bg(); // existing method :contentReference[oaicite:0]{index=0}
 
         return view('components.section.background', ['bg' => $bg ?? null]);
     }
@@ -404,51 +528,16 @@ class Section implements ArrayAccess
         return '';
     }
 
-    private function cssify($styles): string
-    {
-        return collect($styles)
-            ->map(fn($v, $k) => "$k: $v;")
-            ->implode(' ');
-    }
-
-    public function css($config): string
-    {
-        if (empty($config) || !is_array($config))
-            return '';
-
-        $id = $this->section['id'] ?? 'section_' . uniqid();
-        $selector = ".arz-section-{$id}";
-
-        $css = '';
-
-        // Desktop (default)
-        if (!empty($config['base'])) {
-            $css .= "{$selector} { " . $this->cssify($config['base']) . " }";
-        }
-
-        // Mobile
-        if (!empty($config['mobile'])) {
-            $css .= "@media (max-width: 767px) {
-            {$selector} { " . $this->cssify($config['mobile']) . " }
-        }";
-        }
-
-        // Tablet
-        if (!empty($config['tablet'])) {
-            $css .= "@media (min-width: 768px) and (max-width: 1024px) {
-            {$selector} { " . $this->cssify($config['tablet']) . " }
-        }";
-        }
-
-        return "<style>{$css}</style>";
-    }
-
     /* --------------------------------
        BLOCKS
     -------------------------------- */
 
-    public function blocks($extra = [])
+    public function blocks(): BlockQuery
     {
-        return renderBlocks($this->section['blocks'] ?? [], $extra);
+        return new BlockQuery($this);
+    }
+    public function getBlocks(): array
+    {
+        return $this->section['blocks'] ?? [];
     }
 }

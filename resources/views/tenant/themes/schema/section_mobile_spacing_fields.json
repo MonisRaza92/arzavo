@@ -1,0 +1,74 @@
+[
+    {
+        "key": "enable_mobile_spacing",
+        "label": "Custom Spacing on Mobile",
+        "type": "switch",
+        "default": "0"
+    },
+    {
+        "type": "group",
+        "label": "Padding (Mobile)",
+        "help": "Adjust padding specifically for mobile devices.",
+        "conditional": {
+            "field": "enable_mobile_spacing",
+            "value": "1"
+        }
+    },
+    {
+        "key": "mobile_padding_top",
+        "label": "Top",
+        "type": "range",
+        "default": 12,
+        "min": 0,
+        "max": 200,
+        "conditional": {
+            "field": "enable_mobile_spacing",
+            "value": "1"
+        }
+    },
+    {
+        "key": "mobile_padding_bottom",
+        "label": "Bottom",
+        "type": "range",
+        "default": 12,
+        "min": 0,
+        "max": 200,
+        "conditional": {
+            "field": "enable_mobile_spacing",
+            "value": "1"
+        }
+    },
+    {
+        "type": "group",
+        "label": "Margin (Mobile)",
+        "help": "Adjust margin specifically for mobile devices.",
+        "conditional": {
+            "field": "enable_mobile_spacing",
+            "value": "1"
+        }
+    },
+    {
+        "key": "mobile_margin_top",
+        "label": "Top",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200,
+        "conditional": {
+            "field": "enable_mobile_spacing",
+            "value": "1"
+        }
+    },
+    {
+        "key": "mobile_margin_bottom",
+        "label": "Bottom",
+        "type": "range",
+        "default": 0,
+        "min": 0,
+        "max": 200,
+        "conditional": {
+            "field": "enable_mobile_spacing",
+            "value": "1"
+        }
+    }
+]

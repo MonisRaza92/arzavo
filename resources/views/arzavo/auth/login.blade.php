@@ -46,20 +46,21 @@
                 <div class="mt-6 text-center w-full">
                     <div class="h-0.5 w-full bg-tertiary border-rounded my-8 flex items-center justify-center"><span
                             class="text-primary bg-primary text-xs py-1 px-2">OR CONTINUE WITH</span></div>
-                    <a href="{{ route('social.redirect', 'google') }}"
+                    <!-- <a href="{{ route('social.redirect', 'google') }}"
                         class="p-2 flex items-center justify-center border-primary w-full border-rounded relative hover:bg-gray-100">
                         <img src="{{ asset('images/auth/google.svg') }}" alt=""
                             class="h-5 absolute left-2 top-1/2 transform -translate-y-1/2"> Continue with Google
-                    </a>
-                    <!-- <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
-                            data-text="continue_with" data-shape="pill">
-                        </div> -->
+                    </a> -->
+                    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+                        data-text="continue_with" data-shape="rounded">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div id="g_id_onload" data-client_id="{{ config('services.google.client_id') }}" data-context="signin"
-        data-ux_mode="popup" data-callback="handleCredentialResponse" data-auto_select="true" data-itp_support="true">
+        data-ux_mode="popup" data-auto_prompt="true" data-callback="handleCredentialResponse" data-auto_select="true"
+        data-itp_support="true">
     </div>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
