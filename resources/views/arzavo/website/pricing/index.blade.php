@@ -6,7 +6,7 @@
 @include('arzavo.website.partials.navbar')
 
 <!-- Page Header -->
-<section class="pt-32 pb-20 bg-slate-950 relative overflow-hidden min-h-[50vh] flex flex-col justify-center">
+<div class="pt-32 pb-20 bg-slate-950 relative overflow-hidden min-h-[50vh] flex flex-col justify-center">
     <!-- Sophisticated Background Glow -->
     <div class="absolute inset-0 opacity-30 mix-blend-screen pointer-events-none">
         <div class="absolute w-[800px] h-[800px] bg-accent/20 rounded-full blur-[120px] top-[-20%] left-[10%] animate-[spin_20s_linear_infinite]"></div>
@@ -39,10 +39,10 @@
             </div>
         </div>
     </div>
-</section>
+</div>
 
 <!-- Pricing Grid -->
-<section class="py-24 bg-slate-900 relative">
+<div class="py-24 bg-slate-900 relative">
     <div class="container mx-auto px-4 md:px-6 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-end">
 
@@ -111,7 +111,7 @@
 
         </div>
     </div>
-</section>
+</div>
 
 @php
     $allFeatures = [];
@@ -124,7 +124,7 @@
 @endphp
 
 <!-- Comprehensive Feature Comparison -->
-<section class="py-32 bg-slate-950 relative overflow-hidden hidden md:block border-t border-white/5">
+<div class="py-32 bg-slate-950 relative overflow-hidden hidden md:block border-t border-white/5">
     <!-- Glow -->
     <div class="absolute bottom-1/4 -right-64 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
@@ -181,7 +181,7 @@
             </div>
         </div>
     </div>
-</section>
+</div>
 
 @include('arzavo.website.partials.footer')
 @endsection

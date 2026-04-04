@@ -69,7 +69,7 @@
                             class="h-5 absolute left-2 top-1/2 transform -translate-y-1/2"> Continue with Google
                     </a> -->
                     <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
-                        data-text="continue_with" data-shape="rounded">
+                        data-text="continue_with" data-shape="rounded" data-width="100%">
                     </div>
                 </div>
             </div>
