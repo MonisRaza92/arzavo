@@ -50,7 +50,7 @@
                         {{-- GROUP --}}
                         @case('group')
                             <div class="font-semibold text-primary text-sm border-top pt-4">
-                                {{ $field['label'] ?? ucfirst($field['key']) }}
+                                {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                             </div>
                             @if (isset($field['help']))
                                 <p class="text-[11px] text-secondary mt-1">{{ $field['help'] }}</p>
@@ -63,7 +63,7 @@
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? 'Color Scheme' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <div class="color-scheme-selector w-full border-primary border-rounded pr-1">
@@ -89,7 +89,7 @@
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? 'Select Menu' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
                                 <div class="border-primary w-full border-rounded pr-1"> <select
                                         name="settings[{{ $field['key'] }}]"
@@ -117,7 +117,7 @@
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.select :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? '')" :options="$field['options'] ?? []" />
@@ -128,7 +128,7 @@
                         @case('icon')
                             <div class="flex items-center justify-between gap-6">
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.icon-select :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? 'none')" />
@@ -140,7 +140,7 @@
                         @case('url')
                             <div class="flex items-center justify-between gap-6">
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.url :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ''" />
@@ -150,7 +150,7 @@
                         @case('link')
                             <div class="flex items-center justify-between gap-6">
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.url :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ''" />
@@ -160,7 +160,7 @@
                         {{-- TEXTAREA --}}
                         @case('textarea')
                             <label class="text-xs font-semibold text-secondary uppercase block mb-1">
-                                {{ $field['label'] ?? '' }}
+                                {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                             </label>
 
                             <x-input.textarea :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? '')" />
@@ -169,7 +169,7 @@
                         {{-- CHECKBOX --}}
                         @case('checkbox')
                             <label class="text-xs font-semibold text-secondary uppercase block mb-1">
-                                {{ $field['label'] ?? '' }}
+                                {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                             </label>
 
                             <x-input.checkbox :name="'settings[' . $field['key'] . ']'" :checked="!empty($block['settings'][$field['key']] ?? ($field['default'] ?? false))" />
@@ -180,7 +180,7 @@
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-9/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.switch containerClass="w-3/12!" :name="'settings[' . $field['key'] . ']'" :checked="!empty($block['settings'][$field['key']] ?? ($field['default'] ?? false))" />
@@ -193,7 +193,7 @@
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.number class="text-xs!" :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? 0)" :min="$field['min'] ?? 0"
@@ -206,7 +206,7 @@
                         @case('color')
                             <div class="flex items-center justify-between gap-4">
                                 <label class="text-xs w-7/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.color :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? '#000000')" :gradient="true" />
@@ -218,7 +218,7 @@
                             <div class="flex items-start justify-between gap-6 pt-1">
 
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.range :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? 50)" :min="$field['min'] ?? 0" :max="$field['max'] ?? 100" />
@@ -231,7 +231,7 @@
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.radio :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? '')" :options="$field['options'] ?? []" />
@@ -244,7 +244,7 @@
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.image :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? '')" />
@@ -257,7 +257,7 @@
                             <div class="flex items-center justify-between gap-6">
 
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.video :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? '')" />
@@ -270,7 +270,7 @@
                         @default
                             <div class="flex items-center justify-between gap-6">
                                 <label class="text-xs w-8/12 text-secondary block">
-                                    {{ $field['label'] ?? '' }}
+                                    {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                                 </label>
 
                                 <x-input.text :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ''" />
@@ -278,7 +278,7 @@
                     @endswitch
 
 
-                    @if (isset($field['help']) && $field['type'] !== 'group')
+                    @if (isset($field['help']) && $field['type'] !== 'group' && $field['type'] !== 'heading')
                         <p class="text-[11px] text-secondary mt-3">{{ $field['help'] }}</p>
                     @endif
 

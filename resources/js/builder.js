@@ -46,7 +46,8 @@ window.BuilderSection = {
                 show = false;
 
                 conditions.rules.forEach(rule => {
-                    const control = form.querySelector(`[name="settings[${rule.field}]"],[name="${rule.field}"]`);
+                    const fieldKey = rule.field || rule.key;
+                    const control = form.querySelector(`[name="settings[${fieldKey}]"],[name="${fieldKey}"]`);
                     const value = this.getValue(form, control);
                     if (this.evaluate(value, rule.operator ?? '==', rule.value)) show = true;
                 });
@@ -56,7 +57,8 @@ window.BuilderSection = {
                 if (!Array.isArray(conditions)) conditions = [conditions];
 
                 conditions.forEach(cond => {
-                    const control = form.querySelector(`[name="settings[${cond.field}]"],[name="${cond.field}"]`);
+                    const fieldKey = cond.field || cond.key;
+                    const control = form.querySelector(`[name="settings[${fieldKey}]"],[name="${fieldKey}"]`);
                     const value = this.getValue(form, control);
                     if (!this.evaluate(value, cond.operator ?? '==', cond.value)) show = false;
                 });
@@ -429,8 +431,9 @@ window.deleteSectionMedia = function (key) {
 
                         conditions.rules.forEach(rule => {
 
+                            const fieldName = rule.field || rule.key;
                             const control = form.querySelector(
-                                `[name="settings[${rule.field}]"], [name="${rule.field}"]`
+                                `[name="settings[${fieldName}]"], [name="${fieldName}"]`
                             );
 
                             const value = getValue(control);
@@ -449,8 +452,9 @@ window.deleteSectionMedia = function (key) {
 
                         conditions.forEach(cond => {
 
+                            const fieldName = cond.field || cond.key;
                             const control = form.querySelector(
-                                `[name="settings[${cond.field}]"], [name="${cond.field}"]`
+                                `[name="settings[${fieldName}]"], [name="${fieldName}"]`
                             );
 
                             const value = getValue(control);

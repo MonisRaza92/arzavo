@@ -58,10 +58,13 @@
     }
 
     .arz-core {
-        padding-left: var(--global-padding);
-        padding-right: var(--global-padding);
         position: relative;
         background: var(--arz-bg);
+    }
+
+    .arz-content {
+        padding-left: var(--global-padding);
+        padding-right: var(--global-padding);
     }
 
     .border {
@@ -722,12 +725,18 @@ button {
 
 .arz-logo-size {
     height: var(--arz-desktop-logo-size);
-    font-size: var(--arz-desktop-logo-size);
+    flex-shrink: 0;
 }
 
 .arz-logo {
     height: var(--arz-desktop-logo-size);
+    flex-shrink: 0;
+}
+
+.tenant-name {
     font-size: var(--arz-desktop-logo-size);
+    color: var(--arz-heading);
+    line-height: 1;
 }
 
 .arz-transparent-nav {
@@ -764,6 +773,10 @@ button {
 
 .arz-border-b {
     border-bottom: 1px solid var(--arz-border);
+}
+
+.arz-border-t {
+    border-top: 1px solid var(--arz-border);
 }
 
 .arzavo-border-invert {
@@ -1156,11 +1169,13 @@ input[type=range] {
 @media (max-width: 768px) {
     .arz-logo-size {
         height: var(--arz-mobile-logo-size);
-        font-size: var(--arz-mobile-logo-size);
     }
 
     .arz-logo {
         height: var(--arz-mobile-logo-size);
+    }
+
+    .tenant-name {
         font-size: var(--arz-mobile-logo-size);
     }
 

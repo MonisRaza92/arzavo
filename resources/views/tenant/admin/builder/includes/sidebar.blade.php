@@ -15,11 +15,8 @@
             @include('tenant.admin.builder.basics.logo-settings')
             @include('tenant.admin.builder.basics.color-schemes')
             @include('tenant.admin.builder.basics.typography-settings')
-            <!-- @include('tenant.admin.builder.basics.border-shadow-settings') -->
             @include('tenant.admin.builder.basics.buttons-settings')
             @include('tenant.admin.builder.basics.layout-settings')
-            <!-- @include('tenant.admin.builder.basics.ui-elements-settings') -->
-            <!-- @include('tenant.admin.builder.basics.animations-settings') -->
             @include('tenant.admin.builder.basics.advanced-settings')
         </form>
         @include('tenant.admin.builder.basics.add-color-scheme')

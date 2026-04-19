@@ -100,10 +100,10 @@ class Section implements ArrayAccess
         $container = $this->settings['container'] ?? $this->settings['width'] ?? 'full';
 
         if ($container === 'container' || $container === 'contained') {
-            return 'container';
+            return 'container arz-content w-full';
         }
 
-        return 'w-full';
+        return 'w-full arz-content';
     }
 
     /* --------------------------------

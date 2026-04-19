@@ -1,10 +1,11 @@
 {
-    "type": "nav_menu",
+    "type": "header_menu",
     "name": "Menu",
     "icon": "fa-arrow-up-right-from-square",
     "order": 7,
     "category": "Basic",
     "deletable": false,
+    "moveable": false,
     "max_blocks": 0,
     "allowed_blocks": "",
     "default_blocks": "",

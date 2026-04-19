@@ -10,6 +10,9 @@ class BlockQuery
 
     protected array $only = [];
     protected array $except = [];
+    protected array $startsWith = [];
+    protected array $forceRender = [];
+
 
     public function __construct(Section $section)
     {
@@ -28,21 +31,60 @@ class BlockQuery
         return $this;
     }
 
+    public function whereStartsWith(string|array $prefix): self
+    {
+        $this->startsWith = (array) $prefix;
+        return $this;
+
+    }
+    public function forceRender(string|array $types): self
+    {
+        $this->forceRender = (array) $types;
+        return $this;
+    }
+
     public function render(array $extra = []): string
     {
+        $theme = app('currentThemeSlug');
+        $html = '';
+
         // ✅ SAFE ACCESS (no direct property access)
+        if (!empty($this->forceRender)) {
+
+            foreach ($this->forceRender as $type) {
+
+                $view = "tenant.themes.$theme.blocks.$type";
+
+                if (!View::exists($view)) {
+                    continue;
+                }
+
+                $html .= View::make($view, array_merge(
+                    $extra,
+                    [
+                        'block' => block([
+                            'type' => $type,
+                            'settings' => [],
+                        ]),
+                        'theme' => $theme,
+                        'is_force' => true,
+                    ]
+                ))->render();
+            }
+
+            return $html; // 🔥 yahin return kar do (DB skip)
+        }
+
+
         $blocks = $this->section->getBlocks();
 
         if (empty($blocks) || !is_array($blocks)) {
             return '';
         }
 
-        $theme = app('currentThemeSlug');
-        $html = '';
 
         foreach ($blocks as $block) {
 
-            // safety
             if (!is_array($block)) {
                 continue;
             }
@@ -67,6 +109,22 @@ class BlockQuery
                 continue;
             }
 
+            // ✅ STARTS WITH filter (NEW)
+            if (!empty($this->startsWith)) {
+                $matched = false;
+
+                foreach ($this->startsWith as $prefix) {
+                    if (str_starts_with($type, $prefix)) {
+                        $matched = true;
+                        break;
+                    }
+                }
+
+                if (!$matched) {
+                    continue;
+                }
+            }
+
             $view = "tenant.themes.$theme.blocks.$type";
 
             if (!View::exists($view)) {
@@ -76,7 +134,7 @@ class BlockQuery
             $html .= View::make($view, array_merge(
                 $extra,
                 [
-                    'block' => $block,
+                    'block' => block($block),
                     'theme' => $theme,
                 ]
             ))->render();

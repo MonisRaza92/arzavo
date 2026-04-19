@@ -10,6 +10,7 @@ class BlockQuery
 
     protected array $only = [];
     protected array $except = [];
+    protected array $startsWith = [];
 
     public function __construct(Block $block)
     {
@@ -27,6 +28,11 @@ class BlockQuery
         $this->except = (array) $types;
         return $this;
     }
+    public function whereStartsWith(string|array $prefix): self
+    {
+        $this->startsWith = (array) $prefix;
+        return $this;
+    }
 
     public function render(array $extra = []): string
     {
@@ -42,7 +48,6 @@ class BlockQuery
 
         foreach ($blocks as $block) {
 
-            // safety
             if (!is_array($block)) {
                 continue;
             }
@@ -67,6 +72,22 @@ class BlockQuery
                 continue;
             }
 
+            // ✅ STARTS WITH filter (NEW)
+            if (!empty($this->startsWith)) {
+                $matched = false;
+
+                foreach ($this->startsWith as $prefix) {
+                    if (str_starts_with($type, $prefix)) {
+                        $matched = true;
+                        break;
+                    }
+                }
+
+                if (!$matched) {
+                    continue;
+                }
+            }
+
             $view = "tenant.themes.$theme.blocks.$type";
 
             if (!View::exists($view)) {
@@ -76,7 +97,7 @@ class BlockQuery
             $html .= View::make($view, array_merge(
                 $extra,
                 [
-                    'block' => $block,
+                    'block' => block($block),
                     'theme' => $theme,
                 ]
             ))->render();

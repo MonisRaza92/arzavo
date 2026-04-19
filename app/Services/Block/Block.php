@@ -28,7 +28,10 @@ class Block implements ArrayAccess
             'scheme' => 'scheme',
             'flexClass' => 'flexClass',
             'flexStyle' => 'flexStyle',
-            'spacing' => 'spacing',
+            'padding' => 'padding',
+            'paddingMobile' => 'paddingMobile',
+            'margin' => 'margin',
+            'marginMobile' => 'marginMobile',
             'background' => 'background',
             'visibility' => 'visibility',
             'menu' => 'menu',
@@ -202,101 +205,161 @@ class Block implements ArrayAccess
        SPACING
     -------------------------------- */
 
-    protected function spacing(): string
+    protected function spacingStyles(): array
     {
-        $map = [
-            'pt' => ['pt', 'padding_top', 'p_top', 'padding_t'],
-            'pb' => ['pb', 'padding_bottom', 'p_bottom', 'padding_b'],
-            'pl' => ['pl', 'padding_left', 'p_left', 'padding_l'],
-            'pr' => ['pr', 'padding_right', 'p_right', 'padding_r'],
-            'px' => ['px', 'padding_x', 'padding_horizontal'],
-            'py' => ['py', 'padding_y', 'padding_vertical'],
-            'p' => ['p', 'padding'],
+        $padding = [];
+        $paddingMobile = [];
 
-            'mt' => ['mt', 'margin_top', 'm_top', 'margin_t'],
-            'mb' => ['mb', 'margin_bottom', 'm_bottom', 'margin_b'],
-            'ml' => ['ml', 'margin_left', 'm_left', 'margin_l'],
-            'mr' => ['mr', 'margin_right', 'm_right', 'margin_r'],
-            'mx' => ['mx', 'margin_x', 'margin_horizontal'],
-            'my' => ['my', 'margin_y', 'margin_vertical'],
-            'm' => ['m', 'margin'],
+        $margin = [];
+        $marginMobile = [];
+
+        $enableMobile = ($this->settings['enable_mobile_spacing'] ?? '0') === '1';
+
+        /* -------------------------
+           MAP
+        ------------------------- */
+
+        $map = [
+            'pt' => ['padding_top'],
+            'pb' => ['padding_bottom'],
+            'pl' => ['padding_left'],
+            'pr' => ['padding_right'],
+            'px' => ['padding_x'],
+            'py' => ['padding_y'],
+            'p' => ['padding'],
+
+            'mt' => ['margin_top'],
+            'mb' => ['margin_bottom'],
+            'ml' => ['margin_left'],
+            'mr' => ['margin_right'],
+            'mx' => ['margin_x'],
+            'my' => ['margin_y'],
+            'm' => ['margin'],
         ];
 
-        $css = [];
+        /* -------------------------
+           LOOP
+        ------------------------- */
 
         foreach ($map as $dir => $keys) {
 
-            $value = null;
+            $desktopValue = null;
+            $mobileValue = null;
 
             foreach ($keys as $key) {
+
                 if (isset($this->settings[$key])) {
-                    $value = $this->settings[$key];
-                    break;
+                    $desktopValue = $this->settings[$key];
+                }
+
+                if ($enableMobile && isset($this->settings["mobile_{$key}"])) {
+                    $mobileValue = $this->settings["mobile_{$key}"];
                 }
             }
 
-            if ($value === null || $value === '')
-                continue;
+            /* ---------- DESKTOP ---------- */
 
-            switch ($dir) {
+            if ($desktopValue !== null && $desktopValue !== '') {
 
-                case 'pt':
-                    $css[] = "padding-top: {$value}px;";
-                    break;
-                case 'pb':
-                    $css[] = "padding-bottom: {$value}px;";
-                    break;
-                case 'pl':
-                    $css[] = "padding-left: {$value}px;";
-                    break;
-                case 'pr':
-                    $css[] = "padding-right: {$value}px;";
-                    break;
+                $css = $this->buildSpacingCSS($dir, $desktopValue);
 
-                case 'px':
-                    $css[] = "padding-left: {$value}px;";
-                    $css[] = "padding-right: {$value}px;";
-                    break;
+                if (str_starts_with($dir, 'p')) {
+                    $padding = array_merge($padding, $css);
+                } else {
+                    $margin = array_merge($margin, $css);
+                }
+            }
 
-                case 'py':
-                    $css[] = "padding-top: {$value}px;";
-                    $css[] = "padding-bottom: {$value}px;";
-                    break;
+            /* ---------- MOBILE ---------- */
 
-                case 'p':
-                    $css[] = "padding: {$value}px;";
-                    break;
+            // 🔥 fallback logic
+            $finalMobile = $mobileValue ?? $desktopValue;
 
-                case 'mt':
-                    $css[] = "margin-top: {$value}px;";
-                    break;
-                case 'mb':
-                    $css[] = "margin-bottom: {$value}px;";
-                    break;
-                case 'ml':
-                    $css[] = "margin-left: {$value}px;";
-                    break;
-                case 'mr':
-                    $css[] = "margin-right: {$value}px;";
-                    break;
+            if ($finalMobile !== null && $finalMobile !== '') {
 
-                case 'mx':
-                    $css[] = "margin-left: {$value}px;";
-                    $css[] = "margin-right: {$value}px;";
-                    break;
+                $css = $this->buildSpacingCSS($dir, $finalMobile);
 
-                case 'my':
-                    $css[] = "margin-top: {$value}px;";
-                    $css[] = "margin-bottom: {$value}px;";
-                    break;
-
-                case 'm':
-                    $css[] = "margin: {$value}px;";
-                    break;
+                if (str_starts_with($dir, 'p')) {
+                    $paddingMobile = array_merge($paddingMobile, $css);
+                } else {
+                    $marginMobile = array_merge($marginMobile, $css);
+                }
             }
         }
 
-        return implode(' ', $css);
+        /* -------------------------
+           RETURN
+        ------------------------- */
+
+        return [
+            'padding' => implode(' ', $padding),
+            'padding_mobile' => implode(' ', $paddingMobile),
+            'margin' => implode(' ', $margin),
+            'margin_mobile' => implode(' ', $marginMobile),
+        ];
+    }
+    protected function buildSpacingCSS($dir, $value): array
+    {
+        $value = (int) $value . 'px';
+
+        return match ($dir) {
+
+            'pt' => ["padding-top: $value;"],
+            'pb' => ["padding-bottom: $value;"],
+            'pl' => ["padding-left: $value;"],
+            'pr' => ["padding-right: $value;"],
+
+            'px' => [
+                "padding-left: $value;",
+                "padding-right: $value;"
+            ],
+
+            'py' => [
+                "padding-top: $value;",
+                "padding-bottom: $value;"
+            ],
+
+            'p' => ["padding: $value;"],
+
+            'mt' => ["margin-top: $value;"],
+            'mb' => ["margin-bottom: $value;"],
+            'ml' => ["margin-left: $value;"],
+            'mr' => ["margin-right: $value;"],
+
+            'mx' => [
+                "margin-left: $value;",
+                "margin-right: $value;"
+            ],
+
+            'my' => [
+                "margin-top: $value;",
+                "margin-bottom: $value;"
+            ],
+
+            'm' => ["margin: $value;"],
+
+            default => []
+        };
+    }
+    protected function padding(): string
+    {
+        return $this->spacingStyles()['padding'] ?? '';
+    }
+
+    protected function paddingMobile(): string
+    {
+
+        return $this->spacingStyles()['padding_mobile'] ?? '';
+    }
+
+    protected function margin(): string
+    {
+        return $this->spacingStyles()['margin'] ?? '';
+    }
+
+    protected function marginMobile(): string
+    {
+        return $this->spacingStyles()['margin_mobile'] ?? '';
     }
 
     /* --------------------------------

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\Tenant\Customizes;
 
 if (!function_exists('media')) {
 
@@ -92,4 +93,57 @@ if (!function_exists('video')) {
 
         return asset('videos/tenant/' . basename($file));
     }
+}
+
+
+function get_customizes()
+{
+    static $customizes = null;
+
+    if ($customizes === null) {
+        $customizes = Customizes::pluck('value', 'key')->toArray();
+    }
+
+    return $customizes;
+}
+function logo()
+{
+    $customizes = get_customizes();
+
+    return !empty($customizes['logo']) || !empty($customizes['invert_logo']);
+}
+
+function render_logo()
+{
+    $customizes = get_customizes();
+
+    if (!empty($customizes['logo'])) {
+        return media($customizes['logo']);
+    }
+
+    return null;
+}
+
+function render_invert_logo()
+{
+    $customizes = get_customizes();
+
+    // 👉 invert mile to use karo
+    if (!empty($customizes['invert_logo'])) {
+        return media($customizes['invert_logo']);
+    }
+
+    // 👉 warna normal logo fallback
+    if (!empty($customizes['logo'])) {
+        return media($customizes['logo']);
+    }
+
+    return null;
+}
+function tenant_name()
+{
+    if (app()->bound('currentTenant')) {
+        return app('currentTenant')->name ?? null;
+    }
+    return null;
 }

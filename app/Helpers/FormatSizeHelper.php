@@ -73,7 +73,7 @@ function activeThemeId()
     // fallback live theme
     return app('currentThemeId');
 }
-function arz_route($url)
+function route_to($url)
 {
     return route('tenant.' . $url);
 }

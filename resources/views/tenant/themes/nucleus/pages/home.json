@@ -1,0 +1,8 @@
+{
+    "home": [
+        {
+            "kind": "template",
+            "name": "hero_minimal"
+        }
+    ]
+}
