@@ -2,7 +2,6 @@
     "type": "announcement_bar",
     "name": "Announcement Bar",
     "icon": "fa-rss",
-    "order": 0,
     "category": "Header",
     "color_scheme": "scheme_1",
     "max_blocks": 10,

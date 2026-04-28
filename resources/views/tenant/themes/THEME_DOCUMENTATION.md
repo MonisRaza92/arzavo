@@ -1,209 +1,193 @@
-# Arzavo Theme System (ATS) Developer Documentation
+# Arzavo Theme System (ATS) Developer Guide
 
-Welcome to the **Arzavo Theme System (ATS)**. This document serves as the authoritative guide for building and maintaining themes on the Arzavo multi-tenant platform.
+Welcome to the **Arzavo Theme System (ATS)**. This guide is designed for theme developers to help them build, customize, and maintain themes for educational institutions on the Arzavo platform.
 
----
-
-## 1. Introduction
-
-The Arzavo Theme System is a **JSON-first, Blade-powered** rendering engine. It transforms structured JSON layouts into dynamic, premium web experiences.
-
-### High-Level Rendering Pipeline
-`Route` → `ThemePageController` → `ThemePageDesign (JSON)` → `render.blade.php` → `Section Wrapper` → `Blade Template`.
-
-The system is designed to separate **data (JSON)** from **markup (Blade)**, allowing users to customize their site structure via the Arzavo Builder while ensuring developers maintain full control over the aesthetic.
+> **ATS Philosophy:** Developers define the system (structure and logic), and users control the content (data and arrangement).
 
 ---
 
-## 2. Folder Structure
+## 1. Theme Directory Structure
 
-Every theme must reside in `resources/views/tenant/themes/[theme_slug]/`.
+Every theme resides in its own folder under `resources/views/tenant/themes/{theme_slug}/`.
 
-### Structure Overview
 ```text
-nucleus/
-├── assets/             # Theme-specific CSS, JS, and Images
-├── blocks/             # Reusable UI components (buttons, icons, etc.)
-│   ├── button.json     # Block Schema
-│   └── button.blade.php# Block Markup
-├── pages/              # Default JSON layouts for system pages
-│   └── home.json       # Homepage default sections
-├── sections/           # Large page parts (hero, features, navbar)
-│   ├── hero.json       # Section Schema
-│   └── hero.blade.php  # Section Markup
-├── settings/           # Global theme configurations
-│   ├── global.json     # Header/Footer/Globals default layout
-│   ├── schemes.json    # Default Color Scheme definitions
-│   └── settings.json   # Theme-wide setting fields (Typography, etc.)
-├── templates/          # Pre-configured section combinations
-│   └── hero_minimal.json
-└── theme.json          # Theme Metadata
+theme_slug/
+├── assets/             # Static files (CSS, JS, Images)
+├── blocks/             # Reusable UI components (heading.blade.php, heading.json)
+├── layouts/            # Global layouts (global.json)
+├── pages/              # Default page structures (home.json, about.json)
+├── sections/           # Major page building blocks (hero.blade.php, hero.json)
+├── settings/           # Global theme configuration (settings.json, schemes.json)
+└── templates/          # Pre-designed section bundles
 ```
 
 ---
 
-## 3. theme.json Specification
+## 2. Global Variables & Data Access
 
-The identity of your theme.
+ATS shares several critical variables with all Blade templates to ensure consistency.
 
-```json
-{
-    "name": "Nucleus",
-    "folder": "nucleus",
-    "version": "1.0.0",
-    "author": "Arzavo",
-    "description": "A modern and sleek theme.",
-    "is_active": true,
-    "preview_image": "/themes/nucleus/preview.jpg"
-}
-```
-
----
-
-## 4. Global Settings System
-
-Global settings control the "DNA" of the theme.
-
-### settings.json
-Defines the structure of the **Theme Settings** sidebar in the admin panel.
-*   **Purpose**: Custom CSS, Typography, Layout constraints.
-*   **Access**: Values are shared globally to all Blade views via the `$customizes` array.
-
-### schemes.json
-Defines the **Color Schemes** available to sections.
-*   Each scheme translates to CSS variables: `--arz-bg`, `--arz-heading`, `--arz-btn-bg`, etc.
-*   The system uses the `scheme($id)` helper to inject these into the `<style>` tag of the page.
-
----
-
-## 5. Sections System
-
-Sections are the primary building blocks of a page.
-
-### section.json Schema
-| Key | Type | Description |
-| :--- | :--- | :--- |
-| `type` | string | Unique identifier mismatching file name. |
-| `name` | string | Human-readable name. |
-| `fields` | array | Settings configurable in the builder. |
-| `allowed_blocks` | array | List of block types this section can accept. |
-| `max_blocks` | int | Cap on block count. |
-
-### Blade Rendering Rules
-Every section receives a `$section` variable (instance of `App\Services\Section\Section`).
-
-**Standard Boilerplate:**
+### `$customizes` (The Global Settings Object)
+An associative array containing all values defined in `settings/settings.json`. Use this to apply global design choices like typography, container widths, and button styles.
 ```blade
-<section {!! $section->attributes !!} class="{{ $section->scheme }} {{ $section->visibility }}">
-    <div class="{{ $section->container }}">
-        {!! $section->blocks !!}
-    </div>
-</section>
+<div style="max-width: {{ $customizes['container_width'] ?? '1400' }}px;">
+```
+
+### `$settings` (Tenant Information)
+Global institutional settings like site name, contact info, and meta tags.
+```blade
+<h1>Welcome to {{ $settings['site_name'] }}</h1>
+```
+
+### `$menus` (Navigation Data)
+A collection of all menus created by the tenant.
+```blade
+@foreach($menus as $menu)
+    <li>{{ $menu->name }}</li>
+@endforeach
 ```
 
 ---
 
-## 6. Blocks System
+## 3. Helper Functions
 
-Blocks are nested components inside sections.
+ATS provides specialized helpers to resolve paths, styles, and media efficiently.
 
-### Block Querying
-Use `$section->blocks` to render or filter blocks:
-*   `{!! $section->blocks !!}`: Render all active blocks.
-*   `{!! $section->blocks->only('icon') !!}`: Render only specific types.
-*   `{!! $section->blocks->except('image') !!}`: Filter out types.
-
-### Nesting
-Blocks can also contain other blocks (e.g., a `group` block) using the same `$block->blocks` syntax.
-
----
-
-## 7. Templates vs. Pages
-
-### Templates
-Templates are **pre-configured sections**. They exist in the `templates/` folder and allow you to define a complex section with pre-filled content (e.g., a `hero_minimal` is just a `custom_section` with pre-defined blocks).
-
-### Pages
-Pages define which sections/templates appear on a specific URL (slug) by default when a theme is first installed.
+| Helper | Description |
+| :--- | :--- |
+| `scheme($key)` | Returns a string of CSS variables for a specific color scheme. |
+| `media($path)` | Resolves a public URL for stored media (handles S3/Local/Signed). |
+| `image($path)` | Returns an image URL with an automatic demo fallback if the path is empty. |
+| `video($path)` | Returns a video URL with a demo fallback. |
+| `render_logo()` | Returns the primary logo URL defined by the user. |
+| `render_invert_logo()` | Returns the inverted logo URL (falls back to primary). |
+| `tenant_name()` | Returns the active institution's name. |
+| `section($array)` | Hydrates raw section data into a `Section` service object. |
+| `block($array)` | Hydrates raw block data into a `Block` service object. |
 
 ---
 
-## 8. Pages System
+## 4. Theme "Standard" CSS Classes
 
-`pages/home.json` example:
-```json
-{
-    "home": [
-        { "kind": "section", "name": "navbar" },
-        { "kind": "template", "name": "hero_minimal" },
-        { "kind": "section", "name": "footer" }
-    ]
+To ensure your theme respects the user's global settings, always use the following built-in classes:
+
+### Typography
+- `.arz-h1` to `.arz-h6`: Automatically applies the user's chosen font, size, and weight for headings.
+- `.arz-paragraph`: Applies paragraph-specific typography.
+- `.arz-body-text`: Applies secondary/small text typography.
+
+### Layout & Spacing
+- `.container`: Centers content and applies the `container_width` from settings.
+- `.arz-content`: Applies global horizontal padding to keep content aligned.
+- `.arz-core`: Base class for sections (adds relative positioning and background variables).
+
+### UI Elements
+- `.arz-btn-primary`: Renders a primary button using the global design system.
+- `.arz-btn-secondary`: Renders a secondary button.
+- `.arz-link`: Applies theme link colors and hover effects.
+- `.arz-border`, `.arz-border-t`, `.arz-border-b`: Applies standard borders using theme-defined variables.
+
+---
+
+## 5. Building Sections (The Root Component)
+
+Every section requires two files: `name.blade.php` and `name.json`.
+
+### Recommended Blade Structure
+```blade
+{{-- 1. Root Element with attributes() is MANDATORY --}}
+<div {!! $section->attributes() !!} class="{{ $section->visibility }}">
+    
+    {{-- 2. System-handled backgrounds (colors, images, overlays) --}}
+    {!! $section->backgrounds() !!}
+
+    {{-- 3. Content wrapper with global container/padding --}}
+    <div class="section-content {{ $section->container }} arz-content">
+        
+        {{-- 4. Dynamic block rendering --}}
+        {!! $section->blocks !!}
+        
+    </div>
+
+</div>
+
+{{-- 5. Scoped dynamic styling --}}
+<style>
+    .arz-{{ $section->id }} {
+        {{ $section->margin }}
+    }
+    .arz-{{ $section->id }} .section-content {
+        {{ $section->padding }}
+        {{ $section->flex }}
+        {{ $section->height }}
+    }
+    {{-- Responsive Overrides --}}
+    @media (max-width: 767px) {
+        .arz-{{ $section->id }} { {{ $section->marginMobile }} }
+        .arz-{{ $section->id }} .section-content {
+            {{ $section->paddingMobile }}
+            {{ $section->heightMobile }}
+        }
+    }
+</style>
+```
+
+---
+
+## 6. Building Blocks (The Content Units)
+
+Blocks are the elements inside sections (e.g., Headings, Buttons, Cards).
+
+### Block Data Access
+In a block's Blade file, use the `$block` object:
+```blade
+<div {!! $block->attributes() !!} class="block-wrapper {{ $block->flexClass }}">
+    <h2 class="arz-h2">{{ $block->title }}</h2>
+    <p class="arz-paragraph">{{ $block->text }}</p>
+    
+    @if($block->button_link)
+        <a href="{{ $block->button_link }}" class="arz-btn-primary">
+            {{ $block->button_text }}
+        </a>
+    @endif
+</div>
+```
+
+---
+
+## 7. The Global Color System
+
+ATS uses a CSS variable-based system for color schemes.
+
+### Applying a Scheme
+Every section is automatically wrapped in a class named `arz-{scheme_name}`. Inside your CSS, use these variables:
+
+- `--arz-bg`: Section background
+- `--arz-heading`: Heading color
+- `--arz-paragraph`: Text color
+- `--arz-link`: Link color
+- `--arz-btn-bg`: Primary button background
+
+**Example:**
+```css
+.my-custom-card {
+    background: var(--arz-bg);
+    color: var(--arz-heading);
+    border: 1px solid var(--arz-border);
 }
 ```
-*   **kind: section**: Loads the default empty state of a section type.
-*   **kind: template**: Loads a specific template file from the `templates/` folder.
 
 ---
 
-## 9. Globals (Header/Footer)
+## 8. Best Practices for Developers
 
-The `settings/global.json` defines regions that repeat across the site.
-*   **Structure**: `header`, `footer`, and `globals` arrays.
-*   **Auto-Apply**: These are merged with page-specific sections during rendering in `render.blade.php`.
-
----
-
-## 10. Rendering Engine Flow
-
-1.  **Request**: Visitor hits `/about`.
-2.  **Controller**: `ThemePageController` fetches `ThemePageDesign` for the active theme.
-3.  **Merge**: The system merges `global.json` (Header) + Page Layout + `global.json` (Footer).
-4.  **Wrappers**: Each JSON section object is wrapped into the `Section` class.
-5.  **Rendering**: `render.blade.php` iterates and `@includeIf` the corresponding Blade file from the theme folder.
+1. **Avoid Hardcoding:** Never hardcode colors or font sizes. Always use CSS variables or `$customizes`.
+2. **Use `attributes()`:** Always put `{!! $section->attributes() !!}` on the root of your section. Without this, the admin builder cannot "pick" or edit the section.
+3. **Respect `visibility`:** Use `class="{{ $section->visibility }}"` to honor the user's choice to hide sections on desktop or mobile.
+4. **Recursive Blocks:** Use `{!! $section->blocks !!}` for standard block rendering. If you need to filter blocks, use `{!! $section->blocks->only('heading') !!}`.
+5. **Scoped Styles:** Always wrap your section styles in `.arz-{{ $section->id }}` to prevent CSS leakage to other parts of the page.
 
 ---
 
-## 11. Blade Development Rules
-
-1.  **Attributes**: Always use `{!! $section->attributes !!}` on the root element for builder compatibility.
-2.  **Spacing**: Use `$section->padding`, `$section->margin`, and `$section->height` magic properties or dedicated Tailwind classes.
-3.  **Asset Privacy**: Assets should be loaded through the `theme_asset()` helper.
-4.  **No Hardcoding**: Never hardcode colors. Use CSS variables like `var(--arz-heading)` or `var(--arz-bg)`.
-5.  **Safe Rendering**: Use `collect($section->blocks)` if you need to manually iterate without the `BlockQuery` renderer.
-
----
-
-## 12. Do's and Don'ts
-
-| ✅ DO | ❌ DON'T |
-| :--- | :--- |
-| Use `$section->scheme` to toggle colors. | Hardcode hex codes in Blade files. |
-| Use `attributes` for editor selection. | Assign static IDs to section roots. |
-| Check `View::exists()` before inclusion. | Assume a file is present. |
-| Use `allowed_blocks` to restrict UI. | Allow every block in every section. |
-
----
-
-## 13. Validation & Fallbacks
-
-*   **Missing Files**: If a section's `.json` exists but `.blade.php` is missing, the engine skips it gracefully.
-*   **Missing Data**: The `Section` class returns `null` for missing keys; use `??` for defaults in Blade.
-*   **Required Keys**: Every section MUST have a `type` that matches its filename.
-
----
-
-## 14. Advanced Concepts
-
-### The Condition System
-Fields in `section.json` can be conditional:
-```json
-"conditional": { "key": "background_type", "value": "image" }
-```
-This hides/shows the field in the builder UI based on other selected values.
-
-### Marketplace Readiness
-Themes are stateless. All configurations reside in JSON. To distribute a theme, zip the slug folder. Arzavo handles the database installation via `ThemeInstaller`.
-
----
-
-© 2026 Arzavo Multi-Tenant Platform. Confidential Developer Documentation.
+## Summary
+Building an Arzavo theme is about creating **modular, style-aware components**. By using the provided helpers and global classes, you ensure that your theme will automatically adapt to the user's global settings, providing a premium and consistent experience.

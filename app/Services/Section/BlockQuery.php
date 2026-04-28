@@ -4,7 +4,7 @@ namespace App\Services\Section;
 
 use Illuminate\Support\Facades\View;
 
-class BlockQuery
+class BlockQuery implements \Countable
 {
     protected Section $section;
 
@@ -41,6 +41,41 @@ class BlockQuery
     {
         $this->forceRender = (array) $types;
         return $this;
+    }
+
+    public function count(): int
+    {
+        $blocks = $this->section->getBlocks();
+
+        if (empty($blocks) || !is_array($blocks)) {
+            return 0;
+        }
+
+        $count = 0;
+        foreach ($blocks as $block) {
+            if (empty($block['is_active'])) continue;
+            
+            $type = $block['type'] ?? null;
+            if (!$type) continue;
+
+            if (!empty($this->only) && !in_array($type, $this->only, true)) continue;
+            if (!empty($this->except) && in_array($type, $this->except, true)) continue;
+            
+            if (!empty($this->startsWith)) {
+                $matched = false;
+                foreach ($this->startsWith as $prefix) {
+                    if (str_starts_with($type, $prefix)) {
+                        $matched = true;
+                        break;
+                    }
+                }
+                if (!$matched) continue;
+            }
+
+            $count++;
+        }
+
+        return $count;
     }
 
     public function render(array $extra = []): string

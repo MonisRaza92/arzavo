@@ -1,133 +1,135 @@
 @php
-    $s = $section['settings'] ?? [];
-
-    $scheme = $section['color_scheme'] ?? 'scheme_1';
-    $divider = ($s['divider'] ?? '1') === '1';
-    $padding = $s['padding_y'] ?? 8;
-
-    $containerClass = ($s['container_width'] ?? 'container') === 'full'
-        ? 'w-full px-4'
-        : 'container mx-auto px-4';
-
-    $auto = ($s['auto_rotate'] ?? '0') === '1';
-    $speed = $s['rotate_speed'] ?? 4;
-
-    $blocks = collect($section['blocks'] ?? [])->where('is_active', true)->values();
+    $count = count($section->blocks());
+    $autoRotate = ($section->auto_rotate ?? '1') === '1';
+    $speed = ($section->rotate_speed ?? 4) * 1000;
 @endphp
 
+<div {!! $section->attributes() !!} class="arz-announcement-bar {{ $section->visibility }}" 
+     style="border-bottom: {{ $section->divider ?? 1 }}px solid var(--arz-border); {{ $section->padding }}">
 
-<div data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
-    class="w-full relative arzavo-background overflow-hidden {{ $divider ? 'arzavo-border-bottom' : '' }}"
-    style="{{ scheme($scheme) }}">
-
-    <div class="{{ $containerClass }}" style="padding-top:{{ $padding }}px;padding-bottom:{{ $padding }}px;">
-
-        {{-- MULTIPLE ANNOUNCEMENTS --}}
-        <div class="relative w-full flex justify-center text-center overflow-hidden px-8">
-
+    <div class="arz-announcement-container {{ $section->container }}">
+        <div class="arz-announcement-viewport">
             {{-- TRACK --}}
-            <div class="announcement-track flex transition-transform duration-500 ease-in-out"
-                data-autoplay="{{ $auto ? '1' : '0' }}" data-speed="{{ $speed }}000">
-
-                {!! renderManualBlocks($section['blocks'], 'announcement') !!}
-
+            <div class="arz-announcement-track" 
+                data-autoplay="{{ $autoRotate ? '1' : '0' }}" 
+                data-speed="{{ $speed }}">
+                {!! $section->blocks() !!}
             </div>
 
             {{-- ARROWS --}}
-            @if(count($blocks) > 1)
-                <button class="announcement-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 px-2">
-                   <i class="fa-solid fa-chevron-left text-sm"></i>
+            @if($count > 1)
+                <button class="arz-announcement-arrow arz-prev" aria-label="Previous">
+                   <i class="fa-solid fa-chevron-left"></i>
                 </button>
 
-                <button class="announcement-next absolute right-0 top-1/2 -translate-y-1/2 z-10 px-2">
-                  <i class="fa-solid fa-chevron-right text-sm"></i>
+                <button class="arz-announcement-arrow arz-next" aria-label="Next">
+                  <i class="fa-solid fa-chevron-right"></i>
                 </button>
             @endif
-
         </div>
-
     </div>
 </div>
+
+<style>
+    .arz-announcement-viewport {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        min-height: 40px;
+    }
+
+    .arz-announcement-track {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        width: 100%;
+    }
+
+    /* Requirement: items inside track must be full width */
+    .arz-announcement-track > * {
+        flex: 0 0 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .arz-announcement-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        color: var(--arz-heading);
+        opacity: 0.6;
+        transition: opacity 0.2s;
+    }
+
+    .arz-announcement-arrow:hover {
+        opacity: 1;
+    }
+
+    .arz-announcement-arrow.arz-prev { left: 0; }
+    .arz-announcement-arrow.arz-next { right: 0; }
+
+    @media (max-width: 767px) {
+        .arz-announcement-arrow {
+            /* optional: hide arrows on mobile if needed */
+        }
+    }
+</style>
+
 <script>
-    document.addEventListener("turbo:load", initAnnouncements);
-    document.addEventListener("DOMContentLoaded", initAnnouncements);
+    if (typeof initAnnouncements !== 'function') {
+        window.initAnnouncements = function() {
+            document.querySelectorAll('.arz-announcement-bar').forEach(section => {
+                const track = section.querySelector('.arz-announcement-track');
+                if (!track || section.dataset.initialized) return;
+                section.dataset.initialized = "true";
 
-    function initAnnouncements() {
+                const items = Array.from(track.children);
+                if (items.length <= 1) return;
 
-        document.querySelectorAll('[data-section-id]').forEach(section => {
+                let index = 0;
+                let timer = null;
+                const autoplay = track.dataset.autoplay === "1";
+                const speed = parseInt(track.dataset.speed || 4000);
 
-            const track = section.querySelector('.announcement-track');
-            if (!track) return;
+                function show(i) {
+                    track.style.transform = `translateX(-${i * 100}%)`;
+                }
 
-            const items = [...track.children];
-            if (items.length === 0) return;
+                function next() {
+                    index = (index + 1) % items.length;
+                    show(index);
+                }
 
-            let index = 0;
-            let timer = null;
-            const autoplay = track.dataset.autoplay === "1";
-            const speed = parseInt(track.dataset.speed || 4000);
+                function prev() {
+                    index = (index - 1 + items.length) % items.length;
+                    show(index);
+                }
 
-            // --- prepare layout (always slider)
-            track.style.width = items.length * 100 + "%";
-            track.style.display = "flex";
+                section.querySelector('.arz-next')?.addEventListener('click', () => { next(); restart(); });
+                section.querySelector('.arz-prev')?.addEventListener('click', () => { prev(); restart(); });
 
-            items.forEach(el => {
-                el.style.width = (100 / items.length) + "%";
-                el.style.flex = "0 0 100%";
-            });
+                function start() { if (autoplay) timer = setInterval(next, speed); }
+                function stop() { clearInterval(timer); }
+                function restart() { stop(); start(); }
 
-            function show(i) {
-                track.style.transform = `translateX(-${i * 100}%)`;
-            }
+                section.addEventListener("mouseenter", stop);
+                section.addEventListener("mouseleave", start);
 
-            function next() {
-                index++;
-                if (index >= items.length) index = 0;
-                show(index);
-            }
-
-            function prev() {
-                index--;
-                if (index < 0) index = items.length - 1;
-                show(index);
-            }
-
-            // --- arrows
-            const nextBtn = section.querySelector('.announcement-next');
-            const prevBtn = section.querySelector('.announcement-prev');
-
-            nextBtn?.addEventListener('click', () => {
-                next();
-                restart();
-            });
-
-            prevBtn?.addEventListener('click', () => {
-                prev();
-                restart();
-            });
-
-            // --- autoplay
-            function start() {
-                if (!autoplay || items.length <= 1) return;
-                timer = setInterval(next, speed);
-            }
-
-            function stop() {
-                clearInterval(timer);
-            }
-
-            function restart() {
-                stop();
                 start();
-            }
+            });
+        };
 
-            section.addEventListener("mouseenter", stop);
-            section.addEventListener("mouseleave", start);
-
-            show(0);
-            start();
-
-        });
-
+        document.addEventListener("turbo:load", initAnnouncements);
+        document.addEventListener("DOMContentLoaded", initAnnouncements);
     }
 </script>

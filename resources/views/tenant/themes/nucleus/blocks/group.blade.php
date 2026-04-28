@@ -1,83 +1,81 @@
 @php
-    $s = $block['settings'] ?? [];
-
     /* ================= SCHEME ================= */
-    $schemeMode = $s['scheme_mode'] ?? 'inherit';
-    $scheme = $block['color_scheme'] ?? 'scheme_1';
+    $schemeMode = $block->scheme_mode ?? 'inherit';
+    $scheme = $block->color_scheme ?? 'scheme_1';
 
     /* ================= BACKGROUND ================= */
-    $bgType = $s['background_type'] ?? 'none';
-    $mediaType = $s['media_type'] ?? 'image';
-    $bgImage = $s['background_image'] ?? null;
-    $bgVideo = $s['background_video'] ?? null;
-    $attachment = $s['background_attachment'] ?? 'scroll';
-    $bgOpacity = ($s['background_opacity'] ?? 100) / 100;
+    $bgType = $block->background_type ?? 'none';
+    $mediaType = $block->media_type ?? 'image';
+    $bgImage = $block->background_image ?? null;
+    $bgVideo = $block->background_video ?? null;
+    $attachment = $block->background_attachment ?? 'scroll';
+    $bgOpacity = ($block->background_opacity ?? 100) / 100;
 
     /* overlay */
-    $overlay = ($s['background_overlay'] ?? '0') === '1';
-    $overlayColor = $s['overlay_color'] ?? '#000';
-    $overlayOpacity = ($s['overlay_opacity'] ?? 50) / 100;
-    $blur = ($s['background_blur'] ?? '0') === '1';
-    $blurPx = $s['background_blur_intensity'] ?? 8;
+    $overlay = ($block->background_overlay ?? '0') === '1';
+    $overlayColor = $block->overlay_color ?? '#000';
+    $overlayOpacity = ($block->overlay_opacity ?? 50) / 100;
+    $blur = ($block->background_blur ?? '0') === '1';
+    $blurPx = $block->background_blur_intensity ?? 8;
 
     /* ================= LAYOUT ================= */
-    $dirDesktop = $s['direction'] ?? 'vertical';
-    $dirMobile = ($s['mobile_direction'] ?? '1') === '1' ? 'vertical' : 'horizontal';
+    $dirDesktop = $block->direction ?? 'vertical';
+    $dirMobile = ($block->mobile_direction ?? '1') === '1' ? 'vertical' : 'horizontal';
 
-    $alignDesktop = $s['alignment'] ?? 'start';
-    $alignMobile = $s['mobile_alignment'] ?? $alignDesktop;
+    $alignDesktop = $block->alignment ?? 'start';
+    $alignMobile = $block->mobile_alignment ?? $alignDesktop;
 
-    $justDesktop = $s['position'] ?? 'start';
-    $justMobile = $s['mobile_position'] ?? $justDesktop;
+    $justDesktop = $block->position ?? 'start';
+    $justMobile = $block->mobile_position ?? $justDesktop;
 
-    $gap = (int) ($s['gap'] ?? 0);
+    $gap = (int) ($block->gap ?? 0);
 
     /* ================= POSITION ================= */
-    $pos = $s['position_type'] ?? 'relative';
-    $top = $s['vertical_offset'] ?? null;
-    $left = $s['horizontal_offset'] ?? null;
+    $pos = $block->position_type ?? 'relative';
+    $top = $block->vertical_offset ?? null;
+    $left = $block->horizontal_offset ?? null;
 
-    $topMobile = $s['vertical_offset_mobile'] ?? null;
-    $leftMobile = $s['horizontal_offset_mobile'] ?? null;
-    $z = $s['z_index'] ?? 1;
+    $topMobile = $block->vertical_offset_mobile ?? null;
+    $leftMobile = $block->horizontal_offset_mobile ?? null;
+    $z = $block->z_index ?? 1;
 
     /* ================= WIDTH / HEIGHT ================= */
-    $width = $s['width'] ?? 'auto';
-    $widthMobile = $s['mobile_width'] ?? 'auto';
-    $maxWidth = $s['max_width'] ?? null;
-    $maxWidthMobile = $s['max_width_mobile'] ?? null;
-    $widthUnit = $s['width_unit'] ?? '%';
-    $widthMobileUnit = $s['width_mobile_unit'] ?? '%';
+    $width = $block->width ?? 'auto';
+    $widthMobile = $block->mobile_width ?? 'auto';
+    $maxWidth = $block->max_width ?? null;
+    $maxWidthMobile = $block->max_width_mobile ?? null;
+    $widthUnit = $block->width_unit ?? '%';
+    $widthMobileUnit = $block->width_mobile_unit ?? '%';
 
-    $height = $s['height'] ?? 'auto';
-    $heightMobile = $s['mobile_height'] ?? 'auto';
-    $customHeight = $s['custom_height'] ?? null;
-    $customHeightMobile = $s['custom_height_mobile'] ?? null;
-    $heightUnit = $s['height_unit'] ?? 'vh';
-    $heightMobileUnit = $s['height_mobile_unit'] ?? 'vh';
+    $height = $block->height ?? 'auto';
+    $heightMobile = $block->mobile_height ?? 'auto';
+    $customHeight = $block->custom_height ?? null;
+    $customHeightMobile = $block->custom_height_mobile ?? null;
+    $heightUnit = $block->height_unit ?? 'vh';
+    $heightMobileUnit = $block->height_mobile_unit ?? 'vh';
 
     /* absolute size */
-    $absWidth = $s['abs_width'] ?? null;
-    $absHeight = $s['abs_height'] ?? null;
-    $absWidthMobile = $s['abs_width_mobile'] ?? null;
-    $absHeightMobile = $s['abs_height_mobile'] ?? null;
+    $absWidth = $block->abs_width ?? null;
+    $absHeight = $block->abs_height ?? null;
+    $absWidthMobile = $block->abs_width_mobile ?? null;
+    $absHeightMobile = $block->abs_height_mobile ?? null;
 
     /* ================= SPACING ================= */
-    $pt = (int) ($s['padding_top'] ?? 0);
-    $pb = (int) ($s['padding_bottom'] ?? 0);
-    $pl = (int) ($s['padding_left'] ?? 0);
-    $pr = (int) ($s['padding_right'] ?? 0);
-    $mt = (int) ($s['margin_top'] ?? 0);
-    $mb = (int) ($s['margin_bottom'] ?? 0);
+    $pt = (int) ($block->padding_top ?? 0);
+    $pb = (int) ($block->padding_bottom ?? 0);
+    $pl = (int) ($block->padding_left ?? 0);
+    $pr = (int) ($block->padding_right ?? 0);
+    $mt = (int) ($block->margin_top ?? 0);
+    $mb = (int) ($block->margin_bottom ?? 0);
 
     /* ================= BORDER ================= */
-    $radius = (int) ($s['border_radius'] ?? 0);
-    $borderWidth = (int) ($s['border_width'] ?? 0);
+    $radius = (int) ($block->border_radius ?? 0);
+    $borderWidth = (int) ($block->border_width ?? 0);
 
     /* ================= VISIBILITY ================= */
-    $hideMobile = ($s['hide_mobile'] ?? '0') === '1';
-    $hideDesktop = ($s['hide_desktop'] ?? '0') === '1';
-    $overflow = $s['overflow'] ?? 'visible';
+    $hideMobile = ($block->hide_mobile ?? '0') === '1';
+    $hideDesktop = ($block->hide_desktop ?? '0') === '1';
+    $overflow = $block->overflow ?? 'visible';
 
     /* ================= CLASS BUILD ================= */
     $unique = 'group-' . $block['id'];
@@ -251,8 +249,8 @@ background-attachment:$attachment;";
 
     }
 </style>
-<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" class="{{ implode(' ', $classes) }}"
-    style="@if ($schemeMode === 'separate') {{ scheme($scheme) }} @endif {{ $style }}">
+<div {!! $block->attributes() !!} class="{{ implode(' ', $classes) }}"
+    style="{{ $style }}">
 
     {{-- VIDEO BG --}}
     @if ($bgType === 'media' && $mediaType === 'video' && $bgVideo)
@@ -274,6 +272,6 @@ background-attachment:$attachment;";
         </div>
     @endif
 
-    {!! renderBlocks($block['blocks'], ['data' => $data ?? null]) !!}
+    {!! $block->blocks()->render(['data' => $data ?? null]) !!}
 
 </div>

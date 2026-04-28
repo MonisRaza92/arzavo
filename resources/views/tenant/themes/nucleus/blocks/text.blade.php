@@ -1,19 +1,13 @@
 @php
-    $s = $block['settings'] ?? [];
 
-    $text = $s['text'] ?? '';
-    $type = $s['text_type'] ?? 'paragraph';
+    $type = $block->text_type ?? 'paragraph';
 
-    $desktopWidthType = $s['desktop_width_type'] ?? 'auto';
-    $desktopWidth = $s['desktop_width'] ?? 100;
+    $desktopWidthType = $block->desktop_width_type ?? 'auto';
+    $desktopWidth = $block->desktop_width ?? 100;
 
-    $align = $s['alignment'] ?? 'left';
-    $mAlign = $s['mobile_alignment'] ?? 'left';
+    $align = $block->alignment ?? 'left';
+    $mAlign = $block->mobile_alignment ?? 'left';
 
-    $pt = $s['padding_top'] ?? 0;
-    $pb = $s['padding_bottom'] ?? 0;
-    $pl = $s['padding_left'] ?? 0;
-    $pr = $s['padding_right'] ?? 0;
 
     /* ---------- WIDTH STYLE ---------- */
 
@@ -63,8 +57,7 @@
 </style>
 
 
-<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
-    class="
+<div {!! $block->attributes() !!} class="
 text-{{ $block['id'] }}
 arz-{{ $type }}
 {{ $mAlignClass }}
@@ -72,7 +65,7 @@ arz-{{ $type }}
 "
     style="
 {{ $style }}
-padding: {{ $pt }}px {{ $pr }}px {{ $pb }}px {{ $pl }}px;
+{{ $block->margin . ' ' . $block->padding }}
 ">
-    {!! $text !!}
+    {!! $block->text !!}
 </div>

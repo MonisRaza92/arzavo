@@ -1,95 +1,95 @@
 <?php
 use Illuminate\Support\Facades\View;
 
-if (!function_exists('renderBlocks')) {
+// if (!function_exists('renderBlocks')) {
 
-    function renderBlocks(array $blocks, array $context = [], ?string $theme = null): string
-    {
-        $theme = $theme ?? app('currentThemeSlug');
-        $html = '';
+//     function renderBlocks(array $blocks, array $context = [], ?string $theme = null): string
+//     {
+//         $theme = $theme ?? app('currentThemeSlug');
+//         $html = '';
 
-        // 👇 CENTRAL SKIP LIST (yahi tum edit karoge)
-        $manualBlocks = [
-            'course_card',
-            'class_course_card',
-            'blog_card',
-            'data_card',
-            // add more here
-        ];
+//         // 👇 CENTRAL SKIP LIST (yahi tum edit karoge)
+//         $manualBlocks = [
+//             'course_card',
+//             'class_course_card',
+//             'blog_card',
+//             'data_card',
+//             // add more here
+//         ];
 
-        foreach ($blocks as $block) {
+//         foreach ($blocks as $block) {
 
-            if (empty($block['is_active'])) {
-                continue;
-            }
+//             if (empty($block['is_active'])) {
+//                 continue;
+//             }
 
-            // 👇 skip manual blocks
-            if (in_array($block['type'], $manualBlocks, true)) {
-                continue;
-            }
+//             // 👇 skip manual blocks
+//             if (in_array($block['type'], $manualBlocks, true)) {
+//                 continue;
+//             }
 
-            $view = "tenant.themes.$theme.blocks.{$block['type']}";
+//             $view = "tenant.themes.$theme.blocks.{$block['type']}";
 
-            if (!View::exists($view)) {
-                continue;
-            }
+//             if (!View::exists($view)) {
+//                 continue;
+//             }
 
-            $html .= View::make($view, array_merge(
-                $context,
-                [
-                    'block' => $block,
-                    'theme' => $theme,
-                ]
-            ))->render();
-        }
+//             $html .= View::make($view, array_merge(
+//                 $context,
+//                 [
+//                     'block' => $block,
+//                     'theme' => $theme,
+//                 ]
+//             ))->render();
+//         }
 
-        return $html;
-    }
-}
+//         return $html;
+//     }
+// }
 
-if (!function_exists('renderManualBlocks')) {
+// if (!function_exists('renderManualBlocks')) {
 
-    function renderManualBlocks(
-        array $blocks,
-        string|array $types,
-        array $context = [],
-        ?string $theme = null
-    ): string {
+//     function renderManualBlocks(
+//         array $blocks,
+//         string|array $types,
+//         array $context = [],
+//         ?string $theme = null
+//     ): string {
 
-        $theme = $theme ?? app('currentThemeSlug');
+//         $theme = $theme ?? app('currentThemeSlug');
 
-        // normalize → always array
-        $types = (array) $types;
+//         // normalize → always array
+//         $types = (array) $types;
 
-        $html = '';
+//         $html = '';
 
-        foreach ($blocks as $block) {
+//         foreach ($blocks as $block) {
 
-            if (
-                !in_array($block['type'], $types)
-                || empty($block['is_active'])
-            ) {
-                continue;
-            }
+//             if (
+//                 !in_array($block['type'], $types)
+//                 || empty($block['is_active'])
+//             ) {
+//                 continue;
+//             }
 
-            $view = "tenant.themes.$theme.blocks.{$block['type']}";
+//             $view = "tenant.themes.$theme.blocks.{$block['type']}";
 
-            if (!View::exists($view)) {
-                continue;
-            }
+//             if (!View::exists($view)) {
+//                 continue;
+//             }
 
-            $html .= View::make(
-                $view,
-                array_merge(
-                    $context,
-                    [
-                        'block' => $block,
-                        'theme' => $theme,
-                    ]
-                )
-            )->render();
-        }
+//             $html .= View::make(
+//                 $view,
+//                 array_merge(
+//                     $context,
+//                     [
+//                         'block' => $block,
+//                         'theme' => $theme,
+//                     ]
+//                 )
+//             )->render();
+//         }
 
-        return $html;
-    }
-}
+//         return $html;
+//     }
+// }

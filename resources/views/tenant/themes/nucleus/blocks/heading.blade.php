@@ -1,26 +1,14 @@
 @php
-    $s = $block['settings'] ?? [];
 
-    $text = $s['text'] ?? '';
 
-    $type = $s['heading_type'] ?? 'heading-2';
+    $type = $block->heading_type ?? 'heading-2';
 
-    $desktopWidthType = $s['desktop_width_type'] ?? 'auto';
+    $desktopWidthType = $block->desktop_width_type ?? 'auto';
 
-    $desktopWidth = $s['desktop_width'] ?? 100;
+    $desktopWidth = $block->desktop_width ?? 100;
 
-    $align = $s['alignment'] ?? 'left';
-    $mAlign = $s['mobile_alignment'] ?? 'left';
-
-    $mt = $s['margin_top'] ?? 0;
-    $mb = $s['margin_bottom'] ?? 0;
-    $ml = $s['margin_left'] ?? 0;
-    $mr = $s['margin_right'] ?? 0;
-
-    $pt = $s['padding_top'] ?? 0;
-    $pb = $s['padding_bottom'] ?? 0;
-    $pl = $s['padding_left'] ?? 0;
-    $pr = $s['padding_right'] ?? 0;
+    $align = $block->alignment ?? 'left';
+    $mAlign = $block->mobile_alignment ?? 'left';
 
     $tag = match ($type) {
         'heading-1' => 'h1',
@@ -74,7 +62,7 @@
 </style>
 
 
-<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" class="
+<div {!! $block->attributes() !!} class="
 arz-{{ $tag }}
 heading-{{ $block['id'] }}
 w-full
@@ -82,11 +70,9 @@ w-full
 {{ $mAlignClass }}
 {{ $alignClass }}
 " style="
-{{ $widthStyle }}
-margin:{{ $mt }}px {{ $mr }}px {{ $mb }}px {{ $ml }}px;
-padding:{{ $pt }}px {{ $pr }}px {{ $pb }}px {{ $pl }}px;
+{{ $widthStyle }} {{ $block->margin . ' ' . $block->padding }}
 ">
 
-    {!! $text !!}
+    {!! $block->text !!}
 
 </div>

@@ -1,7 +1,7 @@
 {
     "type": "heading",
     "name": "Heading",
-    "icon": "fa-text-size",
+    "icon": "fa-heading",
     "order": 1,
     "category": "Basic",
     "max_blocks": 0,
