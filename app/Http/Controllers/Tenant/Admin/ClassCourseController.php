@@ -10,13 +10,15 @@ class ClassCourseController
 {
     public function index()
     {
-        $classCourses = ClassCourse::orderBy('order')->get();
+        $classCourses = ClassCourse::with('academicCategory')->orderBy('order')->get();
+        $categories = \App\Models\Tenant\AcademicCategory::orderBy('order')->get();
 
-        return view('tenant.admin.classes_courses.index', compact('classCourses'));
+        return view('tenant.admin.classes_courses.index', compact('classCourses', 'categories'));
     }
     public function store(Request $request)
     {
         $data = $request->validate([
+            'academic_category_id' => 'nullable|exists:academic_categories,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|string',
@@ -40,6 +42,7 @@ class ClassCourseController
         $classCourse = ClassCourse::findOrFail($id);
 
         $data = $request->validate([
+            'academic_category_id' => 'nullable|exists:academic_categories,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'updateimage' => 'nullable|string',
@@ -47,7 +50,7 @@ class ClassCourseController
         ]);
 
         $data['slug'] = Str::slug($data['name']);
-        $data['image'] = $data['updateimage'];
+        $data['image'] = $data['updateimage'] ?? $classCourse->image;
 
         $classCourse->update($data);
 

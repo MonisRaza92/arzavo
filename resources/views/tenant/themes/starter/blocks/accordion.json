@@ -1,0 +1,47 @@
+{
+    "type": "accordion",
+    "name": "Accordion",
+    "icon": "fa-plus-minus",
+    "category": "Content",
+    "order": 10,
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "question",
+            "label": "Question",
+            "type": "text",
+            "default": "What is included in the plan?"
+        },
+        {
+            "key": "answer",
+            "label": "Answer",
+            "type": "richtext",
+            "default": "Our plan includes all the essential features you need to manage your institution effectively."
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
+        {
+            "key": "icon_style",
+            "label": "Icon",
+            "type": "radio",
+            "options": ["plus", "chevron", "none"],
+            "default": "plus"
+        },
+        {
+            "key": "border_style",
+            "label": "Border",
+            "type": "radio",
+            "options": ["bordered", "underline", "none"],
+            "default": "bordered"
+        },
+        {
+            "key": "default_open",
+            "label": "Open by Default",
+            "type": "switch",
+            "default": "0"
+        }
+    ]
+}

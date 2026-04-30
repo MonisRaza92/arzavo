@@ -1,0 +1,103 @@
+{
+    "type": "testimonials",
+    "name": "Testimonials: Grid",
+    "icon": "fa-quote-left",
+    "order": 10,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "center",
+                "gap": 8,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Trusted by Educators Everywhere",
+                        "heading_type": "heading-4",
+                        "alignment": "center"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "See what our users are saying about their experience with the platform.",
+                        "alignment": "center"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "This platform completely changed how we manage our school. Attendance, fees, communication — everything is at our fingertips now.",
+                "author_name": "Priya Sharma",
+                "author_role": "Principal, Delhi Public School",
+                "rating": 5,
+                "card_style": "bordered"
+            }
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "The reporting tools are incredible. We can track student performance and financial health in real-time. It saved us hours every week.",
+                "author_name": "Rajesh Kumar",
+                "author_role": "Director, Bright Future Academy",
+                "rating": 5,
+                "card_style": "bordered"
+            }
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "Setup was incredibly easy. Within a day, our entire staff was using the system. The support team is outstanding.",
+                "author_name": "Anita Patel",
+                "author_role": "Admin Head, Green Valley Institute",
+                "rating": 4,
+                "card_style": "bordered"
+            }
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "We switched from three different tools to just this one platform. Cost savings and efficiency are both through the roof.",
+                "author_name": "Mohammed Ali",
+                "author_role": "Founder, Elite Coaching Center",
+                "rating": 5,
+                "card_style": "bordered"
+            }
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "Parent communication became effortless. Automated fee reminders alone reduced our follow-up calls by 80%.",
+                "author_name": "Sunita Rao",
+                "author_role": "Vice Principal, St. Mary's School",
+                "rating": 5,
+                "card_style": "bordered"
+            }
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "The interface is clean and intuitive. Even our less tech-savvy staff members picked it up quickly.",
+                "author_name": "Vikram Singh",
+                "author_role": "Administrator, National Academy",
+                "rating": 4,
+                "card_style": "bordered"
+            }
+        }
+    ],
+    "settings": {
+        "layout_style": "grid",
+        "columns": 3,
+        "mobile_columns": 1,
+        "gap": 24,
+        "padding_top": 60,
+        "padding_bottom": 60
+    }
+}

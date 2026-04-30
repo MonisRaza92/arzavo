@@ -1,0 +1,59 @@
+{
+    "type": "contact_form",
+    "name": "Contact: Modern",
+    "icon": "fa-envelope",
+    "order": 19,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": { "alignment": "start", "gap": 12 },
+            "default_blocks": [
+                { "type": "text", "settings": { "text": "CONTACT US", "text_type": "secondary", "alignment": "left" } },
+                { "type": "heading", "settings": { "text": "Let's Start a Conversation", "heading_type": "heading-3", "alignment": "left" } },
+                { "type": "text", "settings": { "text": "Whether you're ready to get started or just exploring, we'd love to chat. Reach out and we'll get back to you within 24 hours.", "alignment": "left" } }
+            ]
+        },
+        {
+            "type": "group",
+            "settings": { "direction": "vertical", "gap": 20, "alignment": "start", "padding_top": 24 },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": { "direction": "horizontal", "gap": 14, "alignment": "center" },
+                    "default_blocks": [
+                        { "type": "icon", "settings": { "icon_name": "envelope", "icon_size": 20, "icon_color": "link" } },
+                        { "type": "text", "settings": { "text": "hello@yourinstitution.com" } }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": { "direction": "horizontal", "gap": 14, "alignment": "center" },
+                    "default_blocks": [
+                        { "type": "icon", "settings": { "icon_name": "phone", "icon_size": 20, "icon_color": "link" } },
+                        { "type": "text", "settings": { "text": "+91 98765 43210" } }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": { "direction": "horizontal", "gap": 14, "alignment": "center" },
+                    "default_blocks": [
+                        { "type": "icon", "settings": { "icon_name": "clock", "icon_size": 20, "icon_color": "link" } },
+                        { "type": "text", "settings": { "text": "Mon - Fri: 9:00 AM - 6:00 PM IST" } }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "layout_style": "split",
+        "form_position": "right",
+        "gap": 80,
+        "show_phone": "1",
+        "show_subject": "0",
+        "button_text": "Send Message →",
+        "padding_top": 80,
+        "padding_bottom": 80
+    }
+}

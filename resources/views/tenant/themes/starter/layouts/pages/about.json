@@ -1,0 +1,26 @@
+{
+    "about": [
+        {
+            "kind": "template",
+            "name": "hero_left_aligned"
+        },
+        {
+            "kind": "template",
+            "name": "features_split_showcase"
+        },
+        {
+            "kind": "template",
+            "name": "stats_minimal"
+        },
+        {
+            "kind": "template",
+            "name": "testimonials_featured"
+        },
+        {
+            "kind": "template",
+            "name": "cta_fullwidth"
+        }
+    ],
+    "meta_title": "About Us",
+    "meta_description": "Discover our story, our mission, and the people who make it all possible. Built by educators, for educators."
+}

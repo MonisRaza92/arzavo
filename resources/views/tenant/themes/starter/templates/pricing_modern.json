@@ -1,0 +1,76 @@
+{
+    "type": "custom_section",
+    "name": "Pricing: Modern",
+    "icon": "fa-tags",
+    "order": 18,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": { "alignment": "center", "gap": 10 },
+            "default_blocks": [
+                { "type": "text", "settings": { "text": "PRICING", "text_type": "secondary", "alignment": "center" } },
+                { "type": "heading", "settings": { "text": "Plans That Grow With You", "heading_type": "heading-3", "alignment": "center" } },
+                { "type": "text", "settings": { "text": "Start free, upgrade when you need more. All plans include a 14-day free trial.", "alignment": "center", "desktop_width_type": "custom", "desktop_width": "55" } }
+            ]
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "horizontal",
+                "mobile_direction": "1",
+                "alignment": "stretch",
+                "position": "center",
+                "gap": 24,
+                "width": "full"
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": { "direction": "vertical", "alignment": "start", "position": "between", "gap": 20, "width": "auto", "mobile_width": "full", "padding_top": 32, "padding_bottom": 32, "padding_left": 28, "padding_right": 28, "border_width": 1, "border_radius": 16 },
+                    "default_blocks": [
+                        { "type": "text", "settings": { "text": "STARTER", "text_type": "secondary" } },
+                        { "type": "heading", "settings": { "text": "₹0/mo", "heading_type": "heading-3" } },
+                        { "type": "text", "settings": { "text": "For small coaching centers getting started with digital management." } },
+                        { "type": "divider", "settings": { "thickness": 1 } },
+                        { "type": "text", "settings": { "text": "✓ Up to 50 students\n✓ Basic attendance\n✓ Fee collection\n✓ Email support\n✓ 1 admin user" } },
+                        { "type": "button", "settings": { "text": "Get Started Free", "button_type": "secondary", "width": "full", "width_mobile": "full" } }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": { "direction": "vertical", "alignment": "start", "position": "between", "gap": 20, "width": "auto", "mobile_width": "full", "padding_top": 32, "padding_bottom": 32, "padding_left": 28, "padding_right": 28, "border_width": 2, "border_radius": 16, "scheme_mode": "separate", "color_scheme": "scheme_2" },
+                    "default_blocks": [
+                        { "type": "text", "settings": { "text": "PROFESSIONAL ★ POPULAR", "text_type": "secondary" } },
+                        { "type": "heading", "settings": { "text": "₹1,499/mo", "heading_type": "heading-3" } },
+                        { "type": "text", "settings": { "text": "For growing institutions that need advanced features and automation." } },
+                        { "type": "divider", "settings": { "thickness": 1 } },
+                        { "type": "text", "settings": { "text": "✓ Unlimited students\n✓ Advanced analytics\n✓ SMS & WhatsApp alerts\n✓ Custom reports\n✓ Priority support\n✓ 5 admin users" } },
+                        { "type": "button", "settings": { "text": "Start Free Trial", "button_type": "primary", "width": "full", "width_mobile": "full" } }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": { "direction": "vertical", "alignment": "start", "position": "between", "gap": 20, "width": "auto", "mobile_width": "full", "padding_top": 32, "padding_bottom": 32, "padding_left": 28, "padding_right": 28, "border_width": 1, "border_radius": 16 },
+                    "default_blocks": [
+                        { "type": "text", "settings": { "text": "ENTERPRISE", "text_type": "secondary" } },
+                        { "type": "heading", "settings": { "text": "Custom", "heading_type": "heading-3" } },
+                        { "type": "text", "settings": { "text": "For large institutions needing custom solutions, API access, and dedicated support." } },
+                        { "type": "divider", "settings": { "thickness": 1 } },
+                        { "type": "text", "settings": { "text": "✓ Everything in Pro\n✓ Multi-branch support\n✓ API access\n✓ Custom integrations\n✓ Dedicated manager\n✓ Unlimited admins" } },
+                        { "type": "button", "settings": { "text": "Contact Sales", "button_type": "secondary", "width": "full", "width_mobile": "full" } }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 48,
+        "padding_top": 80,
+        "padding_bottom": 80
+    }
+}

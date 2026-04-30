@@ -1,0 +1,152 @@
+{
+    "type": "navbar",
+    "name": "Header: Navbar",
+    "icon": "fa-bars",
+    "category": "Header",
+    "max_blocks": 2,
+    "color_scheme": "scheme_1",
+    "allowed_blocks": [
+        "header_logo",
+        "header_menu"
+    ],
+    "default_blocks": [
+        "header_logo",
+        "header_menu"
+    ],
+    "fields": [
+        {
+            "type": "group",
+            "label": "General",
+            "text": "Configure the basic behavior and appearance of the navbar, including color scheme and how it behaves during scrolling."
+        },
+        {
+            "key": "color_scheme",
+            "type": "color_scheme_selector",
+            "help": "Choose a color scheme for the navbar. You can customize color schemes in the Theme Settings."
+        },
+        {
+            "key": "navbar_behavior",
+            "type": "radio",
+            "options": [
+                "sticky",
+                "scroll-up"
+            ],
+            "default": "sticky",
+            "help": "Sticky: Navbar stays at the top of the page when scrolling. Scroll-up: Navbar hides when scrolling down."
+        },
+        {
+            "type": "group",
+            "label": "Layout & Size",
+            "help": "Set logo and link alignment, choose full or fixed width, and adjust navbar size."
+        },
+        {
+            "key": "logo_position",
+            "type": "radio",
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
+            "default": "left",
+            "conditional": {
+                "key": "link_row",
+                "value": "top"
+            }
+        },
+        {
+            "key": "link_position",
+            "type": "radio",
+            "options": [
+                "left",
+                "right"
+            ],
+            "default": "right",
+            "conditional": {
+                "key": "logo_position",
+                "value": "left"
+            }
+        },
+        {
+            "key": "link_row",
+            "type": "radio",
+            "options": [
+                "top",
+                "bottom"
+            ],
+            "default": "top"
+        },
+        {
+            "key": "link_justify",
+            "label": "Link Position",
+            "type": "radio",
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
+            "default": "left",
+            "conditional": {
+                "key": "link_row",
+                "value": "bottom"
+            }
+        },
+        {
+            "key": "link_divider",
+            "type": "range",
+            "default": "1",
+            "min": 0,
+            "max": 5,
+            "conditional": {
+                "key": "link_row",
+                "value": "bottom"
+            }
+        },
+        {
+            "key": "container",
+            "label": "Width",
+            "type": "radio",
+            "options": [
+                "full_width",
+                "container"
+            ],
+            "default": "container"
+        },
+        {
+            "key": "navbar_size",
+            "type": "radio",
+            "options": [
+                "compact",
+                "standard"
+            ],
+            "default": "standard"
+        },
+        {
+            "type": "group",
+            "label": "Style",
+            "help": "Control the visual appearance of the navbar, including divider thickness, icon size, and spacing between elements."
+        },
+        {
+            "key": "divider",
+            "label": "Bottom Divider",
+            "type": "range",
+            "default": "1",
+            "min": 0,
+            "max": 5
+        },
+        {
+            "key": "icon_size",
+            "label": "Icon Size",
+            "type": "range",
+            "default": "20",
+            "min": 16,
+            "max": 48
+        },
+        {
+            "key": "blocks_spacing",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100
+        }
+    ]
+}

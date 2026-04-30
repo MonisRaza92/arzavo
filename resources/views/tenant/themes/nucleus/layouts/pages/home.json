@@ -3,6 +3,32 @@
         {
             "kind": "template",
             "name": "hero_minimal"
+        },
+        {
+            "kind": "template",
+            "name": "logo_cloud_marquee"
+        },
+        {
+            "kind": "template",
+            "name": "features_cards"
+        },
+        {
+            "kind": "template",
+            "name": "features_icon_list"
+        },
+        {
+            "kind": "template",
+            "name": "stats_row"
+        },
+        {
+            "kind": "template",
+            "name": "testimonials_carousel"
+        },
+        {
+            "kind": "template",
+            "name": "cta_dark"
         }
-    ]
+    ],
+    "meta_title": "Home",
+    "meta_description": "Welcome to our platform. Discover our services, features, and what makes us the best choice for your institution."
 }

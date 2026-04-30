@@ -1,0 +1,250 @@
+{
+    "type": "custom_section",
+    "name": "Pricing: Cards",
+    "icon": "fa-tags",
+    "order": 18,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "center",
+                "gap": 10,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Simple, Transparent Pricing",
+                        "heading_type": "heading-4",
+                        "alignment": "center"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Choose the plan that works best for your institution. No hidden fees, no surprises.",
+                        "alignment": "center"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "horizontal",
+                "mobile_direction": "1",
+                "alignment": "stretch",
+                "position": "center",
+                "gap": 24,
+                "width": "full"
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "start",
+                        "position": "between",
+                        "gap": 20,
+                        "width": "auto",
+                        "mobile_width": "full",
+                        "padding_top": 32,
+                        "padding_bottom": 32,
+                        "padding_left": 28,
+                        "padding_right": 28,
+                        "border_width": 1,
+                        "border_radius": 16
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Starter",
+                                "heading_type": "heading-6",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Free",
+                                "heading_type": "heading-2",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Perfect for small coaching centers just getting started.",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "divider",
+                            "settings": {
+                                "thickness": 1
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "✓ Up to 50 students\n✓ Basic attendance tracking\n✓ Fee management\n✓ Email support",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Get Started",
+                                "button_type": "secondary",
+                                "width": "full",
+                                "width_mobile": "full"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "start",
+                        "position": "between",
+                        "gap": 20,
+                        "width": "auto",
+                        "mobile_width": "full",
+                        "padding_top": 32,
+                        "padding_bottom": 32,
+                        "padding_left": 28,
+                        "padding_right": 28,
+                        "border_width": 2,
+                        "border_radius": 16,
+                        "scheme_mode": "separate",
+                        "color_scheme": "scheme_2"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Professional",
+                                "heading_type": "heading-6",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "₹999/mo",
+                                "heading_type": "heading-2",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Ideal for growing institutions with advanced needs.",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "divider",
+                            "settings": {
+                                "thickness": 1
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "✓ Unlimited students\n✓ Advanced analytics\n✓ SMS & WhatsApp alerts\n✓ Custom reports\n✓ Priority support",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Start Free Trial",
+                                "button_type": "primary",
+                                "width": "full",
+                                "width_mobile": "full"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "start",
+                        "position": "between",
+                        "gap": 20,
+                        "width": "auto",
+                        "mobile_width": "full",
+                        "padding_top": 32,
+                        "padding_bottom": 32,
+                        "padding_left": 28,
+                        "padding_right": 28,
+                        "border_width": 1,
+                        "border_radius": 16
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Enterprise",
+                                "heading_type": "heading-6",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Custom",
+                                "heading_type": "heading-2",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "For large institutions needing custom solutions and dedicated support.",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "divider",
+                            "settings": {
+                                "thickness": 1
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "✓ Everything in Professional\n✓ Multi-branch support\n✓ API access\n✓ Custom integrations\n✓ Dedicated account manager",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Contact Sales",
+                                "button_type": "secondary",
+                                "width": "full",
+                                "width_mobile": "full"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 48,
+        "padding_top": 70,
+        "padding_bottom": 70
+    }
+}

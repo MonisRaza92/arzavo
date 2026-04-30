@@ -1,0 +1,96 @@
+{
+    "type": "faq",
+    "name": "FAQ: Two Column",
+    "icon": "fa-circle-question",
+    "order": 12,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "center",
+                "gap": 10,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Have Questions? We've Got Answers",
+                        "heading_type": "heading-4",
+                        "alignment": "center"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Everything you need to know about our platform, plans, and support.",
+                        "alignment": "center"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "accordion",
+            "settings": {
+                "question": "How do I get started?",
+                "answer": "Simply sign up for a free account, complete the onboarding wizard, and you'll be up and running within minutes. No credit card required.",
+                "border_style": "underline",
+                "icon_style": "chevron"
+            }
+        },
+        {
+            "type": "accordion",
+            "settings": {
+                "question": "Can I import existing data?",
+                "answer": "Yes! We support CSV and Excel imports for student records, staff data, and fee structures. Our team can also help with bulk migrations.",
+                "border_style": "underline",
+                "icon_style": "chevron"
+            }
+        },
+        {
+            "type": "accordion",
+            "settings": {
+                "question": "Is there a mobile app?",
+                "answer": "Our platform is fully responsive and works perfectly on any device. Dedicated mobile apps for iOS and Android are also available.",
+                "border_style": "underline",
+                "icon_style": "chevron"
+            }
+        },
+        {
+            "type": "accordion",
+            "settings": {
+                "question": "What payment methods do you accept?",
+                "answer": "We accept all major credit and debit cards, UPI, net banking, and bank transfers. Custom invoicing is also available for enterprise clients.",
+                "border_style": "underline",
+                "icon_style": "chevron"
+            }
+        },
+        {
+            "type": "accordion",
+            "settings": {
+                "question": "Can multiple staff members use the platform?",
+                "answer": "Absolutely! You can create unlimited staff accounts with role-based permissions so everyone gets access to exactly what they need.",
+                "border_style": "underline",
+                "icon_style": "chevron"
+            }
+        },
+        {
+            "type": "accordion",
+            "settings": {
+                "question": "Do you provide training?",
+                "answer": "We offer free onboarding training, video tutorials, and a comprehensive knowledge base. Premium plans include dedicated training sessions.",
+                "border_style": "underline",
+                "icon_style": "chevron"
+            }
+        }
+    ],
+    "settings": {
+        "faq_columns": "2",
+        "gap": 0,
+        "max_width": 1200,
+        "padding_top": 60,
+        "padding_bottom": 60
+    }
+}

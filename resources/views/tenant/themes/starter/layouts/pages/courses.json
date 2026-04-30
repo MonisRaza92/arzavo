@@ -1,0 +1,10 @@
+{
+    "courses": [
+        {
+            "kind": "section",
+            "name": "course_container"
+        }
+    ],
+    "meta_title": "Courses",
+    "meta_description": "Explore our wide range of courses designed to help you learn, grow, and achieve your goals."
+}

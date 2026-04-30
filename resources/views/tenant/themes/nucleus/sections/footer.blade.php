@@ -1,66 +1,53 @@
-@php
-    $s = $section['settings'] ?? [];
+<footer {!! $section->attributes() !!} class="{{ $section->visibility }}">
+    {!! $section->backgrounds() !!}
 
-    $columns = (int) ($s['columns'] ?? 4);
-    $mobileColumns = (int) ($s['mobile_columns'] ?? 1);
-    $gap = (int) ($s['gap'] ?? 32);
+    <div class="footer-content {{ $section->content_width === 'full' ? 'w-full' : 'container' }} arz-content" style="position:relative; z-index:10;">
 
-    $pt = (int) ($s['padding_top'] ?? 60);
-    $pb = (int) ($s['padding_bottom'] ?? 40);
-    $mt = (int) ($s['margin_top'] ?? 0);
-
-    $contentWidth = $s['content_width'] ?? 'container';
-
-    $backgroundType = $s['background_type'] ?? 'none';
-    $bgColor = $s['background_color'] ?? '#111111';
-    $bgImage = $s['background_image'] ?? null;
-
-    $showCopyright = ($s['show_copyright'] ?? '1') === '1';
-    $copyrightText = $s['copyright_text'] ?? '';
-
-    $hideDesktop = ($s['hide_desktop'] ?? '0') === '1';
-    $hideMobile = ($s['hide_mobile'] ?? '0') === '1';
-
-    $visibility = match (true) {
-        $hideDesktop && !$hideMobile => 'block md:hidden',
-        !$hideDesktop && $hideMobile => 'hidden md:block',
-        default => ''
-    };
-
-    $containerClass = $contentWidth === 'full' ? 'w-full' : 'container';
-
-    $gridCols = "grid-cols-$mobileColumns md:grid-cols-$columns";
-
-    $styles = "
-            padding-top: {$pt}px;
-            padding-bottom: {$pb}px;
-            margin-top: {$mt}px;
-        ";
-
-
-    if ($backgroundType === 'image' && $bgImage) {
-        $styles .= "
-                background-image: url('{$bgImage}');
-                background-size: cover;
-                background-position: center;
-            ";
-    }
-@endphp
-
-<footer data-section-id="{{ $section['id'] }}" class="relative arz-section arzavo-background {{ $visibility }}" style="{{ $styles }}">
-
-    <div class="{{ $containerClass }}">
-
-        <div class="grid {{ $gridCols }}" style="gap: {{ $gap }}px;">
-            {!! renderBlocks($section['blocks']) !!}
+        <div class="footer-grid">
+            {!! $section->blocks() !!}
         </div>
 
-        @if($showCopyright)
-            <div class="mt-10 pt-6 border-t text-sm opacity-70">
-                {{ $copyrightText }}
+        @if(($section->show_copyright ?? '1') === '1')
+            <div class="footer-copyright arz-border-t">
+                <p class="arz-body-text" style="opacity:0.7;">
+                    {{ $section->copyright_text ?? '© ' . date('Y') . ' All rights reserved.' }}
+                </p>
             </div>
         @endif
 
     </div>
-
 </footer>
+
+<style>
+    .arz-{{ $section->id }} {
+        {{ $section->margin }}
+    }
+
+    .arz-{{ $section->id }} .footer-content {
+        {{ $section->padding }}
+    }
+
+    .arz-{{ $section->id }} .footer-grid {
+        display: grid;
+        grid-template-columns: repeat({{ $section->columns ?? 4 }}, 1fr);
+        gap: {{ $section->gap ?? 32 }}px;
+    }
+
+    .arz-{{ $section->id }} .footer-copyright {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top-width: 1px;
+    }
+
+    @media (max-width: 767px) {
+        .arz-{{ $section->id }} {
+            {{ $section->marginMobile }}
+        }
+        .arz-{{ $section->id }} .footer-content {
+            {{ $section->paddingMobile }}
+        }
+        .arz-{{ $section->id }} .footer-grid {
+            grid-template-columns: repeat({{ $section->mobile_columns ?? 1 }}, 1fr);
+        }
+    }
+</style>

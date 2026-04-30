@@ -68,7 +68,7 @@
         "overlay_color": "#ffffff",
         "overlay_opacity": "50",
         "height": "custom",
-        "custom_height": "80",
+        "custom_height": "90",
         "mobile_height": "0",
         "direction": "vertical",
         "mobile_direction": "1",

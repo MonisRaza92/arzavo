@@ -1,0 +1,69 @@
+{
+    "type": "logo_cloud",
+    "name": "Logo Cloud: Marquee",
+    "icon": "fa-images",
+    "order": 16,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "center",
+                "gap": 8,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Trusted by Industry Leaders",
+                        "heading_type": "heading-5",
+                        "alignment": "center"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "logo_item",
+            "settings": { "alt_text": "Partner 1" }
+        },
+        {
+            "type": "logo_item",
+            "settings": { "alt_text": "Partner 2" }
+        },
+        {
+            "type": "logo_item",
+            "settings": { "alt_text": "Partner 3" }
+        },
+        {
+            "type": "logo_item",
+            "settings": { "alt_text": "Partner 4" }
+        },
+        {
+            "type": "logo_item",
+            "settings": { "alt_text": "Partner 5" }
+        },
+        {
+            "type": "logo_item",
+            "settings": { "alt_text": "Partner 6" }
+        },
+        {
+            "type": "logo_item",
+            "settings": { "alt_text": "Partner 7" }
+        },
+        {
+            "type": "logo_item",
+            "settings": { "alt_text": "Partner 8" }
+        }
+    ],
+    "settings": {
+        "layout_style": "marquee",
+        "grayscale": "1",
+        "logo_height": 48,
+        "gap": 48,
+        "marquee_speed": 30,
+        "padding_top": 40,
+        "padding_bottom": 40
+    }
+}

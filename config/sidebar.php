@@ -30,7 +30,9 @@ return [
                 'icon' => 'fa-school',
                 'text' => 'Academics',
                 'links' => [
-                    ['icon' => 'fa-book-open', 'text' => 'Courses', 'route' => 'admin.courses.index', 'active' => 'admin/courses'],
+                    ['icon' => 'fa-layer-group', 'text' => 'Categories', 'route' => 'admin.academic-categories.index', 'active' => 'admin/academic-categories'],
+                    ['icon' => 'fa-book-open', 'text' => 'Classes', 'route' => 'admin.classes.courses.index', 'active' => 'admin/classes/courses'],
+                    ['icon' => 'fa-book-reader', 'text' => 'Subjects', 'route' => 'admin.subjects.index', 'active' => 'admin/subjects'],
                     ['icon' => 'fa-clipboard-check', 'text' => 'Assignments', 'route' => '#'],
                     ['icon' => 'fa-chalkboard', 'text' => 'Live Classes', 'route' => '#'],
                     ['icon' => 'fa-question-circle', 'text' => 'Quizzes & Tests', 'route' => '#'],

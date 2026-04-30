@@ -1,0 +1,63 @@
+{
+    "type": "text",
+    "name": "Text",
+    "icon": "fa-align-left",
+    "order": 2,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "group",
+            "label": "Content",
+            "type": "group"
+        },
+        {
+            "key": "text",
+            "label": "Text Content",
+            "type": "richtext",
+            "default": "Your text content goes here. You can write multiple lines and it will be displayed beautifully on your website.",
+            "placeholder": "Enter your text here"
+        },
+        {
+            "key": "text_type",
+            "label": "Text Type",
+            "type": "select",
+            "help": "Select the text type. To change the font, size, weight, or text casing of headings, go to Settings>Typography.",
+            "options": ["paragraph", "body-text"],
+            "default": "paragraph"
+        },
+
+        {
+            "type": "group",
+            "label": "Alignment"
+        },
+        {
+            "key": "alignment",
+            "label": "Desktop Alignment",
+            "type": "radio",
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "radio",
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
+            "default": "left"
+        },
+        
+        {
+           "preset": "margin"
+        }
+    ]
+}

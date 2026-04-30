@@ -1,0 +1,92 @@
+{
+    "type": "custom_section",
+    "name": "Hero: Centered Bold",
+    "icon": "fa-heading",
+    "order": 1,
+    "category": "Banners",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "text",
+            "settings": {
+                "text": "PLATFORM FOR MODERN INSTITUTIONS",
+                "text_type": "secondary",
+                "alignment": "center",
+                "mobile_alignment": "center"
+            }
+        },
+        {
+            "type": "heading",
+            "settings": {
+                "text": "Build, Manage & Scale Your Institution With Confidence",
+                "heading_type": "heading-1",
+                "alignment": "center",
+                "mobile_alignment": "left",
+                "desktop_width_type": "custom",
+                "desktop_width": "80"
+            }
+        },
+        {
+            "type": "text",
+            "settings": {
+                "text": "The complete solution for schools, colleges, and coaching centers. Automate operations, engage parents, and focus on what matters — education.",
+                "text_type": "paragraph",
+                "font_size": "large",
+                "alignment": "center",
+                "mobile_alignment": "left",
+                "desktop_width_type": "custom",
+                "desktop_width": "60"
+            }
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "horizontal",
+                "mobile_direction": "1",
+                "gap": 12,
+                "alignment": "center",
+                "position": "center",
+                "mobile_width": "full",
+                "padding_top": 8
+            },
+            "default_blocks": [
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Start Free Trial",
+                        "button_type": "primary",
+                        "width_mobile": "full",
+                        "show_icon": "1",
+                        "icon": "arrow-right",
+                        "icon_position": "right"
+                    }
+                },
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Book a Demo",
+                        "button_type": "secondary",
+                        "width_mobile": "full"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "image",
+            "settings": {
+                "aspect_ratio": "wide",
+                "image_fit": "cover",
+                "border_radius": 16,
+                "margin_top": 32
+            }
+        }
+    ],
+    "settings": {
+        "direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 16,
+        "padding_top": 80,
+        "padding_bottom": 80
+    }
+}

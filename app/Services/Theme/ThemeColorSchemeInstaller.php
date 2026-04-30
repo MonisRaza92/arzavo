@@ -5,15 +5,23 @@ use App\Models\Tenant\ColorScheme;
 
 class ThemeColorSchemeInstaller
 {
-    public static function install(array $themeJson, int $themeId): void
+    /**
+     * Install color schemes from config/schemes.json data.
+     * 
+     * @param array $schemesData  The decoded JSON from config/schemes.json
+     * @param int   $themeId      The tenant_theme ID
+     */
+    public static function install(array $schemesData, int $themeId): void
     {
-        if (empty($themeJson['color_schemes'])) {
+        $schemes = $schemesData['color_schemes'] ?? [];
+
+        if (empty($schemes)) {
             return;
         }
 
-        foreach ($themeJson['color_schemes'] as $scheme) {
+        foreach ($schemes as $scheme) {
 
-            // HARD VALIDATION (controller style)
+            // HARD VALIDATION
             if (
                 !isset($scheme['key']) ||
                 !isset($scheme['colors']) ||

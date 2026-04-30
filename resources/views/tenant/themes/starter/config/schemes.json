@@ -1,0 +1,373 @@
+{
+    "color_schemes": [
+        {
+            "key": "scheme_1",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#ffffff",
+                        "heading": "#111827",
+                        "subheading": "#1f2937",
+                        "paragraph": "#4b5563",
+                        "secondary_text": "#6b7280",
+                        "invert_text": "#ffffff",
+                        "link": "#dc2626",
+                        "link_hover": "#b91c1c",
+                        "border": "rgba(0,0,0,0.08)",
+                        "shadow": "rgba(0,0,0,0.04)"
+                    },
+                    "primary_btn": {
+                        "background": "#dc2626",
+                        "text": "#ffffff",
+                        "hover_background": "#b91c1c",
+                        "hover_text": "#ffffff",
+                        "border": "#dc2626",
+                        "hover_border": "#b91c1c"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#111827",
+                        "hover_background": "rgba(17,24,39,0.05)",
+                        "hover_text": "#111827",
+                        "border": "#d1d5db",
+                        "hover_border": "#111827"
+                    },
+                    "input": {
+                        "background": "#f9fafb",
+                        "text": "#111827",
+                        "border": "#e5e7eb",
+                        "focus_border": "#dc2626"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_2",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#111827",
+                        "heading": "#f9fafb",
+                        "subheading": "#e5e7eb",
+                        "paragraph": "#d1d5db",
+                        "secondary_text": "#9ca3af",
+                        "invert_text": "#111827",
+                        "link": "#f87171",
+                        "link_hover": "#fca5a5",
+                        "border": "rgba(255,255,255,0.1)",
+                        "shadow": "rgba(0,0,0,0.4)"
+                    },
+                    "primary_btn": {
+                        "background": "#dc2626",
+                        "text": "#ffffff",
+                        "hover_background": "#ef4444",
+                        "hover_text": "#ffffff",
+                        "border": "#dc2626",
+                        "hover_border": "#ef4444"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#f9fafb",
+                        "hover_background": "rgba(255,255,255,0.08)",
+                        "hover_text": "#ffffff",
+                        "border": "rgba(255,255,255,0.2)",
+                        "hover_border": "rgba(255,255,255,0.4)"
+                    },
+                    "input": {
+                        "background": "rgba(255,255,255,0.05)",
+                        "text": "#f9fafb",
+                        "border": "rgba(255,255,255,0.15)",
+                        "focus_border": "#dc2626"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_3",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#faf5ff",
+                        "heading": "#1e1b4b",
+                        "subheading": "#312e81",
+                        "paragraph": "#4338ca",
+                        "secondary_text": "#6366f1",
+                        "invert_text": "#ffffff",
+                        "link": "#7c3aed",
+                        "link_hover": "#6d28d9",
+                        "border": "rgba(99,102,241,0.15)",
+                        "shadow": "rgba(99,102,241,0.1)"
+                    },
+                    "primary_btn": {
+                        "background": "#7c3aed",
+                        "text": "#ffffff",
+                        "hover_background": "#6d28d9",
+                        "hover_text": "#ffffff",
+                        "border": "#7c3aed",
+                        "hover_border": "#6d28d9"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#7c3aed",
+                        "hover_background": "rgba(124,58,237,0.08)",
+                        "hover_text": "#6d28d9",
+                        "border": "#7c3aed",
+                        "hover_border": "#6d28d9"
+                    },
+                    "input": {
+                        "background": "#ffffff",
+                        "text": "#1e1b4b",
+                        "border": "rgba(99,102,241,0.2)",
+                        "focus_border": "#7c3aed"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_4",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#f0fdf4",
+                        "heading": "#14532d",
+                        "subheading": "#166534",
+                        "paragraph": "#15803d",
+                        "secondary_text": "#22c55e",
+                        "invert_text": "#ffffff",
+                        "link": "#16a34a",
+                        "link_hover": "#15803d",
+                        "border": "rgba(22,163,74,0.15)",
+                        "shadow": "rgba(22,163,74,0.1)"
+                    },
+                    "primary_btn": {
+                        "background": "#16a34a",
+                        "text": "#ffffff",
+                        "hover_background": "#15803d",
+                        "hover_text": "#ffffff",
+                        "border": "#16a34a",
+                        "hover_border": "#15803d"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#16a34a",
+                        "hover_background": "rgba(22,163,74,0.08)",
+                        "hover_text": "#15803d",
+                        "border": "#16a34a",
+                        "hover_border": "#15803d"
+                    },
+                    "input": {
+                        "background": "#ffffff",
+                        "text": "#14532d",
+                        "border": "rgba(22,163,74,0.2)",
+                        "focus_border": "#16a34a"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_5",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "linear-gradient(160deg, #0f172a 0%, #1e293b 100%)",
+                        "heading": "#ffffff",
+                        "subheading": "#e2e8f0",
+                        "paragraph": "#cbd5e1",
+                        "secondary_text": "#94a3b8",
+                        "invert_text": "#0f172a",
+                        "link": "#38bdf8",
+                        "link_hover": "#7dd3fc",
+                        "border": "rgba(56,189,248,0.15)",
+                        "shadow": "rgba(56,189,248,0.2)"
+                    },
+                    "primary_btn": {
+                        "background": "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)",
+                        "text": "#0f172a",
+                        "hover_background": "linear-gradient(135deg, #7dd3fc 0%, #a5b4fc 100%)",
+                        "hover_text": "#0f172a",
+                        "border": "#38bdf8",
+                        "hover_border": "#7dd3fc"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#38bdf8",
+                        "hover_background": "rgba(56,189,248,0.12)",
+                        "hover_text": "#7dd3fc",
+                        "border": "rgba(56,189,248,0.3)",
+                        "hover_border": "#38bdf8"
+                    },
+                    "input": {
+                        "background": "rgba(56,189,248,0.06)",
+                        "text": "#ffffff",
+                        "border": "rgba(56,189,248,0.2)",
+                        "focus_border": "#38bdf8"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_6",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "linear-gradient(160deg, #1a0a2e 0%, #2d1654 100%)",
+                        "heading": "#ffffff",
+                        "subheading": "#e9d5ff",
+                        "paragraph": "#d8b4fe",
+                        "secondary_text": "#c084fc",
+                        "invert_text": "#1a0a2e",
+                        "link": "#e879f9",
+                        "link_hover": "#f0abfc",
+                        "border": "rgba(232,121,249,0.2)",
+                        "shadow": "rgba(232,121,249,0.25)"
+                    },
+                    "primary_btn": {
+                        "background": "linear-gradient(135deg, #e879f9 0%, #c084fc 100%)",
+                        "text": "#1a0a2e",
+                        "hover_background": "linear-gradient(135deg, #f0abfc 0%, #d8b4fe 100%)",
+                        "hover_text": "#1a0a2e",
+                        "border": "#e879f9",
+                        "hover_border": "#f0abfc"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#e879f9",
+                        "hover_background": "rgba(232,121,249,0.12)",
+                        "hover_text": "#f0abfc",
+                        "border": "rgba(232,121,249,0.3)",
+                        "hover_border": "#e879f9"
+                    },
+                    "input": {
+                        "background": "rgba(232,121,249,0.06)",
+                        "text": "#ffffff",
+                        "border": "rgba(232,121,249,0.2)",
+                        "focus_border": "#e879f9"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_7",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#fffbeb",
+                        "heading": "#451a03",
+                        "subheading": "#78350f",
+                        "paragraph": "#92400e",
+                        "secondary_text": "#b45309",
+                        "invert_text": "#ffffff",
+                        "link": "#d97706",
+                        "link_hover": "#b45309",
+                        "border": "rgba(217,119,6,0.15)",
+                        "shadow": "rgba(217,119,6,0.1)"
+                    },
+                    "primary_btn": {
+                        "background": "#d97706",
+                        "text": "#ffffff",
+                        "hover_background": "#b45309",
+                        "hover_text": "#ffffff",
+                        "border": "#d97706",
+                        "hover_border": "#b45309"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#d97706",
+                        "hover_background": "rgba(217,119,6,0.08)",
+                        "hover_text": "#b45309",
+                        "border": "#d97706",
+                        "hover_border": "#b45309"
+                    },
+                    "input": {
+                        "background": "#ffffff",
+                        "text": "#451a03",
+                        "border": "rgba(217,119,6,0.2)",
+                        "focus_border": "#d97706"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_8",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "linear-gradient(160deg, #0c0a09 0%, #1c1917 100%)",
+                        "heading": "#ffffff",
+                        "subheading": "#fbbf24",
+                        "paragraph": "#d6d3d1",
+                        "secondary_text": "#a8a29e",
+                        "invert_text": "#0c0a09",
+                        "link": "#fbbf24",
+                        "link_hover": "#fcd34d",
+                        "border": "rgba(251,191,36,0.15)",
+                        "shadow": "rgba(0,0,0,0.5)"
+                    },
+                    "primary_btn": {
+                        "background": "#fbbf24",
+                        "text": "#0c0a09",
+                        "hover_background": "#fcd34d",
+                        "hover_text": "#0c0a09",
+                        "border": "#fbbf24",
+                        "hover_border": "#fcd34d"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#fbbf24",
+                        "hover_background": "rgba(251,191,36,0.1)",
+                        "hover_text": "#fcd34d",
+                        "border": "rgba(251,191,36,0.3)",
+                        "hover_border": "#fbbf24"
+                    },
+                    "input": {
+                        "background": "rgba(251,191,36,0.06)",
+                        "text": "#ffffff",
+                        "border": "rgba(251,191,36,0.2)",
+                        "focus_border": "#fbbf24"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_9",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#f8fafc",
+                        "heading": "#0f172a",
+                        "subheading": "#1e293b",
+                        "paragraph": "#475569",
+                        "secondary_text": "#64748b",
+                        "invert_text": "#ffffff",
+                        "link": "#0ea5e9",
+                        "link_hover": "#0284c7",
+                        "border": "rgba(0,0,0,0.06)",
+                        "shadow": "rgba(0,0,0,0.03)"
+                    },
+                    "primary_btn": {
+                        "background": "#0f172a",
+                        "text": "#ffffff",
+                        "hover_background": "#1e293b",
+                        "hover_text": "#ffffff",
+                        "border": "#0f172a",
+                        "hover_border": "#1e293b"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#0f172a",
+                        "hover_background": "rgba(15,23,42,0.04)",
+                        "hover_text": "#0f172a",
+                        "border": "#cbd5e1",
+                        "hover_border": "#0f172a"
+                    },
+                    "input": {
+                        "background": "#ffffff",
+                        "text": "#0f172a",
+                        "border": "#e2e8f0",
+                        "focus_border": "#0ea5e9"
+                    }
+                }
+            ]
+        }
+    ]
+}

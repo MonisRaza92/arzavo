@@ -13,8 +13,24 @@ class ThemeGlobalInstaller
             $layout[$area] = ['sections' => []];
 
             foreach ($items as $item) {
-                $layout[$area]['sections'][] =
-                    ThemeSectionFactory::fromSectionType($item['name'], $themeSlug);
+
+                $kind = $item['kind'] ?? 'section';
+                $name = $item['name'] ?? null;
+
+                if (!$name) {
+                    continue;
+                }
+
+                if ($kind === 'section') {
+                    $layout[$area]['sections'][] =
+                        ThemeSectionFactory::fromSectionType($name, $themeSlug);
+                }
+
+                if ($kind === 'template') {
+                    foreach (ThemeTemplateExpander::expand($name, $themeSlug) as $section) {
+                        $layout[$area]['sections'][] = $section;
+                    }
+                }
             }
         }
 

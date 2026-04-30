@@ -1,0 +1,80 @@
+{
+    "type": "custom_section",
+    "name": "Features: Three Column",
+    "icon": "fa-table-columns",
+    "order": 5,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "center",
+                "gap": 10,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "text",
+                    "settings": { "text": "WHY CHOOSE US", "text_type": "secondary", "alignment": "center" }
+                },
+                {
+                    "type": "heading",
+                    "settings": { "text": "Everything You Need to Succeed", "heading_type": "heading-3", "alignment": "center" }
+                },
+                {
+                    "type": "text",
+                    "settings": { "text": "Powerful tools designed to make institution management effortless.", "alignment": "center", "desktop_width_type": "custom", "desktop_width": "60" }
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "horizontal",
+                "mobile_direction": "1",
+                "alignment": "start",
+                "position": "between",
+                "gap": 32,
+                "width": "full"
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": { "direction": "vertical", "alignment": "start", "gap": 14, "width": "auto", "mobile_width": "full", "padding_top": 28, "padding_bottom": 28, "padding_left": 24, "padding_right": 24, "border_width": 1, "border_radius": 16 },
+                    "default_blocks": [
+                        { "type": "icon", "settings": { "icon_name": "bolt", "icon_size": 28, "icon_color": "link" } },
+                        { "type": "heading", "settings": { "text": "Lightning Fast Setup", "heading_type": "heading-6", "alignment": "left" } },
+                        { "type": "text", "settings": { "text": "Get up and running in minutes, not days. Our intuitive wizard guides you through every step of the setup process.", "alignment": "left" } }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": { "direction": "vertical", "alignment": "start", "gap": 14, "width": "auto", "mobile_width": "full", "padding_top": 28, "padding_bottom": 28, "padding_left": 24, "padding_right": 24, "border_width": 1, "border_radius": 16 },
+                    "default_blocks": [
+                        { "type": "icon", "settings": { "icon_name": "shield-check", "icon_size": 28, "icon_color": "link" } },
+                        { "type": "heading", "settings": { "text": "Enterprise Security", "heading_type": "heading-6", "alignment": "left" } },
+                        { "type": "text", "settings": { "text": "Your data is protected with bank-level encryption and regular backups. We take security seriously so you don't have to worry.", "alignment": "left" } }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": { "direction": "vertical", "alignment": "start", "gap": 14, "width": "auto", "mobile_width": "full", "padding_top": 28, "padding_bottom": 28, "padding_left": 24, "padding_right": 24, "border_width": 1, "border_radius": 16 },
+                    "default_blocks": [
+                        { "type": "icon", "settings": { "icon_name": "chart-line", "icon_size": 28, "icon_color": "link" } },
+                        { "type": "heading", "settings": { "text": "Smart Analytics", "heading_type": "heading-6", "alignment": "left" } },
+                        { "type": "text", "settings": { "text": "Make data-driven decisions with real-time dashboards, performance tracking, and automated reporting tools.", "alignment": "left" } }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 48,
+        "padding_top": 80,
+        "padding_bottom": 80
+    }
+}

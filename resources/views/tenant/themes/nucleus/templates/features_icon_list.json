@@ -1,0 +1,126 @@
+{
+    "type": "custom_section",
+    "name": "Features: Icon List",
+    "icon": "fa-list-check",
+    "order": 21,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "group",
+            "settings": {
+                "direction": "horizontal",
+                "mobile_direction": "1",
+                "alignment": "center",
+                "position": "between",
+                "gap": 48,
+                "width": "full"
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "start",
+                        "position": "center",
+                        "gap": 20,
+                        "width": "full",
+                        "mobile_width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Everything You Need in One Platform",
+                                "heading_type": "heading-4",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Our comprehensive suite of tools is designed to handle every aspect of your institution's operations.",
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "gap": 16,
+                                "alignment": "start",
+                                "width": "full",
+                                "padding_top": 8
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "group",
+                                    "settings": { "direction": "horizontal", "gap": 12, "alignment": "center" },
+                                    "default_blocks": [
+                                        { "type": "icon", "settings": { "icon_name": "circle-check", "icon_size": 22, "icon_color": "link" } },
+                                        { "type": "text", "settings": { "text": "Student enrollment & records management" } }
+                                    ]
+                                },
+                                {
+                                    "type": "group",
+                                    "settings": { "direction": "horizontal", "gap": 12, "alignment": "center" },
+                                    "default_blocks": [
+                                        { "type": "icon", "settings": { "icon_name": "circle-check", "icon_size": 22, "icon_color": "link" } },
+                                        { "type": "text", "settings": { "text": "Automated fee collection & invoicing" } }
+                                    ]
+                                },
+                                {
+                                    "type": "group",
+                                    "settings": { "direction": "horizontal", "gap": 12, "alignment": "center" },
+                                    "default_blocks": [
+                                        { "type": "icon", "settings": { "icon_name": "circle-check", "icon_size": 22, "icon_color": "link" } },
+                                        { "type": "text", "settings": { "text": "Real-time attendance tracking" } }
+                                    ]
+                                },
+                                {
+                                    "type": "group",
+                                    "settings": { "direction": "horizontal", "gap": 12, "alignment": "center" },
+                                    "default_blocks": [
+                                        { "type": "icon", "settings": { "icon_name": "circle-check", "icon_size": 22, "icon_color": "link" } },
+                                        { "type": "text", "settings": { "text": "Performance analytics & reporting" } }
+                                    ]
+                                },
+                                {
+                                    "type": "group",
+                                    "settings": { "direction": "horizontal", "gap": 12, "alignment": "center" },
+                                    "default_blocks": [
+                                        { "type": "icon", "settings": { "icon_name": "circle-check", "icon_size": 22, "icon_color": "link" } },
+                                        { "type": "text", "settings": { "text": "Parent & student communication portal" } }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Explore All Features",
+                                "button_type": "primary"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "image",
+                    "settings": {
+                        "aspect_ratio": "portrait",
+                        "image_fit": "cover",
+                        "border_radius": 16
+                    }
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 0,
+        "padding_top": 70,
+        "padding_bottom": 70
+    }
+}

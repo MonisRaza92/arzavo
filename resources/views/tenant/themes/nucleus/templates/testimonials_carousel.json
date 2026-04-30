@@ -1,0 +1,84 @@
+{
+    "type": "testimonials",
+    "name": "Testimonials: Carousel",
+    "icon": "fa-quote-left",
+    "order": 11,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "start",
+                "gap": 8,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "What People Are Saying",
+                        "heading_type": "heading-4",
+                        "alignment": "left"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Real stories from real institutions using our platform every day.",
+                        "alignment": "left"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "A game-changer for our coaching center. We can now focus on teaching instead of paperwork.",
+                "author_name": "Deepak Verma",
+                "author_role": "CEO, Apex Learning",
+                "rating": 5,
+                "card_style": "filled"
+            }
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "The analytics dashboard gives us insights we never had before. We can make data-driven decisions now.",
+                "author_name": "Kavita Joshi",
+                "author_role": "Director, Sunrise Academy",
+                "rating": 5,
+                "card_style": "filled"
+            }
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "Our parents love the transparency. They can see attendance, grades, and fees all in one place.",
+                "author_name": "Rahul Mehta",
+                "author_role": "Principal, Modern School",
+                "rating": 4,
+                "card_style": "filled"
+            }
+        },
+        {
+            "type": "testimonial_card",
+            "settings": {
+                "quote": "Best investment we ever made for our institution. ROI was visible within the first month.",
+                "author_name": "Neha Gupta",
+                "author_role": "Founder, Achievers Hub",
+                "rating": 5,
+                "card_style": "filled"
+            }
+        }
+    ],
+    "settings": {
+        "layout_style": "carousel",
+        "slides_visible": 3,
+        "slides_visible_mobile": 1,
+        "show_arrows": "1",
+        "gap": 24,
+        "padding_top": 60,
+        "padding_bottom": 60
+    }
+}

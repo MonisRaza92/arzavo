@@ -1,0 +1,91 @@
+{
+    "type": "heading",
+    "name": "Heading",
+    "icon": "fa-heading",
+    "order": 1,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "group",
+            "label": "Content",
+            "type": "group"
+        },
+        {
+            "key": "text",
+            "label": "Heading Text",
+            "type": "richtext",
+            "default": "Your Amazing Heading",
+            "placeholder": "Enter your heading here"
+        },
+        {
+            "key": "heading_type",
+            "label": "Heading Type",
+            "type": "select",
+            "help": "Select the heading type. To change the font, size, weight, or text casing of headings, go to Settings>Typography.",
+            "options": [
+                "heading-1",
+                "heading-2",
+                "heading-3",
+                "heading-4",
+                "heading-5",
+                "heading-6"
+            ],
+            "default": "heading-2"
+        },
+        {
+            "type": "group",
+            "label": "Alignment"
+        },
+        {
+            "key": "desktop_width_type",
+            "label": "Heading Width",
+            "type": "radio",
+            "options": [
+                "auto",
+                "full",
+                "custom"
+            ],
+            "default": "auto"
+        },
+        {
+            "key": "desktop_width",
+            "label": "Desktop Custom Width",
+            "type": "range",
+            "default": 100,
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "desktop_width_type",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "alignment",
+            "label": "Desktop Alignment",
+            "type": "radio",
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "radio",
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
+            "default": "left"
+        },
+        {
+            "preset": "margin"
+        }
+    ]
+}

@@ -43,6 +43,66 @@ class BlockQuery implements \Countable
         return $this;
     }
 
+    /**
+     * Check if any active blocks of the given type(s) exist.
+     */
+    public function has(string ...$types): bool
+    {
+        $blocks = $this->section->getBlocks();
+
+        if (empty($blocks) || !is_array($blocks)) {
+            return false;
+        }
+
+        foreach ($blocks as $block) {
+            if (empty($block['is_active'])) continue;
+            $type = $block['type'] ?? null;
+            if ($type && in_array($type, $types, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return an array of individually rendered block HTML strings
+     * for the given type(s). Useful for @foreach in carousel layouts.
+     */
+    public function filter(string ...$types): array
+    {
+        $theme = app('currentThemeSlug');
+        $blocks = $this->section->getBlocks();
+        $results = [];
+
+        if (empty($blocks) || !is_array($blocks)) {
+            return [];
+        }
+
+        foreach ($blocks as $block) {
+            if (!is_array($block) || empty($block['is_active'])) {
+                continue;
+            }
+
+            $type = $block['type'] ?? null;
+            if (!$type || !in_array($type, $types, true)) {
+                continue;
+            }
+
+            $view = "tenant.themes.$theme.blocks.$type";
+            if (!\Illuminate\Support\Facades\View::exists($view)) {
+                continue;
+            }
+
+            $results[] = \Illuminate\Support\Facades\View::make($view, [
+                'block' => block($block),
+                'theme' => $theme,
+            ])->render();
+        }
+
+        return $results;
+    }
+
     public function count(): int
     {
         $blocks = $this->section->getBlocks();

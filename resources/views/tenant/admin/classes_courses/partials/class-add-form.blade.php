@@ -14,6 +14,20 @@
                 </div>
 
 
+                {{-- Category --}}
+                <div class="mb-3">
+                    <label class="block text-tertiary text-xs mb-1">
+                        Academic Category
+                    </label>
+                    <select name="academic_category_id"
+                        class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
+                        <option value="">-- Select Category (Optional) --</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 {{-- Name --}}
                 <div class="mb-3">
                     <label class="block text-tertiary text-xs mb-1">

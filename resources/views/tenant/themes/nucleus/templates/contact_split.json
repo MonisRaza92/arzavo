@@ -1,0 +1,131 @@
+{
+    "type": "contact_form",
+    "name": "Contact: Split Layout",
+    "icon": "fa-envelope",
+    "order": 17,
+    "category": "Storytelling",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "start",
+                "gap": 12,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Let's Talk",
+                        "heading_type": "heading-3",
+                        "alignment": "left"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Whether you have a question, want to schedule a demo, or just want to say hello — we're here for you.",
+                        "alignment": "left"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "vertical",
+                "gap": 20,
+                "alignment": "start",
+                "padding_top": 16
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal",
+                        "gap": 12,
+                        "alignment": "center"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "icon",
+                            "settings": {
+                                "icon_name": "envelope",
+                                "icon_size": 20,
+                                "icon_color": "link"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "hello@yourdomain.com",
+                                "alignment": "left"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal",
+                        "gap": 12,
+                        "alignment": "center"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "icon",
+                            "settings": {
+                                "icon_name": "phone",
+                                "icon_size": 20,
+                                "icon_color": "link"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "+91 98765 43210",
+                                "alignment": "left"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal",
+                        "gap": 12,
+                        "alignment": "center"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "icon",
+                            "settings": {
+                                "icon_name": "location-dot",
+                                "icon_size": 20,
+                                "icon_color": "link"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "123 Business Avenue, New Delhi, India",
+                                "alignment": "left"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "layout_style": "split",
+        "form_position": "right",
+        "gap": 64,
+        "show_phone": "1",
+        "show_subject": "1",
+        "button_text": "Send Message",
+        "padding_top": 70,
+        "padding_bottom": 70
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "home": [
+        {
+            "kind": "template",
+            "name": "hero_centered_bold"
+        },
+        {
+            "kind": "template",
+            "name": "logo_cloud_grid"
+        },
+        {
+            "kind": "template",
+            "name": "features_three_column"
+        },
+        {
+            "kind": "template",
+            "name": "features_split_showcase"
+        },
+        {
+            "kind": "template",
+            "name": "stats_minimal"
+        },
+        {
+            "kind": "template",
+            "name": "testimonials_featured"
+        },
+        {
+            "kind": "template",
+            "name": "faq_centered"
+        },
+        {
+            "kind": "template",
+            "name": "cta_fullwidth"
+        }
+    ],
+    "meta_title": "Home",
+    "meta_description": "Welcome to our platform. The complete solution for modern institutions to manage, grow, and succeed."
+}

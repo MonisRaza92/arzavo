@@ -1,0 +1,90 @@
+{
+    "type": "cta_banner",
+    "name": "CTA Banner",
+    "icon": "fa-bullhorn",
+    "category": "Storytelling",
+    "order": 15,
+    "color_scheme": "scheme_1",
+    "max_blocks": 10,
+    "allowed_blocks": [
+        "heading",
+        "text",
+        "button",
+        "group",
+        "icon",
+        "spacer"
+    ],
+    "default_blocks": [
+        {
+            "type": "heading",
+            "settings": {
+                "text": "Ready to Get Started?",
+                "heading_type": "heading-3",
+                "alignment": "center"
+            }
+        },
+        {
+            "type": "text",
+            "settings": {
+                "text": "Join thousands of institutions that trust our platform. Start your free trial today.",
+                "alignment": "center",
+                "font_size": "large"
+            }
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "horizontal",
+                "mobile_direction": "1",
+                "gap": 16,
+                "alignment": "center",
+                "position": "center",
+                "mobile_width": "full"
+            },
+            "default_blocks": [
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Start Free Trial",
+                        "button_type": "primary",
+                        "width_mobile": "full"
+                    }
+                },
+                {
+                    "type": "button",
+                    "settings": {
+                        "text": "Contact Sales",
+                        "button_type": "secondary",
+                        "width_mobile": "full"
+                    }
+                }
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "preset": "section_flex_fields"
+        },
+        {
+            "preset": "section_size_fields"
+        },
+        {
+            "preset": "section_bg_type_fields"
+        },
+        {
+            "preset": "bg_blur_fields"
+        },
+        {
+            "preset": "bg_overlay_fields"
+        },
+        {
+            "preset": "section_spacing_fields"
+        },
+        {
+            "preset": "section_mobile_spacing_fields"
+        },
+        {
+            "preset": "visibility_fields"
+        }
+    ]
+}

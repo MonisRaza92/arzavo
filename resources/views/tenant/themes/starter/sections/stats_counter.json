@@ -1,0 +1,121 @@
+{
+    "type": "stats_counter",
+    "name": "Stats Counter",
+    "icon": "fa-chart-bar",
+    "category": "Storytelling",
+    "order": 13,
+    "color_scheme": "scheme_1",
+    "max_blocks": 10,
+    "allowed_blocks": [
+        "header",
+        "heading",
+        "text",
+        "stat_item"
+    ],
+    "default_blocks": [
+        {
+            "type": "stat_item",
+            "settings": {
+                "number": "500",
+                "suffix": "+",
+                "label": "Institutions",
+                "icon_name": "building"
+            }
+        },
+        {
+            "type": "stat_item",
+            "settings": {
+                "number": "50",
+                "suffix": "K+",
+                "label": "Students",
+                "icon_name": "user-graduate"
+            }
+        },
+        {
+            "type": "stat_item",
+            "settings": {
+                "number": "99",
+                "suffix": "%",
+                "label": "Satisfaction",
+                "icon_name": "face-smile"
+            }
+        },
+        {
+            "type": "stat_item",
+            "settings": {
+                "number": "24",
+                "suffix": "/7",
+                "label": "Support",
+                "icon_name": "headset"
+            }
+        }
+    ],
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout",
+            "icon": "fa-layer-group"
+        },
+        {
+            "key": "color_scheme",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "columns",
+            "label": "Desktop Columns",
+            "type": "range",
+            "min": 2,
+            "max": 6,
+            "default": 4
+        },
+        {
+            "key": "mobile_columns",
+            "label": "Mobile Columns",
+            "type": "range",
+            "min": 1,
+            "max": 3,
+            "default": 2
+        },
+        {
+            "key": "gap",
+            "label": "Items Gap",
+            "type": "range",
+            "default": 32,
+            "min": 0,
+            "max": 80
+        },
+        {
+            "key": "alignment",
+            "label": "Text Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "center"
+        },
+        {
+            "key": "show_divider",
+            "label": "Show Dividers",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "animate",
+            "label": "Animate Numbers",
+            "type": "switch",
+            "default": "1"
+        },
+        {
+            "preset": "section_bg_type_fields"
+        },
+        {
+            "preset": "bg_overlay_fields"
+        },
+        {
+            "preset": "section_spacing"
+        },
+        {
+            "preset": "visibility_fields"
+        }
+    ]
+}

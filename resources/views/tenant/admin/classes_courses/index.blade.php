@@ -43,6 +43,13 @@
         </div>
 
         <div class="px-3">
+            {{-- Category --}}
+            @if($class->academicCategory)
+                <span class="text-xs text-accent font-semibold uppercase tracking-wider mb-1 block">
+                    {{ $class->academicCategory->name }}
+                </span>
+            @endif
+
             {{-- Name --}}
             <h3 class="text-primary font-semibold text-xl mb-1">
                 {{ $class->name }}

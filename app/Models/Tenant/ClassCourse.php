@@ -12,6 +12,7 @@ class ClassCourse extends Model
     protected $table = 'class_courses';
 
     protected $fillable = [
+        'academic_category_id',
         'image',
         'name',
         'slug',
@@ -23,6 +24,14 @@ class ClassCourse extends Model
     protected $casts = [
         'status' => 'boolean',
     ];
+
+    /**
+     * A Class/Course belongs to a Category
+     */
+    public function academicCategory()
+    {
+        return $this->belongsTo(AcademicCategory::class, 'academic_category_id');
+    }
 
     /**
      * A Class/Course has many subjects

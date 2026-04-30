@@ -234,6 +234,12 @@ function registerDomains($domain)
                 Route::get('/classes/courses/{id}/get', [ClassCourseController::class, 'get'])->name('classes.courses.get');
                 Route::put('/classes/courses/{id}/update', [ClassCourseController::class, 'update'])->name('classes.courses.update');
                 Route::delete('/classes/courses/{id}/delete', [ClassCourseController::class, 'destroy'])->name('classes.courses.destroy');
+                Route::get('/academic-categories', [\App\Http\Controllers\Tenant\Admin\AcademicCategoryController::class, 'index'])->name('academic-categories.index');
+                Route::post('/academic-categories', [\App\Http\Controllers\Tenant\Admin\AcademicCategoryController::class, 'store'])->name('academic-categories.store');
+                Route::get('/academic-categories/{id}/get', [\App\Http\Controllers\Tenant\Admin\AcademicCategoryController::class, 'get'])->name('academic-categories.get');
+                Route::put('/academic-categories/{id}/update', [\App\Http\Controllers\Tenant\Admin\AcademicCategoryController::class, 'update'])->name('academic-categories.update');
+                Route::delete('/academic-categories/{id}/delete', [\App\Http\Controllers\Tenant\Admin\AcademicCategoryController::class, 'destroy'])->name('academic-categories.destroy');
+
                 Route::resource('subjects', SubjectController::class);
                 Route::get('/subjects/{id}/get', [SubjectController::class, 'get'])->name('subjects.get');
                 Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update');

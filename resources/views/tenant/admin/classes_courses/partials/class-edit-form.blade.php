@@ -16,6 +16,20 @@
                 </div>
 
 
+                {{-- Category --}}
+                <div class="mb-3">
+                    <label class="block text-tertiary text-xs mb-1">
+                        Academic Category
+                    </label>
+                    <select name="academic_category_id" id="editClassCategoryId"
+                        class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
+                        <option value="">-- Select Category (Optional) --</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 {{-- Name --}}
                 <div class="mb-3">
                     <label class="block text-tertiary text-xs mb-1">
@@ -91,6 +105,7 @@
                 // Populate the form fields with the fetched data
                 document.getElementById('classEditForm').action = `/admin/classes/courses/${data.id}/update`;
                 document.getElementById('editClassId').value = data.id;
+                document.getElementById('editClassCategoryId').value = data.academic_category_id || '';
                 document.getElementById('editClassName').value = data.name;
                 document.getElementById('editClassDescription').value = data.description || '';
                 const statusCheckbox = document.getElementById('editClassStatus');
