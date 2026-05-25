@@ -1,7 +1,7 @@
 {
     "type": "footer",
     "name": "Footer",
-    "icon": "fa-tv",
+    "icon": "fa-solid fa-table-cells-large",
     "category": "Footer",
     "color_scheme": "scheme_1",
     "max_blocks": 20,
@@ -17,14 +17,15 @@
         "video",
         "logo",
         "menu",
-        "social_icons"
+        "social_icons",
+        "newsletter"
     ],
     "fields": [
         {
             "key": "group",
             "type": "group",
             "label": "Layout",
-            "icon": "fa-layer-group"
+            "icon": "fa-solid fa-layer-group"
         },
         {
             "key": "columns",
@@ -54,7 +55,7 @@
             "key": "group",
             "type": "group",
             "label": "Width & Height",
-            "icon": "fa-arrows-left-right"
+            "icon": "fa-solid fa-expand"
         },
         {
             "key": "content_width",
@@ -70,7 +71,7 @@
             "key": "group",
             "type": "group",
             "label": "Background",
-            "icon": "fa-image"
+            "icon": "fa-solid fa-image"
         },
         {
             "key": "color_scheme",
@@ -98,13 +99,16 @@
             }
         },
         {
-            "preset": "section_spacing"
+            "preset": "section_spacing_fields"
+        },
+        {
+            "preset": "section_mobile_spacing_fields"
         },
         {
             "key": "group",
             "type": "group",
             "label": "Copyright",
-            "icon": "fa-copyright"
+            "icon": "fa-solid fa-copyright"
         },
         {
             "key": "show_copyright",

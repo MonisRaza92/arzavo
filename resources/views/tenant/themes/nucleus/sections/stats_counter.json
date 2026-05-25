@@ -112,7 +112,10 @@
             "preset": "bg_overlay_fields"
         },
         {
-            "preset": "section_spacing"
+            "preset": "section_spacing_fields"
+        },
+        {
+            "preset": "section_mobile_spacing_fields"
         },
         {
             "preset": "visibility_fields"

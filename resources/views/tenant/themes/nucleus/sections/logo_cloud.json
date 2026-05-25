@@ -6,12 +6,7 @@
     "order": 14,
     "color_scheme": "scheme_1",
     "max_blocks": 20,
-    "allowed_blocks": [
-        "header",
-        "heading",
-        "text",
-        "logo_item"
-    ],
+    "allowed_blocks": ["header", "heading", "text", "logo_item"],
     "default_blocks": [
         {
             "type": "header",

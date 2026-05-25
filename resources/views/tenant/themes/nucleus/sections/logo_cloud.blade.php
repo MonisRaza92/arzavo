@@ -35,24 +35,31 @@
     .arz-{{ $section->id }} {
         {{ $section->margin }}
     }
+
     .arz-{{ $section->id }} .section-content {
         {{ $section->padding }}
     }
+
     .arz-{{ $section->id }} .logo-cloud-header {
         text-align: center;
     }
+
     .arz-{{ $section->id }} .logo-cloud-grid {
         display: grid;
         grid-template-columns: repeat({{ $section->columns ?? 6 }}, 1fr);
-        gap: {{ $section->gap ?? 32 }}px;
+        gap:
+            {{ $section->gap ?? 32 }}
+            px;
         align-items: center;
         justify-items: center;
     }
+
     .arz-{{ $section->id }} .logo-grayscale img {
         filter: grayscale(100%);
         opacity: 0.6;
         transition: filter 0.3s, opacity 0.3s;
     }
+
     .arz-{{ $section->id }} .logo-grayscale img:hover {
         filter: grayscale(0%);
         opacity: 1;
@@ -63,17 +70,29 @@
         overflow: hidden;
         width: 100%;
     }
+
     .arz-{{ $section->id }} .logo-marquee-track {
         display: flex;
-        gap: {{ $section->gap ?? 32 }}px;
+        gap:
+            {{ $section->gap ?? 32 }}
+            px;
         align-items: center;
         width: max-content;
-        animation: marquee-{{ $section->id }} {{ $section->marquee_speed ?? 30 }}s linear infinite;
+        animation: marquee-{{ $section->id }}
+            {{ $section->marquee_speed ?? 30 }}
+            s linear infinite;
     }
+
     @keyframes marquee-{{ $section->id }} {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
     }
+
     .arz-{{ $section->id }} .logo-marquee-wrapper:hover .logo-marquee-track {
         animation-play-state: paused;
     }
@@ -82,9 +101,11 @@
         .arz-{{ $section->id }} {
             {{ $section->marginMobile }}
         }
+
         .arz-{{ $section->id }} .section-content {
             {{ $section->paddingMobile }}
         }
+
         .arz-{{ $section->id }} .logo-cloud-grid {
             grid-template-columns: repeat({{ $section->mobile_columns ?? 3 }}, 1fr);
         }

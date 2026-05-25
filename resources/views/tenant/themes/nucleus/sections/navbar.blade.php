@@ -1,5 +1,5 @@
 <nav {!! $section->attributes() !!} style="border-bottom-width: {{ $section->divider }}px;"
-    class="z-50 {{ $section->navbar_behavior === 'sticky' ? 'sticky top-0 left-0' : '' }} arz-border-b">
+    class="z-50 {{ $section->navbar_behavior === 'sticky' ? 'sticky top-0 left-0' : '' }} arz-border-b transition-all duration-300">
 
     @if($section->link_row === 'bottom')
 

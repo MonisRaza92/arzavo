@@ -1,7 +1,7 @@
 {
     "type": "announcement_bar",
     "name": "Announcement Bar",
-    "icon": "fa-rss",
+    "icon": "fa-solid fa-bullhorn",
     "category": "Header",
     "color_scheme": "scheme_1",
     "max_blocks": 10,
@@ -16,7 +16,7 @@
             "key": "group",
             "type": "group",
             "label": "Layout",
-            "icon": "fa-layer-group"
+            "icon": "fa-solid fa-layer-group"
         },
         {
             "key": "color_scheme",
@@ -53,7 +53,7 @@
             "key": "group",
             "type": "group",
             "label": "Behaviour",
-            "icon": "fa-rotate"
+            "icon": "fa-solid fa-rotate"
         },
         {
             "key": "auto_rotate",

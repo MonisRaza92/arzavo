@@ -1,7 +1,7 @@
 {
     "type": "navbar",
     "name": "Header: Navbar",
-    "icon": "fa-bars",
+    "icon": "fa-solid fa-bars",
     "category": "Header",
     "max_blocks": 2,
     "color_scheme": "scheme_1",
@@ -17,6 +17,7 @@
         {
             "type": "group",
             "label": "General",
+            "icon": "fa-solid fa-sliders",
             "text": "Configure the basic behavior and appearance of the navbar, including color scheme and how it behaves during scrolling."
         },
         {
@@ -37,6 +38,7 @@
         {
             "type": "group",
             "label": "Layout & Size",
+            "icon": "fa-solid fa-layer-group",
             "help": "Set logo and link alignment, choose full or fixed width, and adjust navbar size."
         },
         {
@@ -123,6 +125,7 @@
         {
             "type": "group",
             "label": "Style",
+            "icon": "fa-solid fa-palette",
             "help": "Control the visual appearance of the navbar, including divider thickness, icon size, and spacing between elements."
         },
         {

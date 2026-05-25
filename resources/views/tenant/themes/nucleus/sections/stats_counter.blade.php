@@ -21,57 +21,71 @@
     .arz-{{ $section->id }} {
         {{ $section->margin }}
     }
+
     .arz-{{ $section->id }} .section-content {
         {{ $section->padding }}
     }
+
     .arz-{{ $section->id }} .stats-header {
         text-align: center;
     }
+
     .arz-{{ $section->id }} .stats-grid {
         display: grid;
         grid-template-columns: repeat({{ $section->columns ?? 4 }}, 1fr);
-        gap: {{ $section->gap ?? 32 }}px;
-        text-align: {{ $section->alignment ?? 'center' }};
+        gap:
+            {{ $section->gap ?? 32 }}
+            px;
+        text-align:
+            {{ $section->alignment ?? 'center' }}
+        ;
     }
+
     @if(($section->show_divider ?? '0') === '1')
-    .arz-{{ $section->id }} .stats-grid > *:not(:last-child) {
-        border-right: 1px solid var(--arz-border);
-        padding-right: {{ $section->gap ?? 32 }}px;
-    }
-    @endif
-    @media (max-width: 767px) {
+        .arz-{{ $section->id }} .stats-grid>*:not(:last-child) {
+            border-right: 1px solid var(--arz-border);
+            padding-right:
+                {{ $section->gap ?? 32 }}
+                px;
+        }
+
+    @endif @media (max-width: 767px) {
         .arz-{{ $section->id }} {
             {{ $section->marginMobile }}
         }
+
         .arz-{{ $section->id }} .section-content {
             {{ $section->paddingMobile }}
         }
+
         .arz-{{ $section->id }} .stats-grid {
             grid-template-columns: repeat({{ $section->mobile_columns ?? 2 }}, 1fr);
         }
+
         @if(($section->show_divider ?? '0') === '1')
-        .arz-{{ $section->id }} .stats-grid > *:not(:last-child) {
-            border-right: none;
-            padding-right: 0;
-        }
+            .arz-{{ $section->id }} .stats-grid>*:not(:last-child) {
+                border-right: none;
+                padding-right: 0;
+            }
+
         @endif
     }
 </style>
 
 <script>
     if (typeof initStatsCounters !== 'function') {
-        window.initStatsCounters = function() {
-            document.querySelectorAll('[data-stats-animate="1"]').forEach(function(grid) {
+        window.initStatsCounters = function () {
+            document.querySelectorAll('[data-stats-animate="1"]').forEach(function (grid) {
                 if (grid.dataset.statsInit) return;
                 grid.dataset.statsInit = 'true';
 
                 var items = grid.querySelectorAll('[data-count-to]');
                 if (!items.length) return;
 
-                var observer = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
                         if (entry.isIntersecting) {
-                            items.forEach(function(el) {
+                            items.forEach(function (el) {
                                 var target = parseInt(el.dataset.countTo) || 0;
                                 var duration = 2000;
                                 var start = 0;

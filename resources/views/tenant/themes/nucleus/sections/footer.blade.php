@@ -8,7 +8,7 @@
         </div>
 
         @if(($section->show_copyright ?? '1') === '1')
-            <div class="footer-copyright arz-border-t">
+            <div class="footer-copyright arz-border-t flex flex-col md:flex-row items-center justify-between">
                 <p class="arz-body-text" style="opacity:0.7;">
                     {{ $section->copyright_text ?? '© ' . date('Y') . ' All rights reserved.' }}
                 </p>
@@ -34,9 +34,10 @@
     }
 
     .arz-{{ $section->id }} .footer-copyright {
-        margin-top: 40px;
-        padding-top: 20px;
+        margin-top: 48px;
+        padding-top: 24px;
         border-top-width: 1px;
+        border-color: rgba(156, 163, 175, 0.2);
     }
 
     @media (max-width: 767px) {

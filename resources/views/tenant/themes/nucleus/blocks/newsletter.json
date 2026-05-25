@@ -1,0 +1,42 @@
+{
+    "type": "newsletter",
+    "name": "Newsletter Form",
+    "icon": "fa-solid fa-envelope-open-text",
+    "fields": [
+        {
+            "key": "title",
+            "label": "Heading",
+            "type": "text",
+            "default": "Subscribe to our newsletter"
+        },
+        {
+            "key": "text",
+            "label": "Description",
+            "type": "textarea",
+            "default": "Get the latest updates and news delivered to your inbox."
+        },
+        {
+            "key": "placeholder",
+            "label": "Input Placeholder",
+            "type": "text",
+            "default": "Enter your email address"
+        },
+        {
+            "key": "button_text",
+            "label": "Button Text",
+            "type": "text",
+            "default": "Subscribe"
+        },
+        {
+            "key": "button_style",
+            "label": "Button Style",
+            "type": "radio",
+            "options": [
+                "primary",
+                "secondary",
+                "outline"
+            ],
+            "default": "primary"
+        }
+    ]
+}
