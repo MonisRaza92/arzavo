@@ -1,0 +1,50 @@
+{
+    "type": "category_container",
+    "name": "Categories: Grid Style",
+    "icon": "fa-th-large",
+    "order": 1,
+    "category": "Academics",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "center",
+                "gap": 10
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Browse Our Categories",
+                        "heading_type": "heading-3",
+                        "alignment": "center"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Select an academic stream or preparatory category to explore available classes, curriculum, and expert-led modules.",
+                        "alignment": "center"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "category_card",
+            "settings": {
+                "border": "1",
+                "radius": 16,
+                "padding": 24,
+                "block_gap": 10
+            }
+        }
+    ],
+    "settings": {
+        "layout_style": "grid",
+        "columns": 3,
+        "gap": 24,
+        "padding_top": 64,
+        "padding_bottom": 64
+    }
+}

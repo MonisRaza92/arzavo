@@ -2,7 +2,7 @@
     "categories": [
         {
             "kind": "section",
-            "name": "class_container"
+            "name": "category_container"
         }
     ],
     "meta_title": "Categories",

@@ -1,0 +1,32 @@
+{
+    "type": "category_container",
+    "name": "Categories: Simple List Style",
+    "icon": "fa-list-ul",
+    "order": 2,
+    "category": "Academics",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "start",
+                "gap": 8
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Explore All Categories",
+                        "heading_type": "heading-4",
+                        "alignment": "left"
+                    }
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "layout_style": "list",
+        "padding_top": 48,
+        "padding_bottom": 48
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "type": "category_container",
+    "name": "Categories: Pill Badges Style",
+    "icon": "fa-tag",
+    "order": 3,
+    "category": "Academics",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "center",
+                "gap": 8
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Quick Navigation",
+                        "heading_type": "heading-5",
+                        "alignment": "center"
+                    }
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "layout_style": "pills",
+        "padding_top": 40,
+        "padding_bottom": 40
+    }
+}
