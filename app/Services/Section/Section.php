@@ -80,12 +80,18 @@ class Section implements ArrayAccess
 
     public function offsetExists($offset): bool
     {
-        return isset($this->settings[$offset]);
+        return array_key_exists($offset, $this->settings) || array_key_exists($offset, $this->section);
     }
 
     public function offsetGet($offset): mixed
     {
-        return $this->settings[$offset] ?? null;
+        if ($offset === 'blocks') {
+            return $this->section['blocks'] ?? [];
+        }
+        if ($offset === 'settings') {
+            return $this->settings;
+        }
+        return $this->__get($offset);
     }
 
     public function offsetSet($offset, $value): void
