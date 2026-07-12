@@ -150,7 +150,7 @@ if (!function_exists('registerDomains')) {
 
             Route::get('blog', function () {
                 return app(ThemePageController::class)->system('blog');
-            })->name('tenant.course');
+            })->name('tenant.blog');
 
             Route::get('/content-store', function () {
                 return app(ThemePageController::class)->system('content-store');
