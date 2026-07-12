@@ -82,6 +82,8 @@
             "@php artisan optimize:clear",
             "@php artisan config:cache",
             "@php artisan view:cache",
+            "@php artisan migrate",
+            "@php artisan tenant:migrate",
             "@php -r \"opcache_reset();\"",
             "npm ci",
             "npm run build",
