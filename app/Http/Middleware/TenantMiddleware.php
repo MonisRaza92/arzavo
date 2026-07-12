@@ -15,9 +15,9 @@ class TenantMiddleware
         $host = strtolower($request->getHost());
         $base = strtolower(config('app.domain'));
 
-        // 1. Skip main domain
+        // 1. Skip main domain (abort if tenant route is accessed on main domain)
         if ($this->isMainDomain($host, $base)) {
-            return $next($request);
+            abort(404);
         }
 
         // 2. Resolve tenant
