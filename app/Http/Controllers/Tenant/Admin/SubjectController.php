@@ -37,7 +37,15 @@ class SubjectController
             'status' => 'boolean',
         ]);
 
-        $data['slug'] = Str::slug($data['name']);
+        $originalSlug = Str::slug($data['name']);
+        $slug = $originalSlug;
+        $count = 1;
+        while (Subject::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+        $data['slug'] = $slug;
+
         $data['class_courses_id'] = ClassCourse::where('name', $data['class_course_name'])->first()->id;
         unset($data['class_course_name']);
 
@@ -62,7 +70,14 @@ class SubjectController
             'status' => 'boolean',
         ]);
 
-        $data['slug'] = Str::slug($data['name']);
+        $originalSlug = Str::slug($data['name']);
+        $slug = $originalSlug;
+        $count = 1;
+        while (Subject::where('slug', $slug)->where('id', '!=', $id)->exists()) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+        $data['slug'] = $slug;
         $data['image'] = $data['updateimage'];
 
         $subject->update($data);

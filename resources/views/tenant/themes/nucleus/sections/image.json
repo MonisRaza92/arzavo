@@ -1,7 +1,7 @@
 {
     "type": "image",
     "name": "Image: Full Width",
-    "icon": "fa-rectangle-history",
+    "icon": "fa-image",
     "order": 8,
     "category": "Banners",
     "color_scheme": "scheme_1",

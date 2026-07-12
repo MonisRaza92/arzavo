@@ -1,27 +1,27 @@
 {{-- Header --}}
 <div class="flex justify-between items-center py-3 px-4 bg-primary border-rounded border-primary">
     <div>
-        <h2 class="text-lg font-bold text-primary mb-1 flex items-center gap-1"><i class="fa fa-laptop mr-1 text-base"></i>
-            Classes & Courses <span class="hidden sm:block">Management</span>
+        <h2 class="text-lg font-bold text-primary mb-1 flex items-center gap-1"><i class="fa fa-layer-group mr-1 text-base"></i>
+            Categories <span class="hidden sm:block">Management</span>
         </h2>
-        <p class="text-sm text-secondary hidden sm:block">Manage all classes and courses at {{ strtolower(app('currentTenant')->name) }}</p>
+        <p class="text-sm text-secondary hidden sm:block">Manage all categories at {{ strtolower(app('currentTenant')->name) }}</p>
     </div>
 
     <div class="right-content flex gap-2 items-center">
         <!-- Search Bar -->
         <input type="text"
-            id="classCourseSearch"
-            placeholder="Search classes/courses..."
+            id="categorySearch"
+            placeholder="Search categories..."
             class="px-3 py-2 text-sm bg-primary border-primary border-rounded input-focus hidden sm:block">
 
         <!-- Add View Toggle Button Cards/Table -->
         <div class="border-primary border-rounded hidden sm:flex">
             <button class="p-2 text-sm bg-secondary border-rounded"
-                onclick="toggleView('classCourseContainer', 'grid')">
+                onclick="toggleView('categoryContainer', 'grid')">
                 <i class="fa fa-th-large"></i>
             </button>
             <button class="p-2 text-sm bg-primary border-rounded"
-                onclick="toggleView('classCourseContainer', 'list')">
+                onclick="toggleView('categoryContainer', 'list')">
                 <i class="fa fa-bars"></i>
             </button>
         </div>

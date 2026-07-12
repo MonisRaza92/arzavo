@@ -1,7 +1,7 @@
 {
     "type": "divider",
     "name": "Divider",
-    "icon": "fa-arrows-to-line",
+    "icon": "fa-grip-lines",
     "order": 1,
     "category": "Layout",
     "color_scheme": "scheme_1",

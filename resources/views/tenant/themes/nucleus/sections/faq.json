@@ -1,8 +1,8 @@
 {
     "type": "faq",
     "name": "FAQ",
-    "icon": "fa-circle-question",
-    "category": "Storytelling",
+    "icon": "fa-quote-left",
+    "category": "Trust Building",
     "order": 11,
     "color_scheme": "scheme_1",
     "max_blocks": 20,

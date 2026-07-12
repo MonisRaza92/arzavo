@@ -7,6 +7,11 @@
     "max_blocks": 0,
     "fields": [
         {
+            "key": "group",
+            "type": "group",
+            "label": "Content"
+        },
+        {
             "key": "question",
             "label": "Question",
             "type": "text",
@@ -21,21 +26,56 @@
         {
             "key": "group",
             "type": "group",
-            "label": "Style"
+            "label": "Icon"
         },
         {
             "key": "icon_style",
-            "label": "Icon",
+            "label": "Icon Style",
             "type": "radio",
             "options": ["plus", "chevron", "none"],
             "default": "plus"
         },
         {
-            "key": "border_style",
-            "label": "Border",
-            "type": "radio",
-            "options": ["bordered", "underline", "none"],
-            "default": "bordered"
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
+        {
+            "key": "border_width",
+            "label": "Border Width",
+            "type": "range",
+            "min": 0,
+            "max": 10,
+            "default": 1
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Roundness",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 12
+        },
+        {
+            "key": "padding_x",
+            "label": "Horizontal Padding",
+            "type": "range",
+            "min": 0,
+            "max": 60,
+            "default": 24
+        },
+        {
+            "key": "padding_y",
+            "label": "Vertical Padding",
+            "type": "range",
+            "min": 0,
+            "max": 60,
+            "default": 18
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Behavior"
         },
         {
             "key": "default_open",

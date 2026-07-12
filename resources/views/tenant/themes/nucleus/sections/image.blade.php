@@ -33,7 +33,7 @@
 
 @endphp
 
-<div class="w-full arzavo-background" data-section-id="{{ $section['id'] }}" data-name="{{ $section['name'] }}"
+<div {!! $section->attributes() !!}
     style="padding-top:{{ $pt }}px;padding-bottom:{{ $pb }}px;">
 
 

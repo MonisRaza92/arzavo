@@ -145,7 +145,7 @@ class CourseController extends Controller
         $slug = $slugBase;
         $count = 1;
 
-        while (Course::where('slug', $slug)->exists()) {
+        while (Course::where('slug', $slug)->where('id', '!=', $course->id)->exists()) {
             $slug = $slugBase . '-' . $count++;
         }
 

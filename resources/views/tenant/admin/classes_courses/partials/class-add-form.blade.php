@@ -17,13 +17,13 @@
                 {{-- Category --}}
                 <div class="mb-3">
                     <label class="block text-tertiary text-xs mb-1">
-                        Academic Category
+                        Category <span class="text-accent">*</span>
                     </label>
-                    <select name="academic_category_id"
+                    <select name="academic_category_id" required
                         class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
-                        <option value="">-- Select Category (Optional) --</option>
+                        <option value="">-- Select Category --</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" {{ request('category_filter') == $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>

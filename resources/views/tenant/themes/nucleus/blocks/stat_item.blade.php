@@ -6,39 +6,29 @@
     $showIcon = ($block->show_icon ?? '1') === '1';
     $iconName = $block->icon_name ?? 'star';
     $iconSize = $block->icon_size ?? 28;
+    
+    // Check if animation is enabled in the parent section
+    $animate = ($section->animate ?? '1') === '1';
+    $cleanNumber = preg_replace('/[^0-9]/', '', $number);
 @endphp
 
-<div {!! $block->attributes() !!} class="stat-item">
+<div {!! $block->attributes() !!} class="nuc-stat-item">
 
     @if($showIcon)
-        <div class="stat-icon" style="font-size: {{ $iconSize }}px;">
+        <div class="stat-icon mb-4" style="font-size: {{ $iconSize }}px;">
             <i class="fa-solid fa-{{ $iconName }}" style="color: var(--arz-link);"></i>
         </div>
     @endif
 
-    <div class="stat-number arz-h2">
-        @if($prefix)<span class="stat-prefix">{{ $prefix }}</span>@endif
-        <span data-count-to="{{ preg_replace('/[^0-9]/', '', $number) }}">{{ $number }}</span>
-        @if($suffix)<span class="stat-suffix">{{ $suffix }}</span>@endif
+    <div class="nuc-stat-number">
+        @if($animate)
+            <span data-nuc-counter="{{ $cleanNumber }}" data-nuc-prefix="{{ $prefix }}" data-nuc-suffix="{{ $suffix }}">
+                {{ $prefix }}{{ $number }}{{ $suffix }}
+            </span>
+        @else
+            <span>{{ $prefix }}{{ $number }}{{ $suffix }}</span>
+        @endif
     </div>
 
-    <div class="stat-label arz-paragraph" style="opacity: 0.7;">{{ $label }}</div>
+    <div class="nuc-stat-label">{{ $label }}</div>
 </div>
-
-<style>
-    .stat-item {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    .stat-icon {
-        margin-bottom: 4px;
-    }
-    .stat-number {
-        color: var(--arz-heading);
-        line-height: 1;
-    }
-    .stat-label {
-        color: var(--arz-paragraph);
-    }
-</style>

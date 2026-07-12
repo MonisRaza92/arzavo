@@ -9,7 +9,7 @@
         {
             "type": "group",
             "settings": {
-                "direction": "vertical",
+                "direction": "horizontal",
                 "mobile_direction": "1",
                 "alignment": "start",
                 "position": "center",
@@ -92,7 +92,7 @@
         "background_type": "none",
         "height": "auto",
         "mobile_height": "auto",
-        "direction": "horizontal",
+        "direction": "row",
         "mobile_direction": "1",
         "alignment": "center",
         "position": "between",

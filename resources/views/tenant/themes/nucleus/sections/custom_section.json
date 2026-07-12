@@ -1,7 +1,7 @@
 {
     "type": "custom_section",
     "name": "Custom Section",
-    "icon": "fa-square-dashed",
+    "icon": "fa-square-plus",
     "order": 3,
     "category": "Layout",
     "color_scheme": "scheme_1",

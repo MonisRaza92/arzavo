@@ -1,7 +1,7 @@
 {
   "type": "data_card",
   "name": "Course Card",
-  "icon": "fa-rotate",
+  "icon": "fa-address-card",
   "order": 1,
   "category": "Content",
   "max_blocks": 5,

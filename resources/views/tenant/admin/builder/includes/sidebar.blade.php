@@ -15,6 +15,7 @@
             @include('tenant.admin.builder.basics.logo-settings')
             @include('tenant.admin.builder.basics.color-schemes')
             @include('tenant.admin.builder.basics.typography-settings')
+            @include('tenant.admin.builder.basics.cards')
             @include('tenant.admin.builder.basics.buttons-settings')
             @include('tenant.admin.builder.basics.layout-settings')
             @include('tenant.admin.builder.basics.advanced-settings')

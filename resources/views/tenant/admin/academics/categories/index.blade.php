@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Academic Categories Manage')
+@section('title', 'Categories Manage')
 
 @section('content')
 {{-- Header --}}

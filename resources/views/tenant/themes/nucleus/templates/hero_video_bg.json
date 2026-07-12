@@ -4,7 +4,7 @@
     "icon": "fa-play",
     "order": 4,
     "category": "Banners",
-    "color_scheme": "scheme_1",
+    "color_scheme": "scheme_4",
     "default_blocks": [
         {
             "type": "heading",

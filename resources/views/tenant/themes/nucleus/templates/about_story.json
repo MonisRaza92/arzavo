@@ -1,11 +1,11 @@
 {
     "type": "custom_section",
     "name": "About: Story",
-    "icon": "fa-table-rows-add-below",
+    "icon": "fa-list",
     "category": "Storytelling",
     "order": 0,
     "settings": {
-        "direction": "horizontal",
+        "direction": "row",
         "mobile_direction": "1",
         "alignment": "center",
         "position": "between",

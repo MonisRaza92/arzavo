@@ -1,7 +1,7 @@
 {
     "type": "slideshow",
     "name": "Slideshow: Images",
-    "icon": "fa-image-stack",
+    "icon": "fa-images",
     "order": 5,
     "category": "Banners",
     "color_scheme": "scheme_1",

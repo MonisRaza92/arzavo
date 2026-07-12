@@ -1235,3 +1235,143 @@ input[type=range] {
     background-image: var(--mesh-1), var(--mesh-2), var(--mesh-3);
     background-attachment: fixed;
 }
+
+/* =========================================
+   GLOBAL CARD STYLES
+   ========================================= */
+
+/* 1. Category Card */
+.arz-category-card {
+    background: var(--arz-category-card-bg) !important;
+    border: var(--arz-category-card-border-width) solid var(--arz-category-card-border-color) !important;
+    border-radius: var(--arz-category-card-border-radius) !important;
+    padding: var(--arz-category-card-padding) !important;
+}
+.arz-category-card h1,
+.arz-category-card h2,
+.arz-category-card h3,
+.arz-category-card h4,
+.arz-category-card h5,
+.arz-category-card h6,
+.arz-category-card .data-card-title {
+    font-size: var(--arz-category-card-title-size) !important;
+    color: var(--arz-category-card-title-color) !important;
+}
+.arz-category-card p,
+.arz-category-card .data-card-desc {
+    font-size: var(--arz-category-card-desc-size) !important;
+    color: var(--arz-category-card-desc-color) !important;
+}
+.arz-category-card .arz-border,
+.arz-category-card span {
+    background: var(--arz-badge-bg) !important;
+    color: var(--arz-badge-text-color) !important;
+    font-size: var(--arz-badge-text-size) !important;
+    border: var(--arz-badge-border-width) solid var(--arz-badge-border-color) !important;
+    border-radius: var(--arz-badge-border-radius) !important;
+    padding: var(--arz-badge-padding) !important;
+}
+
+/* 2. Classes Card */
+.arz-classes-card {
+    background: var(--arz-classes-card-bg) !important;
+    border: var(--arz-classes-card-border-width) solid var(--arz-classes-card-border-color) !important;
+    border-radius: var(--arz-classes-card-border-radius) !important;
+    padding: var(--arz-classes-card-padding) !important;
+}
+.arz-classes-card h1,
+.arz-classes-card h2,
+.arz-classes-card h3,
+.arz-classes-card h4,
+.arz-classes-card h5,
+.arz-classes-card h6,
+.arz-classes-card .data-card-title {
+    font-size: var(--arz-classes-card-title-size) !important;
+    color: var(--arz-classes-card-title-color) !important;
+}
+.arz-classes-card p,
+.arz-classes-card .data-card-desc {
+    font-size: var(--arz-classes-card-desc-size) !important;
+    color: var(--arz-classes-card-desc-color) !important;
+}
+.arz-classes-card .arz-border,
+.arz-classes-card span {
+    background: var(--arz-badge-bg) !important;
+    color: var(--arz-badge-text-color) !important;
+    font-size: var(--arz-badge-text-size) !important;
+    border: var(--arz-badge-border-width) solid var(--arz-badge-border-color) !important;
+    border-radius: var(--arz-badge-border-radius) !important;
+    padding: var(--arz-badge-padding) !important;
+}
+
+/* 3. Subjects Card */
+.arz-subjects-card {
+    background: var(--arz-subjects-card-bg) !important;
+    border: var(--arz-subjects-card-border-width) solid var(--arz-subjects-card-border-color) !important;
+    border-radius: var(--arz-subjects-card-border-radius) !important;
+    padding: var(--arz-subjects-card-padding) !important;
+}
+.arz-subjects-card h1,
+.arz-subjects-card h2,
+.arz-subjects-card h3,
+.arz-subjects-card h4,
+.arz-subjects-card h5,
+.arz-subjects-card h6,
+.arz-subjects-card .data-card-title {
+    font-size: var(--arz-subjects-card-title-size) !important;
+    color: var(--arz-subjects-card-title-color) !important;
+}
+.arz-subjects-card p,
+.arz-subjects-card .data-card-desc {
+    font-size: var(--arz-subjects-card-desc-size) !important;
+    color: var(--arz-subjects-card-desc-color) !important;
+}
+.arz-subjects-card .arz-border,
+.arz-subjects-card span {
+    background: var(--arz-badge-bg) !important;
+    color: var(--arz-badge-text-color) !important;
+    font-size: var(--arz-badge-text-size) !important;
+    border: var(--arz-badge-border-width) solid var(--arz-badge-border-color) !important;
+    border-radius: var(--arz-badge-border-radius) !important;
+    padding: var(--arz-badge-padding) !important;
+}
+
+/* 4. Courses Card */
+.arz-courses-card {
+    background: var(--arz-courses-card-bg) !important;
+    border: var(--arz-courses-card-border-width) solid var(--arz-courses-card-border-color) !important;
+    border-radius: var(--arz-courses-card-border-radius) !important;
+    padding: var(--arz-courses-card-padding) !important;
+}
+.arz-courses-card h1,
+.arz-courses-card h2,
+.arz-courses-card h3,
+.arz-courses-card h4,
+.arz-courses-card h5,
+.arz-courses-card h6,
+.arz-courses-card .data-card-title {
+    font-size: var(--arz-courses-card-title-size) !important;
+    color: var(--arz-courses-card-title-color) !important;
+}
+.arz-courses-card p,
+.arz-courses-card .data-card-desc {
+    font-size: var(--arz-courses-card-desc-size) !important;
+    color: var(--arz-courses-card-desc-color) !important;
+}
+.arz-courses-card .discounted-price {
+    font-size: var(--arz-courses-card-discounted-price-size) !important;
+    color: var(--arz-courses-card-discounted-price-color) !important;
+}
+.arz-courses-card .price {
+    font-size: var(--arz-courses-card-price-size) !important;
+    color: var(--arz-courses-card-price-color) !important;
+}
+.arz-courses-card .arz-border,
+.arz-courses-card span {
+    background: var(--arz-badge-bg) !important;
+    color: var(--arz-badge-text-color) !important;
+    font-size: var(--arz-badge-text-size) !important;
+    border: var(--arz-badge-border-width) solid var(--arz-badge-border-color) !important;
+    border-radius: var(--arz-badge-border-radius) !important;
+    padding: var(--arz-badge-padding) !important;
+}

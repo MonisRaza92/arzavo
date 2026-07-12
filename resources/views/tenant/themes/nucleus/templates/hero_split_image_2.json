@@ -182,7 +182,7 @@
         }
     ],
     "settings": {
-        "direction": "horizontal",
+        "direction": "row",
         "mobile_direction": "1",
         "alignment": "center",
         "position": "between",

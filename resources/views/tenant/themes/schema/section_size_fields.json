@@ -18,7 +18,7 @@
                 "value": "container"
             }
         ],
-        "default": "1200px"
+        "default": "container"
     },
     {
         "key": "height",

@@ -2,7 +2,6 @@
 $s = $block['settings'] ?? [];
 
 $heading = $s['text'] ?? '';
-$headingType = $s['heading_type'] ?? '';
 $fontStyle = $s['font_style'] ?? '';
 $textDecoration = $s['text_decoration'] ?? '';
 $alignment = $s['alignment'] ?? '';
@@ -38,7 +37,7 @@ $mAlignmentClass = match($mAlignment) {
         text-decoration: {{ $textDecoration }};
     "
     class="
-        arzavo-{{ $headingType }}
+        arz-{{ $block->heading_type }}
         heading-{{ $block['id'] }}
         {{ $mAlignmentClass }}
         {{ $alignmentClass }}

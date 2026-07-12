@@ -1,7 +1,7 @@
 {
     "type": "custom_section",
     "name": "Features: Cards",
-    "icon": "fa-table-rows-add-below",
+    "icon": "fa-list",
     "category": "Storytelling",
     "order": 2,
     "settings": {

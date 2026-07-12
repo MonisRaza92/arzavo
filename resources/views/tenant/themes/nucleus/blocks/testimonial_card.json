@@ -7,6 +7,12 @@
     "max_blocks": 0,
     "fields": [
         {
+            "key": "group",
+            "type": "group",
+            "label": "Content"
+        },
+        
+        {
             "key": "quote",
             "label": "Quote",
             "type": "richtext",
@@ -58,11 +64,20 @@
             "label": "Style"
         },
         {
-            "key": "card_style",
-            "label": "Card Style",
-            "type": "radio",
-            "options": ["bordered", "filled", "minimal"],
-            "default": "bordered"
+            "key": "border_width",
+            "label": "Border Width",
+            "type": "range",
+            "min": 0,
+            "max": 10,
+            "default": 1
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Roundness",
+            "type": "range",
+            "min": 1,
+            "max": 100,
+            "default": 12
         }
     ]
 }

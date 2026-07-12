@@ -204,6 +204,7 @@
 
                         {{-- NUMBER --}}
                         @case('number')
+                        <div class="flex items-center justify-between gap-6">
                             <label class="text-xs w-8/12 text-secondary block">
                                 {{ $field['label'] ?? Str::title(str_replace(['_', '-'], ' ', $field['key'])) }}
                             </label>

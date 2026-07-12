@@ -3,11 +3,13 @@
     "name": "Header: Navbar",
     "icon": "fa-solid fa-bars",
     "category": "Header",
-    "max_blocks": 2,
+    "max_blocks": 10,
     "color_scheme": "scheme_1",
     "allowed_blocks": [
         "header_logo",
-        "header_menu"
+        "header_menu",
+        "header_button",
+        "social_icons"
     ],
     "default_blocks": [
         "header_logo",

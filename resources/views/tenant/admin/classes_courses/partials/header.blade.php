@@ -14,6 +14,22 @@
             placeholder="Search classes/courses..."
             class="px-3 py-2 text-sm bg-primary border-primary border-rounded input-focus hidden sm:block">
 
+        <!-- Select Category -->
+        <div class="md:flex border-primary border-rounded hidden pr-2">
+            <form action="" method="get">
+                <select name="category_filter" id="categoryFilter"
+                class="px-3 py-2 text-sm border-rounded"
+                onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                @foreach ($categories as $cat)
+                    <option value="{{ $cat->name }}" {{ request('category_filter') == $cat->name ? 'selected' : '' }}>
+                        {{ $cat->name }}
+                    </option>
+                @endforeach
+                </select>
+            </form>
+        </div>
+
         <!-- Add View Toggle Button Cards/Table -->
         <div class="border-primary border-rounded hidden sm:flex">
             <button class="p-2 text-sm bg-secondary border-rounded"

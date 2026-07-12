@@ -122,8 +122,8 @@ gap:{$gap}px;
 
             {{-- MEDIA --}}
             @if ($media === 'video' && $video)
-                <video autoplay muted loop playsinline class="w-full object-cover">
-                    <source src="{{ media($video) }}" style="{{ $ratioStyle }}">
+                <video autoplay muted loop playsinline class="w-full object-cover" style="{{ $ratioStyle }}">
+                    <source src="{{ media($video) }}">
                 </video>
             @else
                 <img src="{{ image($image) }}" class="w-full object-cover"

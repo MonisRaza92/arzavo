@@ -19,20 +19,31 @@ return [
     ],
 
     // ======================================================
-    // 2. ACADEMICS (SCHOOLS + COLLEGES + COACHING)
+    // 2. ACADEMICS & CURRICULUM
     // ======================================================
     [
         'section' => 'Academics',
         'items'   => [
             [
                 'type' => 'menu',
+                'id'   => 'curriculumMenu',
+                'icon' => 'fa-graduation-cap',
+                'text' => 'Curriculum',
+                'links' => [
+                    ['icon' => 'fa-layer-group', 'text' => 'Categories', 'route' => 'admin.academic-categories.index', 'active' => 'admin/academic-categories'],
+                    ['icon' => 'fa-book-open', 'text' => 'Classes & Courses', 'route' => 'admin.classes.courses.index', 'active' => 'admin/classes/courses'],
+                    ['icon' => 'fa-book-reader', 'text' => 'Subjects', 'route' => 'admin.subjects.index', 'active' => 'admin/subjects'],
+                    ['icon' => 'fa-users-viewfinder', 'text' => 'Batch Management', 'route' => '#'],
+                    ['icon' => 'fa-calendar-check', 'text' => 'Class Schedule', 'route' => '#'],
+                    ['icon' => 'fa-user-check', 'text' => 'Attendance', 'route' => '#'],
+                ],
+            ],
+            [
+                'type' => 'menu',
                 'id'   => 'academicsMenu',
                 'icon' => 'fa-school',
                 'text' => 'Academics',
                 'links' => [
-                    ['icon' => 'fa-layer-group', 'text' => 'Categories', 'route' => 'admin.academic-categories.index', 'active' => 'admin/academic-categories'],
-                    ['icon' => 'fa-book-open', 'text' => 'Classes', 'route' => 'admin.classes.courses.index', 'active' => 'admin/classes/courses'],
-                    ['icon' => 'fa-book-reader', 'text' => 'Subjects', 'route' => 'admin.subjects.index', 'active' => 'admin/subjects'],
                     ['icon' => 'fa-clipboard-check', 'text' => 'Assignments', 'route' => '#'],
                     ['icon' => 'fa-chalkboard', 'text' => 'Live Classes', 'route' => '#'],
                     ['icon' => 'fa-question-circle', 'text' => 'Quizzes & Tests', 'route' => '#'],
@@ -40,19 +51,6 @@ return [
                     ['icon' => 'fa-graduation-cap', 'text' => 'Results', 'route' => '#'],
                     ['icon' => 'fa-stopwatch', 'text' => 'Timetable', 'route' => '#'],
                     ['icon' => 'fa-certificate', 'text' => 'Certificates', 'route' => '#'],
-                ],
-            ],
-            [
-                'type' => 'menu',
-                'id' => 'classesMenu',
-                'icon' => 'fa-layer-group',
-                'text' => 'Curriculum',
-                'links' => [
-                    ['icon' => 'fa-laptop', 'text' => 'Classes & Courses', 'route' => 'admin.classes.courses.index', 'active' => 'admin/classes/courses'],
-                    ['icon' => 'fa-book', 'text' => 'Subjects', 'route' => 'admin.subjects.index', 'active' => 'admin/subjects'],
-                    ['icon' => 'fa-users-viewfinder', 'text' => 'Batch Management', 'route' => '#'],
-                    ['icon' => 'fa-calendar-check', 'text' => 'Class Schedule', 'route' => '#'],
-                    ['icon' => 'fa-user-check', 'text' => 'Attendance', 'route' => '#'],
                 ],
             ],
             [

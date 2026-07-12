@@ -1,7 +1,7 @@
 {
     "type": "grid_images",
     "name": "Images: Grid Layout",
-    "icon": "fa-image-stack",
+    "icon": "fa-images",
     "order": 7,
     "category": "Banners",
     "color_scheme": "scheme_1",
@@ -22,7 +22,7 @@
             "key": "section_padding",
             "label": "Section Gap",
             "type": "range",
-            "default": "6",
+            "default": "16",
             "min": 0,
             "max": 200
         },

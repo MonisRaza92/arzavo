@@ -10,24 +10,12 @@
     }
 @endphp
 
-<div {!! $block->attributes() !!} class="logo-item">
+<div {!! $block->attributes() !!} class="nuc-logo-item">
     @if($link)
-        <a href="{{ $link }}" target="_blank" rel="noopener noreferrer">
+        <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class="flex items-center">
             <img src="{{ image($logoImage) }}" alt="{{ $altText }}" style="height: {{ $logoHeight }}px; width: auto; object-fit: contain;">
         </a>
     @else
         <img src="{{ image($logoImage) }}" alt="{{ $altText }}" style="height: {{ $logoHeight }}px; width: auto; object-fit: contain;">
     @endif
 </div>
-
-<style>
-    .logo-item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .logo-item a {
-        display: flex;
-        align-items: center;
-    }
-</style>

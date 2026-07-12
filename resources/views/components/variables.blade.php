@@ -137,6 +137,72 @@
 
 
 
+        /* ========================= */
+        /*      Category Cards       */
+        /* ========================= */
+        --arz-category-card-bg: {{ $customizes['category_cards_background'] ?? '#fff' }};
+        --arz-category-card-title-size: {{ $customizes['category_cards_title_size'] ?? '28' }}px;
+        --arz-category-card-title-color: {{ $customizes['category_cards_title_color'] ?? '#000' }};
+        --arz-category-card-desc-size: {{ $customizes['category_cards_desc_size'] ?? '14' }}px;
+        --arz-category-card-desc-color: {{ $customizes['category_cards_desc_color'] ?? '#000' }};
+        --arz-category-card-border-width: {{ $customizes['category_cards_border_width'] ?? '1' }}px;
+        --arz-category-card-border-color: {{ $customizes['category_cards_border_color'] ?? '#e5e7eb' }};
+        --arz-category-card-border-radius: {{ $customizes['category_cards_border_radius'] ?? '8' }}px;
+        --arz-category-card-padding: {{ $customizes['category_cards_padding'] ?? '16' }}px;
+
+        /* ========================= */
+        /*       Classes Cards       */
+        /* ========================= */
+        --arz-classes-card-bg: {{ $customizes['classes_cards_background'] ?? '#fff' }};
+        --arz-classes-card-title-size: {{ $customizes['classes_cards_title_size'] ?? '28' }}px;
+        --arz-classes-card-title-color: {{ $customizes['classes_cards_title_color'] ?? '#000' }};
+        --arz-classes-card-desc-size: {{ $customizes['classes_cards_desc_size'] ?? '14' }}px;
+        --arz-classes-card-desc-color: {{ $customizes['classes_cards_desc_color'] ?? '#000' }};
+        --arz-classes-card-border-width: {{ $customizes['classes_cards_border_width'] ?? '1' }}px;
+        --arz-classes-card-border-color: {{ $customizes['classes_cards_border_color'] ?? '#e5e7eb' }};
+        --arz-classes-card-border-radius: {{ $customizes['classes_cards_border_radius'] ?? '8' }}px;
+        --arz-classes-card-padding: {{ $customizes['classes_cards_padding'] ?? '16' }}px;
+
+        /* ========================= */
+        /*      Subjects Cards       */
+        /* ========================= */
+        --arz-subjects-card-bg: {{ $customizes['subjects_cards_background'] ?? '#fff' }};
+        --arz-subjects-card-title-size: {{ $customizes['subjects_cards_title_size'] ?? '28' }}px;
+        --arz-subjects-card-title-color: {{ $customizes['subjects_cards_title_color'] ?? '#000' }};
+        --arz-subjects-card-desc-size: {{ $customizes['subjects_cards_desc_size'] ?? '14' }}px;
+        --arz-subjects-card-desc-color: {{ $customizes['subjects_cards_desc_color'] ?? '#000' }};
+        --arz-subjects-card-border-width: {{ $customizes['subjects_cards_border_width'] ?? '1' }}px;
+        --arz-subjects-card-border-color: {{ $customizes['subjects_cards_border_color'] ?? '#e5e7eb' }};
+        --arz-subjects-card-border-radius: {{ $customizes['subjects_cards_border_radius'] ?? '8' }}px;
+        --arz-subjects-card-padding: {{ $customizes['subjects_cards_padding'] ?? '16' }}px;
+
+        /* ========================= */
+        /*       Courses Cards       */
+        /* ========================= */
+        --arz-courses-card-bg: {{ $customizes['courses_cards_background'] ?? '#fff' }};
+        --arz-courses-card-title-size: {{ $customizes['courses_cards_title_size'] ?? '28' }}px;
+        --arz-courses-card-title-color: {{ $customizes['courses_cards_title_color'] ?? '#000' }};
+        --arz-courses-card-desc-size: {{ $customizes['courses_cards_desc_size'] ?? '14' }}px;
+        --arz-courses-card-desc-color: {{ $customizes['courses_cards_desc_color'] ?? '#000' }};
+        --arz-courses-card-discounted-price-size: {{ $customizes['courses_cards_discounted_price_size'] ?? '14' }}px;
+        --arz-courses-card-discounted-price-color: {{ $customizes['courses_cards_discounted_price_color'] ?? '#fff' }};
+        --arz-courses-card-price-size: {{ $customizes['courses_cards_price_size'] ?? '14' }}px;
+        --arz-courses-card-price-color: {{ $customizes['courses_cards_price_color'] ?? '#fff' }};
+        --arz-courses-card-border-width: {{ $customizes['courses_cards_border_width'] ?? '1' }}px;
+        --arz-courses-card-border-color: {{ $customizes['courses_cards_border_color'] ?? '#e5e7eb' }};
+        --arz-courses-card-border-radius: {{ $customizes['courses_cards_border_radius'] ?? '8' }}px;
+        --arz-courses-card-padding: {{ $customizes['courses_cards_padding'] ?? '16' }}px;
+
+        /* ========================= */
+        /*          Badges           */
+        /* ========================= */
+        --arz-badge-bg: {{ $customizes['badges_color'] ?? '#fff' }};
+        --arz-badge-text-size: {{ $customizes['badges_text_size'] ?? '16' }}px;
+        --arz-badge-text-color: {{ $customizes['badges_text_color'] ?? '#000' }};
+        --arz-badge-border-width: {{ $customizes['badges_border_width'] ?? '1' }}px;
+        --arz-badge-border-color: {{ $customizes['badges_border_color'] ?? '#e5e7eb' }};
+        --arz-badge-border-radius: {{ $customizes['badges_border_radius'] ?? '8' }}px;
+        --arz-badge-padding: {{ $customizes['badges_padding'] ?? '16' }}px;
     }
 
     .dark-mode {

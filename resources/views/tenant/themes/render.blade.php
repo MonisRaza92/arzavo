@@ -33,7 +33,11 @@
     $schemeMap[$section['id']] = $section['color_scheme'] ?? 'scheme_1';
 }
 @endphp
-<style>
+
+{{-- ========================= --}}
+{{-- 🎨 COLOR SCHEMES --}}
+{{-- ========================= --}}
+<style data-theme="{{ $theme }}">
 @foreach($schemesUsed as $schemeKey)
 .arz-{{ $schemeKey }} {
     {!! scheme($schemeKey) !!}
@@ -42,8 +46,23 @@
 </style>
 
 {{-- ========================= --}}
+{{-- 📦 THEME ASSETS (CSS) --}}
+{{-- ========================= --}}
+@php
+    $themeCss = \App\Services\Theme\ThemeAssetResolver::allCss($theme);
+@endphp
+@if($themeCss)
+<style data-theme-assets="{{ $theme }}">
+{!! $themeCss !!}
+</style>
+@endif
+
+
+{{-- ========================= --}}
 {{-- 🔵 GLOBAL HEADER --}}
 {{-- ========================= --}}
+<div data-theme="{{ $theme }}" data-theme-region="content">
+
 @if(!empty($globalDesign['header']['sections']))
     @foreach($globalDesign['header']['sections'] as $section)
         @if(empty($section['is_active']))
@@ -116,6 +135,43 @@
     @endforeach
 @endif
 
+</div>
+
+
+{{-- ========================= --}}
+{{-- 🛠️ SECTION CLASS INJECTION --}}
+{{-- ========================= --}}
+<script>
+(function() {
+    const schemeMap = @json($schemeMap);
+
+    document.querySelectorAll('[data-section-id]').forEach(function(el) {
+        const id = el.getAttribute('data-section-id');
+
+        el.classList.add('arz-core');
+
+        if (id) {
+            el.classList.add('arz-' + id);
+        }
+
+        if (schemeMap[id]) {
+            el.classList.add('arz-' + schemeMap[id]);
+        }
+    });
+})();
+</script>
+
+{{-- ========================= --}}
+{{-- 📦 THEME ASSETS (JS) --}}
+{{-- ========================= --}}
+@php
+    $themeJs = \App\Services\Theme\ThemeAssetResolver::allJs($theme);
+@endphp
+@if($themeJs)
+<script data-theme-js="{{ $theme }}">
+{!! $themeJs !!}
+</script>
+@endif
 
 {{-- ========================= --}}
 {{-- 🛠️ EDITOR MODE HANDSHAKE --}}
@@ -128,22 +184,6 @@
             window.ARZAVO_EDITOR_MODE = e.data.enabled === true;
         }
     });
-
-document.querySelectorAll('[data-section-id]').forEach(el => {
-    const id = el.getAttribute('data-section-id');
-
-    // section data inject karna padega
-    const schemeMap = @json($schemeMap);
-
-    el.classList.add('arz-core');
-    if (id) {
-        el.classList.add('arz-' + id);
-    }
-
-    if (schemeMap[id]) {
-        el.classList.add('arz-' + schemeMap[id]);
-    }
-});
 </script>
 
 @endsection

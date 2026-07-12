@@ -1,8 +1,8 @@
 {
     "type": "stats_counter",
     "name": "Stats Counter",
-    "icon": "fa-chart-bar",
-    "category": "Storytelling",
+    "icon": "fa-quote-left",
+    "category": "Trust Building",
     "order": 13,
     "color_scheme": "scheme_1",
     "max_blocks": 10,

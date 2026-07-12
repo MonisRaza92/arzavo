@@ -11,7 +11,7 @@
     $attachment = $block->background_attachment ?? 'scroll';
     $bgOpacity = ($block->background_opacity ?? 100) / 100;
 
-    /* overlay */
+    /* overlay & blur */
     $overlay = ($block->background_overlay ?? '0') === '1';
     $overlayColor = $block->overlay_color ?? '#000';
     $overlayOpacity = ($block->overlay_opacity ?? 50) / 100;
@@ -34,12 +34,11 @@
     $pos = $block->position_type ?? 'relative';
     $top = $block->vertical_offset ?? null;
     $left = $block->horizontal_offset ?? null;
-
     $topMobile = $block->vertical_offset_mobile ?? null;
     $leftMobile = $block->horizontal_offset_mobile ?? null;
     $z = $block->z_index ?? 1;
 
-    /* ================= WIDTH / HEIGHT ================= */
+    /* ================= SIZING ================= */
     $width = $block->width ?? 'auto';
     $widthMobile = $block->mobile_width ?? 'auto';
     $maxWidth = $block->max_width ?? null;
@@ -54,224 +53,138 @@
     $heightUnit = $block->height_unit ?? 'vh';
     $heightMobileUnit = $block->height_mobile_unit ?? 'vh';
 
-    /* absolute size */
+    /* absolute sizes */
     $absWidth = $block->abs_width ?? null;
     $absHeight = $block->abs_height ?? null;
     $absWidthMobile = $block->abs_width_mobile ?? null;
     $absHeightMobile = $block->abs_height_mobile ?? null;
 
-    /* ================= SPACING ================= */
+    /* ================= SPACING & BORDERS ================= */
     $pt = (int) ($block->padding_top ?? 0);
     $pb = (int) ($block->padding_bottom ?? 0);
     $pl = (int) ($block->padding_left ?? 0);
     $pr = (int) ($block->padding_right ?? 0);
     $mt = (int) ($block->margin_top ?? 0);
     $mb = (int) ($block->margin_bottom ?? 0);
-
-    /* ================= BORDER ================= */
     $radius = (int) ($block->border_radius ?? 0);
     $borderWidth = (int) ($block->border_width ?? 0);
 
     /* ================= VISIBILITY ================= */
     $hideMobile = ($block->hide_mobile ?? '0') === '1';
     $hideDesktop = ($block->hide_desktop ?? '0') === '1';
-    $overflow = $block->overflow ?? 'visible';
 
-    /* ================= CLASS BUILD ================= */
-    $unique = 'group-' . $block['id'];
+    /* ================= CLASS LIST ================= */
+    $classes = ['s-component', 'flex', 'arz-border', 's-group-block'];
 
-    $classes = [$unique, 's-component', 'flex', 'arz-border'];
-
-    /* direction */
+    // Flex Directions
     $classes[] = $dirMobile === 'horizontal' ? 'flex-row' : 'flex-col';
     $classes[] = $dirDesktop === 'horizontal' ? 'md:flex-row' : 'md:flex-col';
 
-    /* alignment */
-    $classes[] = "items-$alignMobile";
-    $classes[] = "md:items-$alignDesktop";
+    // Flex Alignments & Justify
+    $classes[] = "items-{$alignMobile}";
+    $classes[] = "md:items-{$alignDesktop}";
+    $classes[] = "justify-{$justMobile}";
+    $classes[] = "md:justify-{$justDesktop}";
 
-    /* justify */
-    $classes[] = "justify-$justMobile";
-    $classes[] = "md:justify-$justDesktop";
-
-    /* width full */
-    // Mobile
-    $classes[] = match ($widthMobile) {
-        'full' => 'w-full',
-        'auto' => 'w-auto',
-        default => '',
-    };
-
-    // Desktop override
-    $classes[] = match ($width) {
-        'full' => 'md:w-full',
-        'auto' => 'md:w-auto',
-        default => '',
-    };
-
-    /* positioning */
-    $classes[] = $pos;
-
-    /* background color class */
+    // Background color scheme class
     if ($bgType === 'color') {
         $classes[] = 'arzavo-background';
     }
 
-    /* visibility */
-    if ($hideMobile) {
-        $classes[] = 'hidden md:flex';
-    }
-    if ($hideDesktop) {
-        $classes[] = 'md:hidden';
+    // Hide rules
+    if ($hideMobile) $classes[] = 'hidden md:flex';
+    if ($hideDesktop) $classes[] = 'md:hidden';
+
+    /* ================= STYLE ARRAY ================= */
+    $styles = [
+        "padding: {$pt}px {$pr}px {$pb}px {$pl}px",
+        "margin-top: {$mt}px",
+        "margin-bottom: {$mb}px",
+        "gap: {$gap}px",
+        "border-radius: {$radius}px",
+        "border-width: {$borderWidth}px",
+        "overflow: hidden",
+    ];
+
+    // Scheme binding if not inherited
+    if ($schemeMode === 'separate') {
+        $styles[] = scheme($scheme);
     }
 
-    /* ================= BASE STYLE ================= */
-    $style = "
-padding:{$pt}px {$pr}px {$pb}px {$pl}px;
-margin-top:{$mt}px;
-margin-bottom:{$mb}px;
-gap:{$gap}px;
-z-index:$z;
-overflow: hidden;
-border-radius:{$radius}px;
-border-width:{$borderWidth}px;
-";
+    // Dynamic Sizing & Positioning CSS Variables
+    $styles[] = "--group-z: {$z}";
+    if ($pos !== 'relative') {
+        $styles[] = "--group-pos: {$pos}";
+        if ($absWidth !== null) $styles[] = "--group-w: {$absWidth}px";
+        if ($absHeight !== null) $styles[] = "--group-abs-h: {$absHeight}px";
+        if ($top !== null) $styles[] = "--group-top: {$top}px";
+        if ($left !== null) $styles[] = "--group-left: {$left}px";
 
-    /* background image */
+        if ($absWidthMobile !== null) $styles[] = "--group-w-mobile: {$absWidthMobile}px";
+        if ($absHeightMobile !== null) $styles[] = "--group-abs-h-mobile: {$absHeightMobile}px";
+        if ($topMobile !== null) $styles[] = "--group-top-mobile: {$topMobile}px";
+        if ($leftMobile !== null) $styles[] = "--group-left-mobile: {$leftMobile}px";
+    } else {
+        // Desktop Sizing
+        if ($width === 'full') {
+            $styles[] = "--group-w: 100%";
+        } elseif ($width === 'custom' && $maxWidth !== null) {
+            $styles[] = "--group-w: {$maxWidth}{$widthUnit}";
+        }
+
+        if ($height === 'full') {
+            $styles[] = "--group-h: 100vh";
+        } elseif ($height === 'custom' && $customHeight !== null) {
+            $styles[] = "--group-h: {$customHeight}{$heightUnit}";
+        }
+
+        // Mobile Sizing
+        if ($widthMobile === 'full') {
+            $styles[] = "--group-w-mobile: 100%";
+        } elseif ($widthMobile === 'custom' && $maxWidthMobile !== null) {
+            $styles[] = "--group-w-mobile: {$maxWidthMobile}{$widthMobileUnit}";
+        }
+
+        if ($heightMobile === 'full') {
+            $styles[] = "--group-h-mobile: 100vh";
+        } elseif ($heightMobile === 'custom' && $customHeightMobile !== null) {
+            $styles[] = "--group-h-mobile: {$customHeightMobile}{$heightMobileUnit}";
+        }
+    }
+
+    // Media background images
     if ($bgType === 'media' && $mediaType === 'image' && $bgImage) {
-        $style .=
-            "background-image:url('" .
-            media($bgImage) .
-            "');
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-background-attachment:$attachment;";
+        $imgUrl = media($bgImage);
+        $styles[] = "background-image: url('{$imgUrl}')";
+        $styles[] = "background-size: cover";
+        $styles[] = "background-position: center";
+        $styles[] = "background-repeat: no-repeat";
+        $styles[] = "background-attachment: {$attachment}";
     }
 @endphp
 
+<div {!! $block->attributes() !!} class="{{ implode(' ', $classes) }}" style="{{ implode('; ', $styles) }}">
 
-{{-- RESPONSIVE STYLE BLOCK --}}
-<style>
-    .{{ $unique }} {
-
-        /* ===== DESKTOP BASE ===== */
-
-        @if ($pos !== 'relative')
-            position: absolute;
-
-            /* DESKTOP ABSOLUTE SIZE */
-            @if ($absWidth)
-                width: {{ $absWidth }}px;
-            @endif
-            @if ($absHeight)
-                height: {{ $absHeight }}px;
-            @endif
-            @if ($top !== null)
-                top: {{ $top }}px;
-            @endif
-
-            @if ($left !== null)
-                left: {{ $left }}px;
-            @endif
-
-        @endif
-
-        @if ($pos === 'relative')
-
-            /* DESKTOP WIDTH */
-            @if ($width === 'full')
-                width: 100%;
-            @elseif($width === 'custom' && $maxWidth)
-                width: {{ $maxWidth }}{{ $widthUnit }};
-            @endif
-
-            /* DESKTOP HEIGHT */
-            @if ($height === 'full')
-                min-height: 100vh;
-            @elseif($height === 'custom' && $customHeight)
-                min-height: {{ $customHeight }}{{ $heightUnit }};
-            @endif
-
-        @endif
-
-    }
-
-    /* ===== MOBILE OVERRIDE ===== */
-
-    @media(max-width:767px) {
-
-        .{{ $unique }} {
-            @if ($pos !== 'relative')
-                position: absolute;
-
-                @if ($absWidthMobile)
-                    width: {{ $absWidthMobile }}px;
-                @endif
-
-                @if ($absHeightMobile)
-                    height: {{ $absHeightMobile }}px;
-                @endif
-                @if ($topMobile !== null)
-                    top: {{ $topMobile }}px;
-                @endif
-
-                @if ($leftMobile !== null)
-                    left: {{ $leftMobile }}px;
-                @endif
-
-            @endif
-
-            @if ($pos === 'relative')
-
-                /* MOBILE WIDTH */
-                @if ($widthMobile === 'auto')
-                    width: auto;
-                @elseif($widthMobile === 'full')
-                    width: 100%;
-                @elseif($widthMobile === 'custom' && $maxWidthMobile)
-                    width: {{ $maxWidthMobile }}{{ $widthMobileUnit }};
-                @endif
-
-
-                /* MOBILE HEIGHT */
-                @if ($heightMobile === 'auto')
-                    min-height: auto;
-                @elseif($heightMobile === 'full')
-                    min-height: 100vh;
-                @elseif($heightMobile === 'custom' && $customHeightMobile)
-                    min-height: {{ $customHeightMobile }}{{ $heightMobileUnit }};
-                @endif
-
-            @endif
-
-        }
-
-    }
-</style>
-<div {!! $block->attributes() !!} class="{{ implode(' ', $classes) }}"
-    style="{{ $style }}">
-
-    {{-- VIDEO BG --}}
+    {{-- Video Background --}}
     @if ($bgType === 'media' && $mediaType === 'video' && $bgVideo)
         <video class="absolute inset-0 w-full h-full object-cover -z-10" autoplay muted loop playsinline>
             <source src="{{ media($bgVideo) }}" type="video/mp4">
         </video>
     @endif
 
-    {{-- OVERLAY --}}
+    {{-- Background Overlay --}}
     @if ($overlay && $bgType !== 'color')
-        <div class="absolute -z-8 inset-0 pointer-events-none"
-            style="background:{{ $overlayColor }};
-        opacity:{{ $overlayOpacity }};">
+        <div class="absolute inset-0 -z-10 pointer-events-none"
+             style="background: {{ $overlayColor }}; opacity: {{ $overlayOpacity }};">
         </div>
     @endif
+
+    {{-- Blur Filter --}}
     @if ($blur && $bgType !== 'color')
-        <div class="absolute -z-5! inset-0 pointer-events-none"
-            style="backdrop-filter:blur({{ $blurPx }}px);border-radius:{{ $radius }}px;">
+        <div class="absolute inset-0 -z-20 pointer-events-none"
+             style="backdrop-filter: blur({{ $blurPx }}px); -webkit-backdrop-filter: blur({{ $blurPx }}px); border-radius: {{ $radius }}px;">
         </div>
     @endif
 
     {!! $block->blocks()->render(['data' => $data ?? null]) !!}
-
 </div>

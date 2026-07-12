@@ -35,24 +35,30 @@
         @else
             <div class="relative group">
                 <div id="{{ $carouselId }}" class="flex w-full flex-nowrap overflow-auto scrollbar"
-                    style="gap:{{ $gap }}px;">
+                    style="gap:{{ $gap }}px; scroll-snap-type: x mandatory;">
                     @foreach($section->blocks()->filter('testimonial_card') as $card)
-                        <div class="flex-none {{ $slideWidth }} {{ $slideWidthMobile }}">
+                        <div class="flex-none {{ $slideWidth }} {{ $slideWidthMobile }}" style="scroll-snap-align: start;">
                             {!! $card !!}
                         </div>
                     @endforeach
                 </div>
 
                 @if($showArrows)
-                    <button type="button" data-scroll="prev" data-target="{{ $carouselId }}" class="carousel-arrow absolute left-2 top-1/2 -translate-y-1/2 z-20
-                                    opacity-0 group-hover:opacity-100 transition
-                                    bg-black/50 text-white shadow rounded-full py-2 px-2.5">
-                        <i class="fa-solid fa-arrow-left"></i>
+                    <button type="button" data-scroll="prev" data-target="{{ $carouselId }}" 
+                        class="carousel-arrow absolute left-2 top-1/2 -translate-y-1/2 z-20
+                            opacity-0 group-hover:opacity-100 transition-all duration-300
+                            w-10 h-10 flex items-center justify-center
+                            rounded-full shadow-lg"
+                        style="background: var(--arz-bg); color: var(--arz-heading); border: 1px solid var(--arz-border);">
+                        <i class="fa-solid fa-arrow-left" style="font-size: 13px;"></i>
                     </button>
-                    <button type="button" data-scroll="next" data-target="{{ $carouselId }}" class="carousel-arrow absolute right-2 top-1/2 -translate-y-1/2 z-20
-                                    opacity-0 group-hover:opacity-100 transition
-                                    bg-black/50 text-white shadow rounded-full py-2 px-2.5">
-                        <i class="fa-solid fa-arrow-right"></i>
+                    <button type="button" data-scroll="next" data-target="{{ $carouselId }}" 
+                        class="carousel-arrow absolute right-2 top-1/2 -translate-y-1/2 z-20
+                            opacity-0 group-hover:opacity-100 transition-all duration-300
+                            w-10 h-10 flex items-center justify-center
+                            rounded-full shadow-lg"
+                        style="background: var(--arz-bg); color: var(--arz-heading); border: 1px solid var(--arz-border);">
+                        <i class="fa-solid fa-arrow-right" style="font-size: 13px;"></i>
                     </button>
                 @endif
             </div>
@@ -72,17 +78,13 @@
 
     .arz-{{ $section->id }} .testimonials-header {
         text-align: center;
-        margin-bottom:
-            {{ $gap }}
-            px;
+        margin-bottom: {{ $gap }}px;
     }
 
     .arz-{{ $section->id }} .testimonials-grid {
         display: grid;
         grid-template-columns: repeat({{ $columns }}, 1fr);
-        gap:
-            {{ $gap }}
-            px;
+        gap: {{ $gap }}px;
     }
 
     @media (max-width: 767px) {

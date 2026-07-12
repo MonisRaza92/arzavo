@@ -99,9 +99,9 @@
 {{-- Mobile Menu Drawer --}}
 <div class="nuc-mobile-overlay"></div>
 <div class="nuc-mobile-drawer">
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center justify-between mb-4">
         <div>
-            @if(render_logo())
+            @if(logo())
                 <img src="{{ render_logo() }}" alt="{{ tenant_name() }}" class="arz-logo">
             @else
                 <span class="tenant-name font-bold" style="font-size: 20px;">{{ tenant_name() }}</span>
@@ -164,10 +164,16 @@
         @endif
     </nav>
 
-    <div class="mt-8 pt-6" style="border-top: 1px solid var(--arz-border);">
-        <a href="{{ route_to('login') }}" class="arz-btn-primary w-full text-center">
-            <i class="fa-regular fa-user mr-2"></i> Login
-        </a>
+    <div class="mt-8 pt-6 absolute bottom-4 left-4 right-4">
+        @if (Auth::check())
+            <a href="{{ route_to('login') }}" class="arz-btn-primary w-full text-center">
+                <i class="fa-regular fa-user mr-2"></i> Login
+            </a>
+        @else
+            <a href="#" class="arz-btn-primary w-full text-center">
+                <i class="fa-regular fa-user mr-2"></i> Dashboard
+            </a>
+        @endif
     </div>
 </div>
 

@@ -1,7 +1,7 @@
 {
     "type": "slideshow",
     "name": "Slideshow: Inset Content",
-    "icon": "fa-image-stack",
+    "icon": "fa-images",
     "order": 6,
     "category": "Banners",
     "color_scheme": "scheme_1",
