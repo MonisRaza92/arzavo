@@ -243,7 +243,7 @@ if (!function_exists('registerDomains')) {
 
                     Route::resource('subjects', SubjectController::class);
                     Route::get('/subjects/{id}/get', [SubjectController::class, 'get'])->name('subjects.get');
-                    Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update');
+                    Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update_custom');
 
 
                     //Admin Contents Routes
