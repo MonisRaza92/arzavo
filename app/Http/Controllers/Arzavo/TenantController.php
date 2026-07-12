@@ -120,12 +120,14 @@ class TenantController
         // 1. Set tenant DB connection
         config([
             'database.connections.tenant' => [
-                'driver' => 'mysql',
-                'host' => env('DB_HOST'),
-                'port' => env('DB_PORT'),
-                'database' => $tenant->db_name,
-                'username' => $tenant->db_username,
-                'password' => $tenant->db_password,
+                'driver'    => 'mysql',
+                'host'      => config('database.connections.mysql.host'),
+                'port'      => config('database.connections.mysql.port'),
+                'database'  => $tenant->db_name,
+                'username'  => $tenant->db_username,
+                'password'  => $tenant->db_password,
+                'charset'   => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ]
         ]);
 
@@ -135,21 +137,33 @@ class TenantController
         // 2. Run tenant migrations
         Artisan::call('tenant:migrate', [
             'tenant_id' => $tenant->id,
-            '--seed' => true, // ONLY for default tenant data
+            '--seed'    => true,
         ]);
 
-        // 3. Create tenant admin user
-        DB::connection('tenant')->table('users')->insert([
-            'fname' => $mainUser->fname,
-            'lname' => $mainUser->lname,
-            'email' => $mainUser->email,
-            'number' => $mainUser->number,
-            'username' => $mainUser->username,
-            'password' => $mainUser->password, // Already hashed
-            'role' => 'admin',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        // 3. Create tenant admin user (after migrations)
+        try {
+            $alreadyExists = DB::connection('tenant')
+                ->table('users')
+                ->where('email', $mainUser->email)
+                ->exists();
+
+            if (!$alreadyExists) {
+                DB::connection('tenant')->table('users')->insert([
+                    'fname'      => $mainUser->fname,
+                    'lname'      => $mainUser->lname,
+                    'email'      => $mainUser->email,
+                    'number'     => $mainUser->number,
+                    'username'   => $mainUser->username,
+                    'password'   => $mainUser->password,
+                    'role'       => 'admin',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        } catch (\Throwable $e) {
+            \Log::error("Tenant admin user creation failed for tenant {$tenant->id}: " . $e->getMessage());
+            throw $e; // re-throw so store() can catch it
+        }
     }
 
 

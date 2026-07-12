@@ -82,9 +82,10 @@
             "@php artisan optimize:clear",
             "@php artisan config:cache",
             "@php artisan migrate --force",
+            "@php artisan themes:sync",
             "@php artisan tenant:migrate",
-            "@php -r \"opcache_reset();\"",
             "npm ci",
+            "@php -r \"opcache_reset();\"",
             "npm run build",
             "@php artisan up"
         ]
