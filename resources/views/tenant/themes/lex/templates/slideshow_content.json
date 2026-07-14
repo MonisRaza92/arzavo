@@ -1,0 +1,163 @@
+{
+    "type": "slideshow",
+    "name": "Slideshow: Content",
+    "icon": "fa-images",
+    "order": 6,
+    "category": "Banners",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "slide",
+            "color_scheme": "scheme_1",
+            "settings": {
+                "media_type": "image",
+                "media_aspect_ratio": "21:9",
+                "media_stack": "0",
+                "overlay_enable": "1",
+                "overlay_opacity": 40
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "center",
+                        "position": "center",
+                        "gap": 20,
+                        "width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Manage Your Institution Smarter",
+                                "heading_type": "heading-1",
+                                "alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Admissions, fees, attendance, exams — everything in one dashboard.",
+                                "font_size": "large",
+                                "alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Start Free Demo",
+                                "button_type": "primary",
+                                "size": "large"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "slide",
+            "color_scheme": "scheme_1",
+            "settings": {
+                "media_type": "image",
+                "media_aspect_ratio": "21:9",
+                "media_stack": "0",
+                "overlay_enable": "1",
+                "overlay_opacity": 30
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "center",
+                        "position": "center",
+                        "gap": 16,
+                        "width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Automate Fees & Reports",
+                                "heading_type": "heading-2"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Generate reports instantly and track payments in real time.",
+                                "alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Explore Features",
+                                "button_type": "secondary",
+                                "size": "large"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "slide",
+            "color_scheme": "scheme_1",
+            "settings": {
+                "media_type": "image",
+                "media_aspect_ratio": "21:9",
+                "media_stack": "0",
+                "overlay_enable": "1",
+                "overlay_opacity": 35
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                       "direction": "vertical",
+                        "alignment": "center",
+                        "position": "center",
+                        "gap": 18,
+                        "width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Stay Connected With Students",
+                                "heading_type": "heading-2",
+                                "alignment": "right"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Send notices, alerts and results instantly from Arzavo.",
+                                "alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Get Started Today",
+                                "button_type": "primary",
+                                "size": "large"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "content_width": "container",
+        "autoplay": "1",
+        "autoplay_delay": "3",
+        "show_arrows": "1",
+        "show_dots": "1",
+        "margin_top": "0",
+        "margin_bottom": "0"
+    }
+}

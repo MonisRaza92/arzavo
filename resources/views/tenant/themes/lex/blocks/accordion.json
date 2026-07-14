@@ -1,0 +1,88 @@
+{
+    "type": "accordion",
+    "name": "Accordion",
+    "icon": "fa-plus-minus",
+    "category": "Content",
+    "order": 10,
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content"
+        },
+        {
+            "key": "question",
+            "label": "Question",
+            "type": "text",
+            "default": "What is included in the plan?"
+        },
+        {
+            "key": "answer",
+            "label": "Answer",
+            "type": "richtext",
+            "default": "Our plan includes all the essential features you need to manage your institution effectively."
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Icon"
+        },
+        {
+            "key": "icon_style",
+            "label": "Icon Style",
+            "type": "radio",
+            "options": ["plus", "chevron", "none"],
+            "default": "plus"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
+        {
+            "key": "border_width",
+            "label": "Border Width",
+            "type": "range",
+            "min": 0,
+            "max": 10,
+            "default": 1
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Roundness",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 12
+        },
+        {
+            "key": "padding_x",
+            "label": "Horizontal Padding",
+            "type": "range",
+            "min": 0,
+            "max": 60,
+            "default": 24
+        },
+        {
+            "key": "padding_y",
+            "label": "Vertical Padding",
+            "type": "range",
+            "min": 0,
+            "max": 60,
+            "default": 18
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Behavior"
+        },
+        {
+            "key": "default_open",
+            "label": "Open by Default",
+            "type": "switch",
+            "default": "0"
+        }
+    ]
+}
+

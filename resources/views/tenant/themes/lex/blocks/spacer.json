@@ -1,0 +1,35 @@
+{
+    "type": "spacer",
+    "name": "Spacer",
+    "icon": "fa-arrows-v",
+    "order": 15,
+    "category": "Layout",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "height_desktop",
+            "label": "Height Desktop (px)",
+            "type": "range",
+            "min": 10,
+            "max": 200,
+            "default": 40
+        },
+        {
+            "key": "height_mobile",
+            "label": "Height Mobile (px)",
+            "type": "range",
+            "min": 10,
+            "max": 100,
+            "default": 20
+        },
+        {
+            "key": "visibility",
+            "label": "Visibility",
+            "type": "radio",
+            "options": ["both", "desktop_only", "mobile_only"],
+            "default": "both"
+        }
+    ]
+}

@@ -1,0 +1,103 @@
+{
+    "type": "data_classes",
+    "name": "Classes",
+    "icon": "fa-align-left ml-0.5",
+    "order": 2,
+    "category": "Basic",
+    "max_blocks": 0,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "group",
+            "label": "Style",
+            "type": "group"
+        },
+        {
+            "key": "bg",
+            "label": "Background Color",
+            "type": "color",
+            "default": "#f8f9fa"
+        },
+        {
+            "key": "text_color",
+            "type": "color",
+            "default": "#000"
+        },
+        {
+            "key": "font_size",
+            "label": "Text Size",
+            "type": "range",
+            "default": "16",
+            "min" : 10,
+            "max" : 30
+        },
+        {
+            "key": "font_weight",
+            "type": "radio",
+            "options": ["normal","bold"],
+            "default": "normal"
+        },
+        {
+            "key": "border_width",
+            "label": "Border Width",
+            "type": "range",
+            "min": 0,
+            "max": 10,
+            "default": 1
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "group",
+            "label": "Spacing",
+            "type": "group"
+        },
+        {
+            "key": "inner_gap",
+            "type": "range",
+            "default": "6",
+            "min": 0,
+            "max": 20
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "0"
+        }
+    ]
+}
+

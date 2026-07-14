@@ -1,0 +1,17 @@
+{
+    "type": "header_logo",
+    "name": "Logo",
+    "icon": "fa-expand",
+    "order": 6,
+    "category": "Basic",
+    "max_blocks": 0,
+    "deletable": false,
+    "moveable": false,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "preset": "padding"
+        }
+    ]
+}

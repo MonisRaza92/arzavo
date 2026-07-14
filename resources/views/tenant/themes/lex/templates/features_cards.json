@@ -1,0 +1,312 @@
+{
+    "type": "custom_section",
+    "name": "Features: Cards",
+    "icon": "fa-list",
+    "category": "Storytelling",
+    "order": 2,
+    "settings": {
+        "direction": "vertical",
+        "mobile_direction": "1",
+        "alignment": "center",
+        "position": "between",
+        "height": "auto",
+        "mobile_height": "auto",
+        "gap": 64,
+        "padding_top": 70,
+        "padding_bottom": 70
+    },
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "direction": "vertical",
+                "alignment": "left",
+                "gap": 10,
+                "padding_top": 0,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Why institutions choose Arzavo",
+                        "heading_type": "heading-4",
+                        "alignment": "left",
+                        "mobile_alignment": "left"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Designed to simplify operations, improve visibility, and help you scale with confidence.",
+                        "alignment": "left",
+                        "mobile_alignment": "left"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "vertical",
+                "mobile_direction": "1",
+                "alignment": "start",
+                "position": "between",
+                "gap": 16,
+                "width": "full"
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "start",
+                                "gap": 14,
+                                "width": "auto",
+                                "mobile_width": "full",
+                                "padding_top": 24,
+                                "padding_bottom": 24,
+                                "padding_left": 24,
+                                "padding_right": 24,
+                                "border_width": 1,
+                                "border_radius": 12
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "user-graduate",
+                                        "icon_size": 36,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Smart Student Records",
+                                        "heading_type": "heading-6"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "All student data, attendance, performance and communication in one centralized system."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "start",
+                                "gap": 14,
+                                "width": "auto",
+                                "mobile_width": "full",
+                                "padding_top": 24,
+                                "padding_bottom": 24,
+                                "padding_left": 24,
+                                "padding_right": 24,
+                                "border_width": 1,
+                                "border_radius": 12
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "file-invoice-dollar",
+                                        "icon_size": 36,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Automated Fee Tracking",
+                                        "heading_type": "heading-6"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Generate invoices, track payments, and get instant financial reports with zero manual work."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "start",
+                                "gap": 14,
+                                "width": "auto",
+                                "mobile_width": "full",
+                                "padding_top": 24,
+                                "padding_bottom": 24,
+                                "padding_left": 24,
+                                "padding_right": 24,
+                                "border_width": 1,
+                                "border_radius": 12
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "chart-pie",
+                                        "icon_size": 36,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Business Insights",
+                                        "heading_type": "heading-6"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Visual dashboards that show performance, trends, and growth opportunities in real time."
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "start",
+                                "gap": 14,
+                                "width": "auto",
+                                "mobile_width": "full",
+                                "padding_top": 24,
+                                "padding_bottom": 24,
+                                "padding_left": 24,
+                                "padding_right": 24,
+                                "border_width": 1,
+                                "border_radius": 12
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "headset",
+                                        "icon_size": 36,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Dedicated Support",
+                                        "heading_type": "heading-6"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Our team is here to help you every step of the way, from onboarding to ongoing support."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "start",
+                                "gap": 14,
+                                "width": "auto",
+                                "mobile_width": "full",
+                                "padding_top": 24,
+                                "padding_bottom": 24,
+                                "padding_left": 24,
+                                "padding_right": 24,
+                                "border_width": 1,
+                                "border_radius": 12
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "users",
+                                        "icon_size": 36,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Community Forums",
+                                        "heading_type": "heading-6"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Connect with other users in our active community forums to share ideas, get help, and stay updated."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "alignment": "start",
+                                "gap": 14,
+                                "width": "auto",
+                                "mobile_width": "full",
+                                "padding_top": 24,
+                                "padding_bottom": 24,
+                                "padding_left": 24,
+                                "padding_right": 24,
+                                "border_width": 1,
+                                "border_radius": 12
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "icon",
+                                    "settings": {
+                                        "icon_name": "shield-halved",
+                                        "icon_size": 36,
+                                        "icon_color": "heading"
+                                    }
+                                },
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "Enterprise-Grade Security",
+                                        "heading_type": "heading-6"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Enterprise-grade security features to keep your data safe and secure. We take security seriously so you can focus on running your institution."
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

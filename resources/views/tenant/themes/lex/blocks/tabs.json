@@ -1,0 +1,105 @@
+{
+    "type": "tabs",
+    "name": "Tabs",
+    "icon": "fa-folder-open",
+    "order": 10,
+    "category": "Content",
+    "max_blocks": 0,
+    "allowed_blocks": [],
+    "default_blocks": null,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Tabs Settings"
+        },
+        {
+            "key": "tabs_items",
+            "label": "Tab Items",
+            "type": "repeater",
+            "default": [
+                {
+                    "title": "Tab 1",
+                    "content": "Content for tab 1"
+                },
+                {
+                    "title": "Tab 2",
+                    "content": "Content for tab 2"
+                }
+            ]
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
+        {
+            "key": "tabs_style",
+            "label": "Tabs Style",
+            "type": "radio",
+            "options": [
+                "horizontal",
+                "vertical"
+            ],
+            "default": "horizontal"
+        },
+        {
+            "key": "tabs_alignment",
+            "label": "Tabs Alignment",
+            "type": "radio",
+            "options": [
+                "start",
+                "center",
+                "end"
+            ],
+            "default": "start"
+        },
+        {
+            "key": "active_tab",
+            "label": "Default Active Tab",
+            "type": "number",
+            "default": "0",
+            "min": 0
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "default": "16",
+            "min": 0,
+            "max": 100
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Visibility"
+        },
+        {
+            "key": "hide_desktop",
+            "label": "Hide on Desktop",
+            "type": "switch",
+            "default": "0",
+            "text": "Hide For Desktop/Tablate"
+        },
+        {
+            "key": "hide_mobile",
+            "label": "Hide on Mobile",
+            "type": "switch",
+            "default": "0",
+            "text": "Hide For Mobile Devices"
+        }
+    ]
+}

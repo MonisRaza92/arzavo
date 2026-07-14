@@ -1,0 +1,127 @@
+{
+    "type": "header_button",
+    "name": "Header Button",
+    "icon": "fa-arrow-pointer",
+    "order": 4,
+    "category": "Header",
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content"
+        },
+        {
+            "key": "text",
+            "label": "Button Text",
+            "type": "text",
+            "default": "Click Here"
+        },
+        {
+            "key": "url",
+            "label": "Button URL",
+            "type": "url",
+            "default": "#"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Type & Icon"
+        },
+        {
+            "key": "button_type",
+            "label": "Button Type",
+            "type": "radio",
+            "options": [
+                "primary",
+                "secondary"
+            ],
+            "default": "primary"
+        },
+        {
+            "key": "show_icon",
+            "label": "Show Icon",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "icon",
+            "label": "Icon",
+            "type": "icon",
+            "default": "arrow-right",
+            "conditional": {
+                "field": "show_icon",
+                "value": "1"
+            }
+        },
+        {
+            "key": "icon_position",
+            "label": "Icon Position",
+            "type": "radio",
+            "options": [
+                "left",
+                "right"
+            ],
+            "default": "right",
+            "conditional": {
+                "field": "show_icon",
+                "value": "1"
+            }
+        },
+        {
+            "key": "icon_gap",
+            "label": "Icon Gap",
+            "type": "range",
+            "min": 0,
+            "max": 40,
+            "default": 8,
+            "conditional": {
+                "field": "show_icon",
+                "value": "1"
+            }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Link Behavior"
+        },
+        {
+            "key": "open_new_tab",
+            "label": "Open in New Tab",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "nofollow",
+            "label": "Add rel=nofollow",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Visibility"
+        },
+        {
+            "key": "auth_visibility",
+            "label": "Show based on Login Status",
+            "type": "select",
+            "options": ["always", "guest_only", "auth_only"],
+            "default": "always",
+            "help": "Always: Visible to everyone. Guest Only: Visible only before login. Auth Only: Visible only after login."
+        },
+        {
+            "key": "hide_desktop",
+            "label": "Hide on Desktop",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "hide_mobile",
+            "label": "Hide on Mobile",
+            "type": "switch",
+            "default": "0"
+        }
+    ]
+}
+

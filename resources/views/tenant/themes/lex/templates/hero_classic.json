@@ -1,0 +1,107 @@
+{
+    "type": "custom_section",
+    "name": "Hero: Classic Academy",
+    "icon": "fa-graduation-cap",
+    "order": 1,
+    "category": "Banners",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "group",
+            "settings": {
+                "direction": "vertical",
+                "mobile_direction": "1",
+                "alignment": "start",
+                "position": "center",
+                "gap": 16,
+                "position_type": "relative",
+                "width": "60%",
+                "width_mobile": "full",
+                "height": "auto",
+                "mobile_height": "auto",
+                "background_type": "none"
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Nurturing the Next Generation of Thinkers & Leaders",
+                        "heading_type": "heading-1",
+                        "alignment": "left",
+                        "mobile_alignment": "center",
+                        "margin_bottom": 6
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Welcome to an institution built on academic rigour, distinguished scholarship, and professional excellence. We prepare scholars to make a meaningful impact in their professional careers.",
+                        "text_type": "paragraph",
+                        "font_size": "large",
+                        "alignment": "left",
+                        "mobile_alignment": "center",
+                        "padding_bottom": 8
+                    }
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal",
+                        "mobile_direction": "1",
+                        "alignment": "start",
+                        "position": "start",
+                        "gap": 12,
+                        "position_type": "relative",
+                        "width": "auto",
+                        "width_mobile": "full",
+                        "height": "auto",
+                        "mobile_height": "auto",
+                        "background_type": "none"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Explore Programs",
+                                "button_type": "primary",
+                                "width_mobile": "full"
+                            }
+                        },
+                        {
+                            "type": "button",
+                            "settings": {
+                                "text": "Admissions Info",
+                                "button_type": "secondary",
+                                "width_mobile": "full"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "image",
+            "settings": {
+                "desktop_image": null,
+                "mobile_image": null,
+                "aspect_ratio": "landscape"
+            }
+        }
+    ],
+    "settings": {
+        "background_type": "none",
+        "height": "auto",
+        "mobile_height": "auto",
+        "direction": "row",
+        "mobile_direction": "1",
+        "alignment": "center",
+        "position": "between",
+        "gap": 48,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "section_width": "full",
+        "is_active": true
+    }
+}

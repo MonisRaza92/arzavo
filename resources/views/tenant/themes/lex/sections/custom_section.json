@@ -1,0 +1,53 @@
+{
+    "type": "custom_section",
+    "name": "Custom Section",
+    "icon": "fa-square-plus",
+    "order": 3,
+    "category": "Layout",
+    "color_scheme": "scheme_1",
+    "max_blocks": 10,
+    "allowed_blocks": [
+        "heading",
+        "text",
+        "image",
+        "button",
+        "divider",
+        "group",
+        "icon",
+        "spacer",
+        "video",
+        "header",
+        "courses_cards",
+        "accordion",
+        "social_icons",
+        "testimonial_card",
+        "stat_item",
+        "logo_item"
+    ],
+    "fields": [
+        {
+            "preset": "section_flex_fields"
+        },
+        {
+            "preset": "section_size_fields"
+        },
+        {
+            "preset": "section_bg_type_fields"
+        },
+        {
+            "preset": "bg_blur_fields"
+        },
+        {
+            "preset": "bg_overlay_fields"
+        },
+        {
+            "preset": "section_spacing_fields"
+        },
+        {
+            "preset": "section_mobile_spacing_fields"
+        },
+        {
+            "preset": "visibility_fields"
+        }
+    ]
+}

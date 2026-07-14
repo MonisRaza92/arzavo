@@ -1,0 +1,924 @@
+/* ================================================================
+   lex THEME — Global Design System
+   Arzavo Theme System v2.0
+   
+   ⚡ All styles are scoped under [data-theme="lex"]
+      so they ONLY apply when the lex theme is active.
+   ================================================================ */
+
+
+/* ================================
+   🎯 THEME TOKENS
+   ================================ */
+[data-theme="lex"] {
+    --lex-radius-sm: 6px;
+    --lex-radius-md: 12px;
+    --lex-radius-lg: 20px;
+    --lex-radius-xl: 28px;
+    --lex-radius-full: 9999px;
+
+    --lex-shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+    --lex-shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+    --lex-shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    --lex-shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+    --lex-shadow-xl: 0 16px 48px rgba(0,0,0,0.12);
+    --lex-shadow-glow: 0 0 40px rgba(37,99,235,0.15);
+
+    --lex-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --lex-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --lex-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+    --lex-duration-fast: 200ms;
+    --lex-duration-normal: 350ms;
+    --lex-duration-slow: 600ms;
+
+    --lex-glass-bg: rgba(255,255,255,0.65);
+    --lex-glass-border: rgba(255,255,255,0.25);
+    --lex-glass-blur: 16px;
+
+    --lex-glass-dark-bg: rgba(0,0,0,0.45);
+    --lex-glass-dark-border: rgba(255,255,255,0.08);
+}
+
+
+/* ================================
+   🧱 BASE OVERRIDES
+   ================================ */
+[data-theme="lex"] {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+[data-theme="lex"] * {
+    box-sizing: border-box;
+}
+
+/* Smooth scrollbar */
+[data-theme="lex"]::-webkit-scrollbar {
+    width: 8px;
+}
+[data-theme="lex"]::-webkit-scrollbar-track {
+    background: transparent;
+}
+[data-theme="lex"]::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.15);
+    border-radius: 4px;
+}
+[data-theme="lex"]::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.25);
+}
+
+
+/* ================================
+   ✨ GLASSMORPHISM UTILITIES
+   ================================ */
+[data-theme="lex"] .lex-glass {
+    background: var(--lex-glass-bg);
+    backdrop-filter: blur(var(--lex-glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--lex-glass-blur)) saturate(180%);
+    border: 1px solid var(--lex-glass-border);
+}
+
+[data-theme="lex"] .lex-glass-dark {
+    background: var(--lex-glass-dark-bg);
+    backdrop-filter: blur(var(--lex-glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--lex-glass-blur)) saturate(180%);
+    border: 1px solid var(--lex-glass-dark-border);
+}
+
+
+/* ================================
+   🔲 BORDER UTILITY
+   ================================ */
+[data-theme="lex"] .arz-border {
+    border-style: solid;
+    border-color: var(--arz-border);
+}
+
+
+/* ================================
+   🃏 CARD SYSTEM
+   ================================ */
+[data-theme="lex"] .lex-card {
+    background: var(--arz-bg);
+    border: 1px solid var(--arz-border);
+    border-radius: var(--lex-radius-md);
+    box-shadow: var(--lex-shadow-sm);
+    transition: 
+        transform var(--lex-duration-normal) var(--lex-ease-out),
+        box-shadow var(--lex-duration-normal) var(--lex-ease-out),
+        border-color var(--lex-duration-normal) var(--lex-ease-smooth);
+    overflow: hidden;
+}
+
+[data-theme="lex"] .lex-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--lex-shadow-lg);
+    border-color: var(--arz-link);
+}
+
+[data-theme="lex"] .lex-card-flat {
+    background: var(--arz-bg);
+    border: 1px solid var(--arz-border);
+    border-radius: var(--lex-radius-md);
+    transition: 
+        background var(--lex-duration-fast) var(--lex-ease-smooth),
+        border-color var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-card-flat:hover {
+    border-color: var(--arz-link);
+}
+
+/* Gradient border card */
+[data-theme="lex"] .lex-card-gradient {
+    position: relative;
+    background: var(--arz-bg);
+    border-radius: var(--lex-radius-md);
+    overflow: hidden;
+    transition: transform var(--lex-duration-normal) var(--lex-ease-out);
+}
+
+[data-theme="lex"] .lex-card-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--arz-link), var(--arz-btn-bg));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--lex-duration-normal) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-card-gradient:hover::before {
+    opacity: 1;
+}
+
+[data-theme="lex"] .lex-card-gradient:hover {
+    transform: translateY(-4px);
+}
+
+
+/* ================================
+   🖼️ IMAGE EFFECTS
+   ================================ */
+[data-theme="lex"] .lex-img-zoom {
+    overflow: hidden;
+    border-radius: var(--lex-radius-md);
+}
+
+[data-theme="lex"] .lex-img-zoom img {
+    transition: transform var(--lex-duration-slow) var(--lex-ease-out);
+    will-change: transform;
+}
+
+[data-theme="lex"] .lex-img-zoom:hover img {
+    transform: scale(1.06);
+}
+
+
+/* ================================
+   🔘 BUTTON ENHANCEMENTS
+   ================================ */
+[data-theme="lex"] .arz-btn-primary {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: 
+        transform var(--lex-duration-fast) var(--lex-ease-spring),
+        box-shadow var(--lex-duration-fast) var(--lex-ease-smooth),
+        background var(--lex-duration-fast) var(--lex-ease-smooth),
+        color var(--lex-duration-fast) var(--lex-ease-smooth),
+        border-color var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .arz-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+[data-theme="lex"] .arz-btn-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+[data-theme="lex"] .arz-btn-secondary {
+    transition: 
+        transform var(--lex-duration-fast) var(--lex-ease-spring),
+        box-shadow var(--lex-duration-fast) var(--lex-ease-smooth),
+        background var(--lex-duration-fast) var(--lex-ease-smooth),
+        color var(--lex-duration-fast) var(--lex-ease-smooth),
+        border-color var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .arz-btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+[data-theme="lex"] .arz-btn-secondary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+
+/* ================================
+   🧭 NAVBAR — SCROLL EFFECT
+   ================================ */
+[data-theme="lex"] [data-section-type="navbar"] {
+    transition: 
+        background var(--lex-duration-normal) var(--lex-ease-smooth),
+        backdrop-filter var(--lex-duration-normal) var(--lex-ease-smooth),
+        box-shadow var(--lex-duration-normal) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] [data-section-type="navbar"].lex-nav-scrolled {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 1px 0 var(--arz-border), var(--lex-shadow-sm);
+}
+
+/* Nav link hover effect */
+[data-theme="lex"] .lex-nav-link {
+    position: relative;
+    transition: color var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--arz-link);
+    border-radius: 1px;
+    transition: width var(--lex-duration-normal) var(--lex-ease-out),
+                left var(--lex-duration-normal) var(--lex-ease-out);
+}
+
+[data-theme="lex"] .lex-nav-link:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+
+/* ================================
+   📐 SECTION ENHANCEMENTS
+   ================================ */
+
+/* Smooth section transitions on scroll */
+[data-theme="lex"] .lex-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 
+        opacity var(--lex-duration-slow) var(--lex-ease-out),
+        transform var(--lex-duration-slow) var(--lex-ease-out);
+}
+
+[data-theme="lex"] .lex-reveal.lex-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger children animations */
+[data-theme="lex"] .lex-reveal.lex-visible .lex-stagger {
+    opacity: 0;
+    animation: nucFadeUp var(--lex-duration-slow) var(--lex-ease-out) forwards;
+}
+
+[data-theme="lex"] .lex-reveal.lex-visible .lex-stagger:nth-child(1) { animation-delay: 0ms; }
+[data-theme="lex"] .lex-reveal.lex-visible .lex-stagger:nth-child(2) { animation-delay: 80ms; }
+[data-theme="lex"] .lex-reveal.lex-visible .lex-stagger:nth-child(3) { animation-delay: 160ms; }
+[data-theme="lex"] .lex-reveal.lex-visible .lex-stagger:nth-child(4) { animation-delay: 240ms; }
+[data-theme="lex"] .lex-reveal.lex-visible .lex-stagger:nth-child(5) { animation-delay: 320ms; }
+[data-theme="lex"] .lex-reveal.lex-visible .lex-stagger:nth-child(6) { animation-delay: 400ms; }
+
+
+/* ================================
+   🦶 FOOTER DESIGN
+   ================================ */
+[data-theme="lex"] [data-section-type="footer"] {
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="lex"] [data-section-type="footer"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--arz-btn-bg), var(--arz-link), var(--arz-btn-bg));
+    background-size: 200% 100%;
+    animation: nucGradientMove 4s linear infinite;
+}
+
+[data-theme="lex"] .lex-footer-link {
+    color: var(--arz-paragraph);
+    transition: 
+        color var(--lex-duration-fast) var(--lex-ease-smooth),
+        transform var(--lex-duration-fast) var(--lex-ease-spring);
+    display: inline-block;
+}
+
+[data-theme="lex"] .lex-footer-link:hover {
+    color: var(--arz-link);
+    transform: translateX(4px);
+}
+
+[data-theme="lex"] .lex-social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--lex-radius-full);
+    border: 1px solid var(--arz-border);
+    color: var(--arz-paragraph);
+    transition: 
+        background var(--lex-duration-fast) var(--lex-ease-smooth),
+        color var(--lex-duration-fast) var(--lex-ease-smooth),
+        border-color var(--lex-duration-fast) var(--lex-ease-smooth),
+        transform var(--lex-duration-fast) var(--lex-ease-spring);
+}
+
+[data-theme="lex"] .lex-social-icon:hover {
+    background: var(--arz-btn-bg);
+    color: var(--arz-btn-text);
+    border-color: var(--arz-btn-bg);
+    transform: translateY(-3px);
+}
+
+
+/* ================================
+   ❓ FAQ / ACCORDION
+   ================================ */
+[data-theme="lex"] .lex-accordion-item {
+    overflow: hidden;
+    background: var(--arz-bg);
+    transition: 
+        border-color var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    text-align: left;
+    color: var(--arz-heading);
+    font-weight: 600;
+    font-size: 16px;
+    transition: background var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-accordion-trigger:hover {
+    background: rgba(0,0,0,0.02);
+}
+
+[data-theme="lex"] .lex-accordion-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--lex-radius-full);
+    background: rgba(0,0,0,0.04);
+    transition: 
+        transform var(--lex-duration-normal) var(--lex-ease-spring),
+        background var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-accordion-item.lex-active .lex-accordion-icon {
+    transform: rotate(45deg);
+    background: var(--arz-btn-bg);
+    color: var(--arz-btn-text);
+}
+
+[data-theme="lex"] .lex-accordion-item.lex-active .lex-accordion-icon--chevron {
+    transform: rotate(180deg);
+}
+
+[data-theme="lex"] .lex-accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--lex-duration-normal) var(--lex-ease-out);
+}
+
+[data-theme="lex"] .lex-accordion-item.lex-active .lex-accordion-body {
+    max-height: 500px;
+}
+
+[data-theme="lex"] .lex-accordion-content {
+    color: var(--arz-paragraph);
+    line-height: 1.7;
+}
+
+
+/* ================================
+   💬 TESTIMONIALS
+   ================================ */
+[data-theme="lex"] .lex-testimonial-card {
+    position: relative;
+    padding: 32px;
+    border-radius: var(--lex-radius-lg);
+    /* border: 1px solid var(--arz-border); */
+    background: var(--arz-bg);
+}
+
+/* [data-theme="lex"] .lex-testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--lex-shadow-lg);
+} */
+
+[data-theme="lex"] .lex-testimonial-quote {
+    position: absolute;
+    top: 16px;
+    left: 24px;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--arz-link);
+    opacity: 0.12;
+    font-family: Georgia, serif;
+    pointer-events: none;
+    user-select: none;
+}
+
+[data-theme="lex"] .lex-testimonial-stars {
+    display: flex;
+    gap: 3px;
+    color: #f59e0b;
+    margin-bottom: 16px;
+}
+
+[data-theme="lex"] .lex-testimonial-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--lex-radius-full);
+    object-fit: cover;
+    border: 2px solid var(--arz-border);
+}
+
+
+/* ================================
+   📊 STATS / COUNTER
+   ================================ */
+[data-theme="lex"] .lex-stat-item {
+    text-align: center;
+    padding: 24px 16px;
+    position: relative;
+}
+
+[data-theme="lex"] .lex-stat-number {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--arz-heading);
+    margin-bottom: 8px;
+    font-variant-numeric: tabular-nums;
+}
+
+[data-theme="lex"] .lex-stat-label {
+    font-size: 14px;
+    color: var(--arz-paragraph);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+}
+
+[data-theme="lex"] .lex-stat-divider {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 48px;
+    background: var(--arz-border);
+}
+
+
+/* ================================
+   🏷️ LOGO CLOUD
+   ================================ */
+[data-theme="lex"] .lex-logo-track {
+    display: flex;
+    animation: nucMarquee var(--lex-marquee-speed, 30s) linear infinite;
+    will-change: transform;
+}
+
+[data-theme="lex"] .lex-logo-track:hover {
+    animation-play-state: paused;
+}
+
+[data-theme="lex"] .lex-logo-item {
+    flex-shrink: 0;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[data-theme="lex"] .lex-logo-item img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.5);
+    transition: filter var(--lex-duration-normal) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-logo-item:hover img {
+    filter: grayscale(0%) opacity(1);
+}
+
+/* Fade edges */
+[data-theme="lex"] .lex-logo-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="lex"] .lex-logo-wrapper::before,
+[data-theme="lex"] .lex-logo-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+[data-theme="lex"] .lex-logo-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--arz-bg), transparent);
+}
+
+[data-theme="lex"] .lex-logo-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--arz-bg), transparent);
+}
+
+
+/* ================================
+   📝 FORM / INPUT STYLES
+   ================================ */
+[data-theme="lex"] .lex-input {
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 15px;
+    color: var(--arz-heading);
+    background: var(--arzavo-input-background, rgba(0,0,0,0.02));
+    border: 1px solid var(--arzavo-input-border, var(--arz-border));
+    border-radius: var(--lex-radius-md);
+    outline: none;
+    transition: 
+        border-color var(--lex-duration-fast) var(--lex-ease-smooth),
+        box-shadow var(--lex-duration-fast) var(--lex-ease-smooth),
+        background var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-input::placeholder {
+    color: var(--arz-body-text);
+    opacity: 0.6;
+}
+
+[data-theme="lex"] .lex-input:focus {
+    border-color: var(--arzavo-input-focus-border, var(--arz-link));
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    background: var(--arz-bg);
+}
+
+[data-theme="lex"] .lex-textarea {
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 15px;
+    min-height: 140px;
+    resize: vertical;
+    color: var(--arz-heading);
+    background: var(--arzavo-input-background, rgba(0,0,0,0.02));
+    border: 1px solid var(--arzavo-input-border, var(--arz-border));
+    border-radius: var(--lex-radius-md);
+    outline: none;
+    font-family: inherit;
+    transition: 
+        border-color var(--lex-duration-fast) var(--lex-ease-smooth),
+        box-shadow var(--lex-duration-fast) var(--lex-ease-smooth);
+}
+
+[data-theme="lex"] .lex-textarea:focus {
+    border-color: var(--arzavo-input-focus-border, var(--arz-link));
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+[data-theme="lex"] .lex-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--arz-heading);
+    margin-bottom: 8px;
+}
+
+
+/* ================================
+   🎪 CTA BANNER
+   ================================ */
+[data-theme="lex"] .lex-cta-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.3;
+    pointer-events: none;
+    animation: nucFloat 8s ease-in-out infinite;
+}
+
+[data-theme="lex"] .lex-cta-glow-1 {
+    top: -100px;
+    right: -50px;
+    background: var(--arz-link);
+}
+
+[data-theme="lex"] .lex-cta-glow-2 {
+    bottom: -100px;
+    left: -50px;
+    background: var(--arz-btn-bg);
+    animation-delay: -4s;
+}
+
+
+/* ================================
+   📋 DIVIDER ENHANCEMENT
+   ================================ */
+[data-theme="lex"] .lex-divider-gradient {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--arz-border), transparent);
+}
+
+
+/* ================================
+   🏷️ BADGE / TAG
+   ================================ */
+[data-theme="lex"] .lex-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius: var(--lex-radius-full);
+    border: 1px solid var(--arz-link);
+    color: var(--arz-link);
+    background: transparent;
+}
+
+
+/* ================================
+   🖱️ MOBILE MENU
+   ================================ */
+[data-theme="lex"] .lex-mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: 
+        opacity var(--lex-duration-normal) var(--lex-ease-smooth),
+        visibility var(--lex-duration-normal);
+}
+
+[data-theme="lex"] .lex-mobile-overlay.lex-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+[data-theme="lex"] .lex-mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    width: 320px;
+    max-width: 85vw;
+    background: var(--arz-bg);
+    transform: translateX(100%);
+    transition: transform var(--lex-duration-normal) var(--lex-ease-out);
+    overflow-y: auto;
+    padding: 24px;
+}
+
+[data-theme="lex"] .lex-mobile-drawer.lex-open {
+    transform: translateX(0);
+}
+
+[data-theme="lex"] .lex-mobile-link {
+    display: block;
+    padding: 14px 0;
+    font-size: 17px;
+    color: var(--arz-heading);
+    border-bottom: 1px solid var(--arz-border);
+    transition: color var(--lex-duration-fast) var(--lex-ease-smooth);
+    text-decoration: none;
+}
+
+[data-theme="lex"] .lex-mobile-link:hover {
+    color: var(--arz-link);
+}
+
+
+/* ================================
+   🎬 KEYFRAMES
+   ================================ */
+@keyframes nucFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes nucFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes nucSlideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes nucFloat {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    25% { transform: translateY(-20px) translateX(10px); }
+    50% { transform: translateY(-10px) translateX(-15px); }
+    75% { transform: translateY(-25px) translateX(5px); }
+}
+
+@keyframes nucMarquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes nucGradientMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+@keyframes nucCountUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nucPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+
+/* ================================
+   📱 RESPONSIVE ADJUSTMENTS
+   ================================ */
+@media (max-width: 767px) {
+    [data-theme="lex"] .lex-stat-number {
+        font-size: 36px;
+    }
+
+    [data-theme="lex"] .lex-stat-divider {
+        display: none;
+    }
+
+    [data-theme="lex"] .lex-testimonial-card {
+        padding: 24px;
+    }
+
+    [data-theme="lex"] .lex-accordion-trigger {
+        font-size: 15px;
+    }
+
+    [data-theme="lex"] .lex-cta-glow {
+        width: 200px;
+        height: 200px;
+    }
+
+    [data-theme="lex"] .lex-logo-wrapper::before,
+    [data-theme="lex"] .lex-logo-wrapper::after {
+        width: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    [data-theme="lex"] .lex-mobile-drawer {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* ================================
+   🧱 GROUP BLOCK OPTIMIZATION
+   ================================ */
+[data-theme="lex"] .s-group-block {
+    position: var(--group-pos, relative);
+    width: var(--group-w, auto);
+    min-height: var(--group-h, auto);
+    height: var(--group-abs-h, auto);
+    top: var(--group-top, auto);
+    left: var(--group-left, auto);
+}
+
+@media (max-width: 767px) {
+    [data-theme="lex"] .s-group-block {
+        width: var(--group-w-mobile, var(--group-w, auto));
+        min-height: var(--group-h-mobile, var(--group-h, auto));
+        height: var(--group-abs-h-mobile, var(--group-abs-h, auto));
+        top: var(--group-top-mobile, var(--group-top, auto));
+        left: var(--group-left-mobile, var(--group-left, auto));
+    }
+}
+
+/* ================================================================
+   🎓 CURRICULUM FUNNEL & EXPLORER STYLING
+   ================================================================ */
+
+/* Categories scrollbar custom styles */
+[data-theme="lex"] .scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+[data-theme="lex"] .scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+[data-theme="lex"] .scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.15);
+    border-radius: 99px;
+}
+[data-theme="lex"] .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.3);
+}
+
+/* Megamenu transitions and tab layouts */
+[data-theme="lex"] .cat-tab-btn {
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="lex"] .cat-content-panel.block {
+    display: block !important;
+}
+
+[data-theme="lex"] .cat-content-panel.hidden {
+    display: none !important;
+}
+
+/* Interactive curriculum explore widget cards */
+[data-theme="lex"] .curriculum-widget {
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 8px 12px -6px rgba(0, 0, 0, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="lex"] .widget-cat-tab-btn {
+    transition: all 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="lex"] .widget-cat-tab-btn:hover:not(.active-tab) {
+    transform: translateY(-1px);
+    background-color: rgba(243, 244, 246, 1);
+    color: rgba(31, 41, 55, 1);
+}
+
+[data-theme="lex"] .widget-cat-tab-btn.active-tab {
+    box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.35);
+}
+
+/* Desktop navbar megamenu hover slide-up overlay */
+[data-theme="lex"] .group:hover > div[style*="opacity: 0"] {
+    opacity: 1 !important;
+    transform: scale(100%) translate(-50%, 0) !important;
+    display: flex !important;
+}
+
+/* Animation panel layouts */
+[data-theme="lex"] .animate-fade-in {
+    animation: nucFadeIn 250ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+

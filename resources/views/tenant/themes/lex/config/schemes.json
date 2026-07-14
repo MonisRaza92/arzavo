@@ -1,0 +1,128 @@
+{
+    "color_schemes": [
+        {
+            "key": "scheme_1",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#FAF7F2",
+                        "heading": "#3A121A",
+                        "subheading": "#2D2D2D",
+                        "paragraph": "#4E4E4E",
+                        "secondary_text": "#73645A",
+                        "invert_text": "#FFFFFF",
+                        "link": "#9B7E4B",
+                        "link_hover": "#786036",
+                        "border": "rgba(58,18,26,0.15)",
+                        "shadow": "rgba(155,126,75,0.08)"
+                    },
+                    "primary_btn": {
+                        "background": "#3A121A",
+                        "text": "#FFFFFF",
+                        "hover_background": "#541D27",
+                        "hover_text": "#FFFFFF",
+                        "border": "#3A121A",
+                        "hover_border": "#541D27"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#3A121A",
+                        "hover_background": "rgba(58,18,26,0.05)",
+                        "hover_text": "#541D27",
+                        "border": "#3A121A",
+                        "hover_border": "#541D27"
+                    },
+                    "input": {
+                        "background": "#FFFFFF",
+                        "text": "#2D2D2D",
+                        "border": "#D1C7BD",
+                        "focus_border": "#3A121A"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_2",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#0B121F",
+                        "heading": "#ECCB99",
+                        "subheading": "#D4B07B",
+                        "paragraph": "#A9BACD",
+                        "secondary_text": "#7C8D9F",
+                        "invert_text": "#0B121F",
+                        "link": "#ECCB99",
+                        "link_hover": "#FFFFFF",
+                        "border": "rgba(236,203,153,0.2)",
+                        "shadow": "rgba(0,0,0,0.3)"
+                    },
+                    "primary_btn": {
+                        "background": "#ECCB99",
+                        "text": "#0B121F",
+                        "hover_background": "#F0D7B2",
+                        "hover_text": "#0B121F",
+                        "border": "#ECCB99",
+                        "hover_border": "#F0D7B2"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#ECCB99",
+                        "hover_background": "rgba(236,203,153,0.1)",
+                        "hover_text": "#FFFFFF",
+                        "border": "#ECCB99",
+                        "hover_border": "#FFFFFF"
+                    },
+                    "input": {
+                        "background": "#141D2E",
+                        "text": "#FFFFFF",
+                        "border": "#28374E",
+                        "focus_border": "#ECCB99"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "scheme_3",
+            "colors": [
+                {
+                    "scheme_colors": {
+                        "background": "#FFFFFF",
+                        "heading": "#111111",
+                        "subheading": "#333333",
+                        "paragraph": "#555555",
+                        "secondary_text": "#777777",
+                        "invert_text": "#FFFFFF",
+                        "link": "#A1824A",
+                        "link_hover": "#806636",
+                        "border": "rgba(0,0,0,0.1)",
+                        "shadow": "rgba(0,0,0,0.05)"
+                    },
+                    "primary_btn": {
+                        "background": "#111111",
+                        "text": "#FFFFFF",
+                        "hover_background": "#333333",
+                        "hover_text": "#FFFFFF",
+                        "border": "#111111",
+                        "hover_border": "#333333"
+                    },
+                    "secondary_btn": {
+                        "background": "transparent",
+                        "text": "#111111",
+                        "hover_background": "rgba(0,0,0,0.05)",
+                        "hover_text": "#333333",
+                        "border": "#111111",
+                        "hover_border": "#333333"
+                    },
+                    "input": {
+                        "background": "#FDFDFD",
+                        "text": "#111111",
+                        "border": "#DDDDDD",
+                        "focus_border": "#111111"
+                    }
+                }
+            ]
+        }
+    ]
+}
+

@@ -1,0 +1,108 @@
+{
+    "type": "data_title",
+    "name": "Title",
+    "icon": "fa-font",
+    "order": 1,
+    "category": "Basic",
+    "max_blocks": 0,
+    "moveable": false,
+    "toggle": false,
+    "allowed_blocks": "",
+    "default_blocks": "",
+    "fields": [
+        {
+            "key": "group",
+            "label": "Content",
+            "type": "group"
+        },
+        {
+            "key": "heading_type",
+            "label": "Heading Type",
+            "type": "select",
+            "options": [
+                { "value": "h1", "label": "Heading 1"},
+                { "value": "h2", "label": "Heading 2"},
+                { "value": "h3", "label": "Heading 3"},
+                { "value": "h4", "label": "Heading 4"},
+                { "value": "h5", "label": "Heading 5"},
+                { "value": "h6", "label": "Heading 6"}
+            ],
+            "default": "h5"
+        },
+        {
+            "key": "group",
+            "label": "Appearence",
+            "type": "group"
+        },
+        {
+            "key": "font_style",
+            "label": "Font Style",
+            "type": "radio",
+            "options": ["normal", "italic"],
+            "default": "normal"
+        },
+        {
+            "key": "text_decoration",
+            "label": "Text Decoration",
+            "type": "select",
+            "options": ["none", "underline", "line-through"],
+            "default": "none"
+        },
+        {
+            "key": "group",
+            "label": "Layout",
+            "type": "group"
+        },
+        {
+            "key": "alignment",
+            "label": "Desktop Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "mobile_alignment",
+            "label": "Mobile Alignment",
+            "type": "radio",
+            "options": ["left", "center", "right"],
+            "default": "left"
+        },
+        {
+            "key": "group",
+            "label": "Padding",
+            "type": "group"
+        },
+        {
+            "key": "padding_top",
+            "label": "Padding Top",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_bottom",
+            "label": "Padding Bottom",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_left",
+            "label": "Padding Left",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        },
+        {
+            "key": "padding_right",
+            "label": "Padding Right",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0
+        }
+    ]
+}

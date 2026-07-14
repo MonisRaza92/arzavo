@@ -1,0 +1,201 @@
+{
+    "type": "custom_section",
+    "name": "Team: Grid",
+    "icon": "fa-people-group",
+    "order": 19,
+    "category": "Trust Building",
+    "color_scheme": "scheme_1",
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "center",
+                "gap": 10,
+                "padding_bottom": 0
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Meet Our Team",
+                        "heading_type": "heading-4",
+                        "alignment": "center"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "The talented people behind our platform, dedicated to helping your institution succeed.",
+                        "alignment": "center"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "horizontal",
+                "mobile_direction": "1",
+                "alignment": "start",
+                "position": "between",
+                "gap": 32,
+                "width": "full"
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "center",
+                        "gap": 14,
+                        "width": "auto",
+                        "mobile_width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "image",
+                            "settings": {
+                                "aspect_ratio": "square",
+                                "image_fit": "cover",
+                                "border_radius": 200
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Alex Johnson",
+                                "heading_type": "heading-6",
+                                "alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "CEO & Founder",
+                                "alignment": "center",
+                                "font_size": "small"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "center",
+                        "gap": 14,
+                        "width": "auto",
+                        "mobile_width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "image",
+                            "settings": {
+                                "aspect_ratio": "square",
+                                "image_fit": "cover",
+                                "border_radius": 200
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Sarah Williams",
+                                "heading_type": "heading-6",
+                                "alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Head of Product",
+                                "alignment": "center",
+                                "font_size": "small"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "center",
+                        "gap": 14,
+                        "width": "auto",
+                        "mobile_width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "image",
+                            "settings": {
+                                "aspect_ratio": "square",
+                                "image_fit": "cover",
+                                "border_radius": 200
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Rajesh Kumar",
+                                "heading_type": "heading-6",
+                                "alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Lead Engineer",
+                                "alignment": "center",
+                                "font_size": "small"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "center",
+                        "gap": 14,
+                        "width": "auto",
+                        "mobile_width": "full"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "image",
+                            "settings": {
+                                "aspect_ratio": "square",
+                                "image_fit": "cover",
+                                "border_radius": 200
+                            }
+                        },
+                        {
+                            "type": "heading",
+                            "settings": {
+                                "text": "Priya Sharma",
+                                "heading_type": "heading-6",
+                                "alignment": "center"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "settings": {
+                                "text": "Customer Success",
+                                "alignment": "center",
+                                "font_size": "small"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "direction": "vertical",
+        "alignment": "center",
+        "position": "center",
+        "gap": 48,
+        "padding_top": 70,
+        "padding_bottom": 70
+    }
+}
+

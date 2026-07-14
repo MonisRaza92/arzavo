@@ -1,0 +1,84 @@
+{
+    "type": "testimonial_card",
+    "name": "Testimonial Card",
+    "icon": "fa-quote-left",
+    "category": "Content",
+    "order": 11,
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content"
+        },
+        
+        {
+            "key": "quote",
+            "label": "Quote",
+            "type": "richtext",
+            "default": "This platform has transformed how we manage our institution. Everything is organized and accessible."
+        },
+        {
+            "key": "author_name",
+            "label": "Author Name",
+            "type": "text",
+            "default": "John Doe"
+        },
+        {
+            "key": "author_role",
+            "label": "Author Role",
+            "type": "text",
+            "default": "Principal, ABC School"
+        },
+        {
+            "key": "author_image",
+            "label": "Author Photo",
+            "type": "image"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Rating"
+        },
+        {
+            "key": "show_rating",
+            "label": "Show Star Rating",
+            "type": "switch",
+            "default": "1"
+        },
+        {
+            "key": "rating",
+            "label": "Rating (1-5)",
+            "type": "range",
+            "min": 1,
+            "max": 5,
+            "default": 5,
+            "conditional": {
+                "field": "show_rating",
+                "value": "1"
+            }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style"
+        },
+        {
+            "key": "border_width",
+            "label": "Border Width",
+            "type": "range",
+            "min": 0,
+            "max": 10,
+            "default": 1
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Roundness",
+            "type": "range",
+            "min": 1,
+            "max": 100,
+            "default": 12
+        }
+    ]
+}
+

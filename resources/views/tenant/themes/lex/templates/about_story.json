@@ -1,0 +1,166 @@
+{
+    "type": "custom_section",
+    "name": "About: Story",
+    "icon": "fa-list",
+    "category": "Storytelling",
+    "order": 0,
+    "settings": {
+        "direction": "row",
+        "mobile_direction": "1",
+        "alignment": "center",
+        "position": "between",
+        "height": "auto",
+        "mobile_height": "auto",
+        "gap": 28,
+        "padding_top": 70,
+        "padding_bottom": 70
+    },
+    "default_blocks": [
+        {
+            "type": "group",
+            "settings": {
+                "direction": "vertical",
+                "mobile_direction": "1",
+                "alignment": "start",
+                "position": "center",
+                "gap": 22,
+                "position_type": "relative",
+                "width": "full",
+                "width_mobile": "full",
+                "height": "auto",
+                "mobile_height": "auto",
+                "background_type": "none"
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Who we are",
+                        "heading_type": "heading-5",
+                        "alignment": "left",
+                        "mobile_alignment": "left"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Modern educational institutions struggle with disconnected tools, manual records and poor visibility into daily operations. This makes growth harder and errors more common.",
+                        "alignment": "left",
+                        "mobile_alignment": "left"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Our platform brings students, teachers, finance, communication and reporting together into a single organized system designed for long-term scalability.",
+                        "alignment": "left",
+                        "mobile_alignment": "left"
+                    }
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "horizontal",
+                        "mobile_direction": "0",
+                        "alignment": "start",
+                        "position": "between",
+                        "gap": 64,
+                        "position_type": "relative",
+                        "width": "auto",
+                        "width_mobile": "full",
+                        "height": "auto",
+                        "mobile_height": "auto",
+                        "background_type": "none",
+                        "padding_top": 8
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "gap": 2,
+                                "alignment": "start",
+                                "position": "start"
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "500+",
+                                        "heading_type": "heading-3"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Institutions",
+                                        "font_size": "small"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "gap": 2,
+                                "alignment": "start",
+                                "position": "start"
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "50K+",
+                                        "heading_type": "heading-3"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Students",
+                                        "font_size": "small"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "group",
+                            "settings": {
+                                "direction": "vertical",
+                                "gap": 2,
+                                "alignment": "start",
+                                "position": "start"
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "heading",
+                                    "settings": {
+                                        "text": "24/7",
+                                        "heading_type": "heading-3"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "settings": {
+                                        "text": "Support",
+                                        "font_size": "small"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "image",
+            "settings": {
+                "desktop_image": null,
+                "mobile_image": null,
+                "aspect_ratio": "wide",
+                "border_radius": "0"
+            }
+        }
+    ]
+}

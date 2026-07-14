@@ -1,0 +1,15 @@
+{
+    "header": [
+        {
+            "kind": "section",
+            "name": "navbar"
+        }
+    ],
+    "footer": [
+        {
+            "kind": "section",
+            "name": "footer"
+        }
+    ]
+}
+

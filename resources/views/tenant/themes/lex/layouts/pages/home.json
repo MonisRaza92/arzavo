@@ -1,0 +1,26 @@
+{
+    "home": [
+        {
+            "kind": "template",
+            "name": "hero_classic"
+        },
+        {
+            "kind": "template",
+            "name": "programs_classic"
+        },
+        {
+            "kind": "template",
+            "name": "training_classic"
+        },
+        {
+            "kind": "template",
+            "name": "about_story"
+        },
+        {
+            "kind": "template",
+            "name": "about_vision"
+        }
+    ],
+    "meta_title": "Home",
+    "meta_description": "Welcome to our prestigious institution. Discover our academic programs, training methodologies, and legacy of excellence."
+}
