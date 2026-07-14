@@ -33,21 +33,21 @@
 
                 <div class="relative">
                     <input x-model="form.subdomain" @input="
-                                                                form.subdomain = form.subdomain.toLowerCase().replace(/[^a-z0-9-]/g, '');
+                                                                    form.subdomain = form.subdomain.toLowerCase().replace(/[^a-z0-9-]/g, '');
 
-                                                                if(form.subdomain.length >= 3){
-                                                                    checking = true;
+                                                                    if(form.subdomain.length >= 3){
+                                                                        checking = true;
 
-                                                                    fetch(`/check-subdomain?subdomain=${form.subdomain}`)
-                                                                        .then(res => res.json())
-                                                                        .then(data => {
-                                                                            available = data.available;
-                                                                            checking = false;
-                                                                        });
-                                                                } else {
-                                                                    available = null;
-                                                                }
-                                                            " type="text" placeholder="yourinstitute"
+                                                                        fetch(`/check-subdomain?subdomain=${form.subdomain}`)
+                                                                            .then(res => res.json())
+                                                                            .then(data => {
+                                                                                available = data.available;
+                                                                                checking = false;
+                                                                            });
+                                                                    } else {
+                                                                        available = null;
+                                                                    }
+                                                                " type="text" placeholder="yourinstitute"
                         class="w-full border-primary border-rounded p-3 pr-28">
                     <span class="absolute right-0 top-0 p-3 text-tertiary">
                         .{{ config('app.domain') }}
@@ -165,8 +165,8 @@
                 <div class="grid grid-cols-1 gap-3">
                     <template x-for="item in goals">
                         <button @click="toggle('goal', item)" :class="isSelected('goal', item) 
-                                                                                    ? 'bg-invert text-invert border-invert' 
-                                                                                    : 'border-primary hover-primary'"
+                                                                                        ? 'bg-invert text-invert border-invert' 
+                                                                                        : 'border-primary hover-primary'"
                             class="border-rounded p-3 text-sm text-left flex justify-between items-center">
 
                             <span x-text="item"></span>
@@ -288,11 +288,17 @@
                     })
                         .then(res => res.json())
                         .then(data => {
-                            window.location.href = data.redirect;
+                            if (data.success) {
+                                window.location.href = data.redirect;
+                            } else {
+                                alert(data.message);
+                                window.location.href = data.redirect;
+                            }
                         })
                         .catch(err => {
+                            console.error(err);
+                            alert("Something went wrong. Please try again.");
                             this.loading = false;
-                            alert("Failed to create tenant. Try again.");
                         });
                 },
 

@@ -8,7 +8,9 @@ class ThemeSectionFactory
         $schemaPath = resource_path("views/tenant/themes/{$themeSlug}/sections/{$type}.json");
 
         if (!file_exists($schemaPath)) {
-            throw new \Exception("Section schema not found: {$type}");
+            \Log::warning("Theme section schema not found: {$type} ({$themeSlug})");
+
+            return [];
         }
 
         $schema = json_decode(file_get_contents($schemaPath), true);

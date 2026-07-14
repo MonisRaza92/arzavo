@@ -8,7 +8,9 @@ class ThemeTemplateExpander
         $path = resource_path("views/tenant/themes/{$themeSlug}/templates/{$templateName}.json");
 
         if (!file_exists($path)) {
-            throw new \Exception("Template not found: {$templateName}");
+            \Log::warning("Theme template not found: {$templateName} ({$themeSlug})");
+
+            return [];
         }
 
         $template = json_decode(file_get_contents($path), true);
