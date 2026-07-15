@@ -189,38 +189,28 @@
     overflow: hidden;
     z-index: 1;
     transition: 
-        transform var(--nuc-duration-fast) var(--nuc-ease-spring),
-        box-shadow var(--nuc-duration-fast) var(--nuc-ease-smooth),
         background var(--nuc-duration-fast) var(--nuc-ease-smooth),
         color var(--nuc-duration-fast) var(--nuc-ease-smooth),
         border-color var(--nuc-duration-fast) var(--nuc-ease-smooth);
 }
 
 [data-theme="nucleus"] .arz-btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
 [data-theme="nucleus"] .arz-btn-primary:active {
-    transform: translateY(0) scale(0.98);
 }
 
 [data-theme="nucleus"] .arz-btn-secondary {
     transition: 
-        transform var(--nuc-duration-fast) var(--nuc-ease-spring),
-        box-shadow var(--nuc-duration-fast) var(--nuc-ease-smooth),
         background var(--nuc-duration-fast) var(--nuc-ease-smooth),
         color var(--nuc-duration-fast) var(--nuc-ease-smooth),
         border-color var(--nuc-duration-fast) var(--nuc-ease-smooth);
 }
 
 [data-theme="nucleus"] .arz-btn-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
 [data-theme="nucleus"] .arz-btn-secondary:active {
-    transform: translateY(0) scale(0.98);
 }
 
 

@@ -34,6 +34,29 @@
             "label": "Alignment"
         },
         {
+            "key": "desktop_width_type",
+            "label": "Text Width",
+            "type": "radio",
+            "options": [
+                "auto",
+                "full",
+                "custom"
+            ],
+            "default": "auto"
+        },
+        {
+            "key": "desktop_width",
+            "label": "Desktop Custom Width",
+            "type": "range",
+            "default": 100,
+            "min": 10,
+            "max": 100,
+            "conditional": {
+                "field": "desktop_width_type",
+                "value": "custom"
+            }
+        },
+        {
             "key": "alignment",
             "label": "Desktop Alignment",
             "type": "radio",
