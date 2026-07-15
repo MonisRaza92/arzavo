@@ -21,6 +21,7 @@
     /* ================= LAYOUT ================= */
     $dirDesktop = $block->direction ?? 'vertical';
     $dirMobile = ($block->mobile_direction ?? '1') === '1' ? 'vertical' : 'horizontal';
+    $mobileWrap = ($block->mobile_wrap ?? '0') === '1';
 
     $alignDesktop = $block->alignment ?? 'start';
     $alignMobile = $block->mobile_alignment ?? $alignDesktop;
@@ -79,6 +80,13 @@
     // Flex Directions
     $classes[] = $dirMobile === 'horizontal' ? 'flex-row' : 'flex-col';
     $classes[] = $dirDesktop === 'horizontal' ? 'md:flex-row' : 'md:flex-col';
+
+    // Flex Wrap
+    if ($mobileWrap) {
+        $classes[] = 'flex-wrap';
+    } else {
+        $classes[] = 'flex-nowrap';
+    }
 
     // Flex Alignments & Justify
     $classes[] = "items-{$alignMobile}";

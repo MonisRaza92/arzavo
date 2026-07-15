@@ -47,6 +47,16 @@
             }
         },
         {
+            "key": "mobile_wrap",
+            "label": "Wrap items on mobile",
+            "type": "switch",
+            "default": "0",
+            "conditional": {
+                "field": "mobile_direction",
+                "value": "0"
+            }
+        },
+        {
             "key": "alignment",
             "label": "Alignment",
             "type": "radio",
