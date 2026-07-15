@@ -8,12 +8,12 @@
     "allowed_blocks": [
         "header_logo",
         "header_menu",
-        "header_button",
-        "social_icons"
+        "header_button"
     ],
     "default_blocks": [
         "header_logo",
-        "header_menu"
+        "header_menu",
+        "header_button"
     ],
     "fields": [
         {
