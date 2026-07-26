@@ -8,7 +8,7 @@
         "key": "padding_top",
         "label": "Top",
         "type": "range",
-        "default": 16,
+        "default": 60,
         "min": 0,
         "max": 200
     },
@@ -16,7 +16,7 @@
         "key": "padding_bottom",
         "label": "Bottom",
         "type": "range",
-        "default": 16,
+        "default": 60,
         "min": 0,
         "max": 200
     },

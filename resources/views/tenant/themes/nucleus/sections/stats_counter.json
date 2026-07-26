@@ -1,9 +1,9 @@
 {
     "type": "stats_counter",
-    "name": "Stats Counter",
-    "icon": "fa-quote-left",
-    "category": "Trust Building",
-    "order": 13,
+    "name": "Achievements",
+    "icon": "fa-list",
+    "order": -1,
+    "category": "Storytelling",
     "color_scheme": "scheme_1",
     "max_blocks": 10,
     "allowed_blocks": [
@@ -13,6 +13,27 @@
         "stat_item"
     ],
     "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "start",
+                "padding_bottom": 16
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Statistics That Matter"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Explore the achievements, milestones, and key learning statistics at a glance."
+                    }
+                }
+            ]
+        },
         {
             "type": "stat_item",
             "settings": {
@@ -67,43 +88,32 @@
             "label": "Desktop Columns",
             "type": "range",
             "min": 2,
-            "max": 6,
+            "max": 4,
             "default": 4
+        },
+        {
+            "key": "tablet_columns",
+            "label": "Tablet Columns",
+            "type": "range",
+            "min": 1,
+            "max": 3,
+            "default": 3
         },
         {
             "key": "mobile_columns",
             "label": "Mobile Columns",
             "type": "range",
             "min": 1,
-            "max": 3,
+            "max": 2,
             "default": 2
         },
         {
             "key": "gap",
             "label": "Items Gap",
             "type": "range",
-            "default": 32,
+            "default": 16,
             "min": 0,
             "max": 80
-        },
-        {
-            "key": "alignment",
-            "label": "Text Alignment",
-            "type": "radio",
-            "options": ["left", "center", "right"],
-            "default": "center"
-        },
-        {
-            "key": "show_divider",
-            "label": "Show Dividers",
-            "type": "switch",
-            "default": "0"
-        },
-        {
-            "key": "animate",
-            "label": "Animate Numbers",
-            "type": "switch",
-            "default": "1"
         },
         {
             "preset": "section_bg_type_fields"

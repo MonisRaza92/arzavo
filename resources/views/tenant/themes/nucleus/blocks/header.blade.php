@@ -12,8 +12,7 @@ $pb = $s['padding_bottom'] ?? 40;
 @endphp
 
 <div
-    data-block-id="{{ $block['id'] }}"
-    data-name="{{ $block['name'] }}"
+    {!! $block->attributes() !!}
     style="
         padding-top: {{ $pt }}px;
         padding-bottom: {{ $pb }}px;
@@ -30,5 +29,5 @@ $pb = $s['padding_bottom'] ?? 40;
         text-center
     "
 >
-{!! renderBlocks($block['blocks']) !!}
+{!! $block->blocks() !!}
 </div>

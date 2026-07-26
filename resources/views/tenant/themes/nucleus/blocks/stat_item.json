@@ -7,61 +7,85 @@
     "max_blocks": 0,
     "fields": [
         {
-            "key": "number",
-            "label": "Number",
-            "type": "text",
-            "default": "100"
+            "type": "group",
+            "label": "Background & Styling",
+            "help": "Customize the card background, borders, and rounded corners."
+        },
+        {
+            "key": "card_bg",
+            "label": "Background Color",
+            "type": "color",
+            "default": "#f0f0f0",
+            "help": "Choose a background color for this card."
+        },
+        {
+            "key": "border",
+            "label": "Border Width",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 5,
+            "help": "Set the border thickness for the card container in pixels."
+        },
+        {
+            "key": "radius",
+            "label": "Border Roundness",
+            "type": "range",
+            "default": 10,
+            "min": 0,
+            "max": 40,
+            "help": "Adjust the rounded corners of this card."
+        },
+        {
+            "type": "group",
+            "label": "Media Content",
+            "help": "Add an image and control its hover animations."
+        },
+        {
+            "key": "image",
+            "label": "Image",
+            "type": "image",
+            "help": "Select or upload an image to display in the card."
+        },
+        {
+            "key": "show_image_on_hover",
+            "label": "Show Image on Hover",
+            "type": "switch",
+            "default": "0",
+            "help": "Enable this to hide the image by default and reveal it smoothly when the card is hovered."
+        },
+        {
+            "type": "group",
+            "label": "Statistic Details",
+            "help": "Enter the main number, labels, prefix, and suffix."
         },
         {
             "key": "prefix",
-            "label": "Prefix",
+            "label": "Number Prefix",
             "type": "text",
-            "default": ""
+            "default": "",
+            "help": "Enter a symbol or text to display before the number (e.g., $, #)."
+        },
+        {
+            "key": "number",
+            "label": "Statistic Number",
+            "type": "text",
+            "default": "100",
+            "help": "The main number to display in the statistic counter."
         },
         {
             "key": "suffix",
-            "label": "Suffix",
+            "label": "Number Suffix",
             "type": "text",
-            "default": "+"
+            "default": "+",
+            "help": "Enter a symbol or text to display after the number (e.g., +, %, k)."
         },
         {
             "key": "label",
-            "label": "Label",
+            "label": "Description Label",
             "type": "text",
-            "default": "Customers"
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Icon"
-        },
-        {
-            "key": "show_icon",
-            "label": "Show Icon",
-            "type": "switch",
-            "default": "1"
-        },
-        {
-            "key": "icon_name",
-            "label": "Icon",
-            "type": "icon",
-            "default": "star",
-            "conditional": {
-                "field": "show_icon",
-                "value": "1"
-            }
-        },
-        {
-            "key": "icon_size",
-            "label": "Icon Size",
-            "type": "range",
-            "min": 16,
-            "max": 60,
-            "default": 28,
-            "conditional": {
-                "field": "show_icon",
-                "value": "1"
-            }
+            "default": "Students",
+            "help": "Short description text displaying below the statistic number."
         }
     ]
 }

@@ -46,7 +46,7 @@
             "colors": [
                 {
                     "scheme_colors": {
-                        "background": "#ffffff",
+                        "background": "#f0f0f0",
                         "heading": "#0f172a",
                         "subheading": "#334155",
                         "paragraph": "#475569",

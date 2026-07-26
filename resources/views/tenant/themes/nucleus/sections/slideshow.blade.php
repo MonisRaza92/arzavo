@@ -21,7 +21,7 @@
     data-delay="{{ $delay * 1000 }}">
     {!! $sectionObj->backgrounds() !!}
     
-    <div class="{{ $contentWidth === 'full' ? 'w-full' : 'container px-0!' }} relative z-10">
+    <div class="{{ $contentWidth === 'full' ? 'w-full' : 'container arz-content' }} relative z-10">
         <div class="relative w-full overflow-hidden" style="border-radius: {{ $borderRadius }}px; border: {{ $border }}px solid var(--arz-border);">
             <div class="slider-track flex w-full transition-transform duration-500 ease-out will-change-transform">
                 @foreach ($slides as $slideHtml)

@@ -66,6 +66,12 @@ class Block implements ArrayAccess
 
     public function scheme(?string $scheme = null): string
     {
+        $schemeMode = $this->settings['scheme_mode'] ?? 'inherit';
+        
+        if ($schemeMode === 'separate' && !empty($this->block['color_scheme'])) {
+            $scheme = $this->block['color_scheme'];
+        }
+
         $scheme = $scheme
             ?? $this->block['color_scheme']
             ?? $this->block['scheme']

@@ -25,34 +25,34 @@
     "heading_1_font_size": "48",
     "heading_1_line_height": "1.2",
     "heading_1_text_transform": "default",
-    "heading_1_text_weight": "700",
+    "heading_1_text_weight": "800",
 
-    "heading_2_font_size": "36",
-    "heading_2_line_height": "1.3",
+    "heading_2_font_size": "48",
+    "heading_2_line_height": "1.2",
     "heading_2_text_transform": "default",
-    "heading_2_text_weight": "700",
+    "heading_2_text_weight": "800",
 
-    "heading_3_font_size": "28",
+    "heading_3_font_size": "32",
     "heading_3_line_height": "1.35",
     "heading_3_text_transform": "default",
     "heading_3_text_weight": "600",
 
-    "heading_4_font_size": "24",
+    "heading_4_font_size": "28",
     "heading_4_line_height": "1.4",
     "heading_4_text_transform": "default",
     "heading_4_text_weight": "600",
 
-    "heading_5_font_size": "20",
+    "heading_5_font_size": "24",
     "heading_5_line_height": "1.4",
     "heading_5_text_transform": "default",
     "heading_5_text_weight": "600",
 
-    "heading_6_font_size": "18",
+    "heading_6_font_size": "20",
     "heading_6_line_height": "1.4",
     "heading_6_text_transform": "default",
     "heading_6_text_weight": "600",
 
-    "paragraph_font_size": "16",
+    "paragraph_font_size": "18",
     "paragraph_text_transform": "default",
     "paragraph_text_weight": "400",
     

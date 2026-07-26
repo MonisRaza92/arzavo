@@ -29,8 +29,9 @@ class ThemeBlockFactory
         // 3️⃣ Build default settings
         // ---------------------------------
         $settings = [];
+        $fields = resolveFieldPresets($schema['fields'] ?? []);
 
-        foreach ($schema['fields'] ?? [] as $field) {
+        foreach ($fields as $field) {
             if (
                 isset($field['key']) &&
                 array_key_exists('default', $field)

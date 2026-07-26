@@ -80,19 +80,36 @@ class AppServiceProvider extends ServiceProvider
 
             if ($courses === null && class_exists(\App\Models\Tenant\Course::class)) {
                 $coursesQuery = \App\Models\Tenant\Course::published()->public();
-                if (request()->has('class_id')) {
+                if (request()->has('class_id') || request()->has('class')) {
                     $coursesQuery->whereHas('classes', function ($q) {
-                        $q->where('class_courses.id', request('class_id'));
+                        $val = request('class_id') ?: request('class');
+                        if (is_numeric($val)) {
+                            $q->where('class_courses.id', $val);
+                        } else {
+                            $q->where('class_courses.slug', $val);
+                        }
                     });
                 }
-                if (request()->has('subject_id')) {
+                if (request()->has('subject_id') || request()->has('subject')) {
                     $coursesQuery->whereHas('subjects', function ($q) {
-                        $q->where('subjects.id', request('subject_id'));
+                        $val = request('subject_id') ?: request('subject');
+                        if (is_numeric($val)) {
+                            $q->where('subjects.id', $val);
+                        } else {
+                            $q->where('subjects.slug', $val);
+                        }
                     });
                 }
-                if (request()->has('category_id')) {
+                if (request()->has('category_id') || request()->has('category')) {
                     $coursesQuery->whereHas('classes', function ($q) {
-                        $q->where('class_courses.academic_category_id', request('category_id'));
+                        $val = request('category_id') ?: request('category');
+                        if (is_numeric($val)) {
+                            $q->where('class_courses.academic_category_id', $val);
+                        } else {
+                            $q->whereHas('academicCategory', function($acq) use ($val) {
+                                $acq->where('slug', $val);
+                            });
+                        }
                     });
                 }
                 $courses = $coursesQuery->orderBy('created_at', 'desc')->get();
@@ -100,8 +117,15 @@ class AppServiceProvider extends ServiceProvider
 
             if ($classes === null && class_exists(\App\Models\Tenant\ClassCourse::class)) {
                 $classesQuery = \App\Models\Tenant\ClassCourse::active();
-                if (request()->has('category_id')) {
-                    $classesQuery->where('academic_category_id', request('category_id'));
+                if (request()->has('category_id') || request()->has('category')) {
+                    $val = request('category_id') ?: request('category');
+                    if (is_numeric($val)) {
+                        $classesQuery->where('academic_category_id', $val);
+                    } else {
+                        $classesQuery->whereHas('academicCategory', function($acq) use ($val) {
+                            $acq->where('slug', $val);
+                        });
+                    }
                 }
                 $classes = $classesQuery->orderBy('order')->get();
             }

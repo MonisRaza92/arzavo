@@ -62,6 +62,12 @@
         background: var(--arz-bg);
     }
 
+    .arz-block {
+        position: relative;
+        background: var(--arz-bg);
+    }
+    
+
     .arz-content {
         padding-left: var(--global-padding);
         padding-right: var(--global-padding);

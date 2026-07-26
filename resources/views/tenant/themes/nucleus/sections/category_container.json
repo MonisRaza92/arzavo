@@ -1,7 +1,7 @@
 {
     "type": "dataset_container",
     "name": "Categories",
-    "icon": "fa-graduation-cap",
+    "icon": "fa-layer-group",
     "category": "Content",
     "color_scheme": "scheme_1",
     "max_blocks": 20,
@@ -16,7 +16,7 @@
         {
             "type": "header",
             "settings": {
-                "alignment": "center",
+                "alignment": "left",
                 "gap": 8
             },
             "default_blocks": [
@@ -24,15 +24,15 @@
                     "type": "heading",
                     "settings": {
                         "text": "Explore Categories",
-                        "heading_type": "heading-3",
-                        "alignment": "center"
+                        "heading_type": "heading-2",
+                        "alignment": "left"
                     }
                 },
                 {
                     "type": "text",
                     "settings": {
                         "text": "Choose from our wide range of academic and competitive categories to find the class that fits your goals.",
-                        "alignment": "center"
+                        "alignment": "left"
                     }
                 }
             ]
@@ -56,10 +56,18 @@
             "label": "Color Scheme",
             "type": "color_scheme_selector"
         },
+        {
+            "key": "width",
+            "label": "Container Size",
+            "type": "radio",
+            "options": ["full_width", "container"],
+            "default": "container"
+            
+        },
 
         {
             "key": "gap",
-            "label": "Items Gap",
+            "label": "Cards Gap",
             "type": "range",
             "default": 24,
             "min": 0,
@@ -67,7 +75,7 @@
         },
         {
             "key": "show_limit",
-            "label": "Items Limit",
+            "label": "Cards Limit",
             "type": "range",
             "default": 6,
             "min": 1,
@@ -79,24 +87,28 @@
             "label": "Desktop Columns",
             "type": "range",
             "min": 2,
-            "max": 6,
-            "default": 3,
-            "conditional": {
-                "field": "layout_style",
-                "value": "grid"
-            }
+            "max": 4,
+            "default": 3
         },
         {
             "key": "mobile_columns",
-            "label": "Mobile Columns",
+            "label": "Tablet Columns",
             "type": "range",
             "min": 1,
-            "max": 3,
-            "default": 1,
-            "conditional": {
-                "field": "layout_style",
-                "value": "grid"
-            }
+            "max": 2,
+            "default": 1
+        },
+        {
+            "key": "view_all_btn",
+            "label": "View All Button",
+            "type": "switch",
+            "default": true
+        },
+        {
+            "key": "btn_color",
+            "label": "Button Color",
+            "type": "color",
+            "default": "#460ad1"
         },
         {
             "preset": "section_spacing_fields"

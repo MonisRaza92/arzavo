@@ -112,7 +112,7 @@
                             <x-input.rich-text :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? '')" />
                         @break
                         @case('hidden')
-                            <input type="hidden" :name="'settings[' . $field['key'] . ']'" :value="$block['settings'][$field['key']] ?? ($field['default'] ?? '')" />
+                            <input type="hidden" name="settings[{{ $field['key'] }}]" value="{{ $block['settings'][$field['key']] ?? ($field['default'] ?? '') }}" />
                         @break
 
                         {{-- SELECT --}}

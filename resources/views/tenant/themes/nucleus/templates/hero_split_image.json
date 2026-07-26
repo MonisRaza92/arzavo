@@ -84,7 +84,8 @@
             "settings": {
                 "desktop_image": null,
                 "mobile_image": null,
-                "aspect_ratio": "landscape"
+                "aspect_ratio": "landscape",
+                "border_radius": 10
             }
         }
     ],

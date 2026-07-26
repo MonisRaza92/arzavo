@@ -33,47 +33,50 @@ if (!function_exists('formatSize')) {
     }
 }
 
-function tenant_url(): string
-{
-    $tenant = app()->bound('currentTenant')
-        ? app('currentTenant')
-        : null;
+if (!function_exists('tenant_url')) {
+    function tenant_url(): string
+    {
+        $tenant = app()->bound('currentTenant')
+            ? app('currentTenant')
+            : null;
 
-    if (!$tenant) {
-        return config('app.url');
-    }
+        if (!$tenant) {
+            return config('app.url');
+        }
 
-    $scheme = request()->getScheme(); // http / https auto
+        $scheme = request()->getScheme(); // http / https auto
 
-    if (!empty($tenant->custom_domain) && $tenant->domain_verified) {
-        return $scheme . '://' . $tenant->custom_domain;
-    }
+        if (!empty($tenant->custom_domain) && $tenant->domain_verified) {
+            return $scheme . '://' . $tenant->custom_domain;
+        }
 
-    return $scheme . '://' . $tenant->subdomain;
-}
-function ping_google()
-{
-    try {
-        Http::timeout(3)->get(
-            'https://www.google.com/ping?sitemap=' .
-            urlencode(url('/sitemap.xml'))
-        );
-    } catch (\Throwable $e) {
-        // silently ignore
+        return $scheme . '://' . $tenant->subdomain;
     }
 }
 
-function activeThemeId()
-{
-    // builder editing priority
-    if (app()->bound('builderThemeId')) {
-        return app('builderThemeId');
+if (!function_exists('ping_google')) {
+    function ping_google()
+    {
+        try {
+            Http::timeout(3)->get(
+                'https://www.google.com/ping?sitemap=' .
+                urlencode(url('/sitemap.xml'))
+            );
+        } catch (\Throwable $e) {
+            // silently ignore
+        }
     }
-
-    // fallback live theme
-    return app('currentThemeId');
 }
-function route_to($url)
-{
-    return route('tenant.' . $url);
+
+if (!function_exists('activeThemeId')) {
+    function activeThemeId()
+    {
+        // builder editing priority
+        if (app()->bound('builderThemeId')) {
+            return app('builderThemeId');
+        }
+
+        // fallback live theme
+        return app('currentThemeId');
+    }
 }

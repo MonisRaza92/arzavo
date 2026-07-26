@@ -39,7 +39,7 @@
                 "container",
                 "full"
             ],
-            "default": "full"
+            "default": "container"
         },
         {
             "key": "group",
@@ -99,28 +99,10 @@
             "type": "range",
             "min": 0,
             "max": 100,
-            "default": "0"
+            "default": 10
         },
         {
-            "key": "group",
-            "type": "group",
-            "label": "Spacing"
-        },
-        {
-            "key": "margin_top",
-            "label": "Margin Top",
-            "type": "range",
-            "default": "0",
-            "min": 0,
-            "max": 100
-        },
-        {
-            "key": "margin_bottom",
-            "label": "Margin Bottom ",
-            "type": "range",
-            "default": "0",
-            "min": 0,
-            "max": 100
+            "preset": "section_spacing_fields"
         },
         {
             "key": "group",

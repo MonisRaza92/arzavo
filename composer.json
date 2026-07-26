@@ -43,7 +43,8 @@
             "app/Helpers/SpacingHelper.php",
             "app/Helpers/GlobalThemeDesign.php",
             "app/Helpers/SectionHelper.php",
-            "app/Helpers/PlanHelper.php"
+            "app/Helpers/PlanHelper.php",
+            "app/Helpers/RouteHelper.php"
         ]
     },
     "autoload-dev": {

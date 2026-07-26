@@ -63,7 +63,8 @@ class SectionController
 
         // Build default settings
         $settings = [];
-        foreach ($schema['fields'] ?? [] as $field) {
+        $fields = resolveFieldPresets($schema['fields'] ?? []);
+        foreach ($fields as $field) {
             if (isset($field['key']) && array_key_exists('default', $field)) {
                 $settings[$field['key']] = $field['default'];
             }
@@ -199,7 +200,8 @@ class SectionController
         // SETTINGS (schema + override)
         // -----------------------------
         $settings = [];
-        foreach ($schema['fields'] ?? [] as $field) {
+        $fields = resolveFieldPresets($schema['fields'] ?? []);
+        foreach ($fields as $field) {
             if (isset($field['key']) && array_key_exists('default', $field)) {
                 $settings[$field['key']] = $field['default'];
             }
@@ -272,13 +274,31 @@ class SectionController
         }
         $templateData = json_decode(file_get_contents($jsonPath), true);
 
+        // Build default settings from base section schema + presets
+        $sectionType = $templateData['type'] ?? 'custom_section';
+        $sectionSchemaPath = resource_path("views/tenant/themes/{$themeSlug}/sections/{$sectionType}.json");
+        $settings = [];
+        if (file_exists($sectionSchemaPath)) {
+            $sectionSchema = json_decode(file_get_contents($sectionSchemaPath), true);
+            $fields = resolveFieldPresets($sectionSchema['fields'] ?? []);
+            foreach ($fields as $field) {
+                if (isset($field['key']) && array_key_exists('default', $field)) {
+                    $settings[$field['key']] = $field['default'];
+                }
+            }
+        }
+
+        if (!empty($templateData['settings']) && is_array($templateData['settings'])) {
+            $settings = array_replace_recursive($settings, $templateData['settings']);
+        }
+
         // Build section from template data
         $section = [
             'id' => 'sec_' . uniqid(),
             'type' => $templateData['type'] ?? 'template',
             'name' => $request->input('section_name'),
             'icon' => $templateData['icon'] ?? 'fa-shapes',
-            'settings' => $templateData['settings'] ?? [],
+            'settings' => $settings,
             'color_scheme' => $templateData['color_scheme'] ?? null,
             'is_active' => true,
             'order' => count($layout['sections']) + 1,

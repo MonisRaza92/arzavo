@@ -45,3 +45,5 @@ composer.lock
 # Other
 *.swp
 *.tmp
+/scratch/
+

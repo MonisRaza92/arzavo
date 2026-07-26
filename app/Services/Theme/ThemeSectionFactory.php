@@ -17,7 +17,8 @@ class ThemeSectionFactory
 
         // default settings
         $settings = [];
-        foreach ($schema['fields'] ?? [] as $field) {
+        $fields = resolveFieldPresets($schema['fields'] ?? []);
+        foreach ($fields as $field) {
             if (isset($field['key']) && array_key_exists('default', $field)) {
                 $settings[$field['key']] = $field['default'];
             }

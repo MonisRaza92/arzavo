@@ -21,13 +21,23 @@ class BlockQuery implements \Countable
 
     public function only(string|array $types): self
     {
-        $this->only = (array) $types;
+        $args = func_get_args();
+        if (count($args) === 1 && is_array($args[0])) {
+            $this->only = $args[0];
+        } else {
+            $this->only = $args;
+        }
         return $this;
     }
 
     public function except(string|array $types): self
     {
-        $this->except = (array) $types;
+        $args = func_get_args();
+        if (count($args) === 1 && is_array($args[0])) {
+            $this->except = $args[0];
+        } else {
+            $this->except = $args;
+        }
         return $this;
     }
 

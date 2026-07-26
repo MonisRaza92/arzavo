@@ -67,7 +67,8 @@ class BlockController
         $schema = json_decode(file_get_contents($json), true);
 
         $settings = [];
-        foreach ($schema['fields'] ?? [] as $f) {
+        $fields = resolveFieldPresets($schema['fields'] ?? []);
+        foreach ($fields as $f) {
             if (isset($f['key'], $f['default'])) {
                 $settings[$f['key']] = $f['default'];
             }
@@ -121,7 +122,8 @@ class BlockController
 
             // 🎛 Default settings
             $defaultSettings = [];
-            foreach ($schema['fields'] ?? [] as $field) {
+            $fields = resolveFieldPresets($schema['fields'] ?? []);
+            foreach ($fields as $field) {
                 if (isset($field['key']) && array_key_exists('default', $field)) {
                     $defaultSettings[$field['key']] = $field['default'];
                 }

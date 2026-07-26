@@ -128,7 +128,7 @@
                         
                         {{-- HIDDEN --}}
                         @case('hidden')
-                            <input type="hidden" :name="'settings[' . $field['key'] . ']'" :value="$section['settings'][$field['key']] ?? ($field['default'] ?? '')" />
+                            <input type="hidden" name="settings[{{ $field['key'] }}]" value="{{ $section['settings'][$field['key']] ?? ($field['default'] ?? '') }}" />
                         @break
 
                         {{-- SELECT --}}

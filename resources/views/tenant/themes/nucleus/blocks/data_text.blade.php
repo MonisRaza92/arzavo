@@ -24,7 +24,7 @@
 <p data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
     class="
 text-{{ $block['id'] }}
-arzavo-{{ $type }}
+arz-{{ $type }}
 {{ $alignClass }}
 "
     style="

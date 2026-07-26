@@ -24,14 +24,36 @@
         $allSections = $allSections->merge($globalDesign['footer']['sections']);
     }
 
-    $schemesUsed = $allSections
-    ->pluck('color_scheme')
-    ->filter()
-    ->unique();
+    // Extract separate schemes from blocks recursively
+    $blockSchemeMap = [];
+    $collectBlocks = function($blocks) use (&$collectBlocks, &$blockSchemeMap) {
+        foreach ($blocks as $block) {
+            $settings = $block['settings'] ?? [];
+            if (($settings['scheme_mode'] ?? 'inherit') === 'separate' && !empty($block['color_scheme'])) {
+                $blockSchemeMap[$block['id']] = $block['color_scheme'];
+            }
+            if (!empty($block['blocks'])) {
+                $collectBlocks($block['blocks']);
+            }
+        }
+    };
     
+    foreach ($allSections as $section) {
+        if (!empty($section['blocks'])) {
+            $collectBlocks($section['blocks']);
+        }
+    }
+
+    $schemesUsed = $allSections
+        ->pluck('color_scheme')
+        ->merge(collect($blockSchemeMap)->values())
+        ->filter()
+        ->unique();
+    
+    $schemeMap = [];
     foreach($allSections as $section){
-    $schemeMap[$section['id']] = $section['color_scheme'] ?? 'scheme_1';
-}
+        $schemeMap[$section['id']] = $section['color_scheme'] ?? 'scheme_1';
+    }
 @endphp
 
 {{-- ========================= --}}
@@ -139,11 +161,12 @@
 
 
 {{-- ========================= --}}
-{{-- 🛠️ SECTION CLASS INJECTION --}}
+{{-- 🛠️ SECTION & BLOCK CLASS INJECTION --}}
 {{-- ========================= --}}
 <script>
 (function() {
     const schemeMap = @json($schemeMap);
+    const blockSchemeMap = @json($blockSchemeMap);
 
     document.querySelectorAll('[data-section-id]').forEach(function(el) {
         const id = el.getAttribute('data-section-id');
@@ -151,11 +174,24 @@
         el.classList.add('arz-core');
 
         if (id) {
-            el.classList.add('arz-' + id);
+            el.classList.add('arz-sec' + id);
         }
 
         if (schemeMap[id]) {
             el.classList.add('arz-' + schemeMap[id]);
+        }
+    });
+
+    document.querySelectorAll('[data-block-id]').forEach(function(el) {
+        const id = el.getAttribute('data-block-id');
+        el.classList.add('arz-block');
+
+        if (id) {
+            el.classList.add('arz-blk' + id);
+        }
+
+        if (id && blockSchemeMap[id]) {
+            el.classList.add('arz-' + blockSchemeMap[id]);
         }
     });
 })();
