@@ -1,6 +1,6 @@
 {
     "type": "dataset_container",
-    "name": "Categories",
+    "name": "Course Categories",
     "icon": "fa-layer-group",
     "category": "Content",
     "color_scheme": "scheme_1",

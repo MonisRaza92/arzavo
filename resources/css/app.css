@@ -1381,3 +1381,24 @@ input[type=range] {
     border-radius: var(--arz-badge-border-radius) !important;
     padding: var(--arz-badge-padding) !important;
 }
+
+/* =========================================
+   GLOBAL INPUT STYLES
+   ========================================= */
+.arz-input {
+    background-color: var(--arzavo-input-background, #ffffff) !important;
+    color: var(--arzavo-input-text, #1e293b) !important;
+    border: var(--arz-input-border-w, 1px) solid var(--arzavo-input-border, #cbd5e1) !important;
+    border-radius: var(--arz-input-radius, 4px) !important;
+    padding: var(--arz-input-py, 10px) var(--arz-input-px, 16px) !important;
+    font-family: inherit;
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.25rem;
+    width: 100%;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.arz-input:focus {
+    outline: none !important;
+    border-color: var(--arzavo-input-focus-border, #4f46e5) !important;
+}

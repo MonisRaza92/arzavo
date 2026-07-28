@@ -1,0 +1,132 @@
+{
+  "type": "data_card",
+  "name": "Book Category Card",
+  "icon": "fa-layer-group",
+  "order": 1,
+  "category": "Content",
+  "color_scheme": "scheme_2",
+  "max_blocks": 5,
+  "moveable": false,
+  "deletable": false,
+  "toggle": false,
+  "allowed_blocks": [
+    "data_image",
+    "data_title",
+    "data_classes",
+    "data_text",
+    "data_button",
+    "data_pills",
+    "data_group"
+  ],
+  "default_blocks": [
+    {
+      "type": "data_image",
+      "settings": {
+        "aspect_ratio": "wide"
+      }
+    },
+    {
+      "type": "data_group",
+      "settings": {
+        "alignment": "start",
+        "padding": 16
+      },
+      "default_blocks": [
+        "data_title",
+        "data_text"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "key": "group",
+      "type": "group",
+      "label": "Background",
+      "icon": "fa-image"
+    },
+    {
+      "key": "url_type",
+      "type": "hidden",
+      "default": "book.category"
+    },
+    {
+      "key": "scheme_mode",
+      "label": "Color Scheme",
+      "type": "radio",
+      "options": [
+        "inherit",
+        "separate"
+      ],
+      "default": "separate"
+    },
+    {
+      "key": "color_scheme",
+      "label": "Select Scheme",
+      "type": "color_scheme_selector",
+      "default": "scheme_2",
+      "conditional": {
+        "field": "scheme_mode",
+        "value": "separate"
+      }
+    },
+    {
+      "key": "style_group",
+      "type": "group",
+      "label": "Card Style",
+      "icon": "fa-square"
+    },
+    {
+      "key": "direction",
+      "label": "Direction",
+      "type": "radio",
+      "options": [
+        "vertical",
+        "horizontal"
+      ],
+      "default": "vertical"
+    },
+    {
+      "key": "border_width",
+      "label": "Border Thickness",
+      "type": "range",
+      "min": 0,
+      "max": 5,
+      "default": 0
+    },
+    {
+      "key": "radius",
+      "label": "Border Roundness",
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "default": 10
+    },
+    {
+      "key": "spacing_group",
+      "type": "group",
+      "label": "Spacing",
+      "icon": "fa-arrows-alt"
+    },
+    {
+      "key": "padding",
+      "label": "Inner Padding",
+      "type": "range",
+      "min": 0,
+      "max": 40,
+      "default": 0
+    },
+    {
+      "key": "block_gap",
+      "label": "Content Gap",
+      "type": "range",
+      "min": 0,
+      "max": 40,
+      "default": 0
+    },
+    {
+      "key": "hover_animation",
+      "type": "switch",
+      "default": true
+    }
+  ]
+}

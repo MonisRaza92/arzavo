@@ -2,7 +2,7 @@
     <button onclick="openCustomizesMenu('buttons-settings-menu', 'arrow-buttons')"
         type="button"
         class="p-4 flex justify-between items-center w-full text-sm font-semibold bg-hover-secondary">
-        <span><i class="fa-solid fa-arrow-pointer mr-1"></i> Buttons</span>
+        <span><i class="fa-solid fa-arrow-pointer mr-1"></i> Buttons & Inputs</span>
         <i class="fas fa-angle-right transition-all duration-300" id="arrow-buttons"></i>
     </button>
 
@@ -176,6 +176,69 @@
 
         </div>
         @endforeach
+
+        @php
+        $inputCustomizeOptions = [
+            [
+                'key'=>'shape','label'=>'Roundness','type'=>'range',
+                'min'=>0,'max'=>50,'step'=>2,'unit'=>'px',
+                'value'=>4
+            ],
+            [
+                'key'=>'padding_vertical','label'=>'Padding Vertical','type'=>'range',
+                'min'=>4,'max'=>40,'step'=>1,'unit'=>'px',
+                'value'=>10
+            ],
+            [
+                'key'=>'padding_horizontal','label'=>'Padding Horizontal','type'=>'range',
+                'min'=>4,'max'=>40,'step'=>1,'unit'=>'px',
+                'value'=>16
+            ],
+            [
+                'key'=>'border_width','label'=>'Border Width','type'=>'range',
+                'min'=>0,'max'=>4,'step'=>1,'unit'=>'px',
+                'value'=>1
+            ]
+        ];
+        @endphp
+
+        <div class="category-section">
+            <h3 class="text-sm font-semibold text-primary px-4 py-3 border-top border-bottom">
+                Inputs Settings
+            </h3>
+
+            <div class="grid grid-cols-1 gap-4 p-4">
+                @foreach ($inputCustomizeOptions as $item)
+                @php
+                $key = 'input_' . $item['key'];
+                $value = $customizes[$key] ?? $item['value'];
+                @endphp
+
+                <div class="flex items-center justify-between">
+                    <label class="text-primary text-xs">{{ $item['label'] }}</label>
+
+                    <div class="flex items-center border-rounded border-primary">
+                        @if($item['type'] === 'range')
+                        <div class="flex items-center w-43 gap-2 px-2 py-3">
+                            <input type="range"
+                                name="{{ $key }}"
+                                min="{{ $item['min'] }}"
+                                max="{{ $item['max'] }}"
+                                step="{{ $item['step'] }}"
+                                value="{{ $value }}"
+                                class="w-full accent-black"
+                                oninput="this.nextElementSibling.innerText = this.value + '{{ $item['unit'] }}'">
+
+                            <span class="text-xs text-primary min-w-10 text-right">
+                                {{ $value }}{{ $item['unit'] }}
+                            </span>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
 
     </div>
 </div>

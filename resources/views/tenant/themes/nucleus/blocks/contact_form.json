@@ -1,0 +1,102 @@
+{
+    "type": "contact_form",
+    "name": "Contact Form",
+    "icon": "fa-envelope",
+    "category": "Content",
+    "order": 17,
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Form Settings"
+        },
+        {
+            "key": "title",
+            "label": "Form Title",
+            "type": "text",
+            "default": "Send Us a Message",
+            "help": "Enter the title of the contact form."
+        },
+        {
+            "key": "button_text",
+            "label": "Submit Button Text",
+            "type": "text",
+            "default": "Send Message",
+            "help": "Enter the text to display on the submit button."
+        },
+        {
+            "key": "button_style",
+            "label": "Button Style",
+            "type": "select",
+            "options": [
+                { "label": "Primary Button", "value": "arz-btn-primary" },
+                { "label": "Secondary Button", "value": "arz-btn-secondary" },
+                { "label": "Custom Colors", "value": "custom" }
+            ],
+            "default": "arz-btn-primary",
+            "help": "Select the visual style class for the form submit button."
+        },
+        {
+            "key": "button_color",
+            "label": "Button Color",
+            "type": "color",
+            "default": "#4f46e5",
+            "conditional": {
+                "field": "button_style",
+                "value": "custom"
+            },
+            "help": "Select a custom background color for the button."
+        },
+        {
+            "key": "button_text_color",
+            "label": "Button Text Color",
+            "type": "color",
+            "default": "#ffffff",
+            "conditional": {
+                "field": "button_style",
+                "value": "custom"
+            },
+            "help": "Select a custom text color for the button."
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style & Customization"
+        },
+        {
+            "key": "bg_color",
+            "label": "Background Color",
+            "type": "color",
+            "default": "#ffffff",
+            "help": "Select the background color of the contact form box."
+        },
+        {
+            "key": "border",
+            "label": "Border Width (px)",
+            "type": "range",
+            "min": 0,
+            "max": 10,
+            "default": 1,
+            "help": "Adjust the outline border width of the form container."
+        },
+        {
+            "key": "radius",
+            "label": "Border Radius (px)",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 10,
+            "help": "Adjust the roundness of the form corners."
+        },
+        {
+            "key": "padding",
+            "label": "Padding (px)",
+            "type": "range",
+            "min": 0,
+            "max": 80,
+            "default": 20,
+            "help": "Adjust the spacing inside the form container."
+        }
+    ]
+}

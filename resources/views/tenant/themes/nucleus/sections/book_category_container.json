@@ -1,0 +1,137 @@
+{
+    "type": "dataset_container",
+    "name": "Book Categories",
+    "icon": "fa-layer-group",
+    "category": "Content",
+    "color_scheme": "scheme_1",
+    "max_blocks": 20,
+    "pages": ["home", "book-categories", "books"],
+    "allowed_blocks": [
+        "header",
+        "heading",
+        "text",
+        "button",
+        "book_category_card"
+    ],
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "alignment": "left",
+                "gap": 8
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Study Resources",
+                        "heading_type": "heading-2",
+                        "alignment": "left"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "A diverse array of learning materials to enhance your educational journey.",
+                        "alignment": "left"
+                    }
+                }
+            ]
+        },
+        "book_category_card"
+    ],
+    "fields": [
+        {
+            "key": "layout_group",
+            "type": "group",
+            "label": "Layout",
+            "icon": "fa-layer-group"
+        },
+        {
+            "key": "dataset_source",
+            "type": "hidden",
+            "default": "bookCategories"
+        },
+        {
+            "key": "color_scheme",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "width",
+            "label": "Container Size",
+            "type": "radio",
+            "options": ["full_width", "container"],
+            "default": "container"
+            
+        },
+
+        {
+            "key": "gap",
+            "label": "Cards Gap",
+            "type": "range",
+            "default": 24,
+            "min": 0,
+            "max": 80
+        },
+        {
+            "key": "enable_cards_limit",
+            "type": "switch",
+            "default": true
+        },
+        {
+            "key": "show_limit",
+            "label": "Cards Limit",
+            "type": "range",
+            "default": 6,
+            "min": 1,
+            "max": 24,
+            "conditional": {
+                "key": "enable_cards_limit",
+                "value": true
+            }
+        },
+
+        {
+            "key": "columns",
+            "label": "Desktop Columns",
+            "type": "range",
+            "min": 2,
+            "max": 4,
+            "default": 3
+        },
+        {
+            "key": "mobile_columns",
+            "label": "Tablet Columns",
+            "type": "range",
+            "min": 1,
+            "max": 2,
+            "default": 1
+        },
+        {
+            "key": "view_all_btn",
+            "label": "View All Button",
+            "type": "switch",
+            "default": true
+        },
+        {
+            "key": "btn_color",
+            "label": "Button Color",
+            "type": "color",
+            "default": "#460ad1",
+            "conditional": {
+                "key": "view_all_btn",
+                "value": true
+            }
+        },
+        {
+            "preset": "section_spacing_fields"
+        },
+        {
+            "preset": "section_mobile_spacing_fields"
+        },
+        {
+            "preset": "visibility_fields"
+        }
+    ]
+}

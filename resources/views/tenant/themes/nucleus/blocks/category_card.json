@@ -4,6 +4,7 @@
   "icon": "fa-layer-group",
   "order": 1,
   "category": "Content",
+  "color_scheme": "scheme_2",
   "max_blocks": 5,
   "moveable": false,
   "deletable": false,
@@ -112,7 +113,7 @@
       "type": "range",
       "min": 0,
       "max": 40,
-      "default": 16
+      "default": 0
     },
     {
       "key": "block_gap",

@@ -111,6 +111,11 @@
         --arz-btn-weight: {{ $customizes['primary_button_font_weight'] ?? 'bold' }};
         --arz-btn-transform: {{ $customizes['primary_button_text_transform'] ?? 'default' }};
 
+        --arz-input-py: {{ $customizes['input_padding_vertical'] ?? '10' }}px;
+        --arz-input-px: {{ $customizes['input_padding_horizontal'] ?? '16' }}px;
+        --arz-input-radius: {{ $customizes['input_shape'] ?? '4' }}px;
+        --arz-input-border-w: {{ $customizes['input_border_width'] ?? '1' }}px;
+
 
 
         /* ========================= */

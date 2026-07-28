@@ -9,6 +9,10 @@
         {
             "kind": "section",
             "name": "footer"
+        },
+        {
+            "kind": "section",
+            "name": "footer_bottom"
         }
     ]
 }

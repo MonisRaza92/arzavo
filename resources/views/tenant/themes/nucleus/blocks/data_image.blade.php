@@ -28,6 +28,6 @@
         border-width: {{ $borderWidth }}px;
         border-radius: {{ $borderRadius }}px;
     ">
-    <img src="{{ image($data->thumbnail ?? $data->image ?? null) }}" alt="{{ substr($data->title ?? $data->name ?? 'Image', 0, 10) }}"
+    <img src="{{ image($data->cover_image ?? $data->thumbnail ?? $data->image ?? null) }}" alt="{{ substr($data->title ?? $data->name ?? 'Image', 0, 10) }}"
         class="w-full {{ $aspectRatioClass }} object-cover">
 </div>

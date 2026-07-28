@@ -17,7 +17,6 @@ class SitemapController
         |--------------------------------------------------------------------------
         */
         $add = function (string $loc, string $priority = '0.7', string $freq = 'weekly', $lastmod = null) use (&$urls) {
-
             $urls[$loc] = [
                 'loc' => $loc,
                 'priority' => $priority,
@@ -30,40 +29,42 @@ class SitemapController
 
         /*
         |--------------------------------------------------------------------------
-        | Homepage
+        | 1. Homepage
         |--------------------------------------------------------------------------
         */
         $add($base, '1.0', 'daily');
 
         /*
         |--------------------------------------------------------------------------
-        | Static System Pages
+        | 2. Static / System Pages
         |--------------------------------------------------------------------------
         */
         foreach ([
-            'about',
-            'contact',
             'courses',
+            'books',
+            'book-categories',
+            'blogs',
+            'contact',
+            'privacy-policy',
+            'terms-conditions',
         ] as $page) {
-
-            $add("$base/$page", '0.8');
+            $add(route_to($page), '0.8', 'weekly');
         }
 
         /*
         |--------------------------------------------------------------------------
-        | CMS Pages
+        | 3. CMS Pages
         |--------------------------------------------------------------------------
         */
         if (class_exists(\App\Models\Page::class)) {
-
             \App\Models\Page::query()
                 ->where('status', 'published')
+                ->where('is_system_page', false)
                 ->select('slug', 'updated_at')
-                ->chunk(100, function ($pages) use ($base, $add) {
-
+                ->chunk(100, function ($pages) use ($add) {
                     foreach ($pages as $page) {
                         $add(
-                            "$base/{$page->slug}",
+                            route_to($page->slug),
                             '0.7',
                             'weekly',
                             $page->updated_at
@@ -74,19 +75,17 @@ class SitemapController
 
         /*
         |--------------------------------------------------------------------------
-        | Courses
+        | 4. Courses
         |--------------------------------------------------------------------------
         */
         if (class_exists(\App\Models\Course::class)) {
-
             \App\Models\Course::query()
                 ->where('status', 'published')
                 ->select('slug', 'updated_at')
-                ->chunk(100, function ($courses) use ($base, $add) {
-
+                ->chunk(100, function ($courses) use ($add) {
                     foreach ($courses as $course) {
                         $add(
-                            "$base/view/course/{$course->slug}",
+                            route_to('course', $course->slug),
                             '0.8',
                             'weekly',
                             $course->updated_at
@@ -97,22 +96,20 @@ class SitemapController
 
         /*
         |--------------------------------------------------------------------------
-        | Blogs
+        | 5. Books
         |--------------------------------------------------------------------------
         */
-        if (class_exists(\App\Models\Blog::class)) {
-
-            \App\Models\Blog::query()
+        if (class_exists(\App\Models\Tenant\Book::class)) {
+            \App\Models\Tenant\Book::query()
                 ->where('status', 'published')
                 ->select('slug', 'updated_at')
-                ->chunk(100, function ($blogs) use ($base, $add) {
-
-                    foreach ($blogs as $blog) {
+                ->chunk(100, function ($books) use ($add) {
+                    foreach ($books as $book) {
                         $add(
-                            "$base/blog/{$blog->slug}",
-                            '0.7',
+                            route_to('book', $book->slug),
+                            '0.8',
                             'weekly',
-                            $blog->updated_at
+                            $book->updated_at
                         );
                     }
                 });
@@ -120,22 +117,41 @@ class SitemapController
 
         /*
         |--------------------------------------------------------------------------
-        | Public Contents (optional module)
+        | 6. Book Categories
         |--------------------------------------------------------------------------
         */
-        if (class_exists(\App\Models\Content::class)) {
-
-            \App\Models\Content::query()
+        if (class_exists(\App\Models\Tenant\BookCategory::class)) {
+            \App\Models\Tenant\BookCategory::query()
                 ->where('status', 'published')
                 ->select('slug', 'updated_at')
-                ->chunk(100, function ($contents) use ($base, $add) {
-
-                    foreach ($contents as $content) {
+                ->chunk(100, function ($cats) use ($add) {
+                    foreach ($cats as $cat) {
                         $add(
-                            "$base/content/{$content->slug}",
-                            '0.6',
-                            'monthly',
-                            $content->updated_at
+                            route_to('book.category', $cat->slug),
+                            '0.7',
+                            'weekly',
+                            $cat->updated_at
+                        );
+                    }
+                });
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 7. Blogs
+        |--------------------------------------------------------------------------
+        */
+        if (class_exists(\App\Models\Blog::class)) {
+            \App\Models\Blog::query()
+                ->where('status', 'published')
+                ->select('slug', 'updated_at')
+                ->chunk(100, function ($blogs) use ($add) {
+                    foreach ($blogs as $blog) {
+                        $add(
+                            route_to('blog', $blog->slug),
+                            '0.7',
+                            'weekly',
+                            $blog->updated_at
                         );
                     }
                 });

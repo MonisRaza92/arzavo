@@ -50,28 +50,29 @@
         {{ $alignmentClass }}
     ">
     <div class="flex items-center gap-2">
-        @if ($course->author ?? null)
-            @if ($user->profile_picture ?? null)
-                <img src="{{ media($user->profile_picture) }}" class="border-rounded w-8 aspect-square object-cover"
-                    alt="{{ $user->fname }}">
+        @if (is_string($data->author ?? null))
+            <p class="text-sm text-tertiary" style="color: var(--arzavo-secondary-text-color);">
+                By {{ $data->author }}
+            </p>
+        @elseif (isset($data->author) && is_object($data->author))
+            @if ($data->author->profile_picture ?? null)
+                <img src="{{ media($data->author->profile_picture) }}" class="border-rounded w-8 aspect-square object-cover"
+                    alt="{{ $data->author->fname }}">
             @else
                 <h2
                     class="font-bold border-rounded text-xl flex justify-center items-center w-8 aspect-square arzavo-background" style="filter: invert(1); color: var(--arzavo-heading-color);">
-                    {{ strtoupper(substr($user->fname, 0, 1)) }}
+                    {{ strtoupper(substr($data->author->fname ?? 'A', 0, 1)) }}
                 </h2>
             @endif
+            <div>
+                <p class="font-semibold" style="color: var(--arzavo-heading-color);">
+                    {{ $data->author->fname ?? 'Arzavo' }} {{ $data->author->lname ?? '' }}
+                </p>
+            </div>
         @else
-            <h2 class="font-bold border-rounded text-xl flex justify-center items-center w-8 aspect-square arzavo-background" style="filter: invert(1); color: var(--arzavo-heading-color);">
-                A
-            </h2>
+            <p class="text-sm text-tertiary" style="color: var(--arzavo-secondary-text-color);">
+                By Arzavo
+            </p>
         @endif
-        <div>
-            <p class="font-semibold" style="color: var(--arzavo-heading-color);">
-                {{ $course->author->fname ?? 'Arzavo' }} {{ $course->author->lname ?? '' }}
-            </p>
-            <p class="text-tertiary" style="font-size: var(--arzavo-secondary-text-font-size); color: var(--arzavo-secondary-text-color);">
-                {{ $course->author->email ?? 'arzavoems@gmail.com' }}
-            </p>
-        </div>
     </div>
 </div>

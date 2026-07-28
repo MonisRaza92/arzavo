@@ -46,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
             static $classes = null;
             static $blogs = null;
             static $categories = null;
+            static $bookCategories = null;
 
             if ($settings === null) {
                 $settings = \App\Models\Tenant\Settings
@@ -145,6 +146,75 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
             }
 
+            if ($bookCategories === null && class_exists(\App\Models\Tenant\BookCategory::class)) {
+                $bookCategories = \App\Models\Tenant\BookCategory::where('status', true)
+                    ->orderBy('order')
+                    ->get();
+            }
+
+            static $books = null;
+
+            if ($books === null && class_exists(\App\Models\Tenant\Book::class)) {
+                $booksQuery = \App\Models\Tenant\Book::where('is_active', true);
+                if (request()->has('book_category') || request()->has('book_category_id')) {
+                    $val = request('book_category') ?: request('book_category_id');
+                    if (is_numeric($val)) {
+                        $booksQuery->where('book_category_id', $val);
+                    } else {
+                        $booksQuery->whereHas('bookCategory', function ($q) use ($val) {
+                            $q->where('slug', $val);
+                        });
+                    }
+                }
+                $books = $booksQuery->orderBy('created_at', 'desc')->get();
+            }
+
+            static $currentBook = null;
+            static $relatedBooks = null;
+
+            if ($currentBook === null && class_exists(\App\Models\Tenant\Book::class)) {
+                if (request()->has('slug') || request()->has('id')) {
+                    $val = request('slug') ?: request('id');
+                    $query = \App\Models\Tenant\Book::where('is_active', true)
+                        ->with(['bookCategory', 'academicCategory', 'classCourse', 'subject']);
+
+                    if (is_numeric(request('id'))) {
+                        $currentBook = (clone $query)->where('id', request('id'))->first();
+                    } else {
+                        $currentBook = (clone $query)->where('slug', $val)->first();
+                    }
+
+                    if ($currentBook) {
+                        try {
+                            $currentBook->increment('views_count');
+                        } catch (\Exception $e) {}
+                    }
+                }
+
+                // 🔥 Fallback to FIRST book (e.g. for Theme Builder preview)
+                if (!$currentBook) {
+                    $currentBook = \App\Models\Tenant\Book::where('is_active', true)
+                        ->with(['bookCategory', 'academicCategory', 'classCourse', 'subject'])
+                        ->first() ?? \App\Models\Tenant\Book::with(['bookCategory', 'academicCategory', 'classCourse', 'subject'])->first();
+                }
+
+                if ($currentBook) {
+                    $relatedBooks = \App\Models\Tenant\Book::where('is_active', true)
+                        ->where('id', '!=', $currentBook->id)
+                        ->where(function ($q) use ($currentBook) {
+                            if ($currentBook->book_category_id) {
+                                $q->orWhere('book_category_id', $currentBook->book_category_id);
+                            }
+                            if ($currentBook->academic_category_id) {
+                                $q->orWhere('academic_category_id', $currentBook->academic_category_id);
+                            }
+                        })
+                        ->orderBy('created_at', 'desc')
+                        ->take(4)
+                        ->get();
+                }
+            }
+
             \View::share([
                 'settings' => $settings,
                 'customizes' => $customizes,
@@ -154,8 +224,13 @@ class AppServiceProvider extends ServiceProvider
                 'courses' => $courses,
                 'classes' => $classes,
                 'blogs' => $blogs,
-                'categories' => $categories
+                'categories' => $categories,
+                'bookCategories' => $bookCategories,
+                'books' => $books,
+                'currentBook' => $currentBook,
+                'relatedBooks' => $relatedBooks ?? collect(),
             ]);
+
 
             return $view;
         });

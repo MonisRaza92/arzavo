@@ -1,0 +1,10 @@
+{
+    "books": [
+        {
+            "kind": "section",
+            "name": "books_container"
+        }
+    ],
+    "meta_title": "Books & Notes",
+    "meta_description": "Explore our full catalog of books, notes, and study guides."
+}

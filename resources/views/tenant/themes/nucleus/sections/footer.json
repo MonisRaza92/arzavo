@@ -1,22 +1,78 @@
 {
     "type": "footer",
-    "name": "Academic Footer",
-    "icon": "fa-shoe-prints",
+    "name": "Footer",
+    "icon": "fa-tv",
     "category": "Footer",
     "color_scheme": "scheme_1",
+    "max_blocks": 6,
+    "allowed_blocks": [
+        "footer_info",
+        "footer_menu",
+        "footer_newsletter",
+        "footer_contact"
+    ],
+    "default_blocks": [
+        "footer_info",
+        "footer_menu",
+        "footer_contact",
+        "footer_newsletter"
+    ],
     "fields": [
-        { "preset": "section_size_fields" },
         {
-            "key": "description",
-            "label": "Brand Description",
-            "type": "textarea",
-            "default": "Empowering learners with high-quality educational courses and expert faculty."
+            "key": "group",
+            "type": "group",
+            "label": "Style & Layout",
+            "help": "Adjust layout columns, spacing gaps, and inner paddings for desktop, tablet, and mobile displays."
         },
         {
-            "key": "copyright_text",
-            "label": "Copyright Text",
-            "type": "text",
-            "default": "All Rights Reserved."
+            "key": "desktop_columns",
+            "type": "range",
+            "min": 3,
+            "max": 5,
+            "default": 4
+        },
+        {
+            "key": "tablet_columns",
+            "type": "range",
+            "min": 2,
+            "max": 4,
+            "default": 2
+        },
+        {
+            "key": "mobile_columns",
+            "type": "range",
+            "min": 1,
+            "max": 2,
+            "default": 1
+        },
+        {
+            "key": "gap",
+            "type": "range",
+            "default": 48,
+            "min": 0,
+            "max": 100
+        },
+               {
+            "key": "container",
+            "label": "Width",
+            "type": "radio",
+            "options": [
+                "container",
+                "full"
+            ],
+            "default": "container"
+        },
+        {
+            "preset": "section_bg_type_fields"
+        },
+        {
+            "preset": "bg_blur_fields"
+        },
+        {
+            "preset": "bg_overlay_fields"
+        },
+        {
+            "preset": "section_spacing_fields"
         }
     ]
 }

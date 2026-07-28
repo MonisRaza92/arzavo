@@ -38,17 +38,22 @@ class TenantSeeder extends Seeder
         // 3️⃣ Create system pages
         // ---------------------------
         DB::table('pages')->insert([
-            ['name' => 'Home', 'slug' => 'home', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'Contact', 'slug' => 'contact', 'is_system_page' => false, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'Courses', 'slug' => 'courses', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'View Course', 'slug' => 'course', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'Blogs', 'slug' => 'blogs', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'View Blog', 'slug' => 'blog', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'Content Store', 'slug' => 'content-store', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'View Content', 'slug' => 'content', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'Privacy Policy', 'slug' => 'privacy-policy', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
-            ['name' => 'Terms & Conditions', 'slug' => 'terms-conditions', 'is_system_page' => true, 'is_active' => true, 'created_at' => now()],
+            // ── System pages (Theme Builder editable) ─────────────────
+            ['name' => 'Home',           'slug' => 'home',            'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'Courses',        'slug' => 'courses',         'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'View Course',    'slug' => 'course',          'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'Blogs',          'slug' => 'blogs',           'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'View Blog',      'slug' => 'blog',            'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'Book Categories','slug' => 'book-categories', 'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'Books',          'slug' => 'books',           'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'View Book',      'slug' => 'book',            'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+
+            // ── Non-system pages (Pages Manager editable) ─────────────
+            ['name' => 'Contact',           'slug' => 'contact',          'is_system_page' => false, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'Privacy Policy',    'slug' => 'privacy-policy',   'is_system_page' => false, 'is_active' => true, 'created_at' => now()],
+            ['name' => 'Terms & Conditions','slug' => 'terms-conditions',  'is_system_page' => false, 'is_active' => true, 'created_at' => now()],
         ]);
+
 
         // ---------------------------
         // 4️⃣ Apply theme (🔥 MAIN STEP)
@@ -70,6 +75,7 @@ class TenantSeeder extends Seeder
             // Header
             ['menu_id' => 1, 'name' => 'Home', 'link' => '/', 'order' => 0],
             ['menu_id' => 1, 'name' => 'Courses', 'link' => '/courses', 'order' => 1],
+            ['menu_id' => 1, 'name' => 'Books', 'link' => '/books', 'order' => 1],
             ['menu_id' => 1, 'name' => 'Contact', 'link' => '/contact', 'order' => 2],
             
             // Footer

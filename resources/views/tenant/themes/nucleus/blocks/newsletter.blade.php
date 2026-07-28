@@ -7,12 +7,13 @@
         <p class="arz-body-text" style="color: var(--arz-paragraph); opacity: 0.9;">{{ $block->text }}</p>
     @endif
 
-    <form class="flex flex-col sm:flex-row gap-2 w-full mt-2" onsubmit="event.preventDefault(); alert('Newsletter subscription successful!');">
+    <form class="flex flex-col sm:flex-row gap-2 w-full mt-2" action="{{ route_to('newsletter.submit') }}" method="POST" onsubmit="submitNewsletterForm(event, this)">
+        @csrf
         <input type="email" 
+            name="email"
             placeholder="{{ $block->placeholder ?? 'Enter your email' }}" 
             required
-            class="flex-1 px-4 py-3 rounded-lg border focus:outline-none transition-colors"
-            style="background: var(--arz-bg); color: var(--arz-heading); border-color: var(--arz-border);">
+            class="flex-1 arz-input">
         
         <button type="submit" 
             class="px-6 py-3 rounded-lg font-medium transition-transform hover:-translate-y-0.5
@@ -33,3 +34,55 @@
         </button>
     </form>
 </div>
+
+<script>
+if (typeof submitNewsletterForm !== 'function') {
+    function submitNewsletterForm(event, form) {
+        event.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.innerText;
+        btn.disabled = true;
+        btn.innerText = 'Subscribing...';
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                email: form.querySelector('input[name="email"]').value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            btn.disabled = false;
+            btn.innerText = originalText;
+            if (data.success) {
+                if (typeof showToast === 'function') {
+                    showToast(data.message);
+                } else {
+                    alert(data.message);
+                }
+                form.reset();
+            } else {
+                if (typeof showToast === 'function') {
+                    showToast('Something went wrong. Please try again.');
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            }
+        })
+        .catch(error => {
+            btn.disabled = false;
+            btn.innerText = originalText;
+            if (typeof showToast === 'function') {
+                showToast('An error occurred. Please try again.');
+            } else {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    }
+}
+</script>

@@ -54,6 +54,22 @@
             "type": "group"
         },
         {
+            "key": "enable_text_limit",
+            "type": "switch",
+            "default": true
+        },
+        {
+            "key": "text_limit",
+            "type": "range",
+            "min": 10,
+            "max": 200,
+            "default": 40,
+            "conditional": {
+                "key": "enable_text_limit",
+                "value": true
+            }
+        },
+        {
             "key": "alignment",
             "label": "Desktop Alignment",
             "type": "radio",

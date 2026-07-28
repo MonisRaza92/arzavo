@@ -1,0 +1,23 @@
+{
+    "type": "footer_info",
+    "name": "Footer Group",
+    "icon": "fa-layer-group",
+    "order": 1,
+    "category": "Footer",
+    "allowed_blocks": ["footer_logo", "text", "social_icons", "heading", "button", "footer_contact_details", "newsletter_form"],
+    "default_blocks": ["footer_logo", "text", "social_icons"],
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout"
+        },
+        {
+            "key": "gap",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 16
+        }
+    ]
+}

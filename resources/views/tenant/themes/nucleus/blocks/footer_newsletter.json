@@ -1,0 +1,48 @@
+{
+    "type": "footer_info",
+    "name": "Footer Newsletter",
+    "icon": "fa-paper-plane",
+    "order": 1,
+    "category": "Footer",
+    "allowed_blocks": ["footer_logo", "text", "social_icons", "heading", "button", "footer_contact_details", "newsletter_form"],
+    "default_blocks": [
+        {
+            "type": "heading",
+            "settings": {
+                "text": "Newsletter",
+                "heading_type": "heading-5"
+            }
+        },
+        {
+            "type": "text",
+            "settings": {
+                "text": "Subscribe to our newsletter for latest updates and offers.",
+                "alignment": "left",
+                "mobile_alignment": "left"
+            }
+        },
+        {
+            "type": "newsletter_form",
+            "settings": {
+                "placeholder": "Enter your email address",
+                "button_text": "Subscribe",
+                "button_style": "arz-btn-primary",
+                "layout_style": "Vertical"
+            }
+        }
+    ],
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout"
+        },
+        {
+            "key": "gap",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 16
+        }
+    ]
+}

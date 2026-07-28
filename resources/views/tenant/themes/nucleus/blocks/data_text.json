@@ -20,6 +20,22 @@
             "options": ["paragraph", "body-text"],
             "default": "body-text"
         },
+        {
+            "key": "enable_text_limit",
+            "type": "switch",
+            "default": true
+        },
+        {
+            "key": "text_limit",
+            "type": "range",
+            "min": 10,
+            "max": 200,
+            "default": 80,
+            "conditional": {
+                "key": "enable_text_limit",
+                "value": true
+            }
+        },
 
         {
             "key": "group",

@@ -1,0 +1,49 @@
+{
+    "type": "footer_info",
+    "name": "Footer Contact",
+    "icon": "fa-user",
+    "order": 3,
+    "category": "Footer",
+    "allowed_blocks": ["footer_logo", "text", "social_icons", "heading", "button", "footer_contact_details", "newsletter_form"],
+    "default_blocks": [
+        {
+            "type": "heading",
+            "settings": {
+                "text": "Contact Us",
+                "heading_type": "heading-5"
+            }
+        },
+        {
+            "type": "text",
+            "settings": {
+                "text": "Have questions or need assistance?",
+                "alignment": "left",
+                "mobile_alignment": "left"
+            }
+        },
+        {
+            "type": "footer_contact_details",
+            "settings": {
+                "address": "123 Academic Street, Education City",
+                "phone": "+91 98765 43210",
+                "email": "info@arzavo.com",
+                "icon_color": "#4f46e5"
+            }
+        }
+    ],
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout"
+        },
+        {
+            "key": "gap",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 16,
+            "help": "Adjust the vertical gap spacing between heading, text, and contact details."
+        }
+    ]
+}

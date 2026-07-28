@@ -1,5 +1,5 @@
 @php
-    $logoImage = $block->logo_image ?? null;
+    $logoImage = $block->logo_image ?? render_logo();
     $altText = $block->alt_text ?? 'Logo';
     $link = $block->link ?? '';
     $logoHeight = 48;
@@ -10,7 +10,7 @@
     }
 @endphp
 
-<div {!! $block->attributes() !!} class="nuc-logo-item">
+<div {!! $block->attributes() !!} class="">
     @if($link)
         <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class="flex items-center">
             <img src="{{ image($logoImage) }}" alt="{{ $altText }}" style="height: {{ $logoHeight }}px; width: auto; object-fit: contain;">

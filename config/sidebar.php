@@ -82,13 +82,24 @@ return [
                 'route' => 'admin.blog.index',
                 'active' => 'admin/blog',
             ],
+        ],
+    ],
+
+    // ======================================================
+    // 3. LIBRARY SYSTEM
+    // ======================================================
+    [
+        'section' => 'Library',
+        'items' => [
             [
-                'type' => 'link',
-                'id' => 'contentStore',
-                'icon' => 'fa-store',
-                'text' => 'Content Store',
-                'route' => 'admin.blog.index',
-                'active' => 'admin/store',
+                'type' => 'menu',
+                'id'   => 'libraryMenu',
+                'icon' => 'fa-book-bookmark',
+                'text' => 'Library',
+                'links' => [
+                    ['icon' => 'fa-layer-group', 'text' => 'Category', 'route' => 'admin.book-categories.index', 'active' => 'admin/book-categories*'],
+                    ['icon' => 'fa-book', 'text' => 'Books & Notes', 'route' => 'admin.books.index', 'active' => 'admin/books*'],
+                ],
             ],
         ],
     ],
@@ -185,24 +196,26 @@ return [
                 'icon' => 'fa-comments',
                 'text' => 'Communication',
                 'links' => [
+                    ['icon' => 'fa-envelope-open-text', 'text' => 'Inquiries', 'route' => 'admin.communication.inquiries', 'active' => 'admin/communication/inquiries*'],
+                    ['icon' => 'fa-paper-plane', 'text' => 'Newsletter', 'route' => 'admin.communication.subscribers', 'active' => 'admin/communication/subscribers*'],
                     ['icon' => 'fa-envelope', 'text' => 'Messages', 'route' => '#'],
                     ['icon' => 'fa-bell', 'text' => 'Notifications', 'route' => '#'],
                     ['icon' => 'fa-video', 'text' => 'Live Classes', 'route' => '#'],
                     ['icon' => 'fa-users-rectangle', 'text' => 'Forums', 'route' => '#'],
                 ],
             ],
-            [
-                'type' => 'menu',
-                'id' => 'crmMenu',
-                'icon' => 'fa-headset',
-                'text' => 'Enquiries',
-                'links' => [
-                    ['icon' => 'fa-user', 'text' => 'Leads / Enquiries', 'route' => '#'],
-                    ['icon' => 'fa-address-book', 'text' => 'Followups', 'route' => '#'],
-                    ['icon' => 'fa-bullhorn', 'text' => 'Campaigns', 'route' => '#'],
-                    ['icon' => 'fa-phone', 'text' => 'Call Logs', 'route' => '#'],
-                ],
-            ],
+            // [
+            //     'type' => 'menu',
+            //     'id' => 'crmMenu',
+            //     'icon' => 'fa-headset',
+            //     'text' => 'Enquiries',
+            //     'links' => [
+            //         ['icon' => 'fa-user', 'text' => 'Leads / Enquiries', 'route' => '#'],
+            //         ['icon' => 'fa-address-book', 'text' => 'Followups', 'route' => '#'],
+            //         ['icon' => 'fa-bullhorn', 'text' => 'Campaigns', 'route' => '#'],
+            //         ['icon' => 'fa-phone', 'text' => 'Call Logs', 'route' => '#'],
+            //     ],
+            // ],
         ],
     ],
 

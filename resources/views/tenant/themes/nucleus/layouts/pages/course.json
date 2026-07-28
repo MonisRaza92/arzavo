@@ -1,0 +1,10 @@
+{
+    "course": [
+        {
+            "kind": "section",
+            "name": "course_container"
+        }
+    ],
+    "meta_title": "Course Details",
+    "meta_description": "View comprehensive details, modules, and schedule for this course."
+}

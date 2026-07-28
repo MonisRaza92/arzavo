@@ -93,7 +93,9 @@
             if (response.ok) {
                 const newBlockHtml = await response.text();
                 const blockList = document.getElementById(`nested-block-list-${blockId}`);
-                blockList.insertAdjacentHTML('beforeend', newBlockHtml);
+                if (blockList) {
+                    blockList.insertAdjacentHTML('beforeend', newBlockHtml);
+                }
 
                 document.getElementById(`addNestedBlockContainer${blockId}`).classList.add('hidden');
                 reloadPreview();
@@ -101,7 +103,14 @@
                     window.initBlockForms();
                 }
             } else {
-                alert('Error adding block. Please try again.');
+                let errMsg = 'Error adding block. Please try again.';
+                try {
+                    const errData = await response.json();
+                    if (errData.error || errData.message) {
+                        errMsg = errData.error || errData.message;
+                    }
+                } catch(e) {}
+                alert(errMsg);
             }
         } catch (error) {
             console.error('Error:', error);

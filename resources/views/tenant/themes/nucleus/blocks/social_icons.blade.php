@@ -1,13 +1,9 @@
 @php
     $iconSize = $block->icon_size ?? 20;
     $gap = $block->gap ?? 12;
-    $iconColor = $block->icon_color ?? 'heading';
+    $colorVar = $block->icon_color ?? '#000000';
 
-    $colorVar = match($iconColor) {
-        'paragraph' => 'var(--arz-paragraph)',
-        'link' => 'var(--arz-link)',
-        default => 'var(--arz-heading)',
-    };
+
 
     $platforms = [
         'facebook'  => ['icon' => 'fa-brands fa-facebook-f',  'url' => $block->facebook ?? ''],
@@ -24,8 +20,8 @@
     @foreach($platforms as $name => $platform)
         @if(!empty($platform['url']))
             <a href="{{ $platform['url'] }}" target="_blank" rel="noopener noreferrer"
-               class="social-icon-link"
-               style="color: {{ $colorVar }}; font-size: {{ $iconSize }}px;"
+               class="social-icon-link arz-border p-2!"
+               style="color: {{ $colorVar }}; font-size: {{ $iconSize }}px; border-color: {{ $colorVar }}; border-width: 2px; border-radius: {{ $block->radius ?? 10 }}px;"
                aria-label="{{ ucfirst($name) }}">
                 <i class="{{ $platform['icon'] }}"></i>
             </a>

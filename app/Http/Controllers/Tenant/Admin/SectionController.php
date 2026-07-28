@@ -22,12 +22,12 @@ class SectionController
         $design = $this->themePageDesign($theme->id, $page->id);
         $layout = $design->layout; // 🔥 THIS replaces $sections
         $globalLayout = globalThemeDesign($theme->id)->layout;
-        $availableTemplates = $this->availableTemplates($theme->theme_slug);
-        $availableSections = $this->availableSections($theme->theme_slug);
+        $availableTemplates = $this->availableTemplates($theme->theme_slug, $page->slug);
+        $availableSections = $this->availableSections($theme->theme_slug, $page->slug);
         $availableBlocks = $this->availableBlocks($theme->theme_slug);
-        $pages = Page::all();
+        $pages = Page::where('is_system_page', true)->get();
         $activeTheme = app('activeTheme');
-        app()->instance('builderThemeId',$themeId);
+        app()->instance('builderThemeId', $themeId);
 
         return view('tenant.admin.builder.index', [
             'theme' => $theme,
@@ -38,12 +38,12 @@ class SectionController
             'availableBlocks' => $availableBlocks,
             'availableTemplates' => $availableTemplates,
             'pages' => $pages,
-            'sectionRules' => $this->sectionRules($theme->theme_slug),
+            'sectionRules' => $this->sectionRules($theme->theme_slug, $page->slug),
             'blockRules' => $this->blockRules($theme->theme_slug),
             'activeTheme' => $activeTheme,
         ]);
     }
-    
+
 
 
     public function store(Request $request, $themeSlug, $page)
@@ -80,8 +80,8 @@ class SectionController
         $theme = TenantTheme::where('theme_slug', $themeSlug)->firstOrFail();
         $page = Page::where('id', $page)->first() ?? null;
         $availableBlocks = $this->availableBlocks($theme->theme_slug);
-        $availableSections = $this->availableSections($theme->theme_slug);
-        $rules = $this->sectionRules($theme->theme_slug);
+        $availableSections = $this->availableSections($theme->theme_slug, $page->slug);
+        $rules = $this->sectionRules($theme->theme_slug, $page->slug);
         $blockRules = $this->blockRules($theme->theme_slug);
 
 
@@ -319,8 +319,8 @@ class SectionController
         $theme = TenantTheme::where('theme_slug', $themeSlug)->firstOrFail();
         $page = Page::where('id', $pageId)->first() ?? null;
         $availableBlocks = $this->availableBlocks($theme->theme_slug);
-        $availableSections = $this->availableSections($theme->theme_slug);
-        $rules = $this->sectionRules($theme->theme_slug);
+        $availableSections = $this->availableSections($theme->theme_slug, $page->slug);
+        $rules = $this->sectionRules($theme->theme_slug, $page->slug);
         $blockRules = $this->blockRules($theme->theme_slug);
 
         return view('tenant.admin.builder.sections.section-card', ['section' => $section, 'theme' => $theme, 'page' => $page, 'availableBlocks' => $availableBlocks, 'availableSections' => $availableSections, 'rules' => $rules, 'blockRules' => $blockRules])->render();
@@ -690,12 +690,49 @@ class SectionController
         );
     }
 
-    private function availableTemplates($themeSlug)
+    private function shouldShow(array $data, string $page)
+    {
+        $include = $data['pages'] ?? null;
+        $exclude = $data['except_pages'] ?? null;
+
+        $include = is_null($include) ? null : (array) $include;
+        $exclude = is_null($exclude) ? null : (array) $exclude;
+
+        // Include has highest priority
+        if (!empty($include)) {
+            if (in_array('all', $include, true)) {
+                return true;
+            }
+
+            return in_array($page, $include, true);
+        }
+
+        // Exclude
+        if (!empty($exclude)) {
+            if (in_array('all', $exclude, true)) {
+                return false;
+            }
+
+            return !in_array($page, $exclude, true);
+        }
+
+        // Default
+        return $page === 'home';
+    }
+
+    private function availableTemplates($themeSlug, $page)
     {
         return collect(
             glob(resource_path("views/tenant/themes/{$themeSlug}/templates/*.json"))
         )->map(function ($file) {
             $data = json_decode(file_get_contents($file), true);
+
+            if (
+                empty($data['pages']) &&
+                in_array($data['category'] ?? '', ['Header', 'Footer', 'Global'], true)
+            ) {
+                $data['pages'] = 'all';
+            }
 
             return [
                 'template_file' => basename($file, '.json'),
@@ -705,16 +742,25 @@ class SectionController
                 'category' => $data['category'] ?? 'Layout',
                 'preview' => $data['preview'] ?? null,
                 'order' => $data['order'] ?? 9999,
+                'pages' => $data['pages'] ?? null,
+                'except_pages' => $data['except_pages'] ?? null,
             ];
-        })->values();
+        })->filter(fn($template) => $this->shouldShow($template, $page))->values();
     }
 
-    private function availableSections($themeSlug)
+    private function availableSections($themeSlug, $page)
     {
         return collect(
             glob(resource_path("views/tenant/themes/{$themeSlug}/sections/*.json"))
         )->map(function ($file) {
             $data = json_decode(file_get_contents($file), true);
+
+            if (
+                empty($data['pages']) &&
+                in_array($data['category'] ?? '', ['Header', 'Footer', 'Global'], true)
+            ) {
+                $data['pages'] = 'all';
+            }
 
             return [
                 'type' => $data['type'] ?? basename($file, '.json'),
@@ -726,10 +772,12 @@ class SectionController
                 'order' => $data['order'] ?? 9999,
                 'max_blocks' => $data['max_blocks'] ?? null,
                 'allowed_blocks' => $data['allowed_blocks'] ?? null,
-                'moveable' => $data['moveable'] ?? 'allow',
+                'moveable' => $data['moveable'] ?? $data['move'] ?? 'allow',
                 'fields' => $data['fields'] ?? [],
+                'pages' => $data['pages'] ?? null,
+                'except_pages' => $data['except_pages'] ?? null,
             ];
-        })->values();
+        })->filter(fn($template) => $this->shouldShow($template, $page))->values();
     }
     private function availableBlocks($themeSlug)
     {
@@ -754,9 +802,9 @@ class SectionController
             ];
         })->values();
     }
-    private function sectionRules(string $themeSlug): array
+    private function sectionRules(string $themeSlug, $page): array
     {
-        return collect($this->availableSections($themeSlug))
+        return collect($this->availableSections($themeSlug, $page))
             ->mapWithKeys(function ($section) {
                 return [
                     $section['schema'] ?? $section['type'] => [

@@ -76,10 +76,17 @@
         },
         {
             "key": "icon_color",
-            "label": "Color",
-            "type": "radio",
-            "options": ["heading", "paragraph", "link"],
-            "default": "heading"
+            "label": "Icon Color",
+            "type": "color",
+            "default": "#000000"
+        },
+        {
+            "key": "radius",
+            "label": "Border Roundness",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 10
         }
     ]
 }

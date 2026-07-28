@@ -184,7 +184,7 @@
 /* ================================
    🔘 BUTTON ENHANCEMENTS
    ================================ */
-[data-theme="nucleus"] .arz-btn-primary {
+/* [data-theme="nucleus"] .arz-btn-primary {
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -211,7 +211,7 @@
 }
 
 [data-theme="nucleus"] .arz-btn-secondary:active {
-}
+} */
 
 
 /* ================================
@@ -290,7 +290,7 @@
 /* ================================
    🦶 FOOTER DESIGN
    ================================ */
-[data-theme="nucleus"] [data-section-type="footer"] {
+/* [data-theme="nucleus"] [data-section-type="footer"] {
     position: relative;
     overflow: hidden;
 }
@@ -318,7 +318,7 @@
 [data-theme="nucleus"] .nuc-footer-link:hover {
     color: var(--arz-link);
     transform: translateX(4px);
-}
+} */
 
 [data-theme="nucleus"] .nuc-social-icon {
     display: inline-flex;

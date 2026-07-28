@@ -1,0 +1,10 @@
+{
+    "blogs": [
+        {
+            "kind": "section",
+            "name": "blogs_container"
+        }
+    ],
+    "meta_title": "Blogs & Articles",
+    "meta_description": "Explore our blogs, educational articles, and latest announcements."
+}

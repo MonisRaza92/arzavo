@@ -1,0 +1,10 @@
+{
+    "book": [
+        {
+            "kind": "section",
+            "name": "book_details"
+        }
+    ],
+    "meta_title": "Book Details",
+    "meta_description": "Read book details, download PDF resources, and explore related study materials."
+}

@@ -47,7 +47,7 @@
     "heading_5_text_transform": "default",
     "heading_5_text_weight": "600",
 
-    "heading_6_font_size": "20",
+    "heading_6_font_size": "18",
     "heading_6_line_height": "1.4",
     "heading_6_text_transform": "default",
     "heading_6_text_weight": "600",
@@ -68,5 +68,9 @@
     "copy_content": "enable",
     "inspect_element": "enable",
     "smooth_scroll": true,
-    "scroll_animations": true
+    "scroll_animations": true,
+    "input_shape": "4",
+    "input_padding_vertical": "10",
+    "input_padding_horizontal": "16",
+    "input_border_width": "1"
 }

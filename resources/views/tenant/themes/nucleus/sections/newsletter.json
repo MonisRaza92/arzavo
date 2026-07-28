@@ -1,0 +1,54 @@
+{
+    "type": "newsletter",
+    "name": "Newsletter",
+    "icon": "fa-solid fa-envelope-open-text",
+    "category": "Footer",
+    "max_blocks": 6,
+    "color_scheme": "scheme_1",
+    "allowed_blocks": [
+        "heading",
+        "text",
+        "newsletter"
+    ],
+    "default_blocks": [
+        {
+            "type": "heading",
+            "settings": {
+                "text": "Join our newsletter",
+                "heading_type": "heading-2",
+                "alignment": "center"
+            }
+        },
+        {
+            "type": "text",
+            "settings": {
+                "text": "Stay updated with our latest news and exclusive offers.",
+                "alignment": "center"
+            }
+        },
+        {
+            "type": "newsletter",
+            "settings": {
+                "placeholder": "Enter your email",
+                "button_text": "Subscribe",
+                "button_style": "primary"
+            }
+        }
+    ],
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout & Style",
+            "icon": "fa-solid fa-palette"
+        },
+        {
+            "key": "color_scheme",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "preset": "section_spacing"
+        }
+    ]
+}

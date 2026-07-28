@@ -1,0 +1,98 @@
+{
+    "type": "contact_card",
+    "name": "Contact Card",
+    "icon": "fa-address-card",
+    "category": "Content",
+    "order": 15,
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Card Information"
+        },
+        {
+            "key": "icon",
+            "label": "Icon",
+            "type": "icon",
+            "default": "map-marker-alt",
+            "help": "Choose the icon to display in the card (e.g. map marker, phone, envelope)."
+        },
+        {
+            "key": "icon_color",
+            "label": "Icon Color",
+            "type": "color",
+            "default": "#4f46e5",
+            "help": "Select the color for the icon glyph."
+        },
+        {
+            "key": "heading",
+            "label": "Card Heading",
+            "type": "text",
+            "default": "Address",
+            "help": "Enter the main heading of the contact card (e.g. Address, Call Us)."
+        },
+        {
+            "key": "text",
+            "label": "Card Text Content",
+            "type": "textarea",
+            "default": "123 Academic Street, Education District, City",
+            "help": "Enter the details like address text, email addresses, phone numbers, or hours."
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style & Customization"
+        },
+        {
+            "key": "bg_color",
+            "label": "Background Color",
+            "type": "color",
+            "default": "#ffffff",
+            "help": "Select the background color of the contact card box."
+        },
+        {
+            "key": "border",
+            "label": "Border Width (px)",
+            "type": "range",
+            "min": 0,
+            "max": 10,
+            "default": 1,
+            "help": "Adjust the outline border width of the card card container."
+        },
+        {
+            "key": "radius",
+            "label": "Border Radius (px)",
+            "type": "range",
+            "min": 0,
+            "max": 50,
+            "default": 10,
+            "help": "Adjust the roundness of the contact card corners."
+        },
+        {
+            "key": "icon_bg_color",
+            "label": "Icon Background Color",
+            "type": "color",
+            "default": "#f1f1f1",
+            "help": "Select the background color for the circular icon container."
+        },
+        {
+            "key": "icon_size",
+            "label": "Icon Size (px)",
+            "type": "range",
+            "min": 10,
+            "max": 40,
+            "default": 18,
+            "help": "Adjust the size of the icon inside the circular container."
+        },
+        {
+            "key": "padding",
+            "label": "Padding (px)",
+            "type": "range",
+            "min": 0,
+            "max": 80,
+            "default": 20,
+            "help": "Adjust the spacing inside the card boundary."
+        }
+    ]
+}

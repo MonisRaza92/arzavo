@@ -4,7 +4,9 @@
         Dataset
     ===============================*/
     $datasetKey = $section->dataset_source ?? 'courses';
-    $limit = (int) ($section->show_limit ?? 6);
+    $enableLimit = (bool) ($section->enable_cards_limit ?? true);
+    $cLimit = (int) ($section->show_limit ?? 6);
+    $limit = $enableLimit ? $cLimit : 999;
 
 
     /* ===============================
@@ -56,12 +58,12 @@
     <div class="section-content {{ $section->container }} relative z-30">
 
         {{-- ================= HEADER BLOCKS ================= --}}
-        {!! $section->blocks()->except('data_card', 'data_card_course', 'category_card', 'class_card', 'subjects_card', 'course_card', 'courses_card') !!}
+        {!! $section->blocks()->except('data_card', 'data_card_course', 'category_card', 'class_card', 'subjects_card', 'course_card', 'courses_card', 'book_category_card', 'book_card', 'blog_card') !!}
 
         <div class=" mt-8 grid grid-cols-1 {{ $desktopGrid }} {{ $mobileGrid }}" style="gap:{{$section->gap}}px">
 
             @foreach($dataset as $data)
-                {!! $section->blocks()->only('data_card', 'data_card_course', 'category_card', 'class_card', 'subjects_card', 'course_card', 'courses_card')->render(['data' => $data]) !!}
+                {!! $section->blocks()->only('data_card', 'data_card_course', 'category_card', 'class_card', 'subjects_card', 'course_card', 'courses_card', 'book_category_card', 'book_card', 'blog_card')->render(['data' => $data]) !!}
             @endforeach
 
         </div>

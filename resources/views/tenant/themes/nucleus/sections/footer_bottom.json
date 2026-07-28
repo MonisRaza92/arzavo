@@ -1,18 +1,13 @@
 {
-    "type": "utility_bar",
-    "name": "Utility Bar",
-    "icon": "fa-solid fa-link",
+    "type": "footer_bottom",
+    "name": "Footer Bottom",
+    "icon": "fa-tv",
     "category": "Footer",
     "max_blocks": 4,
     "color_scheme": "scheme_1",
+    "deletable": false,
     "allowed_blocks": [
-        "text",
-        "social_icons",
         "menu"
-    ],
-    "default_blocks": [
-        "text",
-        "social_icons"
     ],
     "fields": [
         {

@@ -1,0 +1,128 @@
+{
+    "type": "custom_section",
+    "name": "Contact",
+    "icon": "fa-solid fa-address-book",
+    "category": "Trust Building",
+    "order": 0,
+    "settings": {
+        "direction": "vertical",
+        "mobile_direction": "1",
+        "alignment": "start",
+        "position": "start",
+        "height": "auto",
+        "mobile_height": "auto",
+        "gap": 40,
+        "padding_top": 70,
+        "padding_bottom": 70
+    },
+    "default_blocks": [
+        {
+            "type": "header",
+            "settings": {
+                "direction": "vertical",
+                "alignment": "start",
+                "gap": 12,
+                "padding_bottom": 32
+            },
+            "default_blocks": [
+                {
+                    "type": "heading",
+                    "settings": {
+                        "text": "Get In Touch",
+                        "heading_type": "heading-2",
+                        "alignment": "start"
+                    }
+                },
+                {
+                    "type": "text",
+                    "settings": {
+                        "text": "Have any questions or need assistance? Reach out to us and our support team will help you.",
+                        "alignment": "start"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "settings": {
+                "direction": "horizontal",
+                "mobile_direction": "1",
+                "alignment": "start",
+                "position": "between",
+                "gap": 28,
+                "position_type": "relative",
+                "width": "full",
+                "background_type": "none"
+            },
+            "default_blocks": [
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "gap": 28,
+                        "position_type": "relative",
+                        "width": "full",
+                        "mobile_width": "full",
+                        "background_type": "none"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "contact_card",
+                            "settings": {
+                                "icon": "map-marker-alt",
+                                "heading": "Address",
+                                "text": "123 Academic Street, Education District, City"
+                            }
+                        },
+                        {
+                            "type": "contact_card",
+                            "settings": {
+                                "icon": "phone-alt",
+                                "heading": "Phone",
+                                "text": "+91 98765 43210",
+                                "link": "tel:+919876543210"
+                            }
+                        },
+                        {
+                            "type": "contact_card",
+                            "settings": {
+                                "icon": "envelope",
+                                "heading": "Email",
+                                "text": "support@arzavo.com",
+                                "link": "mailto:support@arzavo.com"
+                            }
+                        },
+                        {
+                            "type": "contact_card",
+                            "settings": {
+                                "icon": "clock",
+                                "heading": "Working Hours",
+                                "text": "Monday - Friday: 9:00 AM - 6:00 PM"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "settings": {
+                        "direction": "vertical",
+                        "gap": 26,
+                        "position_type": "relative",
+                        "width": "full",
+                        "mobile_width": "full",
+                        "background_type": "none"
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "contact_form",
+                            "settings": {
+                                "title": "Send Us a Message",
+                                "button_text": "Send Message"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

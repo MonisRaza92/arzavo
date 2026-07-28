@@ -1,0 +1,27 @@
+{
+  "type": "data_rating",
+  "name": "Rating",
+  "icon": "fa-star",
+  "order": 6,
+  "category": "Content",
+  "fields": [
+    {
+      "key": "rating_value",
+      "label": "Default Rating Score",
+      "type": "text",
+      "default": "4.5"
+    },
+    {
+      "key": "bg_color",
+      "label": "Badge Background Color",
+      "type": "color",
+      "default": "#10b981"
+    },
+    {
+      "key": "text_color",
+      "label": "Text Color",
+      "type": "color",
+      "default": "#ffffff"
+    }
+  ]
+}

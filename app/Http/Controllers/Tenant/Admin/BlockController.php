@@ -63,29 +63,18 @@ class BlockController
 
     private function buildBlock(string $type, string $name, string $schemaName, string $themeSlug, int $order)
     {
-        $json = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$schemaName}.json");
-        $schema = json_decode(file_get_contents($json), true);
-
-        $settings = [];
-        $fields = resolveFieldPresets($schema['fields'] ?? []);
-        foreach ($fields as $f) {
-            if (isset($f['key'], $f['default'])) {
-                $settings[$f['key']] = $f['default'];
-            }
-        }
-
-        return [
-            'id' => 'blk_' . uniqid(),
-            'type' => $schema['type'] ?? $type,
-            'schema' => $schemaName,
-            'name' => $name,
-            'icon' => $schema['icon'] ?? 'fa-cube',
-            'settings' => $settings,
-            'order' => $order,
-            'color_scheme' => $schema['color_scheme'] ?? null,
-            'is_active' => true,
-            'blocks' => [],
+        $blockConfig = [
+            'type' => $schemaName,
+            'settings' => [],
         ];
+
+        $blockData = \App\Services\Theme\ThemeBlockFactory::build($blockConfig, $themeSlug, $order);
+
+        $blockData['name'] = $name;
+        $blockData['schema'] = $schemaName;
+        $blockData['type'] = $type;
+
+        return $blockData;
     }
 
 
@@ -97,74 +86,79 @@ class BlockController
             'block_name' => 'required|string'
         ]);
 
-        $design = $this->themePageDesign(
-            TenantTheme::where('theme_slug', $themeSlug)->first()->id,
+        $theme = TenantTheme::where('theme_slug', $themeSlug)->firstOrFail();
+
+        $found = $this->findSectionWithDesign(
+            $theme->id,
             $pageId,
+            $sectionId
         );
 
-        $layout = $design->layout;
-
-        // 🔎 Find section
-        foreach ($layout['sections'] as &$section) {
-            if ($section['id'] !== $sectionId) {
-                continue;
-            }
-
-            $blockPath = $request->schema ?? $request->block_type;
-            // 📄 Load schema
-            $jsonPath = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$blockPath}.json");
-
-            if (!file_exists($jsonPath)) {
-                return back()->with('error', 'Block schema not found');
-            }
-
-            $schema = json_decode(file_get_contents($jsonPath), true);
-
-            // 🎛 Default settings
-            $defaultSettings = [];
-            $fields = resolveFieldPresets($schema['fields'] ?? []);
-            foreach ($fields as $field) {
-                if (isset($field['key']) && array_key_exists('default', $field)) {
-                    $defaultSettings[$field['key']] = $field['default'];
-                }
-            }
-
-            // 🧱 New block (no order yet – recursion handles it)
-            $newBlock = [
-                'id' => 'blk_' . uniqid(),
-                'type' => $request->block_type,
-                'schema' => $request->schema,
-                'name' => $request->block_name,
-                'icon' => $schema['icon'] ?? 'fa-shapes',
-                'settings' => $defaultSettings,
-                'color_scheme' => $schema['color_scheme'] ?? null,
-                'is_active' => true,
-                'blocks' => [],
-            ];
-
-            // 🔁 Recursive insert
-            $added = $this->addNestedBlockRecursive(
-                $section['blocks'],
-                $blockId,
-                $newBlock
-            );
-
-            if (!$added) {
-                return back()->with('error', 'Parent block not found');
-            }
-
-            // 💾 Save
-            $design->update(['layout' => $layout]);
-            $availableBlocks = $this->availableBlocks($themeSlug);
-            $blockRules = $this->blockRules($themeSlug);
-            $theme = TenantTheme::where('theme_slug', $themeSlug)->first();
-            $page = Page::findOr($pageId);
-            $section = collect($layout['sections'])->firstWhere('id', $sectionId);
-
-            return view('tenant.admin.builder.blocks.block-list', ['block' => $newBlock, 'availableBlocks' => $availableBlocks, 'blockRules' => $blockRules, 'theme' => $theme, 'page' => $page, 'section' => $section])->render();
+        if (!$found) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Section not found'
+            ], 404);
         }
 
-        return back()->with('error', 'Section not found');
+        // 🔧 Resolve section reference based on scope
+        $layout = $found['layout'];
+        if ($found['scope'] === 'global') {
+            $section =& $layout[$found['area']]['sections'][$found['index']];
+        } else {
+            $section =& $layout['sections'][$found['index']];
+        }
+
+        $blockPath = $request->schema ?? $request->block_type;
+        // 📄 Load schema
+        $jsonPath = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$blockPath}.json");
+
+        if (!file_exists($jsonPath)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Block schema not found'
+            ], 404);
+        }
+
+        // 🧱 New block populated with default child blocks recursively
+        $newBlock = $this->buildBlock(
+            $request->block_type,
+            $request->block_name,
+            $request->schema,
+            $themeSlug,
+            1 // Order will be corrected in recursion
+        );
+
+        // 🔁 Recursive insert
+        $section['blocks'] ??= [];
+        $added = $this->addNestedBlockRecursive(
+            $section['blocks'],
+            $blockId,
+            $newBlock
+        );
+
+        if (!$added) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Parent block not found'
+            ], 404);
+        }
+
+        // 💾 Save using correct design scope
+        $found['design']->update(['layout' => $layout]);
+
+        $availableBlocks = $this->availableBlocks($themeSlug);
+        $blockRules = $this->blockRules($themeSlug);
+        $page = Page::find($pageId);
+
+        return view('tenant.admin.builder.blocks.block-list', [
+            'block' => $newBlock, 
+            'availableBlocks' => $availableBlocks, 
+            'blockRules' => $blockRules, 
+            'theme' => $theme, 
+            'page' => $page, 
+            'section' => $section
+        ])->render();
     }
 
     private function addNestedBlockRecursive(array &$blocks, string $targetBlockId, array $newBlock): bool

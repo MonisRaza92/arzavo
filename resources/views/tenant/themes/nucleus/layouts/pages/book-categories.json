@@ -1,0 +1,10 @@
+{
+    "book-categories": [
+        {
+            "kind": "section",
+            "name": "book_category_container"
+        }
+    ],
+    "meta_title": "Book Categories",
+    "meta_description": "Browse study resources and library material by category."
+}

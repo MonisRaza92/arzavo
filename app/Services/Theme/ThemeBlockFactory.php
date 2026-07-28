@@ -51,6 +51,7 @@ class ThemeBlockFactory
         $blockData = [
             'id' => 'blk_' . uniqid(),
             'type' => $type,
+            'schema' => $type,
             'name' => $schema['name'] ?? ucfirst($type),
             'icon' => $schema['icon'] ?? 'fa-box',
             'settings' => $settings,

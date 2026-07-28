@@ -17,7 +17,11 @@
         "card",
         "video",
         "spacer",
-        "accordion"
+        "accordion",
+        "contact_card",
+        "contact_map",
+        "contact_form",
+        "newsletter_form"
     ],
     "fields": [
         {

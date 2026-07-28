@@ -90,6 +90,9 @@ return [
     "envelope",
     "envelope-open",
     "inbox",
+    "phone",
+    "phone-alt",
+    "mobile-alt",
 
     "comment",
     "comments",
@@ -145,6 +148,7 @@ return [
     "map",
     "location-dot",
     "location-pin",
+    "map-marker-alt",
     "route",
     "bus",
     "car",

@@ -1,0 +1,34 @@
+{
+    "type": "footer_logo",
+    "name": "Footer Logo",
+    "icon": "fa-image",
+    "category": "Content",
+    "order": 13,
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout",
+            "help": "Configure the footer logo image, alt description text, and optional click-through redirection URL."
+        },
+        {
+            "key": "logo_image",
+            "label": "Logo Image",
+            "type": "image",
+            "help": "Add custom image here. If left empty, the website logo will be used."
+        },
+        {
+            "key": "alt_text",
+            "label": "Alt Text",
+            "type": "text",
+            "default": "Logo"
+        },
+        {
+            "key": "link",
+            "label": "Link URL",
+            "type": "link",
+            "default": ""
+        }
+    ]
+}

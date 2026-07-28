@@ -1,0 +1,34 @@
+{
+  "type": "data_badge",
+  "name": "Badges",
+  "icon": "fa-tag",
+  "order": 5,
+  "category": "Content",
+  "fields": [
+    {
+      "key": "group",
+      "type": "group",
+      "help": "Customize edition badge with background color, text color and border roundness"
+    },
+    {
+      "key": "bg_color",
+      "label": "Background Color",
+      "type": "color",
+      "default": "#eff6ff"
+    },
+    {
+      "key": "text_color",
+      "label": "Text Color",
+      "type": "color",
+      "default": "#1d4ed8"
+    },
+    {
+      "key": "border_radius",
+      "label": "Corner Roundness",
+      "type": "range",
+      "min": 0,
+      "max": 20,
+      "default": 4
+    }
+  ]
+}

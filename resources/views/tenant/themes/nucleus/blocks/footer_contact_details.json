@@ -1,0 +1,42 @@
+{
+    "type": "footer_contact_details",
+    "name": "Contact Details",
+    "icon": "fa-list",
+    "category": "Footer",
+    "order": 4,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Contact Details"
+        },
+        {
+            "key": "address",
+            "label": "Address",
+            "type": "text",
+            "default": "123 Academic Street, Education City",
+            "help": "Enter the street address."
+        },
+        {
+            "key": "phone",
+            "label": "Phone Number",
+            "type": "text",
+            "default": "+91 98765 43210",
+            "help": "Enter the contact phone number."
+        },
+        {
+            "key": "email",
+            "label": "Email Address",
+            "type": "text",
+            "default": "info@arzavo.com",
+            "help": "Enter the email address."
+        },
+        {
+            "key": "icon_color",
+            "label": "Icon Color",
+            "type": "color",
+            "default": "#4f46e5",
+            "help": "Select the color for contact icons."
+        }
+    ]
+}

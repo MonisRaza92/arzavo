@@ -1,0 +1,10 @@
+{
+    "blog": [
+        {
+            "kind": "section",
+            "name": "blogs_container"
+        }
+    ],
+    "meta_title": "Blog Details",
+    "meta_description": "Read full article details and insights."
+}

@@ -155,4 +155,52 @@ class ThemePageController extends Controller
 
         return $design?->layout ?? ['sections' => []];
     }
+
+    /**
+     * SUBMIT CONTACT FORM
+     */
+    public function contactSubmit(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        \App\Models\Tenant\Inquiry::create($request->only(['name', 'email', 'subject', 'message']));
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Thank you for your enquiry! We will contact you soon.'
+            ]);
+        }
+
+        return back()->with('success', 'Thank you for your enquiry! We will contact you soon.');
+    }
+
+    /**
+     * SUBMIT NEWSLETTER FORM
+     */
+    public function newsletterSubmit(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:255',
+        ]);
+
+        $exists = \App\Models\Tenant\NewsletterSubscriber::where('email', $request->email)->exists();
+        if (!$exists) {
+            \App\Models\Tenant\NewsletterSubscriber::create(['email' => $request->email]);
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Thank you for subscribing to our newsletter!'
+            ]);
+        }
+
+        return back()->with('success', 'Thank you for subscribing to our newsletter!');
+    }
 }

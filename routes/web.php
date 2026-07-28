@@ -35,6 +35,9 @@ use App\Http\Controllers\Tenant\User\UserController;
 use App\Http\Controllers\Tenant\Students\StudentsController;
 use App\Http\Controllers\Tenant\Teachers\TeachersController;
 use App\Http\Controllers\Tenant\SitemapController;
+use App\Http\Controllers\Tenant\Admin\BookController;
+use App\Http\Controllers\Tenant\Admin\BookCategoryController;
+use App\Http\Controllers\Tenant\Admin\CommunicationController;
 
 Route::view('/offline', 'offline');
 Route::post('/cashfree/webhook', [PaymentController::class, 'webhook']);
@@ -121,6 +124,34 @@ if (!function_exists('registerDomains')) {
             Route::get('/sitemap.xml', SitemapController::class)
                 ->name('tenant.sitemap');
 
+            Route::get('/manifest.webmanifest', function () {
+                $tenant = app()->bound('currentTenant') ? app('currentTenant') : null;
+                $siteName = $tenant?->name ?? config('app.name');
+
+                $manifest = [
+                    'name' => $siteName,
+                    'short_name' => $siteName,
+                    'start_url' => '/',
+                    'display' => 'standalone',
+                    'background_color' => '#ffffff',
+                    'theme_color' => '#ffffff',
+                    'icons' => [
+                        [
+                            'src' => media($tenant?->logo ?? ''),
+                            'sizes' => '192x192',
+                            'type' => 'image/png',
+                        ],
+                        [
+                            'src' => media($tenant?->logo ?? ''),
+                            'sizes' => '512x512',
+                            'type' => 'image/png',
+                        ],
+                    ],
+                ];
+
+                return response()->json($manifest, 200, ['Content-Type' => 'application/manifest+json']);
+            })->name('tenant.manifest');
+
             // 🔥 IMPORTANT: expired page (theme controlled)
             Route::get('/subscription-expired', function () {
                 return app(ThemePageController::class)
@@ -132,9 +163,6 @@ if (!function_exists('registerDomains')) {
                 return app(ThemePageController::class)->system('home');
             })->name('tenant.home');
 
-            Route::get('/about', function () {
-                return app(ThemePageController::class)->system('about');
-            })->name('tenant.about');
 
             Route::get('/courses', function () {
                 return app(ThemePageController::class)->system('courses');
@@ -152,27 +180,28 @@ if (!function_exists('registerDomains')) {
                 return app(ThemePageController::class)->system('blog');
             })->name('tenant.blog');
 
-            Route::get('/content-store', function () {
-                return app(ThemePageController::class)->system('content-store');
-            })->name('tenant.content-store');
 
-            Route::get('content', function () {
-                return app(ThemePageController::class)->system('content');
-            })->name('tenant.content');
+            Route::get('/book-categories', function () {
+                return app(ThemePageController::class)->system('book-categories');
+            })->name('tenant.book-categories');
 
-            Route::get('/privacy-policy', function () {
-                return app(ThemePageController::class)->system('privacy-policy');
-            })->name('tenant.privacy-policy');
+            Route::get('/books', function () {
+                return app(ThemePageController::class)->system('books');
+            })->name('tenant.books');
 
-            Route::get('/terms-conditions', function () {
-                return app(ThemePageController::class)->system('terms-conditions');
-            })->name('tenant.terms-conditions');
+            Route::get('book', function () {
+                return app(ThemePageController::class)->system('book');
+            })->name('tenant.book');
+
 
             Route::get('/preview/{theme}/{theme_id}/{slug}', function ($theme, $themeId = null, $slug = 'home') {
                 return app(ThemePageController::class)->preview($theme, $themeId, $slug);
             })
                 ->where('slug', '[A-Za-z0-9-_]+')
                 ->name('website.preview');
+
+            Route::post('/contact-submit', [ThemePageController::class, 'contactSubmit'])->name('contact.form');
+            Route::post('/newsletter-submit', [ThemePageController::class, 'newsletterSubmit'])->name('newsletter.submit');
 
             Route::get('/{slug}', function ($slug) {
                 return app(ThemePageController::class)->page($slug);
@@ -249,6 +278,15 @@ if (!function_exists('registerDomains')) {
                     //Admin Contents Routes
                     Route::resource('contents', ContentController::class);
 
+                    //Admin Library Routes
+                    Route::get('/book-categories', [BookCategoryController::class, 'index'])->name('book-categories.index');
+                    Route::post('/book-categories', [BookCategoryController::class, 'store'])->name('book-categories.store');
+                    Route::get('/book-categories/{id}/get', [BookCategoryController::class, 'get'])->name('book-categories.get');
+                    Route::put('/book-categories/{id}/update', [BookCategoryController::class, 'update'])->name('book-categories.update');
+                    Route::delete('/book-categories/{id}/delete', [BookCategoryController::class, 'destroy'])->name('book-categories.destroy');
+
+                    Route::resource('books', BookController::class);
+
                     Route::resource('blog', BlogController::class);
 
                     //Admin Courses Routes
@@ -264,6 +302,11 @@ if (!function_exists('registerDomains')) {
                     Route::get('/blogs', [AdminController::class, 'blogs'])->name('admin-blogs');
                     Route::get('/events', [AdminController::class, 'events'])->name('admin-events');
 
+                    // Admin Communication Routes
+                    Route::get('/communication/inquiries', [CommunicationController::class, 'inquiries'])->name('communication.inquiries');
+                    Route::delete('/communication/inquiries/{id}', [CommunicationController::class, 'inquiryDelete'])->name('communication.inquiries.delete');
+                    Route::get('/communication/subscribers', [CommunicationController::class, 'subscribers'])->name('communication.subscribers');
+                    Route::delete('/communication/subscribers/{id}', [CommunicationController::class, 'subscriberDelete'])->name('communication.subscribers.delete');
 
                     //Admin Customizations Routes
                     Route::resource('customizes', CustomizesController::class);

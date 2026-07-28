@@ -1,0 +1,50 @@
+{
+    "type": "footer_menu",
+    "name": "Footer Menu",
+    "icon": "fa-list",
+    "order": 2,
+    "category": "Footer",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Menu Source"
+        },
+        {
+            "key": "menu_id",
+            "label": "Select Menu",
+            "type": "menu",
+            "default": "1"
+        },
+        {
+            "key": "separate_mobile_menu",
+            "label": "Separate Mobile Menu",
+            "type": "switch",
+            "default": "0",
+            "text": "To use different menu on mobile"
+        },
+        {
+            "key": "mobile_menu_id",
+            "label": "Select Mobile Menu",
+            "type": "menu",
+            "default": "1",
+            "conditional": {
+                "field": "separate_mobile_menu",
+                "value": "1"
+            }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing"
+        },
+        {
+            "key": "gap",
+            "label": "Link Spacing",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": "16"
+        }
+    ]
+}

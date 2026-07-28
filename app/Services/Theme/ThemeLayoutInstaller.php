@@ -86,7 +86,7 @@ class ThemeLayoutInstaller
                 $section['order'] = $i + 1;
             }
 
-            ThemePageDesign::updateOrCreate(
+            ThemePageDesign::firstOrCreate(
                 [
                     'tenant_theme_id' => $tenantThemeId,
                     'page_id' => $page->id,

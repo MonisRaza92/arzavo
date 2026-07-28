@@ -469,7 +469,10 @@ class Block implements ArrayAccess
 
         $menus = app('view')->getShared()['menus'] ?? collect();
 
-        return $menus->firstWhere('id', $menuId);
+        return $menus->firstWhere('id', $menuId) 
+            ?? $menus->firstWhere('slug', $menuId) 
+            ?? $menus->firstWhere('location', $menuId) 
+            ?? $menus->first();
     }
 
     protected function mobileMenu()
@@ -481,11 +484,12 @@ class Block implements ArrayAccess
 
         $menus = app('view')->getShared()['menus'] ?? collect();
 
-        if ($separate === "1") {
-            return $menus->firstWhere('id', $mobileMenuId);
-        }
+        $targetId = ($separate === "1") ? $mobileMenuId : $menuId;
 
-        return $menus->firstWhere('id', $menuId);
+        return $menus->firstWhere('id', $targetId) 
+            ?? $menus->firstWhere('slug', $targetId) 
+            ?? $menus->firstWhere('location', $targetId) 
+            ?? $menus->first();
     }
 
     /* --------------------------------

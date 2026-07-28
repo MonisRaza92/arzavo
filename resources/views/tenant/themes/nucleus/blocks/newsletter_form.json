@@ -1,0 +1,68 @@
+{
+    "type": "newsletter_form",
+    "name": "Newsletter Form",
+    "icon": "fa-paper-plane",
+    "category": "Content",
+    "order": 14,
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Form Settings"
+        },
+        {
+            "key": "placeholder",
+            "label": "Input Placeholder",
+            "type": "text",
+            "default": "Enter your email address"
+        },
+        {
+            "key": "button_text",
+            "label": "Button Text",
+            "type": "text",
+            "default": "Subscribe"
+        },
+        {
+            "key": "button_style",
+            "label": "Button Style",
+            "type": "select",
+            "options": [
+                { "label": "Primary Button", "value": "arz-btn-primary" },
+                { "label": "Secondary Button", "value": "arz-btn-secondary" },
+                { "label": "Custom Colors", "value": "custom" }
+            ],
+            "default": "arz-btn-primary"
+        },
+        {
+            "key": "button_color",
+            "label": "Button Background Color",
+            "type": "color",
+            "default": "#4f46e5",
+            "conditional": {
+                "field": "button_style",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "button_text_color",
+            "label": "Button Text Color",
+            "type": "color",
+            "default": "#ffffff",
+            "conditional": {
+                "field": "button_style",
+                "value": "custom"
+            }
+        },
+        {
+            "key": "layout_style",
+            "label": "Layout Alignment",
+            "type": "radio",
+            "options": [
+                { "label": "Horizontal", "value": "horizontal" },
+                { "label": "Vertical", "value": "vertical" }
+            ],
+            "default": "Vertical"
+        }
+    ]
+}

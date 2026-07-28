@@ -1,0 +1,29 @@
+{
+    "type": "contact_map",
+    "name": "Contact Map",
+    "icon": "fa-map",
+    "category": "Content",
+    "order": 16,
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Map Settings"
+        },
+        {
+            "key": "map_url",
+            "label": "Google Map Embed URL (iframe src)",
+            "type": "textarea",
+            "default": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.5620158498877!2d77.2090212!3d28.6139391!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5d3de26917%3A0x9d0f41c9641cd6d9!2sRashtrapati%20Bhavan!5e0!3m2!1sen!2sin!4v1680000000000!5m2!1sen!2sin"
+        },
+        {
+            "key": "height",
+            "label": "Map Height (pixels)",
+            "type": "range",
+            "min": 150,
+            "max": 600,
+            "default": 350
+        }
+    ]
+}

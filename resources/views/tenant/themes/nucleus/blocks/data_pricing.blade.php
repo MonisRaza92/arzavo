@@ -36,27 +36,31 @@
         font-style: {{ $fontStyle }};
         text-decoration: {{ $textDecoration }};
     " class="
-        arzavo-{{ $headingType }}
+        arz-{{ $headingType }}
         heading-{{ $block['id'] }}
         {{ $mAlignmentClass }}
         {{ $alignmentClass }}
     ">
-    @if ($data->is_paid ?? false)
+    @php
+        $isPaid = ($data->price_type ?? '') === 'paid' || ($data->is_paid ?? false) == true || (($data->price ?? 0) > 0);
+        $salePrice = $data->sale_price ?? $data->discount_price ?? null;
+        $originalPrice = $data->price ?? null;
+    @endphp
 
-        @if($course->discount_price ?? null)
+    @if ($isPaid)
+        @if($salePrice && $salePrice > 0 && $salePrice != $originalPrice)
             <span class="font-bold">
-            ₹ {{ $course->discount_price }}
+                ₹ {{ number_format($salePrice, 2) }}
             </span>
-            <span class="line-through"
-                style="color: var(--arzavo-paragraph-color); font-size: var(--arzavo-paragraph-font-size);">
-                ₹ {{ $course->price }}
+            <span class="line-through text-sm opacity-60 ml-1">
+                ₹ {{ number_format($originalPrice, 2) }}
             </span>
         @else
             <span class="font-bold">
-            ₹ {{ $course->price ?? '00.00' }}
+                ₹ {{ number_format($originalPrice ?? 0, 2) }}
             </span>
         @endif
     @else
-        Free
+        <span class="font-bold text-green-600">FREE</span>
     @endif
 </h2>
