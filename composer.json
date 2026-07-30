@@ -78,7 +78,7 @@
         ],
         "deploy": [
             "@php artisan down",
-            "git pull origin main",
+            "git pull",
             "composer install --optimize-autoloader --no-dev",
             "@php artisan optimize:clear",
             "@php artisan config:cache",
