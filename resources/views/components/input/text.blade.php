@@ -5,10 +5,11 @@
 'placeholder' => '',
 'disabled' => false,
 'readonly' => false,
-'class' => ''
+'class' => '',
+'hint' => null
 ])
 
-<x-input.wrapper :label="$label">
+<x-input.wrapper :label="$label" :hint="$hint">
     <input
         type="text"
         name="{{ $name }}"
@@ -18,6 +19,6 @@
         @disabled($disabled)
         @readonly($readonly)
         {{ $attributes->merge([
-            'class' => "w-full p-2 border-rounded text-xs border-primary bg-transparent $class"
+            'class' => "w-full p-2.5 rounded text-sm border-primary bg-transparent $class"
         ]) }}>
 </x-input.wrapper>

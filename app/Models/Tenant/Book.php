@@ -4,9 +4,14 @@ namespace App\Models\Tenant;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Contracts\Commerce\PurchasableContract;
+use App\Traits\HasVariants;
+use App\Traits\HasReviews;
 
-class Book extends Model
+class Book extends Model implements PurchasableContract
 {
+    use HasVariants, HasReviews;
+
     protected $connection = 'tenant';
 
     protected $fillable = [
@@ -44,6 +49,11 @@ class Book extends Model
         'views_count' => 'integer',
         'downloads_count' => 'integer',
     ];
+
+    public function getPurchasableTitle(): string
+    {
+        return $this->title;
+    }
 
     /**
      * Get the category this book belongs to.

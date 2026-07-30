@@ -6,7 +6,7 @@
 'hint' => null
 ])
 
-<div class="flex justify-between items-center p-3 rounded-lg border border-primary">
+<div class="flex justify-between items-center p-3 rounded border border-primary">
 
     <div>
         <label class="text-sm font-medium text-gray-700">

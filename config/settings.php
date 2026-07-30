@@ -8,17 +8,27 @@ return [
 |--------------------------------------------------------------------------
 */
     "seo" => [
-        "title" => "SEO & Analytics",
+        "title" => "SEO & Search Optimization",
         "fields" => [
-            "meta_title" => ["label" => "Meta Title", "type" => "text"],
-            "meta_description" => ["label" => "Meta Description", "type" => "textarea"],
-            "meta_keywords" => ["label" => "Meta Keywords", "type" => "text"],
+            "meta_title" => ["label" => "Default Meta Title", "type" => "text"],
+            "meta_description" => ["label" => "Default Meta Description", "type" => "textarea"],
+            "meta_keywords" => ["label" => "Default Meta Keywords", "type" => "text"],
 
-            "google_analytics" => ["label" => "Google Analytics ID", "type" => "text"],
-            "google_tag_manager" => ["label" => "Google Tag Manager ID", "type" => "text"],
+            "google_analytics" => ["label" => "Google Analytics GA4 ID (G-XXXXXXXX)", "type" => "text"],
+            "google_tag_manager" => ["label" => "Google Tag Manager ID (GTM-XXXXXXX)", "type" => "text"],
+            "facebook_pixel_id" => ["label" => "Facebook Pixel ID", "type" => "text"],
+            "microsoft_clarity_id" => ["label" => "Microsoft Clarity Project ID", "type" => "text"],
+            
+            "google_site_verification" => ["label" => "Google Site Verification Token", "type" => "text"],
+            "bing_site_verification" => ["label" => "Bing Site Verification Token", "type" => "text"],
 
             "allow_indexing" => ["label" => "Allow Search Engine Indexing", "type" => "toggle", "default" => 1],
-            "sitemap_enabled" => ["label" => "Enable Sitemap.xml", "type" => "toggle", "default" => 1],
+            "robots_meta" => ["label" => "Robots Meta Directives (e.g. index, follow)", "type" => "text", "default" => "index, follow"],
+            "sitemap_enabled" => ["label" => "Enable Dynamic Sitemap.xml", "type" => "toggle", "default" => 1],
+            "enable_internal_search" => ["label" => "Enable Public Site Search", "type" => "toggle", "default" => 1],
+            
+            "schema_org_json" => ["label" => "Custom Schema JSON-LD", "type" => "textarea"],
+            "custom_head_tags" => ["label" => "Custom Header HTML Code (Scripts, Links, Meta)", "type" => "textarea"],
         ]
     ],
 

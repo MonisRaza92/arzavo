@@ -4,10 +4,11 @@
 'value' => '',
 'placeholder' => '',
 'class' => '',
-'disabled' => false
+'disabled' => false,
+'hint' => null
 ])
 
-<x-input.wrapper :label="$label">
+<x-input.wrapper :label="$label" :hint="$hint">
     <input
         type="email"
         name="{{ $name }}"
@@ -15,6 +16,6 @@
         placeholder="{{ $placeholder }}"
         @disabled($disabled)
         {{ $attributes->merge([
-            'class' => "w-full p-2 rounded-md border border-primary bg-transparent $class"
+            'class' => "w-full p-2.5 rounded-md border border-primary bg-transparent $class"
         ]) }}>
 </x-input.wrapper>

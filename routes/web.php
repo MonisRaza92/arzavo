@@ -104,18 +104,30 @@ if (!function_exists('registerDomains')) {
         Route::domain($domain)->middleware('tenant')->group(function () {
 
             Route::get('/robots.txt', function () {
+                $settings = \App\Models\Tenant\Settings::pluck('value', 'key')->toArray();
+                $allowIndexing = $settings['allow_indexing'] ?? 1;
 
-                $content = implode("\n", [
-                    "User-agent: *",
-                    "Allow: /",
-                    "",
-                    "Disallow: /admin/",
-                    "Disallow: /account/",
-                    "Disallow: /builder/",
-                    "Disallow: /preview/",
-                    "",
-                    "Sitemap: " . url('/sitemap.xml'),
-                ]);
+                if ($allowIndexing == 0) {
+                    $content = implode("\n", [
+                        "User-agent: *",
+                        "Disallow: /",
+                    ]);
+                } else {
+                    $content = implode("\n", [
+                        "User-agent: *",
+                        "Allow: /",
+                        "",
+                        "Disallow: /admin/",
+                        "Disallow: /account/",
+                        "Disallow: /builder/",
+                        "Disallow: /preview/",
+                        "",
+                    ]);
+                    
+                    if ($settings['sitemap_enabled'] ?? 1) {
+                        $content .= "\nSitemap: " . url('/sitemap.xml');
+                    }
+                }
 
                 return response($content, 200)
                     ->header('Content-Type', 'text/plain');
@@ -202,6 +214,12 @@ if (!function_exists('registerDomains')) {
 
             Route::post('/contact-submit', [ThemePageController::class, 'contactSubmit'])->name('contact.form');
             Route::post('/newsletter-submit', [ThemePageController::class, 'newsletterSubmit'])->name('newsletter.submit');
+
+            // 🛒 Universal Checkout & Review Routes
+            Route::get('/checkout', [\App\Http\Controllers\Tenant\Website\CheckoutController::class, 'show'])->name('checkout.show');
+            Route::post('/checkout', [\App\Http\Controllers\Tenant\Website\CheckoutController::class, 'process'])->name('checkout.process');
+            Route::get('/checkout/success/{orderNumber}', [\App\Http\Controllers\Tenant\Website\CheckoutController::class, 'success'])->name('checkout.success');
+            Route::post('/reviews', [\App\Http\Controllers\Tenant\Website\ReviewController::class, 'store'])->name('reviews.store');
 
             Route::get('/{slug}', function ($slug) {
                 return app(ThemePageController::class)->page($slug);
@@ -308,6 +326,16 @@ if (!function_exists('registerDomains')) {
                     Route::get('/communication/subscribers', [CommunicationController::class, 'subscribers'])->name('communication.subscribers');
                     Route::delete('/communication/subscribers/{id}', [CommunicationController::class, 'subscriberDelete'])->name('communication.subscribers.delete');
 
+                    // 💼 Admin Finance & Order Ledger Routes
+                    Route::get('/finance/orders', [\App\Http\Controllers\Tenant\Admin\FinanceController::class, 'index'])->name('finance.orders');
+                    Route::get('/finance/orders/{id}', [\App\Http\Controllers\Tenant\Admin\FinanceController::class, 'show'])->name('finance.orders.show');
+                    Route::post('/finance/orders/{id}/approve', [\App\Http\Controllers\Tenant\Admin\FinanceController::class, 'approvePayment'])->name('finance.orders.approve');
+                    Route::post('/finance/orders/{id}/fulfillment', [\App\Http\Controllers\Tenant\Admin\FinanceController::class, 'updateFulfillment'])->name('finance.orders.fulfillment');
+
+                    // 💳 Payment Settings Routes
+                    Route::get('/settings/payments', [\App\Http\Controllers\Tenant\Admin\PaymentSettingsController::class, 'index'])->name('settings.payments');
+                    Route::post('/settings/payments', [\App\Http\Controllers\Tenant\Admin\PaymentSettingsController::class, 'store'])->name('settings.payments.store');
+
                     //Admin Customizations Routes
                     Route::resource('customizes', CustomizesController::class);
 
@@ -354,6 +382,11 @@ if (!function_exists('registerDomains')) {
                     });
 
                     //Admin Settings Routes
+                    Route::get('/settings/general', [SettingsController::class, 'general'])->name('settings.general');
+                    Route::get('/settings/website', [SettingsController::class, 'website'])->name('settings.website');
+                    Route::get('/settings/academics', [SettingsController::class, 'academics'])->name('settings.academics');
+                    Route::get('/settings/communication', [SettingsController::class, 'communication'])->name('settings.communication');
+                    Route::get('/settings/security', [SettingsController::class, 'security'])->name('settings.security');
                     Route::resource('settings', SettingsController::class);
                 });
             });

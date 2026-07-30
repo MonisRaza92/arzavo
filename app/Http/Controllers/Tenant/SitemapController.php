@@ -8,6 +8,11 @@ class SitemapController
 {
     public function __invoke()
     {
+        $settings = \App\Models\Tenant\Settings::pluck('value', 'key')->toArray();
+        if (!($settings['sitemap_enabled'] ?? 1)) {
+            abort(404, 'Sitemap is disabled.');
+        }
+
         $urls = [];
         $base = rtrim(tenant_url(), '/');
 

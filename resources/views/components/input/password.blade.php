@@ -2,17 +2,18 @@
     'name',
     'label' => '',
     'value' => '',
-    'class' => ''
+    'class' => '',
+    'hint' => null
 ])
 
-<x-input.wrapper :label="$label">
+<x-input.wrapper :label="$label" :hint="$hint">
 
     <div class="relative">
         <input
             type="password"
             name="{{ $name }}"
             value="{{ $value }}"
-            class="w-full p-2 pr-10 rounded-md border border-primary bg-transparent {{ $class }}">
+            class="w-full p-2.5 pr-10 rounded-md border border-primary bg-transparent {{ $class }}">
 
         <button type="button"
             class="absolute right-2 top-1/2 -translate-y-1/2 text-tertiary hover:text-primary"

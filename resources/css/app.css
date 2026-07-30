@@ -264,6 +264,14 @@ button {
     }
 }
 
+.primary-button {
+    @apply bg-dark text-white py-2.5 px-6 rounded-sm border;
+}
+
+.secondary-button {
+    @apply bg-secondary text-dark py-2.5 px-6 rounded-sm border;
+}
+
 .hover-invert:hover {
     background-color: var(--bg-invert);
     color: var(--text-invert);

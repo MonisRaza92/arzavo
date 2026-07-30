@@ -5,10 +5,15 @@ namespace App\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Contracts\Commerce\PurchasableContract;
+use App\Traits\HasVariants;
+use App\Traits\HasReviews;
+use App\Models\Tenant\User;
 
-class Course extends Model
+class Course extends Model implements PurchasableContract
 {
-    use HasFactory;
+    use HasFactory, HasVariants, HasReviews;
+
     protected $connection = 'tenant';
 
     protected $fillable = [
@@ -40,6 +45,10 @@ class Course extends Model
         'user_id',
     ];
 
+    public function getPurchasableTitle(): string
+    {
+        return $this->title;
+    }
 
     public function getRouteKeyName()
     {
@@ -87,7 +96,7 @@ class Course extends Model
         );
     }
 
-    // Modules (STEP I me use hoga)
+    // Modules
     public function modules()
     {
         return $this->hasMany(CourseModule::class)
@@ -103,7 +112,7 @@ class Course extends Model
     }
 
     /* ---------------------------------
-     | SCOPES (FILTER SYSTEM READY)
+     | SCOPES
      |---------------------------------*/
 
     public function scopePublished($query)
