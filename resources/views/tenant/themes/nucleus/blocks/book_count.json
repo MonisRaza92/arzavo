@@ -1,0 +1,7 @@
+{
+    "type": "data_count",
+    "name": "Book Count",
+    "icon": "fa-check-square",
+    "category": "Data",
+    "max_blocks": 0
+}

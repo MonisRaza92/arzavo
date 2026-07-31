@@ -5,7 +5,6 @@
     $alignment = $s['alignment'] ?? $block->alignment ?? 'start';
     $position = $s['position'] ?? $block->position ?? 'start';
     $gap = isset($s['gap']) ? $s['gap'] : ($block->gap ?? 8);
-    $padding = isset($s['padding']) ? $s['padding'] : ($block->padding ?? 0);
 
     $dirClass = ($direction === 'horizontal') ? 'flex-row' : 'flex-col';
 
@@ -22,9 +21,8 @@
         default => 'justify-start',
     };
 @endphp
-
 <div {!! $block->attributes() !!} 
     class="w-full flex {{ $dirClass }} {{ $alignClass }} {{ $justifyClass }}"
-    style="gap: {{ $gap }}px; @if((int)$padding > 0) padding: {{ $padding }}px; @endif">
+    style="gap: {{ $gap }}px; {{ $block->padding . $block->margin }}">
     {!! $block->blocks()->render(['data' => $data]) !!}
 </div>

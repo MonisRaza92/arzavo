@@ -16,14 +16,14 @@
             });
         @endphp
         @php
-            $blockRule = $blockRules[$block['type']] ?? null;
+            $blockRule = ($blockRules[$block['schema'] ?? null] ?? $blockRules[$block['type'] ?? null]) ?? null;
             $moveable = $blockRule['moveable'] ?? true;
             $deletable = $blockRule['deletable'] ?? true;
             $toggle = $blockRule['toggle'] ?? true;
          @endphp
 
         <div class="flex items-center grow">
-            @if (!empty($blockRules[$block['type']]['allowed_blocks']))
+            @if (!empty($blockRule['allowed_blocks']))
                 <button type="button" id="block-btn-{{ $block['id'] }}"
                     class="text-tertiary bg-hover-secondary pt-0.5 pb-1.5 px-2 border-rounded toggle-block-btn"
                     data-id="{{ $block['id'] }}">
@@ -33,7 +33,7 @@
                 <span class="w-8.75"></span>
             @endif
             <i class="fa-solid {{ $block['icon'] ?? 'fa-cube' }} text-[13px] mr-2 text-tertiary"></i>
-            <span class="text-sm cursor-pointer block-open-btn w-full py-1
+            <span class="text-sm cursor-pointer block-open-btn w-full py-1"
                 data-block-id=" {{ $block['id'] }}">{{ $block['name'] }}</span>
         </div>
 
@@ -86,7 +86,7 @@
             @endforeach
         </ul>
         @php
-            $blockRule = $blockRules[$block['type']] ?? null;
+            $blockRule = ($blockRules[$block['schema'] ?? null] ?? $blockRules[$block['type'] ?? null]) ?? null;
             $maxNestedBlocks = $blockRule['max_blocks'] ?? null;
             $currentNestedBlockCount = count($block['blocks']);
         @endphp

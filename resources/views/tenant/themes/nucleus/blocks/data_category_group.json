@@ -1,0 +1,85 @@
+{
+    "type": "data_group",
+    "name": "Group",
+    "icon": "fa-layer-group",
+    "category": "Layout",
+    "max_blocks": 20,
+    "allowed_blocks": [
+        "data_image",
+        "data_title",
+        "data_text",
+        "data_button",
+        "data_category_group",
+        "divider",
+        "data_count"
+    ],
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout"
+        },
+        {
+            "key": "direction",
+            "label": "Direction",
+            "type": "radio",
+            "options": [
+                "vertical",
+                "horizontal"
+            ],
+            "default": "vertical"
+        },
+        {
+            "key": "alignment",
+            "label": "Alignment",
+            "type": "radio",
+            "options": [
+                "start",
+                "center",
+                "end"
+            ],
+            "default": "center"
+        },
+        {
+            "key": "position",
+            "label": "Content Position",
+            "type": "select",
+            "options": [
+                "start",
+                "center",
+                "end",
+                "between"
+            ],
+            "default": "center"
+        },
+        {
+            "key": "gap",
+            "label": "Gap",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 80
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Padding"
+        },
+        {
+            "key": "padding_y",
+            "label": "Padding Vertical",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 200
+        },
+        {
+            "key": "padding_x",
+            "label": "Padding Horizontal",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 200
+        }
+    ]
+}
