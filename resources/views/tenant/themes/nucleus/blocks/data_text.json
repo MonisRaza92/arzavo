@@ -10,8 +10,69 @@
     "fields": [
         {
             "key": "group",
+            "label": "Heading",
+            "type": "group",
+            "help": "Enable optional heading title above text content."
+        },
+        {
+            "key": "show_heading",
+            "label": "Show Heading",
+            "type": "switch",
+            "default": false
+        },
+        {
+            "key": "heading",
+            "label": "Heading Text",
+            "type": "text",
+            "default": "Overview",
+            "placeholder": "Enter heading text...",
+            "conditional": {
+                "key": "show_heading",
+                "value": true
+            }
+        },
+        {
+            "key": "heading_type",
+            "label": "Heading Size / Type",
+            "type": "select",
+            "options": [
+                {
+                    "label": "Heading 1",
+                    "value": "h1" 
+                },
+                {
+                    "label": "Heading 2",
+                    "value": "h2" 
+                },
+                {
+                    "label": "Heading 3",
+                    "value": "h3" 
+                },
+                {
+                    "label": "Heading 4",
+                    "value": "h4" 
+                },
+                {
+                    "label": "Heading 5",
+                    "value": "h5" 
+                },
+                {
+                    "label": "Heading 6",
+                    "value": "h6" 
+                }
+            ],
+            "default": "h6",
+            "conditional": {
+                "key": "show_heading",
+                "value": true
+            }
+        },
+
+        {
+            "key": "group",
             "label": "Content",
-            "type": "group"
+            "type": "group",
+            "help": "Configure text type and limit text length."
         },
         {
             "key": "text_type",
@@ -29,7 +90,7 @@
             "key": "text_limit",
             "type": "range",
             "min": 10,
-            "max": 200,
+            "max": 500,
             "default": 80,
             "conditional": {
                 "key": "enable_text_limit",
@@ -40,7 +101,8 @@
         {
             "key": "group",
             "label": "Layout",
-            "type": "group"
+            "type": "group",
+            "help": "Set text alignment (left, center, right)."
         },
         {
             "key": "alignment",
@@ -57,7 +119,8 @@
         {
             "key": "group",
             "label": "Spacing",
-            "type": "group"
+            "type": "group",
+            "help": "Adjust inner padding around the text block."
         },
         {
             "key": "padding_top",

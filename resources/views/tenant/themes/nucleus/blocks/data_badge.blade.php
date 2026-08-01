@@ -1,25 +1,73 @@
 @php
     $s = $block['settings'] ?? [];
 
-    $source = $s['badge_source'] ?? $block->badge_source ?? 'edition';
-    $bgColor = $s['bg_color'] ?? $block->bg_color ?? '#eff6ff';
-    $textColor = $s['text_color'] ?? $block->text_color ?? '#1d4ed8';
-    $radius = $s['border_radius'] ?? $block->border_radius ?? 4;
+    $showIcons = filter_var($s['show_icons'] ?? true, FILTER_VALIDATE_BOOLEAN);
+    $radius = (int) ($s['border_radius'] ?? 6);
+    $mt = (int) ($s['margin_top'] ?? 0);
+    $mb = (int) ($s['margin_bottom'] ?? 8);
+
+    $badges = [];
+
+    // 1. Library Book Category (e.g. Academic Books)
+    if (!empty($data->bookCategory->name)) {
+        $badges[] = ['name' => $data->bookCategory->name, 'icon' => 'fa-layer-group', 'bg' => '#eef2ff', 'text' => '#4338ca', 'border' => '#e0e7ff'];
+    } elseif (!empty($data->category->name)) {
+        $badges[] = ['name' => $data->category->name, 'icon' => 'fa-layer-group', 'bg' => '#eef2ff', 'text' => '#4338ca', 'border' => '#e0e7ff'];
+    }
+
+    // 2. Academic Stream Category (e.g. NEET, JEE, School)
+    if (!empty($data->academicCategory->name)) {
+        $badges[] = ['name' => $data->academicCategory->name, 'icon' => 'fa-graduation-cap', 'bg' => '#faf5ff', 'text' => '#7e22ce', 'border' => '#f3e8ff'];
+    }
+
+    // 3. Linked Class / Course (e.g. Class 10)
+    if (!empty($data->classCourse->name)) {
+        $badges[] = ['name' => $data->classCourse->name, 'icon' => 'fa-book-open', 'bg' => '#eff6ff', 'text' => '#1d4ed8', 'border' => '#dbeafe'];
+    }
+
+    // 4. Linked Subject (e.g. Physics)
+    if (!empty($data->subject->name)) {
+        $badges[] = ['name' => $data->subject->name, 'icon' => 'fa-flask', 'bg' => '#fffbeb', 'text' => '#b45309', 'border' => '#fef3c7'];
+    }
+
+    // 5. Edition Badge
+    if (!empty($data->edition)) {
+        $name = $data->edition;
+        if (!str_contains(strtolower($name), 'edition')) {
+            $name .= ' Edition';
+        }
+        $badges[] = ['name' => $name, 'icon' => 'fa-certificate', 'bg' => '#ecfdf5', 'text' => '#047857', 'border' => '#a7f3d0'];
+    }
+
+    // Builder Mock Fallback if no badges found
+    if (empty($badges) && isset($isBuilder) && $isBuilder) {
+        $badges = [
+            ['name' => 'Academic Books', 'icon' => 'fa-layer-group', 'bg' => '#eef2ff', 'text' => '#4338ca', 'border' => '#e0e7ff'],
+            ['name' => 'NEET / JEE', 'icon' => 'fa-graduation-cap', 'bg' => '#faf5ff', 'text' => '#7e22ce', 'border' => '#f3e8ff'],
+            ['name' => 'Class 10', 'icon' => 'fa-book-open', 'bg' => '#eff6ff', 'text' => '#1d4ed8', 'border' => '#dbeafe'],
+            ['name' => 'Physics', 'icon' => 'fa-flask', 'bg' => '#fffbeb', 'text' => '#b45309', 'border' => '#fef3c7'],
+        ];
+    }
 @endphp
 
-@if(!empty($data->edition) || !empty($data->bookCategory))
-    <div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}" class="inline-flex items-center gap-2">
-        @if(!empty($data->bookCategory))
-            <span class="px-2 py-0.5 text-xs font-semibold tracking-wide"
-                style="background-color: {{ $bgColor }}; color: {{ $textColor }}; border-radius: {{ $radius }}px;">
-                {{ $data->bookCategory->name }}
+@if(count($badges) > 0)
+    <div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
+        class="flex flex-wrap items-center gap-2" style="
+            margin-top: {{ $mt }}px;
+            margin-bottom: {{ $mb }}px;
+        ">
+        @foreach($badges as $b)
+            <span class="px-2.5 py-1 text-xs font-semibold border flex items-center gap-1.5 shadow-xs" style="
+                background-color: {{ $b['bg'] }};
+                color: {{ $b['text'] }};
+                border-color: {{ $b['border'] }};
+                border-radius: {{ $radius }}px;
+            ">
+                @if($showIcons)
+                    <i class="fa-solid {{ $b['icon'] }} text-[10px]"></i>
+                @endif
+                {{ $b['name'] }}
             </span>
-        @endif
-        @if(!empty($data->edition))
-            <span class="px-2 py-0.5 text-xs font-semibold tracking-wide"
-                style="background-color: {{ $bgColor }}; color: {{ $textColor }}; border-radius: {{ $radius }}px;">
-                {{ $data->edition }} Edition
-            </span>
-        @endif
+        @endforeach
     </div>
 @endif

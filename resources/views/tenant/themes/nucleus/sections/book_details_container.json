@@ -1,0 +1,200 @@
+{
+    "type": "details_container",
+    "name": "Book: Details",
+    "icon": "fa-book-open",
+    "category": "Content",
+    "pages": [
+        "book"
+    ],
+    "color_scheme": "scheme_1",
+    "max_blocks": 25,
+    "allowed_blocks": [
+        "data_details_group",
+        "data_image",
+        "data_title",
+        "data_author",
+        "data_pricing",
+        "data_badge",
+        "data_pills",
+        "data_stats",
+        "data_actions",
+        "data_text",
+        "data_specs",
+        "data_description",
+        "data_highlights",
+        "data_previews",
+        "divider",
+        "spacer"
+    ],
+    "default_blocks": [
+        {
+            "type": "data_details_group",
+            "settings": {
+                "direction": "horizontal",
+                "gap": 48
+            },
+            "default_blocks": [
+                {
+                    "type": "data_details_group",
+                    "settings": {
+                        "direction": "vertical",
+                        "gap": 16,
+                        "block_width": 35
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "data_image",
+                            "settings": {
+                                "aspect_ratio": "portrait",
+                                "border_radius": 10
+                            }
+                        },
+                        {
+                            "type": "data_previews",
+                            "settings": {
+                                "columns": 4,
+                                "enable_limit": true,
+                                "display_limit": 4
+                            }
+                        },
+                        {
+                            "type": "data_details_group",
+                            "color_scheme": "scheme_2",
+                            "settings": {
+                                "direction": "vertical",
+                                "gap": 16,
+                                "scheme_mode": "separate",
+                                "padding": 16,
+                                "radius": 10
+                            },
+                            "default_blocks": [
+                                {
+                                    "type": "data_details_group",
+                                    "settings": {
+                                        "direction": "horizontal",
+                                        "position": "between",
+                                        "alignment": "center"
+                                    },
+                                    "default_blocks": [
+                                        "data_pricing",
+                                        "data_stats"
+                                    ]
+                                },
+                                {
+                                    "type": "data_actions",
+                                    "settings": {
+                                        "button_width": "full"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "data_details_group",
+                    "settings": {
+                        "direction": "vertical",
+                        "alignment": "start",
+                        "gap": 16,
+                        "block_width": 65
+                    },
+                    "default_blocks": [
+                        {
+                            "type": "data_badge",
+                            "settings": {
+                                "show_icons": true,
+                                "border_radius": 20
+                            }
+                        },
+                        {
+                            "type": "data_title",
+                            "settings": {
+                                "heading_type": "h3",
+                                "enable_text_limit": false
+                            }
+                        },
+                        {
+                            "type": "data_author",
+                            "settings": {
+                                "alignment": "left"
+                            }
+                        },
+                        {
+                            "type": "data_text",
+                            "settings": {
+                                "show_heading": true,
+                                "heading": "About this book",
+                                "heading_type": "h6",
+                                "enable_text_limit": false
+                            }
+                        },
+                        "data_highlights",
+                        {
+                            "type": "data_previews",
+                            "settings": {
+                                "columns": 4,
+                                "enable_limit": true,
+                                "display_limit": 4
+                            }
+                        }
+                    ]
+                },
+                "data_description"
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout Settings",
+            "icon": "fa-layer-group"
+        },
+        {
+            "key": "dataset_source",
+            "type": "hidden",
+            "default": "book"
+        },
+        {
+            "key": "color_scheme",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector"
+        },
+        {
+            "key": "width",
+            "label": "Container Size",
+            "type": "radio",
+            "options": [
+                "full_width",
+                "container"
+            ],
+            "default": "container"
+        },
+        {
+            "key": "direction",
+            "label": "Direction",
+            "type": "radio",
+            "options": [
+                "vertical",
+                "horizontal"
+            ],
+            "default": "vertical"
+        },
+        {
+            "key": "gap",
+            "type": "range",
+            "default": 32,
+            "min": 0,
+            "max": 200
+        },
+        {
+            "preset": "section_spacing_fields"
+        },
+        {
+            "preset": "section_mobile_spacing_fields"
+        },
+        {
+            "preset": "visibility_fields"
+        }
+    ]
+}

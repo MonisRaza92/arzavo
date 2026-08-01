@@ -90,6 +90,37 @@
                 @endif
             </div>
 
+            {{-- ✅ Mark as Paid (available for any order not yet paid) --}}
+            @if($order->payment_status !== 'paid' && $order->payment_status !== 'refunded')
+                <div class="bg-green-50 p-5 rounded-xl border border-green-200 space-y-3">
+                    <h3 class="font-bold text-green-900 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-green-600"></i>
+                        Mark as Paid (Manual)
+                    </h3>
+                    <p class="text-xs text-green-700">Use this if payment was received via cash, bank transfer, or any offline method. This will grant item access to the user.</p>
+                    <div class="flex items-center gap-2 text-xs font-semibold">
+                        <span class="px-2 py-1 bg-white border rounded text-gray-600">Current Status:</span>
+                        {!! $order->paymentStatusBadge !!}
+                    </div>
+                    <form action="{{ route('tenant.admin.finance.orders.approve', $order->id) }}" method="POST"
+                          onsubmit="return confirm('Mark this order as PAID and grant access to the user?')">
+                        @csrf
+                        <button type="submit" class="w-full py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-lg shadow transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check"></i>
+                            Confirm — Mark as Paid
+                        </button>
+                    </form>
+                </div>
+            @else
+                <div class="bg-green-50 p-5 rounded-xl border border-green-200">
+                    <div class="flex items-center gap-2 text-sm font-bold text-green-800">
+                        <i class="fa-solid fa-circle-check text-green-600"></i>
+                        Payment Confirmed
+                    </div>
+                    <p class="text-xs text-green-700 mt-1">User has been granted access to all purchased items.</p>
+                </div>
+            @endif
+
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4 text-sm">
                 <h3 class="font-bold text-gray-900 text-md">Update Fulfillment</h3>
                 <form action="{{ route('tenant.admin.finance.orders.fulfillment', $order->id) }}" method="POST" class="space-y-3">
@@ -107,5 +138,6 @@
             </div>
         </div>
     </div>
+
 </div>
 @endsection

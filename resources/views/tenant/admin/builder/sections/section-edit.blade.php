@@ -70,7 +70,7 @@
                                         class="w-full p-2 text-xs focus:ring-2 focus:ring-accent focus:outline-none live-input transition-all">
                                         @foreach ($colorSchemes as $scheme)
                                             <option value="{{ $scheme->key }}"
-                                                {{ ($section['color_scheme'] ?? 'scheme_1') === $scheme->key ? 'selected' : '' }}>
+                                                {{ ($section['color_scheme'] ?? ($section['settings']['color_scheme'] ?? ($field['default'] ?? 'scheme_1'))) === $scheme->key ? 'selected' : '' }}>
                                                 {{ ucfirst(str_replace(['_', '-'], ' ', $scheme->key)) }}
                                             </option>
                                         @endforeach

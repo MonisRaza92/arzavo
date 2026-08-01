@@ -52,26 +52,26 @@
                         "paragraph": "#475569",
                         "secondary_text": "#64748b",
                         "invert_text": "#ffffff",
-                        "link": "#10b981",
-                        "link_hover": "#059669",
+                        "link": "#000000",
+                        "link_hover": "#222222",
                         "border": "rgba(0,0,0,0.08)",
                         "shadow": "rgba(0,0,0,0.04)"
                     },
                     "primary_btn": {
-                        "background": "#10b981",
+                        "background": "#2563eb",
                         "text": "#ffffff",
-                        "hover_background": "#059669",
+                        "hover_background": "#1d4ed8",
                         "hover_text": "#ffffff",
-                        "border": "#10b981",
-                        "hover_border": "#059669"
+                        "border": "#2563eb",
+                        "hover_border": "#1d4ed8"
                     },
                     "secondary_btn": {
                         "background": "transparent",
-                        "text": "#10b981",
-                        "hover_background": "rgba(16,185,129,0.1)",
-                        "hover_text": "#059669",
-                        "border": "#10b981",
-                        "hover_border": "#059669"
+                        "text": "#2563eb",
+                        "hover_background": "rgba(37,99,235,0.1)",
+                        "hover_text": "#1d4ed8",
+                        "border": "#2563eb",
+                        "hover_border": "#1d4ed8"
                     },
                     "input": {
                         "background": "#f8fafc",

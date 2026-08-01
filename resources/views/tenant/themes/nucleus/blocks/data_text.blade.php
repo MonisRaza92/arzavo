@@ -1,6 +1,10 @@
 @php
     $s = $block['settings'] ?? [];
 
+    $showHeading = filter_var($s['show_heading'] ?? false, FILTER_VALIDATE_BOOLEAN);
+    $heading = $s['heading'] ?? 'Overview';
+    $headingType = $s['heading_type'] ?? 'heading-3';
+
     $type = $s['text_type'] ?? 'paragraph';
     $align = $s['alignment'] ?? 'left';
 
@@ -17,15 +21,30 @@
         'right' => 'text-right',
         default => 'text-left',
     };
+
+    $rawText = $data->short_description ?? $data->text ?? $data->description ?? null;
+    if ($rawText) {
+        $rawText = strip_tags(htmlspecialchars_decode(htmlspecialchars_decode($rawText, ENT_QUOTES), ENT_QUOTES));
+    }
 @endphp
 
-<p data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
-    class="text-{{ $block['id'] }} arz-{{ $type }} {{ $alignClass }}"
+<div data-block-id="{{ $block['id'] }}" data-name="{{ $block['name'] }}"
+    class="w-full space-y-1.5 {{ $alignClass }}"
     style="padding: {{ $pt }}px {{ $pr }}px {{ $pb }}px {{ $pl }}px;">
-    @php
-        $rawText = $data->description ?? $data->text ?? null;
-    @endphp
-    @if ($rawText)
-        {{ $enableLimit ? Str::limit(strip_tags($rawText), $textLimit) : $rawText }}
+
+    @if($showHeading && filled($heading))
+        <div class="arz-{{ $headingType }} font-bold text-primary">
+            {{ $heading }}
+        </div>
     @endif
-</p>
+
+    @if ($rawText)
+        <p class="arz-{{ $type }} text-secondary">
+            {{ $enableLimit ? Str::limit($rawText, $textLimit) : $rawText }}
+        </p>
+    @elseif(isset($isBuilder) && $isBuilder)
+        <p class="arz-{{ $type }} text-secondary italic">
+            Essential physics guide for JEE Main & Advanced aspirants with chapter-wise theory and solved examples.
+        </p>
+    @endif
+</div>

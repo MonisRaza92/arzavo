@@ -18,17 +18,18 @@
     "data_pricing",
     "data_author",
     "data_button",
-    "data_group"
+    "data_books_group"
   ],
   "default_blocks": [
     {
       "type": "data_image",
       "settings": {
-        "aspect_ratio": "wide"
+        "aspect_ratio": "wide",
+        "border_radius": 0
       }
     },
     {
-      "type": "data_group",
+      "type": "data_books_group",
       "settings": {
         "alignment": "start",
         "padding": 12,
@@ -50,7 +51,7 @@
         },
         "data_badge",
         {
-          "type": "data_group",
+          "type": "data_books_group",
           "settings": {
             "alignment": "center",
             "direction": "horizontal",
@@ -120,7 +121,7 @@
       "type": "range",
       "min": 0,
       "max": 5,
-      "default": 2
+      "default": 1
     },
     {
       "key": "radius",
@@ -156,7 +157,7 @@
       "key": "hover_animation",
       "label": "Hover Animation",
       "type": "switch",
-      "default": true
+      "default": false
     }
   ]
 }

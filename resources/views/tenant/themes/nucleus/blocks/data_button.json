@@ -18,140 +18,30 @@
             "default": "Click Here"
         },
         {
-            "key": "url",
-            "label": "Button URL",
-            "type": "url",
-            "default": "#"
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Type & Icon"
-        },
-        {
-            "key": "button_type",
-            "label": "Button Type",
-            "type": "radio",
-            "options": [
-                "primary",
-                "secondary",
-                "link"
-            ],
-            "default": "link"
-        },
-        {
-            "key": "show_icon",
-            "label": "Show Icon",
-            "type": "switch",
-            "default": 1
-        },
-        {
-            "key": "icon",
-            "label": "Icon",
-            "type": "icon",
-            "default": "arrow-right",
-            "conditional": {
-                "field": "show_icon",
-                "value": "1"
-            }
-        },
-        {
-            "key": "icon_position",
-            "label": "Icon Position",
-            "type": "radio",
+            "key": "position",
+            "label": "Position",
+            "type": "select",
             "options": [
                 "left",
-                "right"
+                "right",
+                "space-between",
+                "center"
             ],
-            "default": "right",
-            "conditional": {
-                "field": "show_icon",
-                "value": "1"
-            }
+            "default": "space-between"
         },
         {
-            "key": "icon_gap",
-            "label": "Icon Gap",
+            "key": "gap",
+            "label": "Gap",
             "type": "range",
             "min": 0,
-            "max": 40,
+            "max": 100,
             "default": 8,
+            "help": "Adjust the gap between text and arrow.",
             "conditional": {
-                "field": "show_icon",
-                "value": "1"
+                "field": "position",
+                "operator": "!=",
+                "value": "space-between"
             }
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Layout"
-        },
-        {
-            "key": "width_desktop",
-            "label": "Desktop Width",
-            "type": "radio",
-            "options": [
-                "default",
-                "full"
-            ],
-            "default": "default"
-        },
-        {
-            "key": "width_mobile",
-            "label": "Mobile Width",
-            "type": "radio",
-            "options": [
-                "default",
-                "full"
-            ],
-            "default": "default"
-        },
-        {
-            "key": "text_align_desktop",
-            "label": "Text Align Desktop",
-            "type": "radio",
-            "options": [
-                "left",
-                "center",
-                "right"
-            ],
-            "default": "center",
-            "conditional": {
-                "field": "width_desktop",
-                "value": "full"
-            }
-        },
-        {
-            "key": "text_align_mobile",
-            "label": "Text Align Mobile",
-            "type": "radio",
-            "options": [
-                "left",
-                "center",
-                "right"
-            ],
-            "default": "center",
-            "conditional": {
-                "field": "width_mobile",
-                "value": "full"
-            }
-        },
-        {
-            "key": "group",
-            "type": "group",
-            "label": "Link Behavior"
-        },
-        {
-            "key": "open_new_tab",
-            "label": "Open in New Tab",
-            "type": "switch",
-            "default": "0"
-        },
-        {
-            "key": "nofollow",
-            "label": "Add rel=nofollow",
-            "type": "switch",
-            "default": "0"
         },
         {
             "key": "group",

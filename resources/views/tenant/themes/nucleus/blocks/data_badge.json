@@ -1,34 +1,54 @@
 {
-  "type": "data_badge",
-  "name": "Badges",
-  "icon": "fa-tag",
-  "order": 5,
-  "category": "Content",
-  "fields": [
-    {
-      "key": "group",
-      "type": "group",
-      "help": "Customize edition badge with background color, text color and border roundness"
-    },
-    {
-      "key": "bg_color",
-      "label": "Background Color",
-      "type": "color",
-      "default": "#eff6ff"
-    },
-    {
-      "key": "text_color",
-      "label": "Text Color",
-      "type": "color",
-      "default": "#1d4ed8"
-    },
-    {
-      "key": "border_radius",
-      "label": "Corner Roundness",
-      "type": "range",
-      "min": 0,
-      "max": 20,
-      "default": 4
-    }
-  ]
+    "type": "data_badge",
+    "name": "Badges",
+    "icon": "fa-tags",
+    "category": "Content",
+    "fields": [
+        {
+            "key": "group",
+            "label": "Content",
+            "type": "group"
+        },
+        {
+            "key": "show_icons",
+            "label": "Show Badge Icons",
+            "type": "switch",
+            "default": true
+        },
+        {
+            "key": "group",
+            "label": "Style",
+            "type": "group"
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "default": 6,
+            "min": 0,
+            "max": 30
+        },
+        {
+            "key": "group",
+            "label": "Spacing",
+            "type": "group"
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 80
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 80
+        }
+    ]
 }
+

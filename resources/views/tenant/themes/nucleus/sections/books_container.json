@@ -1,13 +1,14 @@
 {
     "type": "dataset_container",
-    "name": "Books",
+    "name": "Books: Grid",
     "icon": "fa-book",
     "category": "Content",
     "color_scheme": "scheme_1",
     "max_blocks": 20,
     "pages": [
         "home",
-        "books"
+        "books",
+        "book"
     ],
     "allowed_blocks": [
         "header",
@@ -27,7 +28,7 @@
                 {
                     "type": "heading",
                     "settings": {
-                        "text": "Books",
+                        "text": "Books & Notes",
                         "heading_type": "heading-2",
                         "alignment": "left"
                     }

@@ -124,7 +124,7 @@ if (!function_exists('route_to')) {
             // Book ecosystem
             'book.category', 'book_category', 'bookcategory'
                           => route('tenant.books')   . '?' . ($slug ? "book_category={$slug}" : "book_category_id={$id}"),
-            'book'        => route('tenant.books')   . '?' . ($slug ? "slug={$slug}"        : "id={$id}"),
+            'book'        => route('tenant.book')   . '?' . ($slug ? "slug={$slug}"        : "id={$id}"),
 
             default       => url('/' . $cleanType . '/' . ($slug ?? $id)),
         };

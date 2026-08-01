@@ -1,83 +1,73 @@
 {
     "type": "data_image",
-    "name": "Media",
-    "icon": "fa-images",
-    "order": 4,
-    "max_blocks": 0,
-    "moveable": false,
-    "deletable": false,
-    "toggle": false,
-    "category": "Basic",
+    "name": "Media: Image",
+    "icon": "fa-image",
+    "category": "Content",
     "fields": [
         {
             "key": "group",
-            "type": "group",
-            "label": "Style"
+            "label": "Content",
+            "type": "group"
         },
         {
             "key": "aspect_ratio",
-            "label": "Aspect Radio",
+            "label": "Aspect Ratio",
             "type": "select",
-            "default": "auto",
             "options": [
-                "auto",
-                "square",
                 "portrait",
-                "wide"
-            ]
+                "square",
+                "wide",
+                "auto"
+            ],
+            "default": "portrait"
         },
         {
-            "key": "border_width",
-            "label": "Border Thickness",
-            "type": "range",
-            "min": 0,
-            "max": 5,
-            "default": 0
-        },
-        {
-            "key": "border_radius",
-            "label": "Border Roundness",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": 0
+            "key": "show_price_overlay",
+            "label": "Show Price Badge Overlay (Content Items)",
+            "type": "switch",
+            "default": false
         },
         {
             "key": "group",
-            "type": "group",
-            "label": "Spacing"
+            "label": "Style",
+            "type": "group"
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 50
+        },
+        {
+            "key": "border_width",
+            "label": "Border Width",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 10
+        },
+        {
+            "key": "group",
+            "label": "Spacing",
+            "type": "group"
         },
         {
             "key": "margin_top",
             "label": "Margin Top",
             "type": "range",
+            "default": 0,
             "min": 0,
-            "max": 100,
-            "default": "0"
+            "max": 80
         },
         {
             "key": "margin_bottom",
             "label": "Margin Bottom",
             "type": "range",
+            "default": 0,
             "min": 0,
-            "max": 100,
-            "default": "0"
-        },
-        {
-            "key": "margin_left",
-            "label": "Margin Left",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": "0"
-        },
-        {
-            "key": "margin_right",
-            "label": "Margin Right",
-            "type": "range",
-            "min": 0,
-            "max": 100,
-            "default": "0"
+            "max": 80
         }
     ]
 }

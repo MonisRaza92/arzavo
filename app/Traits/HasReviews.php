@@ -29,7 +29,7 @@ trait HasReviews
     public function averageRating(): float
     {
         $avg = $this->approvedReviews()->avg('rating');
-        return round($avg ?: 5.0, 1);
+        return round($avg ? (float) $avg : 0.0, 1);
     }
 
     /**

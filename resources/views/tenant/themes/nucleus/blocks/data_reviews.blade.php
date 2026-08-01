@@ -3,7 +3,7 @@
     $title = $s['title'] ?? $block->title ?? 'Customer Reviews & Ratings';
 
     $reviews = (is_object($data) && method_exists($data, 'approvedReviews')) ? $data->approvedReviews()->latest()->get() : collect();
-    $avg = (is_object($data) && method_exists($data, 'averageRating')) ? $data->averageRating() : 5.0;
+    $avg = (is_object($data) && method_exists($data, 'averageRating')) ? $data->averageRating() : 0.0;
     $count = (is_object($data) && method_exists($data, 'reviewsCount')) ? $data->reviewsCount() : 0;
     $breakdown = (is_object($data) && method_exists($data, 'ratingBreakdown')) ? $data->ratingBreakdown() : [];
 @endphp

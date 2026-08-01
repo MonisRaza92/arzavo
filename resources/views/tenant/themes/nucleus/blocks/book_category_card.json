@@ -16,8 +16,7 @@
     "data_text",
     "data_button",
     "data_pills",
-    "data_category_group",
-    "data_count"
+    "data_category_group"
   ],
   "default_blocks": [
     {
@@ -36,22 +35,11 @@
         "data_title",
         "data_text",
         {
-          "type": "data_category_group",
+          "type": "data_button",
           "settings": {
-            "direction": "horizontal",
-            "alignment": "center",
-            "position": "between",
-            "padding_y": 8
-          },
-          "default_blocks": [
-            "book_count",
-            {
-              "type": "data_button",
-              "settings": {
-                "text": "Explore"
-              }
-            }
-          ]
+            "text": "Explore",
+            "margin_top": 8
+          }
         }
       ]
     }
@@ -145,7 +133,7 @@
     {
       "key": "hover_animation",
       "type": "switch",
-      "default": true
+      "default": false
     }
   ]
 }

@@ -73,7 +73,7 @@
 
                                         @foreach ($colorSchemes as $scheme)
                                             <option value="{{ $scheme->key }}"
-                                                {{ ($block['color_scheme'] ?? 'scheme_1') === $scheme->key ? 'selected' : '' }}>
+                                                {{ ($block['color_scheme'] ?? ($block['settings']['color_scheme'] ?? ($field['default'] ?? 'scheme_1'))) === $scheme->key ? 'selected' : '' }}>
                                                 {{ ucfirst(str_replace(['_', '-'], ' ', $scheme->key)) }}
                                             </option>
                                         @endforeach

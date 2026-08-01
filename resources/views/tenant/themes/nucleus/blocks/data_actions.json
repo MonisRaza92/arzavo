@@ -1,0 +1,99 @@
+{
+    "type": "data_actions",
+    "name": "Action Buttons",
+    "icon": "fa-hand-pointer",
+    "category": "Content",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content",
+            "help": "Configure labels and toggle buttons for download and online preview actions."
+        },
+        {
+            "key": "show_download",
+            "label": "Show Download Button",
+            "type": "switch",
+            "default": true,
+            "help": "Show or hide the primary download button."
+        },
+        {
+            "key": "download_label",
+            "label": "Download Button Label",
+            "type": "text",
+            "default": "Download PDF",
+            "conditional": {
+                "field": "show_download",
+                "value": "1"
+            },
+            "help": "Label text for the primary download button."
+        },
+        {
+            "key": "show_preview",
+            "label": "Show Preview/Read Button",
+            "type": "switch",
+            "default": true,
+            "help": "Show or hide the secondary read / online preview button."
+        },
+        {
+            "key": "preview_label",
+            "label": "Preview Button Label",
+            "type": "text",
+            "default": "Read Online",
+            "conditional": {
+                "field": "show_preview",
+                "value": "1"
+            },
+            "help": "Label text for the secondary preview button."
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout & Style",
+            "help": "Configure button width and single-line layout behavior."
+        },
+        {
+            "key": "button_width",
+            "label": "Button Width",
+            "type": "radio",
+            "options": [
+                "auto",
+                "full"
+            ],
+            "default": "auto",
+            "help": "Choose 'full' for full-width buttons or 'auto' for compact buttons."
+        },
+        {
+            "key": "single_line",
+            "label": "Keep in One Line",
+            "type": "switch",
+            "default": false,
+            "help": "Force buttons to remain on a single line without wrapping."
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing",
+            "help": "Adjust outer margin spacing above and below buttons."
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 80,
+            "help": "Adjust top margin space above the button container."
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 80,
+            "help": "Adjust bottom margin space below the button container."
+        }
+    ]
+}
+

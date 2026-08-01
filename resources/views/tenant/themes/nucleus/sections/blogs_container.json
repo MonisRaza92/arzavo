@@ -1,8 +1,8 @@
 {
     "type": "dataset_container",
-    "name": "Blogs Container",
+    "name": "Blogs",
     "icon": "fa-blog",
-    "category": "Content",
+    "category": "Storytelling",
     "color_scheme": "scheme_1",
     "max_blocks": 20,
     "allowed_blocks": [

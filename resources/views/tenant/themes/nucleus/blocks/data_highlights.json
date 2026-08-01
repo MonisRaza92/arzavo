@@ -1,0 +1,143 @@
+{
+    "type": "data_highlights",
+    "name": "Item Highlights",
+    "icon": "fa-list-check",
+    "category": "Content",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Heading Settings",
+            "help": "Configure heading title, size, and visibility."
+        },
+        {
+            "key": "show_heading",
+            "label": "Show Heading",
+            "type": "switch",
+            "default": true,
+            "help": "Show or hide section title heading."
+        },
+        {
+            "key": "heading",
+            "label": "Section Heading",
+            "type": "text",
+            "default": "Key Highlights & Features",
+            "help": "Title heading for the highlights list.",
+            "conditional": {
+                "key": "show_heading",
+                "value": true
+            }
+        },
+        {
+            "key": "heading_type",
+            "label": "Heading Size / Type",
+            "type": "select",
+            "options": [
+                { "label": "Heading 1", "value": "h1" },
+                { "label": "Heading 2", "value": "h2" },
+                { "label": "Heading 3", "value": "h3" },
+                { "label": "Heading 4", "value": "h4" },
+                { "label": "Heading 5", "value": "h5" },
+                { "label": "Heading 6", "value": "h6" }
+            ],
+            "default": "h6",
+            "conditional": {
+                "key": "show_heading",
+                "value": true
+            }
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Item Style & Colors",
+            "help": "Customize item card background color, border width, border radius, icon color, and text style."
+        },
+        {
+            "key": "bullet_icon",
+            "label": "Bullet Icon",
+            "type": "icon",
+            "default": "check-circle",
+            "help": "Icon displayed next to each highlight point."
+        },
+        {
+            "key": "icon_color",
+            "label": "Icon Color",
+            "type": "color",
+            "default": "#10b981",
+            "help": "Choose custom color for bullet point icons."
+        },
+        {
+            "key": "bg_color",
+            "label": "Item Background Color",
+            "type": "color",
+            "default": "",
+            "help": "Select custom background color for highlight item cards (leave empty for theme default)."
+        },
+        {
+            "key": "text_style",
+            "label": "Text Type",
+            "type": "select",
+            "options": [
+                { "label": "Body Text", "value": "arz-body-text" },
+                { "label": "Paragraph", "value": "arz-paragraph" }
+            ],
+            "default": "arz-body-text",
+            "help": "Choose typography style font family for highlight text."
+        },
+        {
+            "key": "border_width",
+            "label": "Border Width",
+            "type": "range",
+            "default": 1,
+            "min": 0,
+            "max": 10,
+            "help": "Set border width for highlight item cards."
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 40,
+            "help": "Adjust corner roundness for highlight item cards."
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout & Spacing",
+            "help": "Configure list layout columns and outer margin spacing."
+        },
+        {
+            "key": "columns",
+            "label": "Layout Columns",
+            "type": "radio",
+            "options": [
+                "1",
+                "2"
+            ],
+            "default": "2",
+            "help": "Display bullet points in 1 column or 2 columns."
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": 16,
+            "min": 0,
+            "max": 80,
+            "help": "Adjust top margin space."
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": 16,
+            "min": 0,
+            "max": 80,
+            "help": "Adjust bottom margin space."
+        }
+    ]
+}

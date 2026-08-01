@@ -2,7 +2,7 @@
     "book": [
         {
             "kind": "section",
-            "name": "book_details"
+            "name": "book_details_container"
         }
     ],
     "meta_title": "Book Details",

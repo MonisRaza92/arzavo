@@ -21,7 +21,9 @@ class Book extends Model implements PurchasableContract
         'publisher',
         'edition',
         'isbn',
+        'short_description',
         'description',
+        'highlights',
         'pages_count',
         'cover_image',
         'file_path',
@@ -48,7 +50,13 @@ class Book extends Model implements PurchasableContract
         'pages_count' => 'integer',
         'views_count' => 'integer',
         'downloads_count' => 'integer',
+        'highlights' => 'array',
     ];
+
+    public function previews()
+    {
+        return $this->morphMany(ItemPreview::class, 'previewable')->orderBy('sort_order', 'asc')->orderBy('id', 'asc');
+    }
 
     public function getPurchasableTitle(): string
     {

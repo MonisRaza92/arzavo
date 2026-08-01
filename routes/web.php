@@ -217,9 +217,13 @@ if (!function_exists('registerDomains')) {
 
             // 🛒 Universal Checkout & Review Routes
             Route::get('/checkout', [\App\Http\Controllers\Tenant\Website\CheckoutController::class, 'show'])->name('checkout.show');
-            Route::post('/checkout', [\App\Http\Controllers\Tenant\Website\CheckoutController::class, 'process'])->name('checkout.process');
+            Route::post('/checkout', [\App\Http\Controllers\Tenant\Website\CheckoutController::class, 'process'])->name('checkout.submit');
             Route::get('/checkout/success/{orderNumber}', [\App\Http\Controllers\Tenant\Website\CheckoutController::class, 'success'])->name('checkout.success');
             Route::post('/reviews', [\App\Http\Controllers\Tenant\Website\ReviewController::class, 'store'])->name('reviews.store');
+
+            // 📥 Item Access Gate (Download / Read with Login + Entitlement check)
+            Route::get('/item/download', [\App\Http\Controllers\Tenant\Website\ItemAccessController::class, 'download'])->name('item.download');
+            Route::get('/item/read', [\App\Http\Controllers\Tenant\Website\ItemAccessController::class, 'read'])->name('item.read');
 
             Route::get('/{slug}', function ($slug) {
                 return app(ThemePageController::class)->page($slug);

@@ -3,24 +3,14 @@
     <div
         class="relative group/nested bg-hover-secondary border-rounded cursor-pointer select-none py-1 pl-2 pr-1 my-1 flex justify-between items-center">
         @php
-            $blockRules = collect($availableBlocks)->mapWithKeys(function ($block) {
-                return [
-                     $block['schema'] ?? $block['type'] => [
-                        'max_blocks' => $block['max_blocks'] ?? null,
-                        'allowed_blocks' => $block['allowed_blocks'] ?? [],
-                        'moveable' => $block['moveable'] ?? true,
-                        'deletable' => $block['deletable'] ?? true,
-                        'toggle' => $block['toggle'] ?? true,
-                    ]
-                ];
-            });
-        @endphp
-        @php
-            $blockRule = ($blockRules[$block['schema'] ?? null] ?? $blockRules[$block['type'] ?? null]) ?? null;
+            $avail = collect($availableBlocks);
+            $blockRule = $avail->firstWhere('schema', $block['schema'] ?? null) 
+                      ?? $avail->firstWhere('type', $block['type'] ?? null) 
+                      ?? [];
             $moveable = $blockRule['moveable'] ?? true;
             $deletable = $blockRule['deletable'] ?? true;
             $toggle = $blockRule['toggle'] ?? true;
-         @endphp
+        @endphp
 
         <div class="flex items-center grow">
             @if (!empty($blockRule['allowed_blocks']))
@@ -81,14 +71,13 @@
         {{-- List of blocks --}}
         <ul class="nested-block-list" id="nested-block-list-{{ $block['id'] }}"
             data-parent-block-id="{{ $block['id'] }}" data-section-id="{{ $section['id'] }}">
-            @foreach($block['blocks'] as $child)
+            @foreach($block['blocks'] ?? [] as $child)
                 @include('tenant.admin.builder.blocks.nested-block', ['block' => $child])
             @endforeach
         </ul>
         @php
-            $blockRule = ($blockRules[$block['schema'] ?? null] ?? $blockRules[$block['type'] ?? null]) ?? null;
             $maxNestedBlocks = $blockRule['max_blocks'] ?? null;
-            $currentNestedBlockCount = count($block['blocks']);
+            $currentNestedBlockCount = count($block['blocks'] ?? []);
         @endphp
         @if(is_null($maxNestedBlocks) || $currentNestedBlockCount < $maxNestedBlocks)
             <button type="button"

@@ -1,0 +1,14 @@
+{
+    "type": "data_description",
+    "name": "Description (Rich Text)",
+    "icon": "fa-align-left",
+    "category": "Data",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content Settings",
+            "help": "To edit this description content, go to Admin > Library > Books & Notes > Edit Item."
+        }
+    ]
+}

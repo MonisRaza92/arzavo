@@ -1,13 +1,66 @@
 import "./bootstrap";
 import Alpine from "alpinejs";
 import "@hotwired/turbo";
-import { Editor } from "@tiptap/core";
+import { Editor, Extension } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Link } from "@tiptap/extension-link";
+import { Underline } from "@tiptap/extension-underline";
+import { Highlight } from "@tiptap/extension-highlight";
+import { TextAlign } from "@tiptap/extension-text-align";
+import { Subscript } from "@tiptap/extension-subscript";
+import { Superscript } from "@tiptap/extension-superscript";
+import { Image } from "@tiptap/extension-image";
+import { Table } from "@tiptap/extension-table";
+import { TableRow } from "@tiptap/extension-table-row";
+import { TableCell } from "@tiptap/extension-table-cell";
+import { TableHeader } from "@tiptap/extension-table-header";
+import { FontFamily } from "@tiptap/extension-font-family";
+import { TaskList } from "@tiptap/extension-task-list";
+import { TaskItem } from "@tiptap/extension-task-item";
+import { Youtube } from "@tiptap/extension-youtube";
 
-
+// Custom FontSize Extension
+const FontSize = Extension.create({
+    name: "fontSize",
+    addOptions() {
+        return {
+            types: ["textStyle"],
+        };
+    },
+    addGlobalAttributes() {
+        return [
+            {
+                types: this.options.types,
+                attributes: {
+                    fontSize: {
+                        default: null,
+                        parseHTML: (element) => element.style.fontSize?.replace(/['"]+/g, ""),
+                        renderHTML: (attributes) => {
+                            if (!attributes.fontSize) {
+                                return {};
+                            }
+                            return {
+                                style: `font-size: ${attributes.fontSize}`,
+                            };
+                        },
+                    },
+                },
+            },
+        ];
+    },
+    addCommands() {
+        return {
+            setFontSize: (fontSize) => ({ chain }) => {
+                return chain().setMark("textStyle", { fontSize }).run();
+            },
+            unsetFontSize: () => ({ chain }) => {
+                return chain().setMark("textStyle", { fontSize: null }).run();
+            },
+        };
+    },
+});
 
 // Tip Tap Script
 window.initRichText = initRichText;
@@ -15,88 +68,359 @@ function initRichText() {
     document.querySelectorAll(".tiptap-editor").forEach((el) => {
         if (el.editor) return;
 
-        const hidden = el.closest(".richtext-wrapper").querySelector("input[type=hidden]");
-        const content = el.dataset.content || "<p></p>";
+        const wrapper = el.closest(".richtext-wrapper");
+        if (!wrapper) return;
+
+        const hidden = wrapper.querySelector("input[type=hidden]");
+        const wordCountEl = wrapper.querySelector(".word-count-val");
+        const charCountEl = wrapper.querySelector(".char-count-val");
+
+        let rawContent = el.dataset.content ? el.dataset.content.trim() : "";
+
+        // Decode HTML entities if escaped by Blade or HTML attributes
+        if (rawContent.includes("&lt;") || rawContent.includes("&gt;") || rawContent.includes("&amp;")) {
+            const txt = document.createElement("textarea");
+            txt.innerHTML = rawContent;
+            rawContent = txt.value;
+        }
+
+        if (rawContent === "<p></p>" || rawContent === "<p>&nbsp;</p>" || rawContent === "&lt;p&gt;&lt;/p&gt;") {
+            rawContent = "";
+        }
+
+        const updateCounters = (editor) => {
+            const text = editor.getText().trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            const chars = text.length;
+            if (wordCountEl) wordCountEl.textContent = words;
+            if (charCountEl) charCountEl.textContent = chars;
+        };
 
         const editor = new Editor({
             element: el,
-            content,
+            content: rawContent,
             extensions: [
                 StarterKit.configure({
-                    link: false, // disable default link
+                    link: false,
                 }),
                 TextStyle,
                 Color,
                 Link.configure({
                     openOnClick: false,
                 }),
+                Underline,
+                Highlight.configure({
+                    multicolor: true,
+                }),
+                TextAlign.configure({
+                    types: ["heading", "paragraph"],
+                }),
+                Subscript,
+                Superscript,
+                Image.configure({
+                    inline: true,
+                }),
+                Table.configure({
+                    resizable: true,
+                }),
+                TableRow,
+                TableHeader,
+                TableCell,
+                FontFamily,
+                FontSize,
+                TaskList,
+                TaskItem.configure({
+                    nested: true,
+                }),
+                Youtube.configure({
+                    controls: true,
+                    nocookie: true,
+                }),
             ],
             onUpdate({ editor }) {
-                hidden.value = editor.getHTML();
-
-                hidden.dispatchEvent(new Event("input", { bubbles: true }));
-                hidden.dispatchEvent(new Event("change", { bubbles: true }));
+                if (hidden) {
+                    hidden.value = editor.getHTML();
+                    hidden.dispatchEvent(new Event("input", { bubbles: true }));
+                    hidden.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+                updateCounters(editor);
+            },
+            onCreate({ editor }) {
+                updateCounters(editor);
             },
         });
 
         el.editor = editor;
 
-        const wrapper = el.closest(".richtext-wrapper");
+        const rawHtmlEditor = wrapper.querySelector(".raw-html-editor");
+        if (rawHtmlEditor) {
+            rawHtmlEditor.oninput = () => {
+                const val = rawHtmlEditor.value;
+                if (hidden) {
+                    hidden.value = val;
+                    hidden.dispatchEvent(new Event("input", { bubbles: true }));
+                    hidden.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+                try {
+                    editor.commands.setContent(val, false);
+                } catch (e) {}
+                updateCounters(editor);
+            };
+        }
 
+        // Click anywhere inside the editor container focuses the editor
+        el.onclick = (e) => {
+            if (e.target === el || e.target.classList.contains("tiptap-editor")) {
+                editor.chain().focus().run();
+            }
+        };
+
+        // Toolbar actions
         wrapper.querySelectorAll("[data-action]").forEach((btn) => {
-            btn.onclick = () => {
+            btn.onclick = (e) => {
+                e.preventDefault();
                 const action = btn.dataset.action;
 
-                if (action === "bold")
-                    editor.chain().focus().toggleBold().run();
-                if (action === "italic")
-                    editor.chain().focus().toggleItalic().run();
-                if (action === "underline")
-                    editor.chain().focus().toggleUnderline().run();
+                if (action === "toggleHtml" && rawHtmlEditor) {
+                    const isRawVisible = !rawHtmlEditor.classList.contains("hidden");
+                    if (isRawVisible) {
+                        // Switch back to Visual Mode
+                        editor.commands.setContent(rawHtmlEditor.value, false);
+                        rawHtmlEditor.classList.add("hidden");
+                        el.classList.remove("hidden");
+                        btn.classList.remove("bg-accent", "text-white");
+                    } else {
+                        // Switch to Raw HTML Code Mode
+                        rawHtmlEditor.value = editor.getHTML();
+                        el.classList.add("hidden");
+                        rawHtmlEditor.classList.remove("hidden");
+                        btn.classList.add("bg-accent", "text-white");
+                        rawHtmlEditor.focus();
+                    }
+                    return;
+                }
+
+                if (action === "bold") editor.chain().focus().toggleBold().run();
+                if (action === "italic") editor.chain().focus().toggleItalic().run();
+                if (action === "underline") editor.chain().focus().toggleUnderline().run();
+                if (action === "strike") editor.chain().focus().toggleStrike().run();
+                if (action === "subscript") editor.chain().focus().toggleSubscript().run();
+                if (action === "superscript") editor.chain().focus().toggleSuperscript().run();
+                if (action === "code") editor.chain().focus().toggleCode().run();
+                if (action === "codeBlock") editor.chain().focus().toggleCodeBlock().run();
+                if (action === "blockquote") editor.chain().focus().toggleBlockquote().run();
+                if (action === "hr") editor.chain().focus().setHorizontalRule().run();
+                if (action === "bulletList") editor.chain().focus().toggleBulletList().run();
+                if (action === "orderedList") editor.chain().focus().toggleOrderedList().run();
+                if (action === "taskList") editor.chain().focus().toggleTaskList().run();
+
+                if (action === "alignLeft") editor.chain().focus().setTextAlign("left").run();
+                if (action === "alignCenter") editor.chain().focus().setTextAlign("center").run();
+                if (action === "alignRight") editor.chain().focus().setTextAlign("right").run();
+                if (action === "alignJustify") editor.chain().focus().setTextAlign("justify").run();
+
+                // Table operations
+                if (action === "table") editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+                if (action === "addRowAfter") editor.chain().focus().addRowAfter().run();
+                if (action === "deleteRow") editor.chain().focus().deleteRow().run();
+                if (action === "addColumnAfter") editor.chain().focus().addColumnAfter().run();
+                if (action === "deleteColumn") editor.chain().focus().deleteColumn().run();
+                if (action === "deleteTable") editor.chain().focus().deleteTable().run();
+
+                // Text Transforms
+                if (action === "uppercase") {
+                    const { from, to } = editor.state.selection;
+                    const selectedText = editor.state.doc.textBetween(from, to, " ");
+                    if (selectedText) editor.chain().focus().insertContent(selectedText.toUpperCase()).run();
+                }
+                if (action === "lowercase") {
+                    const { from, to } = editor.state.selection;
+                    const selectedText = editor.state.doc.textBetween(from, to, " ");
+                    if (selectedText) editor.chain().focus().insertContent(selectedText.toLowerCase()).run();
+                }
+
+                if (action === "clear") {
+                    editor.chain().focus().unsetAllMarks().clearNodes().run();
+                }
+
+                if (action === "undo") editor.chain().focus().undo().run();
+                if (action === "redo") editor.chain().focus().redo().run();
 
                 if (action === "link") {
-                    linkBar.classList.toggle("hidden");
-                    linkInput.focus();
+                    const linkBar = wrapper.querySelector(".link-bar");
+                    const linkInput = wrapper.querySelector(".link-url");
+                    if (linkBar) {
+                        linkBar.classList.toggle("hidden");
+                        if (linkInput) linkInput.focus();
+                    }
+                }
+
+                if (action === "image") {
+                    const imageBar = wrapper.querySelector(".image-bar");
+                    const imageInput = wrapper.querySelector(".image-url");
+                    if (imageBar) {
+                        imageBar.classList.toggle("hidden");
+                        if (imageInput) imageInput.focus();
+                    }
+                }
+
+                if (action === "youtube") {
+                    const youtubeBar = wrapper.querySelector(".youtube-bar");
+                    const youtubeInput = wrapper.querySelector(".youtube-url");
+                    if (youtubeBar) {
+                        youtubeBar.classList.toggle("hidden");
+                        if (youtubeInput) youtubeInput.focus();
+                    }
+                }
+
+                if (action === "fullscreen") {
+                    wrapper.classList.toggle("fixed");
+                    wrapper.classList.toggle("inset-4");
+                    wrapper.classList.toggle("z-50");
+                    wrapper.classList.toggle("shadow-2xl");
                 }
             };
         });
 
-        // wrapper.querySelector("input[type=color]").oninput = (e) => {
-        //     editor.chain().focus().setColor(e.target.value).run();
-        // };
+        // Symbol Insertion buttons
+        wrapper.querySelectorAll("[data-symbol]").forEach((btn) => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                editor.chain().focus().insertContent(btn.dataset.symbol).run();
+            };
+        });
 
+        // Font Family selector
+        const fontFamilySelect = wrapper.querySelector(".font-family-selector");
+        if (fontFamilySelect) {
+            fontFamilySelect.onchange = (e) => {
+                const val = e.target.value;
+                if (val) editor.chain().focus().setFontFamily(val).run();
+                else editor.chain().focus().unsetFontFamily().run();
+            };
+        }
+
+        // Font Size selector
+        const fontSizeSelect = wrapper.querySelector(".font-size-selector");
+        if (fontSizeSelect) {
+            fontSizeSelect.onchange = (e) => {
+                const val = e.target.value;
+                if (val) editor.chain().focus().setFontSize(val).run();
+                else editor.chain().focus().unsetFontSize().run();
+            };
+        }
+
+        // Quick Preset Text Color buttons
+        wrapper.querySelectorAll("[data-color]").forEach((btn) => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                editor.chain().focus().setColor(btn.dataset.color).run();
+            };
+        });
+
+        // Quick Preset Highlight buttons
+        wrapper.querySelectorAll("[data-highlight]").forEach((btn) => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                editor.chain().focus().toggleHighlight({ color: btn.dataset.highlight }).run();
+            };
+        });
+
+        // Heading selector change
+        const headingSelect = wrapper.querySelector(".heading-selector");
+        if (headingSelect) {
+            headingSelect.onchange = (e) => {
+                const val = e.target.value;
+                if (val === "h1") editor.chain().focus().toggleHeading({ level: 1 }).run();
+                else if (val === "h2") editor.chain().focus().toggleHeading({ level: 2 }).run();
+                else if (val === "h3") editor.chain().focus().toggleHeading({ level: 3 }).run();
+                else if (val === "h4") editor.chain().focus().toggleHeading({ level: 4 }).run();
+                else editor.chain().focus().setParagraph().run();
+            };
+        }
+
+        // Custom Color pickers
+        const textColorPicker = wrapper.querySelector(".text-color-picker");
+        if (textColorPicker) {
+            textColorPicker.oninput = (e) => {
+                editor.chain().focus().setColor(e.target.value).run();
+            };
+        }
+
+        const highlightColorPicker = wrapper.querySelector(".highlight-color-picker");
+        if (highlightColorPicker) {
+            highlightColorPicker.oninput = (e) => {
+                editor.chain().focus().toggleHighlight({ color: e.target.value }).run();
+            };
+        }
+
+        // YouTube bar
+        const youtubeBar = wrapper.querySelector(".youtube-bar");
+        const youtubeInput = wrapper.querySelector(".youtube-url");
+        const youtubeApply = wrapper.querySelector(".youtube-apply");
+
+        if (youtubeApply && youtubeInput) {
+            youtubeApply.onclick = (e) => {
+                e.preventDefault();
+                const url = youtubeInput.value;
+                if (url) {
+                    editor.chain().focus().setYoutubeVideo({ src: url }).run();
+                    youtubeInput.value = "";
+                    if (youtubeBar) youtubeBar.classList.add("hidden");
+                }
+            };
+        }
+
+        // Image bar
+        const imageBar = wrapper.querySelector(".image-bar");
+        const imageInput = wrapper.querySelector(".image-url");
+        const imageApply = wrapper.querySelector(".image-apply");
+
+        if (imageApply && imageInput) {
+            imageApply.onclick = (e) => {
+                e.preventDefault();
+                const url = imageInput.value;
+                if (url) {
+                    editor.chain().focus().setImage({ src: url }).run();
+                    imageInput.value = "";
+                    if (imageBar) imageBar.classList.add("hidden");
+                }
+            };
+        }
+
+        // Link bar
         const linkBar = wrapper.querySelector(".link-bar");
         const linkInput = wrapper.querySelector(".link-url");
         const linkApply = wrapper.querySelector(".link-apply");
         const linkRemove = wrapper.querySelector(".link-remove");
 
-        if (!linkBar) return;
+        if (linkBar) {
+            editor.on("selectionUpdate", () => {
+                const href = editor.getAttributes("link").href;
+                if (href && linkInput) {
+                    linkBar.classList.remove("hidden");
+                    linkInput.value = href;
+                }
+            });
 
-        // Detect cursor change
-        editor.on("selectionUpdate", () => {
-            const href = editor.getAttributes("link").href;
-            if (href) {
-                linkBar.classList.remove("hidden");
-                linkInput.value = href;
-            } else {
-                linkBar.classList.add("hidden");
-                linkInput.value = "";
+            if (linkApply) {
+                linkApply.onclick = (e) => {
+                    e.preventDefault();
+                    const url = linkInput.value;
+                    if (url) {
+                        editor.chain().focus().setLink({ href: url }).run();
+                    }
+                };
             }
-        });
 
-        // Apply link
-        linkApply.onclick = () => {
-            const url = linkInput.value;
-            if (url) {
-                editor.chain().focus().setLink({ href: url }).run();
+            if (linkRemove) {
+                linkRemove.onclick = (e) => {
+                    e.preventDefault();
+                    editor.chain().focus().unsetLink().run();
+                    if (linkBar) linkBar.classList.add("hidden");
+                };
             }
-        };
-
-        // Remove link
-        linkRemove.onclick = () => {
-            editor.chain().focus().unsetLink().run();
-            linkBar.classList.add("hidden");
-        };
+        }
     });
 }
 
@@ -436,12 +760,18 @@ function deleteSettingsContent(uid) {
     if (!wrapper) return;
 
     const preview = wrapper.querySelector('[data-content-preview]');
+    const filePreview = wrapper.querySelector('[data-content-file-preview]');
     const placeholder = wrapper.querySelector('[data-content-placeholder]');
     const input = wrapper.querySelector('#' + uid);
 
     if (preview) {
         preview.classList.add('hidden');
         preview.removeAttribute('src');
+    }
+
+    if (filePreview) {
+        filePreview.classList.add('hidden');
+        filePreview.classList.remove('flex');
     }
 
     if (placeholder) {
@@ -1365,3 +1695,22 @@ document.addEventListener("turbo:load", () => {
         }
     });
 });
+
+// Auto-expand Textarea Helper
+function initAutoResizeTextareas() {
+    document.querySelectorAll("textarea").forEach((el) => {
+        const resize = () => {
+            el.style.height = "auto";
+            el.style.height = Math.max(el.scrollHeight, 60) + "px";
+        };
+        resize();
+        if (!el.dataset.autoResized) {
+            el.dataset.autoResized = "true";
+            el.addEventListener("input", resize);
+            window.addEventListener("resize", resize);
+        }
+    });
+}
+document.addEventListener("DOMContentLoaded", initAutoResizeTextareas);
+document.addEventListener("turbo:load", initAutoResizeTextareas);
+window.initAutoResizeTextareas = initAutoResizeTextareas;

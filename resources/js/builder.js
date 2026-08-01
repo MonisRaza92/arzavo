@@ -25,12 +25,19 @@ window.BuilderSection = {
     },
 
     evaluate(value, operator, expected) {
+        let valStr = String(value);
+        let expStr = String(expected);
+
+        if (expected === true || expected === 'true') expStr = '1';
+        if (expected === false || expected === 'false') expStr = '0';
+        if (value === true || value === 'true') valStr = '1';
+        if (value === false || value === 'false') valStr = '0';
 
         switch (operator) {
-            case '!=': return String(value) !== String(expected);
-            case 'in': return Array.isArray(expected) && expected.includes(value);
-            case 'not_in': return Array.isArray(expected) && !expected.includes(value);
-            default: return String(value) === String(expected);
+            case '!=': return valStr !== expStr;
+            case 'in': return Array.isArray(expected) && expected.map(String).includes(valStr);
+            case 'not_in': return Array.isArray(expected) && !expected.map(String).includes(valStr);
+            default: return valStr === expStr;
         }
     },
 
@@ -397,24 +404,31 @@ window.deleteSectionMedia = function (key) {
             }
 
             function evaluateCondition(controlValue, operator, expected) {
+                let valStr = String(controlValue);
+                let expStr = String(expected);
+
+                if (expected === true || expected === 'true') expStr = '1';
+                if (expected === false || expected === 'false') expStr = '0';
+                if (controlValue === true || controlValue === 'true') valStr = '1';
+                if (controlValue === false || controlValue === 'false') valStr = '0';
 
                 switch (operator) {
 
                     case '==':
                     case '=':
-                        return String(controlValue) === String(expected);
+                        return valStr === expStr;
 
                     case '!=':
-                        return String(controlValue) !== String(expected);
+                        return valStr !== expStr;
 
                     case 'in':
-                        return Array.isArray(expected) && expected.includes(controlValue);
+                        return Array.isArray(expected) && expected.map(String).includes(valStr);
 
                     case 'not_in':
-                        return Array.isArray(expected) && !expected.includes(controlValue);
+                        return Array.isArray(expected) && !expected.map(String).includes(valStr);
 
                     default:
-                        return String(controlValue) === String(expected);
+                        return valStr === expStr;
                 }
             }
 

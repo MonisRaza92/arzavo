@@ -1,0 +1,89 @@
+{
+    "type": "data_stats",
+    "name": "Item Stats",
+    "icon": "fa-chart-simple",
+    "category": "Content",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content",
+            "help": "Toggle visibility for download counts and page or lesson statistics."
+        },
+        {
+            "key": "show_downloads",
+            "label": "Show Downloads Count",
+            "type": "switch",
+            "default": true,
+            "help": "Show or hide the total downloads count statistic badge."
+        },
+        {
+            "key": "show_pages",
+            "label": "Show Pages / Lessons Count",
+            "type": "switch",
+            "default": true,
+            "help": "Show or hide total pages or lessons count statistic."
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Style & Colors",
+            "help": "Customize background color, border styling, text colors, border radius, and padding."
+        },
+        {
+            "key": "bg_color",
+            "label": "Background Color",
+            "type": "color",
+            "default": "#f9fafb",
+            "help": "Background color of the stat badge container."
+        },
+        {
+            "key": "border_color",
+            "label": "Border Color",
+            "type": "color",
+            "default": "#f3f4f6",
+            "help": "Border line color around the stat badge container."
+        },
+        {
+            "key": "text_color",
+            "label": "Text Color",
+            "type": "color",
+            "default": "#4b5563",
+            "help": "Text and icon color for statistics items."
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 40,
+            "help": "Adjust roundness of container corners."
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing",
+            "help": "Control outer top and bottom margin spacing."
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 80,
+            "help": "Adjust top margin space above the stats container."
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": 0,
+            "min": 0,
+            "max": 80,
+            "help": "Adjust bottom margin space below the stats container."
+        }
+    ]
+}
+

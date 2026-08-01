@@ -3,7 +3,7 @@
     "name": "Group",
     "icon": "fa-layer-group",
     "category": "Layout",
-    "max_blocks": 20,
+    "max_blocks": 30,
     "allowed_blocks": [
         "data_image",
         "data_title",
@@ -14,6 +14,9 @@
         "data_badge",
         "data_rating",
         "data_author",
+        "data_stats",
+        "data_actions",
+        "data_specs",
         "divider",
         "spacer",
         "data_pills"

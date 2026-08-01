@@ -9,8 +9,12 @@
         "data_title",
         "data_text",
         "data_button",
-        "data_category_group",
-        "divider"
+        "data_books_group",
+        "divider",
+        "data_badge",
+        "data_rating",
+        "data_pricing",
+        "data_author"
     ],
     "fields": [
         {

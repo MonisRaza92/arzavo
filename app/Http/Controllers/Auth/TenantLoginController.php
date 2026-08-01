@@ -103,8 +103,8 @@ class TenantLoginController
         Auth::guard('tenant')->login($user);
         $request->session()->regenerate();
 
-        // Redirect to the appropriate dashboard
-        return redirect($this->redirectTo());
+        // Redirect to intended URL (e.g. item download) or default dashboard
+        return redirect()->intended($this->redirectTo());
     }
 
     private function generateUniqueUsername($fname, $lname)

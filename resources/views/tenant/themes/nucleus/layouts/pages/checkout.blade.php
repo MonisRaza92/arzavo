@@ -13,7 +13,7 @@
                     <i class="fa-solid fa-user text-indigo-600"></i> Contact Information
                 </h2>
 
-                <form id="checkout-form" action="{{ route('checkout.process') }}" method="POST" enctype="multipart/form-data">
+                <form id="checkout-form" action="{{ route('checkout.submit') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     @if($item)

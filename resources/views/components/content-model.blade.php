@@ -204,22 +204,27 @@
         if (!wrapper) return;
 
         const preview = wrapper.querySelector('[data-content-preview]');
+        const filePreview = wrapper.querySelector('[data-content-file-preview]');
+        const fileNameEl = wrapper.querySelector('[data-content-filename]');
         const placeholder = wrapper.querySelector('[data-content-placeholder]');
 
-        if (!preview) return;
-
         placeholder?.classList.add('hidden');
-        preview.classList.remove('hidden');
 
         if (type === 'image') {
-            preview.src = mediaUrl(path);
-        } else if (type === 'video') {
-            preview.src = mediaUrl(path);
+            if (preview) {
+                preview.src = mediaUrl(path);
+                preview.classList.remove('hidden');
+            }
         } else {
-            preview.innerHTML = `
-            <i class="fa-solid fa-circle-check text-3xl mb-1"></i>
-            <span class="text-xs">${type.toUpperCase()} selected</span>
-        `;
+            if (preview) preview.classList.add('hidden');
+            if (filePreview) {
+                filePreview.classList.remove('hidden');
+                filePreview.classList.add('flex');
+            }
+            if (fileNameEl && path) {
+                const parts = path.split('/');
+                fileNameEl.textContent = parts[parts.length - 1];
+            }
         }
     }
 

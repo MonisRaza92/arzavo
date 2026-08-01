@@ -1,0 +1,25 @@
+{
+    "type": "data_long_description",
+    "name": "Full Description (Rich Text)",
+    "icon": "fa-file-lines",
+    "category": "Data",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content Settings"
+        },
+        {
+            "key": "heading",
+            "label": "Section Heading",
+            "type": "text",
+            "default": "Full Overview & Syllabus Details"
+        },
+        {
+            "key": "show_heading",
+            "label": "Show Heading",
+            "type": "switch",
+            "default": true
+        }
+    ]
+}

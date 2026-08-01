@@ -1,8 +1,8 @@
 {
     "type": "dataset_container",
-    "name": "Book Categories",
+    "name": "Books: Grid",
     "icon": "fa-layer-group",
-    "category": "Content",
+    "category": "Categories",
     "color_scheme": "scheme_1",
     "max_blocks": 20,
     "pages": ["home", "book-categories", "books"],

@@ -1,0 +1,139 @@
+{
+    "type": "data_previews",
+    "name": "Item Previews",
+    "icon": "fa-images",
+    "category": "Content",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Heading Settings",
+            "help": "Configure section title, heading size, and visibility."
+        },
+        {
+            "key": "show_heading",
+            "label": "Show Heading",
+            "type": "switch",
+            "default": true,
+            "help": "Show or hide the title heading above the gallery."
+        },
+        {
+            "key": "heading",
+            "label": "Section Heading",
+            "type": "text",
+            "default": "Sample Page Previews",
+            "help": "Title heading displayed above the preview images gallery.",
+            "conditional": {
+                "key": "show_heading",
+                "value": true
+            }
+        },
+        {
+            "key": "heading_type",
+            "label": "Heading Size / Type",
+            "type": "select",
+            "options": [
+                { "label": "Heading 1", "value": "h1" },
+                { "label": "Heading 2", "value": "h2" },
+                { "label": "Heading 3", "value": "h3" },
+                { "label": "Heading 4", "value": "h4" },
+                { "label": "Heading 5", "value": "h5" },
+                { "label": "Heading 6", "value": "h6" }
+            ],
+            "default": "h6",
+            "conditional": {
+                "key": "show_heading",
+                "value": true
+            }
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Display Limit & '+More' Badge",
+            "help": "Set maximum initial visible cards and show '+More' overlay badge."
+        },
+        {
+            "key": "enable_limit",
+            "label": "Enable Display Limit",
+            "type": "switch",
+            "default": false,
+            "help": "Limit initial visible preview cards and show '+More' overlay badge."
+        },
+        {
+            "key": "display_limit",
+            "label": "Visible Previews Limit",
+            "type": "range",
+            "default": 6,
+            "min": 1,
+            "max": 20,
+            "conditional": {
+                "key": "enable_limit",
+                "value": true
+            },
+            "help": "Number of preview cards to show initially before '+More' overlay."
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout & Image Size Controls",
+            "help": "Customize gallery grid columns (up to 10 per row), aspect ratio, and corner radius."
+        },
+        {
+            "key": "columns",
+            "label": "Grid Columns",
+            "type": "range",
+            "default": 6,
+            "min": 1,
+            "max": 10,
+            "help": "Number of preview image cards displayed per row."
+        },
+        {
+            "key": "aspect_ratio",
+            "label": "Image Aspect Ratio",
+            "type": "radio",
+            "options": [
+                "portrait",
+                "square",
+                "video"
+            ],
+            "default": "portrait",
+            "help": "Select image container aspect ratio."
+        },
+        {
+            "key": "border_radius",
+            "label": "Border Radius (px)",
+            "type": "range",
+            "default": 8,
+            "min": 0,
+            "max": 30,
+            "help": "Corner rounding for preview images."
+        },
+
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Spacing",
+            "help": "Control outer margin spacing."
+        },
+        {
+            "key": "margin_top",
+            "label": "Margin Top",
+            "type": "range",
+            "default": 16,
+            "min": 0,
+            "max": 80,
+            "help": "Top outer margin spacing."
+        },
+        {
+            "key": "margin_bottom",
+            "label": "Margin Bottom",
+            "type": "range",
+            "default": 16,
+            "min": 0,
+            "max": 80,
+            "help": "Bottom outer margin spacing."
+        }
+    ]
+}
