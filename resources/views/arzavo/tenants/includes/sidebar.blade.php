@@ -44,17 +44,6 @@
                 ]
             ],
             [
-                'section' => 'Settings',
-                'items' => [
-                    [
-                        'text' => 'Verify Domain',
-                        'icon' => 'fa-globe',
-                        'url' => route('tenants.index', ['tab' => 'domain']),
-                        'active' => $tab === 'domain' && request()->routeIs('tenants.index')
-                    ]
-                ]
-            ],
-            [
                 'section' => 'Billing & Payments',
                 'items' => [
                     [

@@ -1,56 +1,56 @@
 <!-- 🔐 Connect Domain Popup -->
 <div id="connectDomainPopup-{{ $tenant->id }}"
-    class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[999]">
 
-    <div class="bg-white border-rounded w-full max-w-4xl p-6 md:h-11/12 h-dvh relative overflow-auto scrollbar animate-fadeIn shadow-lg">
+    <div class="bg-primary border-rounded w-full max-w-4xl p-6 md:h-auto h-dvh relative overflow-auto scrollbar animate-fadeIn shadow-xl border-primary">
 
         <!-- Close Button -->
-        <button id="closeDomainPopup"
-            class="absolute right-4 top-6 text-gray-500 hover:text-black text-2xl">
+        <button id="closeDomainPopup-{{ $tenant->id }}"
+            class="absolute right-4 top-6 text-secondary hover:text-primary text-2xl transition">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
         <!-- HEADER -->
         <div class="flex items-center gap-4 mb-6">
-            <div class="w-14 h-14 flex items-center justify-center bg-primary bg-opacity-10 border-rounded">
-                <i class="fa-solid fa-globe text-primary text-2xl"></i>
+            <div class="w-14 h-14 flex items-center justify-center bg-invert text-invert border-rounded text-2xl">
+                <i class="fa-solid fa-globe"></i>
             </div>
             <div>
                 <h2 class="text-2xl font-bold text-primary">Connect Your Domain</h2>
-                <p class="text-sm text-gray-600">Make your website live on your own custom domain.</p>
+                <p class="text-sm text-secondary">Make your website live on your own custom domain.</p>
             </div>
         </div>
 
         <!-- Steps Box -->
-        <div class="bg-gray-50 border border-primary border-opacity-30 rounded-md p-5 mb-6">
+        <div class="bg9-secondary border-primary border-rounded p-5 mb-6">
 
             <h3 class="text-primary font-semibold text-sm mb-3">How to connect your domain</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                 <!-- Step 1 -->
-                <div class="bg-white border rounded-md p-4">
+                <div class="bg-primary border-primary border-rounded p-4">
                     <p class="font-bold text-primary text-sm mb-2">1. Open your domain provider</p>
 
-                    <ul class="text-xs text-gray-600 list-disc pl-4 space-y-1 mb-3">
+                    <ul class="text-xs text-secondary list-disc pl-4 space-y-1 mb-3">
                         <li>GoDaddy</li>
                         <li>Namecheap</li>
                         <li>Hostinger</li>
                         <li>or whichever provider you use</li>
                     </ul>
 
-                    <div class="text-xs text-gray-600 space-y-1">
+                    <div class="text-xs text-secondary space-y-1">
                         <p class="font-semibold text-primary">Inside your provider panel:</p>
 
                         <p>• Go to <b>DNS Management</b> or <b>DNS Zone Editor</b></p>
                         <p>• Sometimes it appears under:
-                            <span class="text-gray-700">
+                            <span class="text-primary">
                                 <b>Domain Settings → Manage DNS</b>
                             </span>
                         </p>
 
                         <p>• Look for buttons like:
-                            <span class="text-gray-700">
+                            <span class="text-primary">
                                 <b>Add Record</b> / <b>Create New DNS Record</b>
                             </span>
                         </p>
@@ -59,24 +59,24 @@
 
 
                 <!-- Step 2 -->
-                <div class="bg-white border rounded-md p-4">
+                <div class="bg-primary border-primary border-rounded p-4">
                     <p class="font-bold text-primary text-sm mb-1">2. Add these DNS Records</p>
 
                     <div class="space-y-2">
 
-                        <div class="bg-gray-50 border p-2 rounded-md text-xs">
-                            <strong>A Record:</strong><br>
-                            @ → {{ env('SERVER_IP', '13.234.98.38') }}
+                        <div class="bg-hover-secondary border-primary border-rounded p-2 text-xs">
+                            <strong class="text-primary">A Record:</strong><br>
+                            <span class="text-secondary">@ → <code class="font-mono text-primary">{{ env('SERVER_IP', '13.234.98.38') }}</code></span>
                         </div>
 
-                        <div class="bg-gray-50 border p-2 rounded-md text-xs">
-                            <strong>CNAME:</strong><br>
-                            verify → verify.{{ config('app.domain') }}
+                        <div class="bg-hover-secondary border-primary border-rounded p-2 text-xs">
+                            <strong class="text-primary">CNAME:</strong><br>
+                            <span class="text-secondary">verify → <code class="font-mono text-primary">verify.{{ config('app.domain') }}</code></span>
                         </div>
 
-                        <div class="bg-gray-50 border p-2 rounded-md text-xs">
-                            <strong>A Record (www):</strong><br>
-                            www → {{ env('SERVER_IP', '13.234.98.38') }}
+                        <div class="bg-hover-secondary border-primary border-rounded p-2 text-xs">
+                            <strong class="text-primary">A Record (www):</strong><br>
+                            <span class="text-secondary">www → <code class="font-mono text-primary">{{ env('SERVER_IP', '13.234.98.38') }}</code></span>
                         </div>
 
                     </div>
@@ -85,33 +85,25 @@
             </div>
         </div>
 
-        <!-- Domain Display -->
-        <div class="bg-gray-50 absolute opacity-0 border border-primary rounded-md p-3 mb-4">
-            <p class="text-sm text-gray-700">
-                <strong>Domain to verify:</strong>
-                <span id="domainDisplay" class="text-primary font-semibold">
-                    {{ $tenant->custom_domain ?? 'None' }}
-                </span>
-            </p>
-        </div>
+        <!-- Domain Input -->
         <span class="text-sm text-primary font-semibold">Your Domain to verify</span>
         <input
             type="text"
-            id="newCustomDomain"
+            id="newCustomDomain-{{ $tenant->id }}"
             value="{{ $tenant->custom_domain }}"
-            class="w-full text-primary mt-2 border-rounded p-3 mb-4 border-primary"
-            placeholder="Enter Your Domian"
+            class="w-full text-primary mt-2 border-rounded p-3 mb-4 border-primary bg-primary"
+            placeholder="e.g. academy.yourdomain.com"
             />
         <input type="hidden" value="{{ $tenant->id }}" name="id">
 
         <!-- Status Box -->
-        <div id="statusBox" class="hidden p-3 border rounded-md mb-4"></div>
+        <div id="statusBox-{{ $tenant->id }}" class="hidden p-3 border-rounded mb-4 text-sm"></div>
 
         <!-- Verify Button -->
-        <button id="verifyNewDomainBtn"
+        <button id="verifyNewDomainBtn-{{ $tenant->id }}"
             class="w-full bg-invert text-invert font-semibold py-3 border-rounded transition flex justify-center items-center gap-2">
-            <span id="verifyBtnText">Verify Domain</span>
-            <span id="verifySpinner" class="hidden loader"></span>
+            <span id="verifyBtnText-{{ $tenant->id }}">Verify Domain</span>
+            <span id="verifySpinner-{{ $tenant->id }}" class="hidden loader"></span>
         </button>
 
     </div>
@@ -119,7 +111,7 @@
 
 <style>
     .loader {
-        border: 3px solid #f3f3f3;
+        border: 3px solid rgba(255,255,255,0.3);
         border-top: 3px solid currentColor;
         border-radius: 50%;
         width: 14px;
@@ -135,28 +127,30 @@
 </style>
 
 <script>
-    document.addEventListener("turbo:load", function() {
-        const openBtn = document.getElementById("connectDomainBtn-{{ $tenant->id }}");
-        const popup = document.getElementById("connectDomainPopup-{{ $tenant->id }}");
-        const closeBtn = document.getElementById("closeDomainPopup");
-        const verifyBtn = document.getElementById("verifyNewDomainBtn");
-        const domainInput = document.getElementById("newCustomDomain");
-        const statusBox = document.getElementById("statusBox");
-        const btnText = document.getElementById("verifyBtnText");
-        const spinner = document.getElementById("verifySpinner");
+    (function() {
+        const tenantId = "{{ $tenant->id }}";
 
-        if (!openBtn) return;
+        const openBtn   = document.getElementById("connectDomainBtn-" + tenantId);
+        const popup     = document.getElementById("connectDomainPopup-" + tenantId);
+        const closeBtn  = document.getElementById("closeDomainPopup-" + tenantId);
+        const verifyBtn = document.getElementById("verifyNewDomainBtn-" + tenantId);
+        const domainInput = document.getElementById("newCustomDomain-" + tenantId);
+        const statusBox = document.getElementById("statusBox-" + tenantId);
+        const btnText   = document.getElementById("verifyBtnText-" + tenantId);
+        const spinner   = document.getElementById("verifySpinner-" + tenantId);
+
+        if (!openBtn || !popup) return;
 
         function showStatus(type, message) {
             statusBox.classList.remove("hidden");
-            statusBox.className = "p-3 border rounded-md mb-4";
+            statusBox.className = "p-3 border-rounded mb-4 text-sm";
 
             if (type === "success") {
-                statusBox.classList.add("border-green-500", "bg-green-50", "text-green-700");
+                statusBox.classList.add("border", "border-green-500", "bg-green-50", "text-green-700");
             } else if (type === "error") {
-                statusBox.classList.add("border-red-500", "bg-red-50", "text-red-700");
+                statusBox.classList.add("border", "border-red-500", "bg-red-50", "text-red-700");
             } else if (type === "wait") {
-                statusBox.classList.add("border-yellow-500", "bg-yellow-50", "text-yellow-700");
+                statusBox.classList.add("border", "border-yellow-500", "bg-yellow-50", "text-yellow-700");
             }
 
             statusBox.innerHTML = message;
@@ -177,9 +171,21 @@
         openBtn.addEventListener("click", () => {
             popup.classList.remove("hidden");
             statusBox.classList.add("hidden");
+            document.body.style.overflow = "hidden";
         });
 
-        closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
+        closeBtn.addEventListener("click", () => {
+            popup.classList.add("hidden");
+            document.body.style.overflow = "";
+        });
+
+        // Close on backdrop click
+        popup.addEventListener("click", (e) => {
+            if (e.target === popup) {
+                popup.classList.add("hidden");
+                document.body.style.overflow = "";
+            }
+        });
 
         verifyBtn.addEventListener("click", function() {
             const domain = domainInput.value.trim();
@@ -230,5 +236,5 @@ ${data.raw_output}
                 });
 
         });
-    });
+    })();
 </script>

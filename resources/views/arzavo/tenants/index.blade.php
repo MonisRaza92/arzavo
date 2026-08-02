@@ -6,9 +6,8 @@
     $tab = request('tab', 'workspaces');
 @endphp
 
-<div class="p-6">
     <!-- Welcome Breadcrumb Banner -->
-    <div class="breadcrumb mb-6 flex justify-between items-center p-4 border-rounded bg-primary border-primary">
+    <div class="breadcrumb mb-4 flex justify-between items-center p-4 border-rounded bg-primary border-primary">
         <div>
             <h1 class="text-3xl font-bold tracking-tight flex items-center gap-2 text-primary">
                 <i class="fa-solid fa-layer-group text-xl"></i>
@@ -36,29 +35,6 @@
                 <i class="fas fa-smile text-yellow-400"></i>
                 <span>Good Morning!</span>
             </p>
-        </div>
-    </div>
-
-    <!-- Navigation Tabs & Actions -->
-    <div class="flex justify-between items-center border-bottom mb-8 gap-4 flex-wrap">
-        <div class="flex gap-6">
-            <a href="{{ route('tenants.index', ['tab' => 'workspaces']) }}" 
-               class="pb-3 text-xs font-semibold border-b-2 transition duration-200 {{ $tab === 'workspaces' ? 'border-primary text-primary' : 'border-transparent text-secondary hover:text-primary' }}">
-                <i class="fa-solid fa-building-columns mr-1.5"></i> My Workspaces
-            </a>
-            <a href="{{ route('tenants.index', ['tab' => 'domain']) }}" 
-               class="pb-3 text-xs font-semibold border-b-2 transition duration-200 {{ $tab === 'domain' ? 'border-primary text-primary' : 'border-transparent text-secondary hover:text-primary' }}">
-                <i class="fa-solid fa-globe mr-1.5"></i> Domain Verification
-            </a>
-            <a href="{{ route('tenants.index', ['tab' => 'billing']) }}" 
-               class="pb-3 text-xs font-semibold border-b-2 transition duration-200 {{ $tab === 'billing' ? 'border-primary text-primary' : 'border-transparent text-secondary hover:text-primary' }}">
-                <i class="fa-solid fa-file-invoice-dollar mr-1.5"></i> Plans & Billing
-            </a>
-        </div>
-        <div class="pb-3">
-            <a href="{{ route('tenants.create') }}" class="text-xs px-4 py-2.5 bg-invert text-invert border-rounded hover-invert font-semibold transition flex items-center gap-1.5 shadow-sm">
-                <i class="fa-solid fa-plus text-[10px]"></i> New Workspace
-            </a>
         </div>
     </div>
 
@@ -312,110 +288,6 @@
             @endforelse
         </div>
 
-    @elseif($tab === 'domain')
-        <!-- Tab 2: Domain Verification -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Instructions Column -->
-            <div class="lg:col-span-2 space-y-6">
-                <div class="p-5 border-rounded bg-primary border-primary shadow-sm">
-                    <h3 class="text-base font-bold text-primary flex items-center gap-2 mb-4">
-                        <i class="fa-solid fa-globe text-blue-500"></i> Custom Domain Configuration Instructions
-                    </h3>
-                    <p class="text-xs text-secondary leading-relaxed mb-4">
-                        By default, your workspace runs on a subdomain (e.g. <code>workspace.arzavo.com</code>). You can connect your own brand domain (e.g. <code>academy.yourdomain.com</code>) by pointing DNS settings to our server IP.
-                    </p>
-
-                    <div class="p-4 border-rounded bg-hover-secondary border-primary space-y-3">
-                        <h4 class="text-xs font-semibold text-primary">Configure DNS Records in Domain Registrar (GoDaddy, Namecheap, Route53 etc.)</h4>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                            <div class="p-3 bg-primary border border-slate-200 border-rounded text-xs">
-                                <span class="block font-bold text-primary mb-1">A Record:</span>
-                                <code class="bg-hover-secondary px-1 border rounded font-mono">@</code> &nbsp;→&nbsp; <strong class="text-primary">{{ env('SERVER_IP', '13.234.98.38') }}</strong>
-                            </div>
-                            <div class="p-3 bg-primary border border-slate-200 border-rounded text-xs">
-                                <span class="block font-bold text-primary mb-1">A Record (www):</span>
-                                <code class="bg-hover-secondary px-1 border rounded font-mono">www</code> &nbsp;→&nbsp; <strong class="text-primary">{{ env('SERVER_IP', '13.234.98.38') }}</strong>
-                            </div>
-                            <div class="p-3 bg-primary border border-slate-200 border-rounded text-xs md:col-span-2">
-                                <span class="block font-bold text-primary mb-1">CNAME Record (Verification):</span>
-                                <code class="bg-hover-secondary px-1 border rounded font-mono">verify</code> &nbsp;→&nbsp; <strong class="text-primary font-mono">verify.{{ config('app.domain') }}</strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 border-rounded flex gap-3 text-xs text-yellow-800">
-                        <i class="fa-solid fa-circle-exclamation mt-0.5 shrink-0 text-yellow-600"></i>
-                        <p>DNS changes can take anywhere from a few minutes to 24 hours to propagate globally. Make sure to point DNS records before clicking "Verify Domain".</p>
-                    </div>
-                </div>
-
-                <!-- Custom Domain Setup for workspaces -->
-                <div class="p-5 border-rounded bg-primary border-primary shadow-sm">
-                    <h3 class="text-base font-bold text-primary flex items-center gap-2 mb-4">
-                        <i class="fa-solid fa-circle-check text-green-500"></i> Connect and Verify Custom Domain
-                    </h3>
-
-                    <div class="space-y-4">
-                        @foreach($tenants as $tenant)
-                            <div class="p-4 border-rounded bg-hover-secondary border-primary flex items-center justify-between flex-wrap gap-4">
-                                <div>
-                                    <h4 class="text-xs font-bold text-primary">{{ $tenant->name }}</h4>
-                                    <p class="text-[11px] text-tertiary mt-1">Subdomain: {{ $tenant->subdomain }}</p>
-                                    @if($tenant->custom_domain)
-                                        <p class="text-xs mt-1.5 text-primary flex items-center gap-1">
-                                            <strong>Custom Domain:</strong> <code>{{ $tenant->custom_domain }}</code>
-                                            @if($tenant->domain_verified)
-                                                <span class="text-green-600 text-[10px] font-semibold bg-green-50 px-1.5 py-0.5 rounded border border-green-200">
-                                                    <i class="fa-solid fa-check-circle"></i> Verified
-                                                </span>
-                                            @else
-                                                <span class="text-red-500 text-[10px] font-semibold bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
-                                                    <i class="fa-solid fa-times-circle"></i> Unverified
-                                                </span>
-                                            @endif
-                                        </p>
-                                    @else
-                                        <p class="text-[11px] text-tertiary mt-1.5">No custom domain connected.</p>
-                                    @endif
-                                </div>
-                                <button id="connectDomainBtn-{{ $tenant->id }}" class="text-xs px-3 py-2 bg-invert text-invert border-rounded hover-invert font-semibold transition">
-                                    {{ $tenant->custom_domain ? 'Manage & Verify' : 'Connect Domain' }}
-                                </button>
-                            </div>
-                            
-                            @include('arzavo.tenants.domain-verify', ['tenant' => $tenant])
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            <!-- Server Status Side Info -->
-            <div class="space-y-6">
-                <div class="p-5 border-rounded bg-primary border-primary shadow-sm">
-                    <h3 class="text-sm font-bold text-primary mb-3">Server Configuration</h3>
-                    <ul class="space-y-3 text-xs">
-                        <li class="flex justify-between border-bottom pb-2">
-                            <span class="text-tertiary">Server IP Address:</span>
-                            <span class="font-mono font-bold text-primary">{{ env('SERVER_IP', '13.234.98.38') }}</span>
-                        </li>
-                        <li class="flex justify-between border-bottom pb-2">
-                            <span class="text-tertiary">SSL Certificate:</span>
-                            <span class="text-green-600 font-semibold flex items-center gap-1">
-                                <i class="fa-solid fa-circle-check"></i> Auto-Install (Let's Encrypt)
-                            </span>
-                        </li>
-                        <li class="flex justify-between border-bottom pb-2">
-                            <span class="text-tertiary">DNS Checker tool:</span>
-                            <a target="_blank" href="https://dnschecker.org" class="text-primary hover:underline flex items-center gap-0.5">
-                                DNS Checker <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
     @elseif($tab === 'billing')
         <!-- Tab 3: Billing & Payments -->
         <div class="space-y-6">
@@ -553,5 +425,4 @@
             }
         </script>
     @endif
-</div>
 @endsection
