@@ -1,29 +1,33 @@
-@props(['name', 'label' => '', 'value' => '', 'placeholder' => 'Paste link or select', 'class' => ''])
+@props(['name', 'label' => '', 'value' => '', 'placeholder' => 'Paste link or select', 'class' => '', 'urls' => [],])
 
 <x-input.wrapper :label="$label">
     <div class="relative url-picker">
-        
+
         {{-- Left Link Icon --}}
-        <span class="absolute left-2.5 text-tertiary text-xs pointer-events-none z-10" style="top: 50%; transform: translateY(-50%);">
+        <span class="absolute left-2.5 text-tertiary text-xs pointer-events-none z-10"
+            style="top: 50%; transform: translateY(-50%);">
             <i class="fa-solid fa-link"></i>
         </span>
 
         {{-- Input (Direct child of url-picker, satisfying JS input.parentElement) --}}
-        <input type="text" name="{{ $name }}" value="{{ $value }}" placeholder="{{ $placeholder }}"
-            autocomplete="off" class="w-full text-xs p-2 pl-7 pr-7 border-rounded border-primary bg-primary text-primary input-focus cursor-pointer {{ $class }}"
+        <input type="text" name="{{ $name }}" value="{{ $value }}" placeholder="{{ $placeholder }}" autocomplete="off"
+            class="w-full text-xs p-2 pl-7 pr-7 border-rounded border-primary bg-primary text-primary input-focus cursor-pointer {{ $class }}"
             onclick="openUrlPicker(this)">
 
         {{-- Right Chevron Icon --}}
-        <span class="absolute right-2.5 text-tertiary text-[10px] pointer-events-none z-10" style="top: 50%; transform: translateY(-50%);">
+        <span class="absolute right-2.5 text-tertiary text-[10px] pointer-events-none z-10"
+            style="top: 50%; transform: translateY(-50%);">
             <i class="fa-solid fa-chevron-down"></i>
         </span>
 
         {{-- POPUP --}}
-        <div class="url-popup hidden absolute right-0 top-full mt-1.5 w-64 bg-primary border-primary border-rounded shadow-xl z-50">
+        <div
+            class="url-popup hidden absolute right-0 top-full mt-1.5 w-64 bg-primary border-primary border-rounded shadow-xl z-50">
 
             {{-- HEADER --}}
             <div class="flex items-center gap-2 p-2 border-bottom">
-                <button type="button" class="url-back shrink-0 hidden p-2 bg-hover-secondary border-rounded flex items-center justify-center text-xs text-secondary hover:text-primary transition-colors"
+                <button type="button"
+                    class="url-back shrink-0 hidden p-2 bg-hover-secondary border-rounded flex items-center justify-center text-xs text-secondary hover:text-primary transition-colors"
                     onclick="urlBack(this)">
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
