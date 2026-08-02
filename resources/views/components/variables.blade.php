@@ -208,6 +208,16 @@
         --arz-badge-border-color: {{ $customizes['badges_border_color'] ?? '#e5e7eb' }};
         --arz-badge-border-radius: {{ $customizes['badges_border_radius'] ?? '8' }}px;
         --arz-badge-padding: {{ $customizes['badges_padding'] ?? '16' }}px;
+
+        /* ========================= */
+        /*         Checkout          */
+        /* ========================= */
+        --checkout-primary: {{ $customizes['checkout_primary_color'] ?? '#4f46e5' }};
+        --checkout-text: {{ $customizes['checkout_text_color'] ?? '#111827' }};
+        --checkout-input-bg: {{ $customizes['checkout_input_bg'] ?? '#ffffff' }};
+        --checkout-input-text: {{ $customizes['checkout_input_text_color'] ?? '#111827' }};
+        --checkout-radius: {{ $customizes['checkout_border_radius'] ?? '12' }}px;
+        --checkout-border: {{ $customizes['checkout_input_border_color'] ?? '#e5e7eb' }};
     }
 
     .dark-mode {

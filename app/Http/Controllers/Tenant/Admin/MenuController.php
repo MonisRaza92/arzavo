@@ -11,7 +11,17 @@ class MenuController
 {
     public function index()
     {
-        return view('tenant.admin.menus.index');
+        $menus = Menu::with('allItems')->get();
+        return view('tenant.admin.menus.index', compact('menus'));
+    }
+
+    public function edit($id)
+    {
+        $menu = Menu::with(['allItems' => function($q) {
+            $q->orderBy('order');
+        }])->findOrFail($id);
+
+        return view('tenant.admin.menus.edit', compact('menu'));
     }
     public function store(Request $request)
     {

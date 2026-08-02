@@ -34,11 +34,17 @@ class PageController
             'meta_title' => $request->meta_title,
             'is_system_page' => 0,
             'meta_description' => $request->meta_description,
-            'status' => $request->status ? 1 : 0,
+            'is_active' => $request->status ? 1 : 0,
         ]);
 
         ping_google();
-        return back()->with('success', 'Page created successfully!');
+        return redirect()->route('admin.pages.edit', $page->id)->with('success', 'Page created successfully! Write your page content below.');
+    }
+
+    public function edit($pageId)
+    {
+        $page = Page::findOrFail($pageId);
+        return view('tenant.admin.pages.edit', compact('page'));
     }
 
     public function update(Request $request, $pageId)
@@ -58,13 +64,14 @@ class PageController
         $page->update([
             'name' => $request->name,
             'slug' => $request->slug,
+            'content' => $request->input('content'),
             'meta_title' => $request->meta_title,
             'meta_description' => $request->meta_description,
-            'status' => $request->status ? 1 : 0,
+            'is_active' => $request->status ? 1 : 0,
         ]);
 
         ping_google();
-        return back()->with('success', 'Page updated successfully!');
+        return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully!');
     }
 
     public function destroy($pageId)
@@ -73,6 +80,6 @@ class PageController
         $page->delete();
 
         ping_google();
-        return back()->with('success', 'Page deleted successfully!');
+        return redirect()->route('admin.pages.index')->with('success', 'Page deleted successfully!');
     }
 }

@@ -16,18 +16,18 @@
         <tbody>
             @foreach($pages as $page)
             <tr class="border-top">
-                <td class="p-2 pl-4 text-left">{{ $page->name }}</td>
-                <td class="p-2 text-left">/{{ $page->slug }}</td>
-                <td class="p-2 text-left">
-                    {{ $page->status ? 'Published' : 'Draft' }}
+                <td class="px-2 py-3 pl-4 text-left">{{ $page->name }}</td>
+                <td class="px-2 py-3 text-left">/{{ $page->slug }}</td>
+                <td class="px-2 py-3 text-left">
+                    <span class="{{ $page->is_active ? 'bg-emerald-600' : 'bg-gray-400' }} text-white px-2 py-1 rounded-full text-xs">{{ $page->is_active ? 'Published' : 'Draft' }}</span>
                 </td>
-                <td class="p-2 text-center hidden md:block">{{ $page->created_at->format('d-m-Y') }}</td>
-                <td class="p-2 text-right pr-4">
-                    <button type="button" class="text-xl text-tertiary" onclick="openEditModal({{ $page->id }}, '{{ $page->name }}', '{{ $page->slug }}', '{{ $page->meta_title }}', `{{ $page->meta_description }}`, '{{ $page->status }}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                <td class="px-2 py-3 text-center hidden md:block">{{ $page->created_at->format('d-m-Y') }}</td>
+                <td class="px-2 py-3 text-right pr-4">
+                    <a href="{{ route('admin.pages.edit', $page->id) }}" class="text-sm text-tertiary mr-2"><i class="fa-solid fa-pen-to-square"></i></a>
                     <form action="{{ route('admin.pages.destroy', $page->id) }}" method="POST" class="inline">
                         @csrf 
                         @method('DELETE')
-                        <button class="text-xl text-tertiary" onclick="return confirm('Delete page?')"><i class="fa-solid fa-trash"></i></button>
+                        <button class="text-sm text-tertiary" onclick="return confirm('Delete page?')"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </td>
             </tr>
@@ -35,6 +35,5 @@
         </tbody>
     </table>
 </div>
-@include('tenant.admin.pages.forms.page-update-form')
 @include('tenant.admin.pages.forms.page-create-form')
 @endsection

@@ -3,6 +3,7 @@
     "name": "Contact",
     "icon": "fa-solid fa-address-book",
     "category": "Trust Building",
+    "pages": "all",
     "order": 0,
     "settings": {
         "direction": "vertical",
@@ -29,7 +30,7 @@
                     "type": "heading",
                     "settings": {
                         "text": "Get In Touch",
-                        "heading_type": "heading-2",
+                        "heading_type": "heading-3",
                         "alignment": "start"
                     }
                 },

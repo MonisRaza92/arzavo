@@ -37,6 +37,16 @@
             "type": "color",
             "default": "#4f46e5",
             "help": "Select the color for contact icons."
+        },
+        {
+            "key": "text_size",
+            "label": "Text Size",
+            "type": "select",
+            "options": [
+                {"label": "Paragraph", "value": "arz-paragraph"},
+                {"label": "Body Text", "value": "arz-body-text"}
+            ],
+            "default": "arz-body-text"
         }
     ]
 }

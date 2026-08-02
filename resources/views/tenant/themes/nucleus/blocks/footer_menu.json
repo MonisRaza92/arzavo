@@ -1,7 +1,7 @@
 {
     "type": "footer_menu",
     "name": "Footer Menu",
-    "icon": "fa-list",
+    "icon": "fa-link",
     "order": 2,
     "category": "Footer",
     "fields": [
@@ -14,24 +14,55 @@
             "key": "menu_id",
             "label": "Select Menu",
             "type": "menu",
-            "default": "1"
+            "default": 1
         },
         {
             "key": "separate_mobile_menu",
             "label": "Separate Mobile Menu",
             "type": "switch",
-            "default": "0",
+            "default": false,
             "text": "To use different menu on mobile"
         },
         {
             "key": "mobile_menu_id",
             "label": "Select Mobile Menu",
             "type": "menu",
-            "default": "1",
+            "default": 1,
             "conditional": {
                 "field": "separate_mobile_menu",
-                "value": "1"
+                "value": true
             }
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Menu Settings"
+        },
+        {
+            "key": "show_title",
+            "label": "Show Menu Title",
+            "type": "switch",
+            "default": true
+        },
+        {
+            "key": "direction",
+            "label": "Direction",
+            "type": "select",
+            "options": [
+                {"label": "Vertical (Column)", "value": "flex-col"},
+                {"label": "Horizontal (Row)", "value": "flex-row"}
+            ],
+            "default": "flex-col"
+        },
+        {
+            "key": "text_size",
+            "label": "Text Size",
+            "type": "select",
+            "options": [
+                {"label": "Paragraph", "value": "arz-paragraph"},
+                {"label": "Body Text", "value": "arz-body-text"}
+            ],
+            "default": "arz-paragraph"
         },
         {
             "key": "group",

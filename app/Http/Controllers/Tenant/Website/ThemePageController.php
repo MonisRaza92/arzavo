@@ -59,6 +59,24 @@ class ThemePageController extends Controller
         app()->instance('currentThemeSlug', $theme);
         app()->instance('builderThemeId', $themeId);
 
+        if ($slug === 'checkout') {
+            $item = \App\Models\Tenant\Book::latest()->first();
+            $variant = $item ? $item->getDefaultVariant() : null;
+            $purchasableType = 'book';
+            $purchasableId = $item ? $item->id : null;
+            return view("tenant.themes.checkout", compact('item', 'variant', 'purchasableType', 'purchasableId', 'page'));
+        }
+
+        if ($slug === 'checkout-success') {
+            $order = \App\Models\Tenant\Order::latest()->first() ?? new \App\Models\Tenant\Order([
+                'order_number' => 'ORD-MOCK-1234',
+                'payment_status' => 'paid',
+                'grand_total' => 499.00,
+                'payment_gateway' => 'manual_bank'
+            ]);
+            return view("tenant.themes.success", compact('order', 'page'));
+        }
+
         $design = ThemePageDesign::where('tenant_theme_id', $themeId)
             ->where('page_id', $page->id)
             ->first();

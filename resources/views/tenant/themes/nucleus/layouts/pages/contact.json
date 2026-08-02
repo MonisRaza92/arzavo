@@ -2,9 +2,9 @@
     "contact": [
         {
             "kind": "template",
-            "name": "contact_split"
+            "name": "contact"
         }
     ],
     "meta_title": "Contact Us",
-    "meta_description": "Get in touch with us. We would love to hear from you. Reach out for inquiries, support, or partnership opportunities."
+    "meta_description": "Have any questions or need assistance? Reach out to us and our support team will help you."
 }

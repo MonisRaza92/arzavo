@@ -11,6 +11,7 @@ class Page extends Model
         'name',
         'slug',
         'is_system_page',
+        'content',
         'meta_title',
         'meta_description',
         'is_active',

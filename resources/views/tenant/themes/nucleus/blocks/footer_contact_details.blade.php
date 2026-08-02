@@ -1,12 +1,16 @@
 @php
     $iconColor = !empty($block->icon_color) ? $block->icon_color : '#4f46e5';
+    $textSize = $block->text_size ?? 'arz-paragraph';
 @endphp
 <div {!! $block->attributes() !!} class="w-full">
-    <ul class="space-y-3 arz-paragraph">
+    <ul class="space-y-3 {{ $textSize }}">
         @if($block->address)
             <li class="flex items-start gap-2.5">
                 <i class="fa fa-map-marker-alt mt-1 shrink-0" style="color: {{ $iconColor }};"></i>
-                <span>{{ $block->address }}</span>
+                <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($block->address) }}" 
+                   target="_blank" rel="noopener noreferrer" class="transition hover:underline">
+                    {{ $block->address }}
+                </a>
             </li>
         @endif
         @if($block->phone)

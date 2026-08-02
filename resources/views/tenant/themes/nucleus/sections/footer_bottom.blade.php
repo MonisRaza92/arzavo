@@ -7,7 +7,7 @@
      ">
 
     <div
-        class="{{ $section->container }} flex flex-row items-center gap-4
+        class="{{ $section->container }} flex flex-col md:flex-row items-center gap-4
         {{ $section->justify === 'left' ? 'justify-start' : ($section->justify === 'center' ? 'justify-center' : 'justify-between') }}">
         <p class="arz-body-text"> © {{ date('Y') }} {{ tenant_name() }}. All rights reserved. Powered By Arzavo</p>
         {!! $section->blocks() !!}

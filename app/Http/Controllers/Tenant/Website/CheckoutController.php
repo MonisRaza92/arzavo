@@ -46,7 +46,7 @@ class CheckoutController extends Controller
             }
         }
 
-        return view('tenant.themes.nucleus.layouts.pages.checkout', compact('item', 'variant', 'purchasableType', 'purchasableId'));
+        return view("tenant.themes.checkout", compact('item', 'variant', 'purchasableType', 'purchasableId'));
     }
 
     /**
@@ -83,6 +83,6 @@ class CheckoutController extends Controller
     public function success($orderNumber)
     {
         $order = Order::with('items')->where('order_number', $orderNumber)->firstOrFail();
-        return view('tenant.themes.nucleus.layouts.pages.success', compact('order'));
+        return view("tenant.themes.success", compact('order'));
     }
 }

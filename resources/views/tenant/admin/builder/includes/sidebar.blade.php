@@ -3,10 +3,12 @@
     <div class="tab-btns flex flex-col border-right bg-primary z-30">
         <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary bg-tertiary text-primary"
             title="Settings" data-target="basics"><i class="fa-solid fa-cog"></i></button>
-        <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary" title="Sections"
-            data-target="sections"><i class="fa-solid fa-indent"></i></button>
-        <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary" title="Apps"
-            data-target="apps"><i class="fa-brands fa-google-play"></i></button>
+        @if(($page->slug ?? '') !== 'checkout' && ($page->slug ?? '') !== 'checkout-success')
+            <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary" title="Sections"
+                data-target="sections"><i class="fa-solid fa-indent"></i></button>
+            <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary" title="Apps"
+                data-target="apps"><i class="fa-brands fa-google-play"></i></button>
+        @endif
     </div>
     <div class="tab-content w-full h-full overflow-auto scrollbar active relative" id="basics" data-content="basics">
         <form id="customize-form" action="{{ route('admin.customizes.store') }}" method="POST">
@@ -18,6 +20,7 @@
             @include('tenant.admin.builder.basics.buttons-settings')
             @include('tenant.admin.builder.basics.layout-settings')
             @include('tenant.admin.builder.basics.advanced-settings')
+            @include('tenant.admin.builder.basics.checkout-settings')
         </form>
         @include('tenant.admin.builder.basics.add-color-scheme')
         @include('tenant.admin.builder.basics.edit-color-scheme')
@@ -48,7 +51,7 @@
     // Restore menu states on page load
     document.addEventListener('turbo:load', () => {
         // Restore menus: colors-settings-menu, logo-settings-menu, etc.
-        const menus = ['colors-settings-menu', 'logo-settings-menu', 'typography-settings-menu', 'border-shadow-settings-menu', 'buttons-settings-menu', 'layout-settings-menu', 'ui-elements-settings-menu', 'animations-settings-menu', 'advanced-settings-menu'];
+        const menus = ['colors-settings-menu', 'logo-settings-menu', 'typography-settings-menu', 'border-shadow-settings-menu', 'buttons-settings-menu', 'layout-settings-menu', 'ui-elements-settings-menu', 'animations-settings-menu', 'advanced-settings-menu', 'checkout-settings-menu'];
 
         menus.forEach(menuId => {
             const menu = document.getElementById(menuId);
@@ -66,6 +69,15 @@
                 arrow?.classList.remove('rotate-90');
             }
         });
+
+        // ✅ Auto-expand checkout settings if page is checkout / checkout-success
+        const currentSlug = '{{ $page->slug ?? "" }}';
+        if (currentSlug === 'checkout' || currentSlug === 'checkout-success') {
+            const menu = document.getElementById('checkout-settings-menu');
+            const arrow = document.getElementById('arrow-checkout');
+            if (menu) menu.classList.remove('max-h-0');
+            if (arrow) arrow.classList.add('rotate-90');
+        }
     });
 
     let customizeSubmitTimeout = null;
@@ -154,7 +166,14 @@
 
     // ✅ On page load, restore the last active tab
     window.addEventListener('turbo:load', () => {
-        const savedTab = localStorage.getItem('activeTab');
+        const currentSlug = '{{ $page->slug ?? "" }}';
+        let savedTab = localStorage.getItem('activeTab');
+
+        // Force basics tab for checkout and checkout-success pages
+        if (currentSlug === 'checkout' || currentSlug === 'checkout-success') {
+            savedTab = 'basics';
+        }
+
         if (savedTab) {
             // Remove all active classes first
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-tertiary', 'text-primary'));

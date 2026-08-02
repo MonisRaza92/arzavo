@@ -1036,9 +1036,7 @@ button {
     color: var(--arz-paragraph);
     font-family: var(--arz-paragraph-font) !important;
     font-weight: var(--arz-paragraph-weight);
-    font-size: clamp(calc(var(--arz-paragraph-size) * 0.9),
-            calc(var(--arz-paragraph-size) * 0.7 + 0.5vw),
-            var(--arz-paragraph-size));
+    font-size: var(--arz-paragraph-size);
     text-transform: var(--arz-paragraph-transform);
 }
 
@@ -1051,9 +1049,7 @@ button {
     color: var(--arz-body-text-color);
     font-family: var(--arz-body-text-font) !important;
     font-weight: var(--arz-body-text-weight);
-    font-size: clamp(calc(var(--arz-body-text-size) * 0.9),
-            calc(var(--arz-body-text-size) * 0.7 + 0.4vw),
-            var(--arz-body-text-size));
+    font-size: var(--arz-body-text-size);
     text-transform: var(--arz-body-text-transform);
 }
 

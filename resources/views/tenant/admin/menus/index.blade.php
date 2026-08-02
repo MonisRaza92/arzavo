@@ -4,73 +4,54 @@
 @section('content')
 @include('tenant.admin.menus.partials.header')
 
-@if($menus->count())
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-
-    @foreach($menus as $menu)
-    <div class="bg-primary border-rounded border-primary overflow-hidden">
-
-        <div class="flex items-center justify-between p-4 border-bottom">
-
-            {{-- LEFT: NAME / INPUT --}}
-            <div class="flex items-center gap-2 w-full">
-
-                <span
-                    id="menu-name-text-{{ $menu->id }}"
-                    class="font-semibold text-peimary text-sm">
-                    {{ $menu->name }}
-                </span>
-
-                <input
-                    type="text"
-                    id="menu-name-input-{{ $menu->id }}"
-                    value="{{ $menu->name }}"
-                    name="name"
-                    class="hidden text-sm border-primary px-2 py-1 border-rounded w-full max-w-50" />
-            </div>
-
-            {{-- RIGHT: ACTIONS --}}
-            <div class="flex items-center gap-3 ml-4">
-
-                {{-- EDIT / SAVE --}}
-                <button
-                    type="button"
-                    onclick="toggleMenuEdit({{ $menu->id }})"
-                    class="text-tertiary text-hover-primary"
-                    id="menu-edit-btn-{{ $menu->id }}"
-                    title="Edit name">
-                    <i class="fa-solid fa-edit"></i>
-                </button>
-
-                {{-- DELETE --}}
-                <form
-                    action="{{ route('admin.menus.destroy', $menu->id) }}"
-                    method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button
-                        type="submit"
-                        onclick="return confirm('Delete this menu?')"
-                        class="text-tertiary text-hover-primary"
-                        title="Delete menu">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </form>
-
-            </div>
-        </div>
-        @include('tenant.admin.menus.partials.menu-items')
-    </div>
-    @endforeach
-
+<div class="bg-primary border-rounded border-primary mt-4">
+    <table class="w-full">
+        <thead>
+            <tr class="bg-tertiary">
+                <th class="p-2 pl-4 text-left">Menu Name</th>
+                <th class="p-2 text-left">Slug / Location Code</th>
+                <th class="p-2 text-center">Links Count</th>
+                <th class="p-2 text-right pr-4">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($menus as $menu)
+            <tr class="border-top">
+                <td class="p-2 pl-4 text-left align-middle">
+                    <div class="flex items-center gap-1">
+                        <span id="menu-name-text-{{ $menu->id }}" class="font-semibold text-primary text-sm">{{ $menu->name }}</span>
+                        <input type="text" id="menu-name-input-{{ $menu->id }}" value="{{ $menu->name }}" class="hidden p-1 text-xs border-primary border-rounded bg-primary text-primary" style="max-width: 150px;">
+                        <button type="button" onclick="toggleMenuEdit({{ $menu->id }})" id="menu-edit-btn-{{ $menu->id }}" class="text-tertiary hover:text-primary transition-colors p-1" title="Edit Name">
+                            <i class="fa-solid fa-pen text-[10px]"></i>
+                        </button>
+                    </div>
+                </td>
+                <td class="p-2 text-left">/{{ $menu->slug }}</td>
+                <td class="p-2 text-center">{{ $menu->allItems->count() }}</td>
+                <td class="p-2 text-right pr-4">
+                    <a href="{{ route('admin.menus.edit', $menu->id) }}" class="text-sm text-tertiary mr-2" title="Manage Menu Links">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <form action="{{ route('admin.menus.destroy', $menu->id) }}" method="POST" class="inline" onsubmit="return confirm('Delete this menu?')">
+                        @csrf 
+                        @method('DELETE')
+                        <button type="submit" class="text-sm text-tertiary" title="Delete Menu">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr class="border-top">
+                <td colspan="4" class="p-4 text-center text-tertiary text-sm">
+                    No menus created yet. Click "Add New" to get started.
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
-@else
-<div class="flex items-center justify-center p-4">
-    <p class="text-sm text-tertiary">
-        No menus created yet.
-    </p>
-</div>
-@endif
+
 <script>
     function toggleMenuEdit(menuId) {
         const text = document.getElementById(`menu-name-text-${menuId}`);
@@ -90,7 +71,7 @@
             return;
         }
 
-        // 👉 VALIDATION (FIXED PLACE)
+        // 👉 VALIDATION
         if (!input.value.trim()) {
             alert('Menu name cannot be empty');
             input.focus();

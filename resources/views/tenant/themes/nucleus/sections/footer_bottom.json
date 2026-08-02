@@ -7,7 +7,18 @@
     "color_scheme": "scheme_1",
     "deletable": false,
     "allowed_blocks": [
-        "menu"
+        "footer_menu"
+    ],
+    "default_blocks": [
+        {
+            "type": "footer_menu",
+            "settings": {
+                "menu_id": 2,
+                "show_title": false,
+                "direction": "flex-row",
+                "text_size": "arz-body-text"
+            }
+        }
     ],
     "fields": [
         {

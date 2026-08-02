@@ -6,6 +6,7 @@
     "category": "Layout",
     "color_scheme": "scheme_1",
     "max_blocks": 10,
+    "pages": "all",
     "allowed_blocks": [
         "heading",
         "text",

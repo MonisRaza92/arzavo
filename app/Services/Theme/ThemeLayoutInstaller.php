@@ -25,8 +25,13 @@ class ThemeLayoutInstaller
             }
 
             // Find OR create the page with meta data
+            $name = ucfirst(str_replace(['-', '_'], ' ', $pageSlug));
+            if ($pageSlug === 'categories') {
+                $name = 'Courses Categories';
+            }
+
             $pageData = [
-                'name' => ucfirst(str_replace(['-', '_'], ' ', $pageSlug)),
+                'name' => $name,
                 'is_system_page' => true,
                 'is_active' => true,
             ];
@@ -41,23 +46,20 @@ class ThemeLayoutInstaller
 
             $page = \App\Models\Tenant\Page::where('slug', $pageSlug)->first();
 
-            if ($page) {
-                // Page exists — only update meta if it's currently empty
-                $updates = [];
-                if (empty($page->meta_title) && !empty($meta['meta_title'])) {
-                    $updates['meta_title'] = $meta['meta_title'];
-                }
-                if (empty($page->meta_description) && !empty($meta['meta_description'])) {
-                    $updates['meta_description'] = $meta['meta_description'];
-                }
-                if (!empty($updates)) {
-                    $page->update($updates);
-                }
-            } else {
-                // Create new page with meta
-                $page = \App\Models\Tenant\Page::create(
-                    array_merge(['slug' => $pageSlug], $pageData)
-                );
+            if (!$page) {
+                continue;
+            }
+
+            // Page exists — update meta
+            $updates = [];
+            if (!empty($meta['meta_title'])) {
+                $updates['meta_title'] = $meta['meta_title'];
+            }
+            if (!empty($meta['meta_description'])) {
+                $updates['meta_description'] = $meta['meta_description'];
+            }
+            if (!empty($updates)) {
+                $page->update($updates);
             }
 
             $sections = [];
