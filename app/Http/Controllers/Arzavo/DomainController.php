@@ -31,7 +31,7 @@ class DomainController
         // --------------------------
         // 2. Detect server IP
         // --------------------------
-        $serverIp = trim(shell_exec("curl -s http://checkip.amazonaws.com"));
+        $serverIp = env('SERVER_IP') ?: trim(shell_exec("curl -s http://checkip.amazonaws.com")) ?: '13.234.98.38';
 
         $dns = @dns_get_record($domain, DNS_A);
         if (empty($dns)) {

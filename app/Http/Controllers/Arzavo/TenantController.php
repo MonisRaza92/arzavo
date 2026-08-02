@@ -17,11 +17,12 @@ class TenantController
 
         $tenantIds = $tenants->pluck('id');
 
-        $pendingAmount = \App\Models\Arzavo\Invoice::whereIn('tenant_id', $tenantIds)
-            ->where('status', 'pending')
-            ->sum('total_amount');
+        $invoices = \App\Models\Arzavo\Invoice::whereIn('tenant_id', $tenantIds)
+            ->with('tenant')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        return view('arzavo.tenants.index', compact('tenants', 'pendingAmount'));
+        return view('arzavo.tenants.index', compact('tenants', 'invoices'));
     }
 
     public function create()

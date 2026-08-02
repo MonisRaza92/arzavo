@@ -1,13 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.tenants')
 @section('title', 'Create Tenant - ' . config('app.name'))
 
 @section('content')
 
-    <div class="min-h-screen flex items-center justify-center bg-linear-to-br from-black via-[#230147] to-[#0a001b] px-4">
-
-        <a href="{{ route('tenants.index') }}" class="text-invert absolute top-4 left-4"><i
-                class="fa-solid fa-right-from-bracket rotate-180 mr-1"></i> Exit</a>
-        <div x-data="tenantWizard()" class="w-full max-w-2xl bg-primary border-primary border-rounded p-8 shadow-2xl">
+    <div class="p-6 flex justify-center">
+        <div x-data="tenantWizard()" class="w-full max-w-2xl bg-primary border-primary border-rounded p-8 shadow-md">
 
             <!-- HEADER -->
             <div class="my-6">
