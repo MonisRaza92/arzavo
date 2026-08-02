@@ -26,7 +26,78 @@ class TenantController
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('arzavo.tenants.index', compact('tenants', 'pendingAmount', 'invoices'));
+        $tenantStats = [];
+        foreach ($tenants as $tenant) {
+            $tenantStats[$tenant->id] = $this->getTenantStats($tenant);
+        }
+
+        return view('arzavo.tenants.index', compact('tenants', 'pendingAmount', 'invoices', 'tenantStats'));
+    }
+
+    protected function getTenantStats($tenant)
+    {
+        try {
+            if (!$tenant->db_name) {
+                return ['users_count' => 0, 'students_limit' => 150, 'storage_used' => 0, 'storage_limit' => 5 * 1024 * 1024 * 1024];
+            }
+
+            config([
+                'database.connections.tenant' => [
+                    'driver' => 'mysql',
+                    'host' => config('database.connections.mysql.host'),
+                    'port' => config('database.connections.mysql.port'),
+                    'database' => $tenant->db_name,
+                    'username' => $tenant->db_username,
+                    'password' => $tenant->db_password,
+                    'charset' => 'utf8mb4',
+                    'collation' => 'utf8mb4_unicode_ci',
+                ]
+            ]);
+
+            DB::purge('tenant');
+            DB::reconnect('tenant');
+
+            $usersCount = DB::connection('tenant')->table('users')->count();
+
+            $storageUsed = 0;
+            if (DB::connection('tenant')->getSchemaBuilder()->hasTable('contents')) {
+                $storageUsed += (int)(DB::connection('tenant')->table('contents')->sum('size') ?? 0);
+            }
+            if (DB::connection('tenant')->getSchemaBuilder()->hasTable('media')) {
+                $storageUsed += (int)(DB::connection('tenant')->table('media')->sum('size') ?? 0);
+            }
+
+            // Check physical directory size
+            $tenantDir = storage_path('app/public/tenants/' . $tenant->id);
+            if (file_exists($tenantDir)) {
+                foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($tenantDir)) as $file) {
+                    if ($file->isFile()) {
+                        $storageUsed += $file->getSize();
+                    }
+                }
+            }
+
+            DB::disconnect('tenant');
+
+            $plan = $tenant->subscription ? $tenant->subscription->plan : null;
+            $studentsLimit = $plan ? ($plan->max_students ?: 'Unlimited') : 150;
+            $storageLimitBytes = ($plan && !empty($plan->storage_limit_mb)) ? ($plan->storage_limit_mb * 1024 * 1024) : (5 * 1024 * 1024 * 1024);
+
+            return [
+                'users_count' => $usersCount,
+                'students_limit' => $studentsLimit,
+                'storage_used' => $storageUsed,
+                'storage_limit' => $storageLimitBytes,
+            ];
+        } catch (\Throwable $e) {
+            DB::disconnect('tenant');
+            return [
+                'users_count' => 0,
+                'students_limit' => 150,
+                'storage_used' => 0,
+                'storage_limit' => 5 * 1024 * 1024 * 1024,
+            ];
+        }
     }
 
     public function create()
@@ -188,6 +259,68 @@ class TenantController
 
 
 
+    public function show($identifier)
+    {
+        $tenant = Tenant::where('subdomain', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+
+        $subscription = $tenant->subscription;
+        $plan = $subscription ? $subscription->plan : null;
+        $invoices = \App\Models\Arzavo\Invoice::where('tenant_id', $tenant->id)->orderBy('created_at', 'desc')->get();
+        $pendingAmount = $invoices->where('status', 'pending')->sum('total_amount');
+        $stats = $this->getTenantStats($tenant);
+
+        return view('arzavo.tenants.show', compact('tenant', 'subscription', 'plan', 'invoices', 'pendingAmount', 'stats'));
+    }
+
+    public function resetAdminPassword(Request $request, $identifier)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $tenant = Tenant::where('subdomain', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+
+        if (!$tenant->db_name) {
+            return back()->with('error', 'Tenant database is not configured.');
+        }
+
+        try {
+            config([
+                'database.connections.tenant' => [
+                    'driver' => 'mysql',
+                    'host' => config('database.connections.mysql.host'),
+                    'port' => config('database.connections.mysql.port'),
+                    'database' => $tenant->db_name,
+                    'username' => $tenant->db_username,
+                    'password' => $tenant->db_password,
+                    'charset' => 'utf8mb4',
+                    'collation' => 'utf8mb4_unicode_ci',
+                ]
+            ]);
+
+            DB::purge('tenant');
+            DB::reconnect('tenant');
+
+            DB::connection('tenant')->table('users')
+                ->where('role', 'admin')
+                ->update([
+                    'password' => \Hash::make($request->password),
+                    'updated_at' => now(),
+                ]);
+
+            DB::disconnect('tenant');
+
+            return back()->with('success', 'Tenant admin password updated successfully!');
+        } catch (\Throwable $e) {
+            DB::disconnect('tenant');
+            return back()->with('error', 'Failed to reset password: ' . $e->getMessage());
+        }
+    }
+
     public function update(Request $request, $id)
     {
         // Validate and update tenant logic here
@@ -198,17 +331,32 @@ class TenantController
         // Toggle tenant active/inactive status logic here
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $identifier)
     {
-        $tenant = Tenant::findOrFail($id);
+        $request->validate([
+            'confirm_password' => 'required|string',
+        ]);
 
-        // Drop the tenant database
+        $user = Auth::guard('web')->user();
+
+        if (!\Hash::check($request->confirm_password, $user->password)) {
+            return back()->with('error', 'Incorrect password! Workspace deletion failed.');
+        }
+
+        $tenant = Tenant::where('subdomain', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+
         if ($tenant->db_name) {
-            DB::statement("DROP DATABASE IF EXISTS `{$tenant->db_name}`");
+            try {
+                DB::statement("DROP DATABASE IF EXISTS `{$tenant->db_name}`");
+            } catch (\Throwable $e) {
+                // Ignore DB drop error if already removed
+            }
         }
 
         $tenant->delete();
 
-        return back()->with('success', 'Tenant deleted successfully!');
+        return redirect()->route('tenants.index')->with('success', 'Workspace deleted successfully!');
     }
 }

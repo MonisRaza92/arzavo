@@ -32,25 +32,14 @@
                     [
                         'text' => 'Workspaces',
                         'icon' => 'fa-building-columns',
-                        'url' => route('tenants.index', ['tab' => 'workspaces']),
-                        'active' => $tab === 'workspaces' && request()->routeIs('tenants.index')
+                        'url' => route('tenants.index'),
+                        'active' => request()->routeIs('tenants.index')
                     ],
                     [
                         'text' => 'Create Workspace',
                         'icon' => 'fa-plus',
                         'url' => route('tenants.create'),
                         'active' => request()->routeIs('tenants.create')
-                    ]
-                ]
-            ],
-            [
-                'section' => 'Billing & Payments',
-                'items' => [
-                    [
-                        'text' => 'Plans & Billing',
-                        'icon' => 'fa-credit-card',
-                        'url' => route('tenants.index', ['tab' => 'billing']),
-                        'active' => $tab === 'billing' && request()->routeIs('tenants.index')
                     ]
                 ]
             ]

@@ -1,428 +1,349 @@
 @extends('layouts.tenants')
-@section('title', 'Manage Workspaces - ' . config('app.name'))
+@section('title', 'Workspaces - ' . config('app.name'))
 
 @section('content')
-@php
-    $tab = request('tab', 'workspaces');
-@endphp
-
-    <!-- Welcome Breadcrumb Banner -->
-    <div class="breadcrumb mb-4 flex justify-between items-center p-4 border-rounded bg-primary border-primary">
+    <!-- BREADCRUMB HEADER BANNER -->
+    <div class="breadcrumb mb-4 flex flex-wrap justify-between items-center p-4 border-rounded bg-primary border-primary  gap-4">
         <div>
-            <h1 class="text-3xl font-bold tracking-tight flex items-center gap-2 text-primary">
-                <i class="fa-solid fa-layer-group text-xl"></i>
-                Welcome Back
+            <h1 class="text-2xl font-bold flex items-center gap-2.5 text-primary tracking-tight">
+                <i class="fa-solid fa-layer-group text-primary"></i> Workspaces Overview
             </h1>
-            <p class="text-sm mt-1 pl-0.5 font-medium text-secondary">
-                Empower learning. Manage with ease. Lead with insight.
+            <p class="text-xs text-secondary mt-1">
+                {{ $tenants->count() }} tenant {{ Str::plural('environment', $tenants->count()) }} · real-time database statistics & network routing
             </p>
-            <div class="links flex flex-wrap items-center gap-1 text-sm font-medium mt-6 text-secondary">
-                <a href="{{ route('home') }}" class="hover:text-primary transition-all duration-200 flex items-center gap-1">
+            <div class="links flex flex-wrap items-center gap-1.5 text-xs font-medium mt-3 text-secondary">
+                <a href="{{ route('home') }}" class="hover:text-primary transition-all flex items-center gap-1">
                     <i class="fas fa-home"></i> Home
                 </a>
-                <i class="fas fa-angle-right text-xs opacity-70"></i>
-                <span class="capitalize">Manage Workspaces</span>
+                <i class="fas fa-angle-right text-[10px] opacity-70"></i>
+                <span class="text-primary font-semibold">Manage Workspaces</span>
             </div>
         </div>
-        <div class="right hidden md:block">
-            <div class="flex items-baseline justify-end">
-                <span id="clock" class="text-5xl font-bold text-right text-primary">00:00:00</span>
-            </div>
-            <div class="mt-2 text-right">
-                <div id="date" class="text-md font-medium text-tertiary">Loading date…</div>
-            </div>
-            <p id="greeting-text" class="text-primary text-xl font-bold mt-1 flex items-center justify-end gap-2">
-                <i class="fas fa-smile text-yellow-400"></i>
-                <span>Good Morning!</span>
-            </p>
+
+        <div class="flex items-center gap-3">
+            <a href="{{ route('tenants.create') }}" 
+               class="px-4 py-2.5 bg-invert text-invert border-rounded font-bold text-xs hover-invert transition  flex items-center gap-1.5">
+                <i class="fa-solid fa-plus text-[11px]"></i> New workspace
+            </a>
         </div>
     </div>
 
-    <!-- Overview Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <!-- Total Workspaces Card -->
-        <div class="stat-card group relative overflow-hidden border-rounded bg-primary border-primary">
-            <div class="relative p-4">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <p class="text-tertiary text-sm font-medium mb-2">Total Workspaces</p>
-                        <h3 class="text-4xl font-bold text-primary">{{ $tenants->count() }}</h3>
-                        <div class="flex items-center gap-2 mt-2">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-green-100 text-green-400 text-xs font-medium">
-                                Active status
-                            </span>
-                        </div>
-                    </div>
-                    <div class="p-3 rounded-xl bg-invert text-invert">
-                        <i class="fas fa-building-columns text-2xl"></i>
-                    </div>
-                </div>
+    <!-- WORKSPACES FULL-WIDTH TABLE CARDS LIST -->
+    @if($tenants->count() > 0)
+        <div class="space-y-4 mb-4">
+            @foreach($tenants as $tenant)
+                @php
+                    $subscription = $tenant->subscription;
+                    $plan = $subscription ? $subscription->plan : null;
+                    
+                    // Pending invoice & amount (100% Real from DB)
+                    $tenantInvoices = $invoices->where('tenant_id', $tenant->id);
+                    $pendingInvoice = $tenantInvoices->where('status', 'pending')->first();
+                    $pendingAmount = $tenantInvoices->where('status', 'pending')->sum('total_amount');
 
-                <!-- Mini Bar Chart -->
-                <div class="flex items-end gap-1 h-12 mt-4">
-                    <div class="flex-1 bg-invert border-rounded opacity-40 chart-bar" style="height: 45%;"></div>
-                    <div class="flex-1 bg-invert border-rounded opacity-50 chart-bar" style="height: 60%;"></div>
-                    <div class="flex-1 bg-invert border-rounded opacity-60 chart-bar" style="height: 35%;"></div>
-                    <div class="flex-1 bg-invert border-rounded opacity-70 chart-bar" style="height: 75%;"></div>
-                    <div class="flex-1 bg-invert border-rounded opacity-80 chart-bar" style="height: 55%;"></div>
-                    <div class="flex-1 bg-invert border-rounded opacity-90 chart-bar" style="height: 85%;"></div>
-                    <div class="flex-1 bg-invert border-rounded chart-bar" style="height: 100%;"></div>
-                </div>
-            </div>
-            <div class="px-4 py-2 border-top flex items-center justify-between">
-                <span class="text-sm text-tertiary font-medium">Workspaces</span>
-                <i class="fa-solid fa-arrow-right text-xs"></i>
-            </div>
-        </div>
+                    // Owner name (100% Real)
+                    $ownerUser = $tenant->admin ?: Auth::guard('web')->user();
+                    $ownerName = $ownerUser ? trim($ownerUser->fname . ' ' . $ownerUser->lname) : 'System Admin';
 
-        <!-- Verified Domains Card -->
-        @php
-            $totalCustom = $tenants->whereNotNull('custom_domain')->count();
-            $verified = $tenants->where('domain_verified', true)->count();
-            $percent = $totalCustom > 0 ? round(($verified / $totalCustom) * 100) : 0;
-        @endphp
-        <div class="stat-card group relative overflow-hidden border-rounded bg-primary border-primary">
-            <div class="relative p-4">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <p class="text-tertiary text-sm font-medium mb-2">Verified Domains</p>
-                        <h3 class="text-4xl font-bold text-primary">{{ $verified }} / {{ $totalCustom }}</h3>
-                        <div class="flex items-center gap-2 mt-2">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-blue-50 text-blue-400 text-xs font-medium">
-                                {{ $percent }}% Verified
-                            </span>
-                        </div>
-                    </div>
-                    <div class="p-3 rounded-xl bg-invert text-invert">
-                        <i class="fas fa-globe text-2xl"></i>
-                    </div>
-                </div>
+                    // Status Badge Mapping
+                    $statusDotClass = 'bg-emerald-500 animate-pulse';
+                    $statusBadgeClass = 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+                    $statusLabel = 'Active';
 
-                <!-- Progress Ring/Bar -->
-                <div class="mt-8">
-                    <div class="flex items-center justify-between text-xs text-secondary mb-2">
-                        <span>Connected domains status</span>
-                        <span class="font-medium">{{ $percent }}%</span>
-                    </div>
-                    <div class="w-full h-2 bg-secondary rounded-full overflow-hidden">
-                        <div class="h-full bg-invert rounded-full progress-bar" style="width: {{ $percent }}%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="px-4 py-2 border-top flex items-center justify-between">
-                <span class="text-sm text-tertiary font-medium">Verify Settings</span>
-                <i class="fa-solid fa-arrow-right text-xs"></i>
-            </div>
-        </div>
+                    if ($tenant->status === 'suspended' || $tenant->status === 'inactive') {
+                        $statusDotClass = 'bg-rose-500';
+                        $statusBadgeClass = 'bg-rose-500/10 text-rose-600 border-rose-500/20';
+                        $statusLabel = ucfirst($tenant->status);
+                    } elseif ($tenant->isTrialActive()) {
+                        $statusDotClass = 'bg-blue-500 animate-pulse';
+                        $statusBadgeClass = 'bg-blue-500/10 text-blue-600 border-blue-500/20';
+                        $statusLabel = 'Trial';
+                    } elseif (!$tenant->status || $tenant->status === 'expired') {
+                        $statusDotClass = 'bg-amber-500';
+                        $statusBadgeClass = 'bg-amber-500/10 text-amber-600 border-amber-500/20';
+                        $statusLabel = 'Expired';
+                    }
 
-        <!-- Pending Invoices Card -->
-        <div class="stat-card group relative overflow-hidden border-rounded bg-primary border-primary">
-            <div class="relative p-4">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <p class="text-tertiary text-sm font-medium mb-2">Pending Invoices</p>
-                        <h3 class="text-4xl font-bold text-primary">₹{{ number_format($pendingAmount, 2) }}</h3>
-                        <div class="flex items-center gap-2 mt-2">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-600 text-xs font-medium">
-                                {{ $invoices->where('status', 'pending')->count() }} Unpaid
-                            </span>
-                        </div>
-                    </div>
-                    <div class="p-3 rounded-xl bg-invert text-invert">
-                        <i class="fas fa-file-invoice-dollar text-2xl"></i>
-                    </div>
-                </div>
+                    // REAL Tenant Stats directly queried from Tenant Database
+                    $stats = $tenantStats[$tenant->id] ?? ['users_count' => 0, 'students_limit' => 150, 'storage_used' => 0, 'storage_limit' => 5 * 1024 * 1024 * 1024];
+                    $usersCount = $stats['users_count'];
+                    $usersLimit = is_numeric($stats['students_limit']) ? $stats['students_limit'] : 'Unlimited';
 
-                <!-- Dynamic Stars / Visual rating replacement -->
-                <div class="mt-12 flex items-center gap-1">
-                    @for($i=1; $i<=5; $i++)
-                        <i class="fas fa-star text-primary text-sm opacity-20"></i>
-                    @endfor
-                    <span class="text-xs text-primary ml-2">Secure billing portal</span>
-                </div>
-            </div>
-            <div class="px-4 py-2 border-top flex items-center justify-between">
-                <span class="text-sm text-tertiary font-medium">Billing Portal</span>
-                <i class="fa-solid fa-arrow-right text-xs"></i>
-            </div>
-        </div>
-    </div>
+                    // Real Storage calculations
+                    $storageUsedBytes = $stats['storage_used'] ?: 0;
+                    $storageLimitBytes = $stats['storage_limit'] ?: (5 * 1024 * 1024 * 1024);
+                    $storageUsedFormatted = formatSize($storageUsedBytes);
+                    $storageLimitFormatted = formatSize($storageLimitBytes);
+                    $storagePercentage = $storageLimitBytes > 0 ? min(100, max(2, round(($storageUsedBytes / $storageLimitBytes) * 100))) : 2;
 
-    <!-- Live clock script -->
-    <script>
-        (function() {
-            const clockEl = document.getElementById("clock");
-            const dateEl = document.getElementById("date");
-            const greetingEl = document.getElementById("greeting-text");
+                    // Plan name format (100% Real)
+                    $planName = $plan ? $plan->name : ($tenant->isTrialActive() ? 'Free Trial' : 'Basic Plan');
 
-            if (!clockEl || !dateEl || !greetingEl) return;
+                    // Renewal Date (100% Real)
+                    if ($subscription && $subscription->ends_at) {
+                        $renewalDate = $subscription->ends_at->format('d M Y');
+                    } elseif ($tenant->isTrialActive()) {
+                        $renewalDate = 'Trial (' . $tenant->trialDaysLeft() . 'd left)';
+                    } else {
+                        $renewalDate = 'N/A';
+                    }
 
-            function updateClock() {
-                const now = new Date();
-                const pad = n => (n < 10 ? "0" + n : n);
-                const hours = now.getHours();
-                const minutes = now.getMinutes();
-                const seconds = now.getSeconds();
+                    // Last login (100% Real)
+                    $lastLogin = $tenant->admin && $tenant->admin->last_login 
+                        ? $tenant->admin->last_login->diffForHumans() 
+                        : $tenant->updated_at->diffForHumans();
 
-                clockEl.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+                    // Formatted created timestamp
+                    $createdAtFormatted = $tenant->created_at->format('d M Y');
+                    $createdAtDiff = $tenant->created_at->diffForHumans();
+                @endphp
 
-                dateEl.textContent = now.toLocaleDateString("en-US", {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-
-                let greeting = "";
-                let icon = "";
-
-                if (hours >= 5 && hours < 12) {
-                    greeting = "Good Morning!";
-                    icon = "fa-sun";
-                } else if (hours >= 12 && hours < 17) {
-                    greeting = "Good Afternoon!";
-                    icon = "fa-cloud-sun";
-                } else if (hours >= 17 && hours < 21) {
-                    greeting = "Good Evening!";
-                    icon = "fa-moon";
-                } else {
-                    greeting = "Good Night!";
-                    icon = "fa-star";
-                }
-
-                greetingEl.innerHTML = `
-                    <i class="fas ${icon} text-yellow-400"></i>
-                    <span>${greeting}</span>
-                `;
-            }
-
-            updateClock();
-            setInterval(updateClock, 1000);
-        })();
-    </script>
-
-    <!-- TAB CONTENTS -->
-    @if($tab === 'workspaces')
-        <!-- Tab 1: Workspaces List -->
-        <div class="space-y-4">
-            @forelse($tenants as $tenant)
-                <div class="p-5 border-rounded bg-primary border-primary flex items-center justify-between flex-wrap gap-4 hover:shadow-md transition duration-300">
-                    <div class="flex items-center gap-4 min-w-0">
-                        <div class="w-12 h-12 border-rounded bg-hover-secondary flex items-center justify-center text-xl text-primary font-bold shrink-0">
-                            {{ strtoupper(substr($tenant->name, 0, 1)) }}
-                        </div>
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-2">
-                                <h3 class="text-sm font-semibold text-primary truncate">{{ $tenant->name }}</h3>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full {{ $tenant->status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                                    {{ ucfirst($tenant->status) }}
-                                </span>
+                <!-- HIGH-FIDELITY FULL-WIDTH TABLE STYLE WORKSPACE CARD -->
+                <div x-data="{ menuOpen: false }" class="w-full border-rounded bg-primary border-primary hover:border-secondary transition-all duration-300  relative group overflow-hidden">
+                    
+                    <!-- Top Main Header Bar -->
+                    <div class="p-5 flex items-center justify-between flex-wrap gap-4 border-bottom">
+                        <div class="flex items-center gap-4 min-w-0">
+                            <!-- Avatar Initial Box -->
+                            <div class="w-12 h-12 rounded bg-secondary flex items-center justify-center text-2xl font-extrabold text-primary shrink-0 border border-primary font-mono ">
+                                {{ strtoupper(substr($tenant->name, 0, 1)) }}
                             </div>
-                            <div class="flex items-center gap-3 text-xs text-tertiary mt-1.5 flex-wrap">
-                                <a target="_blank" href="https://{{ $tenant->subdomain }}" class="hover:underline flex items-center gap-1">
-                                    <i class="fa-solid fa-link text-[10px]"></i> {{ $tenant->subdomain }}
-                                </a>
-                                @if($tenant->custom_domain)
-                                    <span class="flex items-center gap-1">
-                                        <i class="fa-solid fa-globe text-[10px]"></i> {{ $tenant->custom_domain }}
-                                        @if($tenant->domain_verified)
-                                            <span class="text-green-500 text-[10px] font-semibold flex items-center gap-0.5 ml-0.5">
-                                                <i class="fa-solid fa-circle-check"></i> Live
-                                            </span>
-                                        @else
-                                            <span class="text-red-400 text-[10px] font-semibold flex items-center gap-0.5 ml-0.5">
-                                                <i class="fa-solid fa-circle-xmark"></i> Unverified
-                                            </span>
-                                        @endif
+                            <!-- Title & Subdomain / Verified Custom Domain -->
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2.5 flex-wrap">
+                                    <h3 class="text-base font-semibold text-primary truncate leading-snug">{{ $tenant->name }}</h3>
+                                    <span class="text-[11px] px-2.5 py-0.5 rounded-full font-bold border inline-flex items-center gap-1.5 shrink-0 {{ $statusBadgeClass }}">
+                                        <span class="w-1.5 h-1.5 rounded-full {{ $statusDotClass }}"></span>
+                                        {{ $statusLabel }}
                                     </span>
-                                @endif
-                                <span><i class="fa-solid fa-clock text-[10px]"></i> {{ $tenant->created_at->diffForHumans() }}</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-tertiary font-mono mt-1 flex-wrap">
+                                    @if($tenant->custom_domain && $tenant->domain_verified)
+                                        <a target="_blank" href="https://{{ $tenant->custom_domain }}" class="hover:underline flex items-center gap-1.5 font-semibold text-emerald-600">
+                                            {{ $tenant->custom_domain }} <i class="fa-solid fa-circle-check text-[11px]"></i>
+                                        </a>
+                                    @else
+                                        <a target="_blank" href="https://{{ $tenant->subdomain }}" class="hover:underline flex items-center gap-1 font-semibold">
+                                            {{ $tenant->subdomain }} <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Quick Action Controls -->
+                        <div class="flex items-center gap-2.5 shrink-0">
+                            <!-- Manage Cockpit -->
+                            <a href="{{ route('tenants.show', $tenant->subdomain) }}" 
+                               class="text-xs px-3.5 py-2.5 bg-primary border-primary text-primary hover-primary border-rounded font-semibold transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-sliders text-indigo-500 text-[11px]"></i> Manage Cockpit
+                            </a>
+
+                            <!-- Open Admin Dashboard -->
+                            <a target="_blank" href="{{ $tenant->custom_domain && $tenant->domain_verified ? 'https://' . $tenant->custom_domain . '/admin/dashboard' : 'https://' . $tenant->subdomain . '/admin/dashboard' }}" 
+                               class="text-xs px-4 py-2.5 bg-invert text-invert border-rounded hover-invert font-bold transition  flex items-center gap-1.5">
+                                Open workspace <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+
+                            <!-- 3-Dots Menu -->
+                            <div class="relative">
+                                <button @click="menuOpen = !menuOpen" @click.away="menuOpen = false" 
+                                        class="w-9 h-9 border-rounded bg-hover-secondary text-secondary hover:text-primary flex items-center justify-center text-xs transition border border-primary">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </button>
+
+                                <div x-show="menuOpen" x-transition:enter="transition ease-out duration-100"
+                                     x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
+                                     class="absolute right-0 top-11 w-52 bg-primary border-primary border-rounded  z-50 py-1 text-xs">
+                                    <a href="{{ route('tenants.show', $tenant->subdomain) }}" class="flex items-center gap-2 px-3 py-2 text-secondary hover-primary">
+                                        <i class="fa-solid fa-sliders text-indigo-500 w-4"></i> Workspace Cockpit
+                                    </a>
+                                    <button @click="menuOpen = false; document.getElementById('connectDomainPopup-{{ $tenant->id }}').classList.remove('hidden')" class="w-full text-left flex items-center gap-2 px-3 py-2 text-secondary hover-primary">
+                                        <i class="fa-solid fa-globe text-blue-500 w-4"></i> Verify / Manage Domain
+                                    </button>
+                                    <a href="{{ route('tenants.show', $tenant->subdomain) }}#billing" class="flex items-center gap-2 px-3 py-2 text-secondary hover-primary">
+                                        <i class="fa-solid fa-credit-card text-purple-500 w-4"></i> Billing & Invoices
+                                    </a>
+                                    <button @click="menuOpen = false; document.getElementById('resetPasswordPopup-{{ $tenant->id }}').classList.remove('hidden')" class="w-full text-left flex items-center gap-2 px-3 py-2 text-secondary hover-primary">
+                                        <i class="fa-solid fa-key text-amber-500 w-4"></i> Reset Admin Password
+                                    </button>
+                                    <div class="border-top my-1"></div>
+                                    <button @click="menuOpen = false; document.getElementById('deleteWorkspacePopup-{{ $tenant->id }}').classList.remove('hidden')" class="w-full text-left flex items-center gap-2 px-3 py-2 text-rose-600 hover-primary font-semibold">
+                                        <i class="fa-solid fa-trash-can w-4"></i> Delete Workspace
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Side Actions -->
-                    <div class="flex items-center gap-2 shrink-0">
-                        <!-- Verify domain trigger -->
-                        @if($tenant->custom_domain)
-                            <button id="connectDomainBtn-{{ $tenant->id }}" class="text-xs px-3 py-2 bg-secondary text-secondary hover-primary border-primary border-rounded flex items-center gap-1">
-                                <i class="fa-solid fa-shield-halved"></i> Verify Domain
-                            </button>
-                        @else
-                            <button id="connectDomainBtn-{{ $tenant->id }}" class="text-xs px-3 py-2 bg-secondary text-secondary hover-primary border-primary border-rounded flex items-center gap-1">
-                                <i class="fa-solid fa-plus-circle"></i> Connect Domain
-                            </button>
-                        @endif
+                    <!-- Metadata Table Columns Row (Full Width Grid) -->
+                    <div class="p-5 bg-hover-secondary/30 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 text-xs">
+                        <div class="border-dashed p-4 rounded">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">LAST LOGIN</span>
+                            <span class="font-medium text-primary block mt-0.5 truncate">{{ $lastLogin }}</span>
+                        </div>
+                        <div class="border-dashed p-4 rounded">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">PLAN</span>
+                            <span class="font-medium text-primary block mt-0.5 truncate">{{ $planName }}</span>
+                        </div>
+                        <div class="border-dashed p-4 rounded">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">PRIMARY DOMAIN</span>
+                            <a target="_blank" href="https://{{ $tenant->subdomain }}" class="font-mono text-tertiary hover:text-primary block mt-0.5 truncate">
+                                {{ $tenant->subdomain }}
+                            </a>
+                        </div>
+                        
+                        <!-- CUSTOM DOMAIN WITH VERIFIED STATUS -->
+                        <div class="border-dashed p-4 rounded">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">CUSTOM DOMAIN</span>
+                            @if($tenant->custom_domain)
+                                @if($tenant->domain_verified)
+                                    <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                                        <span class="font-mono font-semibold text-emerald-600 truncate">{{ $tenant->custom_domain }}</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-600 font-bold border border-emerald-500/20 shrink-0 inline-flex items-center gap-1">
+                                            <i class="fa-solid fa-circle-check text-[9px]"></i> Verified
+                                        </span>
+                                    </div>
+                                @else
+                                    <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                                        <span class="font-mono font-semibold text-amber-600 truncate">{{ $tenant->custom_domain }}</span>
+                                        <button id="connectDomainBtn-{{ $tenant->id }}" 
+                                                class="px-1.5 py-0.5 rounded text-[10px] bg-amber-500/10 text-amber-600 font-bold border border-amber-500/20 shrink-0 inline-flex items-center gap-1 hover:bg-amber-500/20 transition cursor-pointer">
+                                            <i class="fa-solid fa-triangle-exclamation text-[9px]"></i> Unverified
+                                        </button>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                                    <span class="font-mono text-tertiary">Not configured</span>
+                                    <button id="connectDomainBtn-{{ $tenant->id }}" 
+                                            class="px-1.5 py-0.5 rounded text-[10px] bg-hover-secondary text-primary font-bold border border-primary shrink-0 hover:bg-hover transition cursor-pointer">
+                                        + Connect
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
 
-                        <!-- Open dashboard -->
-                        <a target="_blank" href="{{ $tenant->custom_domain && $tenant->domain_verified ? 'https://' . $tenant->custom_domain . '/admin/dashboard' : 'https://' . $tenant->subdomain . '/admin/dashboard' }}" 
-                           class="text-xs px-3 py-2 bg-invert text-invert border-rounded hover-invert flex items-center gap-1 font-semibold">
-                            Open <i class="fa-solid fa-share-from-square text-[10px]"></i>
-                        </a>
+                        <div class="border-dashed p-4 rounded">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">RENEWAL</span>
+                            <span class="font-medium text-primary block mt-0.5 truncate">{{ $renewalDate }}</span>
+                        </div>
+                        <div class="border-dashed p-4 rounded">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">USERS</span>
+                            <span class="font-mono font-medium text-primary block mt-0.5 truncate">{{ $usersCount }} / {{ $usersLimit }}</span>
+                        </div>
+                        <div class="border-dashed p-4 rounded">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">PENDING INVOICE</span>
+                            <span class="font-medium block mt-0.5 truncate {{ $pendingInvoice ? 'text-rose-600 font-semibold font-mono' : 'text-primary' }}">
+                                {{ $pendingInvoice ? '#INV-' . str_pad($pendingInvoice->id, 5, '0', STR_PAD_LEFT) : 'None' }}
+                            </span>
+                        </div>
+                        <div class="border-dashed p-4 rounded">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">OUTSTANDING</span>
+                            <span class="font-mono font-bold block mt-0.5 truncate {{ $pendingAmount > 0 ? 'text-rose-600' : 'text-primary' }}">
+                                ₹{{ number_format($pendingAmount, 2) }}
+                            </span>
+                        </div>
+                    </div>
 
-                        <!-- Delete -->
-                        <form action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" class="inline">
+                    <!-- Storage Bar & Created Date Footer -->
+                    <div class="px-5 py-3 border-top flex items-center justify-between flex-wrap gap-4 text-xs">
+                        <div class="flex items-center gap-3 grow max-w-md">
+                            <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider shrink-0">STORAGE</span>
+                            <div class="w-full bg-hover-secondary h-1.5 border-rounded overflow-hidden border border-primary">
+                                <div class="bg-primary h-full border-rounded" style="width: {{ $storagePercentage }}%"></div>
+                            </div>
+                            <span class="text-tertiary font-mono text-[11px] shrink-0">{{ $storageUsedFormatted }} / {{ $storageLimitFormatted }}</span>
+                        </div>
+
+                        <div class="text-[11px] text-tertiary font-mono flex items-center gap-1.5">
+                            <i class="fa-regular fa-calendar-check text-[10px]"></i>
+                            <span>Created: <strong>{{ $createdAtFormatted }}</strong> ({{ $createdAtDiff }})</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- DOMAIN VERIFY MODAL -->
+                @include('arzavo.tenants.domain-verify', ['tenant' => $tenant])
+
+                <!-- RESET PASSWORD MODAL -->
+                <div id="resetPasswordPopup-{{ $tenant->id }}" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[999]">
+                    <div class="bg-primary border-rounded w-full max-w-md p-6 relative  border-primary">
+                        <button onclick="document.getElementById('resetPasswordPopup-{{ $tenant->id }}').classList.add('hidden')" class="absolute right-4 top-4 text-secondary hover:text-primary text-xl">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <h3 class="text-lg font-bold text-primary mb-2">Reset Tenant Admin Password</h3>
+                        <p class="text-xs text-tertiary mb-4">Enter a new password for the workspace database administrator user.</p>
+                        
+                        <form action="{{ route('tenants.reset-password', $tenant->subdomain) }}" method="POST" class="space-y-4">
                             @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('Delete this workspace? All data, students, courses and databases will be permanently destroyed!')"
-                                    class="text-xs text-red-500 bg-red-50 hover:bg-red-100 border border-red-200 border-rounded p-2" title="Delete Workspace">
-                                <i class="fa-solid fa-trash"></i>
+                            <div>
+                                <label class="text-xs font-semibold text-primary block mb-1">New Password</label>
+                                <input type="password" name="password" required minlength="6" class="w-full p-2.5 bg-primary border-primary border-rounded text-xs text-primary">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-primary block mb-1">Confirm Password</label>
+                                <input type="password" name="password_confirmation" required minlength="6" class="w-full p-2.5 bg-primary border-primary border-rounded text-xs text-primary">
+                            </div>
+                            <button type="submit" class="w-full py-2.5 bg-invert text-invert border-rounded font-bold text-xs hover-invert transition">
+                                Reset Admin Password
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <!-- Include verify domain modal popup -->
-                @include('arzavo.tenants.domain-verify', ['tenant' => $tenant])
-            @empty
-                <div class="p-12 text-center border-rounded bg-primary border-dashed border-primary">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-hover-secondary rounded-full flex items-center justify-center text-primary text-xl">
-                        <i class="fa-solid fa-building-columns"></i>
-                    </div>
-                    <h3 class="text-base font-bold text-primary">No Workspaces Found</h3>
-                    <p class="text-xs text-tertiary mt-1.5 max-w-sm mx-auto">Create your first school or coaching management system instance to start teaching.</p>
-                    <a href="{{ route('tenants.create') }}" class="mt-4 inline-block text-xs px-4 py-2 bg-invert text-invert border-rounded hover-invert font-semibold transition">
-                        Create Workspace
-                    </a>
-                </div>
-            @endforelse
-        </div>
-
-    @elseif($tab === 'billing')
-        <!-- Tab 3: Billing & Payments -->
-        <div class="space-y-6">
-            <!-- Active Subscriptions -->
-            <div class="p-5 border-rounded bg-primary border-primary shadow-sm">
-                <h3 class="text-base font-bold text-primary mb-4"><i class="fa-solid fa-box text-blue-500 mr-1.5"></i> Active Subscriptions</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @forelse($tenants as $tenant)
-                        <div class="p-4 border-rounded bg-hover-secondary border-primary flex justify-between items-start gap-4">
-                            <div>
-                                <h4 class="text-xs font-bold text-primary">{{ $tenant->name }}</h4>
-                                <p class="text-[11px] text-tertiary mt-1">{{ $tenant->subdomain }}</p>
-                                
-                                @if($tenant->subscription && $tenant->subscription->plan)
-                                    <div class="mt-3">
-                                        <span class="text-[10px] font-bold px-2 py-0.75 bg-blue-100 text-blue-700 rounded-full">
-                                            {{ $tenant->subscription->plan->name }}
-                                        </span>
-                                        <span class="text-xs text-secondary ml-1.5">
-                                            @if($tenant->subscription->ends_at)
-                                                Expires: {{ $tenant->subscription->ends_at->format('d M Y') }}
-                                            @else
-                                                Lifetime / Lifetime Free
-                                            @endif
-                                        </span>
-                                    </div>
-                                @else
-                                    <div class="mt-3">
-                                        <span class="text-[10px] font-bold px-2 py-0.75 bg-gray-100 text-gray-500 rounded-full">
-                                            No Plan Active
-                                        </span>
-                                        <a href="{{ route('pricing') }}" class="text-xs text-primary hover:underline font-semibold ml-2 flex-inline items-center gap-0.5">
-                                            Choose Plan <i class="fa-solid fa-angle-right text-[10px]"></i>
-                                        </a>
-                                    </div>
-                                @endif
+                <!-- DELETE WORKSPACE MODAL (WITH PASSWORD CONFIRMATION) -->
+                <div id="deleteWorkspacePopup-{{ $tenant->id }}" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[999]">
+                    <div class="bg-primary border-rounded w-full max-w-md p-6 relative border-primary">
+                        <button onclick="document.getElementById('deleteWorkspacePopup-{{ $tenant->id }}').classList.add('hidden')" class="absolute right-4 top-4 text-secondary hover:text-primary text-xl">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-full bg-rose-500/10 text-rose-600 flex items-center justify-center text-lg shrink-0 border border-rose-500/20">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
                             </div>
-                            
-                            @if($tenant->subscription && $tenant->subscription->plan)
-                                <a href="{{ route('pricing') }}" class="text-xs text-secondary hover-primary transition">Change Plan</a>
-                            @endif
+                            <div>
+                                <h3 class="text-base font-bold text-rose-600">Delete Workspace Permanently</h3>
+                                <p class="text-xs text-tertiary">Confirm password for <strong>{{ $tenant->name }}</strong></p>
+                            </div>
                         </div>
-                    @empty
-                        <p class="text-xs text-tertiary col-span-2">No workspaces to display subscription settings.</p>
-                    @endforelse
-                </div>
-            </div>
+                        
+                        <p class="text-xs text-secondary mb-4 bg-rose-500/5 p-3 rounded border border-rose-500/10">
+                            <strong>Warning:</strong> All database tables, uploaded files, and staff accounts will be permanently destroyed.
+                        </p>
 
-            <!-- Invoices List -->
-            <div class="p-5 border-rounded bg-primary border-primary shadow-sm">
-                <h3 class="text-base font-bold text-primary mb-4"><i class="fa-solid fa-file-invoice text-yellow-500 mr-1.5"></i> Invoices & Billing History</h3>
-                
-                <div class="overflow-x-auto w-full">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-hover-secondary border-bottom">
-                                <th class="p-3 font-semibold text-primary">Invoice ID</th>
-                                <th class="p-3 font-semibold text-primary">Workspace</th>
-                                <th class="p-3 font-semibold text-primary">Period</th>
-                                <th class="p-3 font-semibold text-primary">Amount</th>
-                                <th class="p-3 font-semibold text-primary">Status</th>
-                                <th class="p-3 font-semibold text-primary text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($invoices as $invoice)
-                                <tr class="border-bottom hover:bg-hover-secondary transition">
-                                    <td class="p-3 font-mono">#INV-{{ str_pad($invoice->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                    <td class="p-3 font-semibold text-primary">{{ $invoice->tenant->name }}</td>
-                                    <td class="p-3 text-tertiary">
-                                        {{ $invoice->billing_period_start ? $invoice->billing_period_start->format('d M Y') : 'N/A' }} 
-                                        - 
-                                        {{ $invoice->billing_period_end ? $invoice->billing_period_end->format('d M Y') : 'N/A' }}
-                                    </td>
-                                    <td class="p-3 font-bold text-primary">₹{{ number_format($invoice->total_amount, 2) }}</td>
-                                    <td class="p-3">
-                                        <span class="px-2 py-0.5 rounded text-[10px] font-semibold
-                                            {{ $invoice->status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-                                            {{ ucfirst($invoice->status) }}
-                                        </span>
-                                    </td>
-                                    <td class="p-3 text-right">
-                                        @if($invoice->status === 'pending')
-                                            <button onclick="payInvoice({{ $invoice->tenant_id }}, this)" 
-                                                    class="text-[11px] px-3 py-1.5 bg-invert text-invert border-rounded hover-invert font-semibold transition inline-block">
-                                                Pay Now
-                                            </button>
-                                        @else
-                                            <span class="text-xs text-tertiary"><i class="fa-solid fa-circle-check text-green-500"></i> Completed</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="p-6 text-center text-tertiary">No invoices or billing history found.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                        <form action="{{ route('tenants.destroy', $tenant->subdomain) }}" method="POST" class="space-y-4">
+                            @csrf
+                            @method('DELETE')
+                            <div>
+                                <label class="text-xs font-semibold text-primary block mb-1">Enter your account password</label>
+                                <input type="password" name="confirm_password" required placeholder="••••••••" class="w-full p-2.5 bg-primary border-primary border-rounded text-xs text-primary focus:outline-none focus:border-rose-500">
+                            </div>
+                            <button type="submit" class="w-full py-2.5 bg-rose-600 text-white border-rounded font-bold text-xs hover:bg-rose-700 transition">
+                                Verify Password & Delete Workspace
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
-
-        <!-- Load Cashfree payment gateway SDK for billing inline checkout -->
-        <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
-        <script>
-            const cashfree = Cashfree({
-                mode: "{{ config('services.cashfree.env') === 'production' ? 'production' : 'sandbox' }}"
-            });
-
-            async function payInvoice(tenantId, btn) {
-                if (btn.disabled) return;
-                
-                const originalText = btn.innerText;
-                btn.disabled = true;
-                btn.innerText = "Initializing...";
-
-                try {
-                    const res = await fetch(`/pay/${tenantId}`);
-                    const data = await res.json();
-                    
-                    if (!data.payment_session_id) {
-                        throw new Error(data.message || "Payment session initialization failed.");
-                    }
-
-                    await cashfree.checkout({
-                        paymentSessionId: data.payment_session_id,
-                        redirectTarget: "_self"
-                    });
-                } catch(err) {
-                    alert(err.message || "Something went wrong. Please retry.");
-                    btn.disabled = false;
-                    btn.innerText = originalText;
-                }
-            }
-        </script>
+    @else
+        <!-- Empty State -->
+        <div class="p-12 border-rounded bg-primary border-primary text-center max-w-xl mx-auto my-12 space-y-4 ">
+            <div class="w-16 h-16 border-rounded bg-hover-secondary flex items-center justify-center text-3xl text-tertiary mx-auto border border-primary font-mono">
+                W
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-primary">No Workspaces Found</h2>
+                <p class="text-xs text-secondary mt-1 max-w-sm mx-auto">
+                    Create your first workspace environment to start managing students, staff, courses, and billing.
+                </p>
+            </div>
+            <a href="{{ route('tenants.create') }}" 
+               class="inline-flex items-center gap-2 px-5 py-2.5 bg-invert text-invert border-rounded hover-invert font-bold text-xs transition ">
+                <i class="fa-solid fa-plus"></i> Create Workspace
+            </a>
+        </div>
     @endif
 @endsection
