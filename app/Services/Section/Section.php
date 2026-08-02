@@ -46,7 +46,16 @@ class Section implements ArrayAccess
 
         // direct settings access
         if (array_key_exists($key, $this->settings)) {
-            return $this->settings[$key];
+            $val = $this->settings[$key];
+            if ($val !== null && $val !== '') {
+                return $val;
+            }
+        }
+
+        // Try schema default fallback
+        $default = $this->getSchemaDefault($key);
+        if ($default !== null) {
+            return $default;
         }
 
         // fallback section data
@@ -80,7 +89,9 @@ class Section implements ArrayAccess
 
     public function offsetExists($offset): bool
     {
-        return array_key_exists($offset, $this->settings) || array_key_exists($offset, $this->section);
+        return array_key_exists($offset, $this->settings) 
+            || array_key_exists($offset, $this->section)
+            || ($this->getSchemaDefault($offset) !== null);
     }
 
     public function offsetGet($offset): mixed
@@ -545,5 +556,33 @@ class Section implements ArrayAccess
     public function getBlocks(): array
     {
         return $this->section['blocks'] ?? [];
+    }
+
+    protected function getSchemaDefault($key)
+    {
+        $themeSlug = app()->bound('activeTheme') 
+            ? app('activeTheme')->theme_slug 
+            : 'nucleus';
+
+        $type = $this->section['type'] ?? null;
+        if (!$type) {
+            return null;
+        }
+
+        $path = resource_path("views/tenant/themes/{$themeSlug}/sections/{$type}.json");
+        if (!file_exists($path)) {
+            return null;
+        }
+
+        $schema = json_decode(file_get_contents($path), true);
+        $fields = resolveFieldPresets($schema['fields'] ?? []);
+
+        foreach ($fields as $field) {
+            if (isset($field['key']) && $field['key'] === $key && array_key_exists('default', $field)) {
+                return $field['default'];
+            }
+        }
+
+        return null;
     }
 }
