@@ -86,7 +86,7 @@
         </div>
 
         {{-- Logo strip --}}
-        <div class="mt-20 pt-12 border-t border-gray-200 text-center">
+        <!-- <div class="mt-20 pt-12 border-t border-gray-200 text-center">
             <p class="text-xs uppercase tracking-widest font-semibold text-dark/40 mb-8">Trusted by institutions across the country</p>
             <div class="flex flex-wrap justify-center gap-10 items-center">
                 @php $logos = ['STANFORD EDU', 'GLOBAL ACADEMY', 'PRIME COACHING', 'SKILL SHARE', 'EDU NEXUS', 'MODERN SCHOOL']; @endphp
@@ -94,17 +94,8 @@
                     <span class="text-sm font-bold text-dark/30 uppercase tracking-wider hover:text-dark/60 transition-colors cursor-default">{{ $logo }}</span>
                 @endforeach
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
 
-<style>
-.{ opacity:0; transform:translateY(15px); transition:opacity .5s ease,transform .5s ease; transition-delay:var(--reveal-delay,0s); }
-..visible { opacity:1; transform:translateY(0); }
-</style>
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.05});
-    document.querySelectorAll('.').forEach(el=>obs.observe(el));
-});
-</script>
+

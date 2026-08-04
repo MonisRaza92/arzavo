@@ -7,7 +7,7 @@
 'iconType' => 'solid',
 'loading' => true,
 'loadingText' => 'Loading...',
-'padding' => 'px-4 py-2',
+'padding' => 'px-5 py-2.5',
 'class' => null
 ])
 
