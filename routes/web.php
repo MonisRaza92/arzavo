@@ -58,6 +58,20 @@ Route::domain(config('app.domain'))->group(function () {
     Route::get('/features', [HomeController::class, 'features'])->name('features');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
+    Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
+    Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
+    Route::get('/refund-policy', [HomeController::class, 'refunds'])->name('refunds');
+    Route::get('/cookie-policy', [HomeController::class, 'cookiePolicy'])->name('cookies');
+    Route::get('/data-retention', [HomeController::class, 'dataRetention'])->name('retention');
+    Route::get('/acceptable-use', [HomeController::class, 'acceptableUse'])->name('aup');
+    Route::get('/security-policy', [HomeController::class, 'security'])->name('security');
+    Route::get('/data-ownership', [HomeController::class, 'dataOwnership'])->name('ownership');
+    Route::get('/student-privacy', [HomeController::class, 'studentPrivacy'])->name('student-privacy');
+    Route::get('/communication-policy', [HomeController::class, 'communicationPolicy'])->name('communication-policy');
+    Route::get('/dpa', [HomeController::class, 'dpa'])->name('dpa');
+    Route::get('/subprocessors', [HomeController::class, 'subprocessors'])->name('subprocessors');
+    Route::get('/trust', [HomeController::class, 'trust'])->name('trust');
+    Route::get('/legal-notices', [HomeController::class, 'legal'])->name('legal');
 
 
     Route::get('/pay', [PaymentController::class, 'index']);

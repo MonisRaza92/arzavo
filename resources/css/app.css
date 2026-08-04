@@ -6,12 +6,15 @@
         "Noto Color Emoji";
 
     --color-primary: #ffffff;
-    --color-secondary: #f1f1f1;
+    --color-secondary: #FDF8F1;
     --color-tertiary: #e6e6e6;
     --color-accent: #920000;
-    --color-secondary-accent: #c58400;
+    --color-accent-secondary: #c58400;
+
     --color-dark: #000000;
     --color-dark-secondary: #717171;
+    --color-light: #ffffff;
+    --color-light-secondary: #f5f5f5;
 }
 
 .tiptap-editor {
@@ -161,7 +164,7 @@
     --bg-primary: #ffffff;
     --bg-secondary: #f1f1f1;
     --bg-tertiary: #e6e6e6;
-    --bg-accent: #920000;
+    /* --bg-accent: #920000; */
     --bg-accent-subtle: #92000011;
     --bg-accent-secondary: #c58400;
     --bg-invert: #000000;
@@ -173,7 +176,7 @@
     --text-accent-secondary: #c58400;
     --text-invert: #ffffff;
     --text-invert-secondary: #f5f5f5;
-    --border-primary: #e0e0e0;
+    --border-primary: #cdcdcd;
     --border-invert: #000000;
     --border-width: 1px;
     --border-rounded: 4px;
@@ -182,8 +185,8 @@
 
 @layer utilities {
     .container {
-        @apply mx-auto relative;
-        max-width: var(--container-width);
+        @apply mx-auto relative px-6;
+        max-width: 1400px;
     }
 
     .arz-core {
@@ -206,6 +209,26 @@
         border-width: var(--border-width);
         border-color: var(--border-primary);
         border-style: solid;
+    }
+    .border-b {
+        border-bottom-width: var(--border-width);
+        border-bottom-color: var(--border-primary);
+        border-bottom-style: solid;
+    }
+    .border-t {
+        border-top-width: var(--border-width);
+        border-top-color: var(--border-primary);
+        border-top-style: solid;
+    }
+    .border-l {
+        border-left-width: var(--border-width);
+        border-left-color: var(--border-primary);
+        border-left-style: solid;
+    }
+    .border-r {
+        border-right-width: var(--border-width);
+        border-right-color: var(--border-primary);
+        border-right-style: solid;
     }
 
     .rounded {
@@ -241,9 +264,9 @@ button {
     height: var(--logo-size);
 }
 
-.bg-primary {
+/* .bg-primary {
     background-color: var(--bg-primary);
-}
+} */
 
 .bg-hover-primary:hover {
     background-color: var(--bg-primary);
@@ -257,16 +280,9 @@ button {
     background-color: var(--bg-secondary);
 }
 
-.bg-tertiary {
-    background-color: var(--bg-tertiary);
-}
 
 .bg-hover-tertiary:hover {
     background-color: var(--bg-tertiary);
-}
-
-.bg-accent {
-    background-color: var(--bg-accent);
 }
 
 .bg-hover-accent:hover {

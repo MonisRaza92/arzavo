@@ -1,152 +1,88 @@
-<!-- Ultra-Modern How It Works Section -->
-<section id="how-it-works" class="py-32 relative bg-slate-900 overflow-hidden">
-    
-    <!-- Background Elements -->
-    <div class="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-accent/30 to-transparent"></div>
-    <div class="absolute bottom-0 inset-x-0 h-px bg-linear-to-r from-transparent via-accent-secondary/30 to-transparent"></div>
-    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[150px] pointer-events-none"></div>
+{{-- How It Works Section --}}
+<section id="how-it-works" class="relative py-20 overflow-hidden"
+         style="background: linear-gradient(180deg, #f9f9f9 0%, #ffffff 100%);">
 
-    <div class="container mx-auto px-4 md:px-6 relative z-10">
-        
-        <!-- Section Header -->
-        <div class="max-w-3xl mx-auto text-center mb-24 reveal-on-scroll transform translate-y-10 opacity-0 transition-all duration-700">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 group hover:bg-white/10 transition-colors cursor-default">
-                 <i class="fa-solid fa-bolt text-accent-secondary animate-pulse"></i>
-                <span class="text-xs font-bold uppercase tracking-widest text-slate-300">Fast Deployment</span>
-            </div>
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight mb-6">
-                Launch your digital <br class="hidden md:block"/>
-                <span class="text-transparent bg-clip-text bg-linear-to-r from-accent to-accent-secondary">academy in minutes.</span>
+    <div class="container relative z-10">
+
+        {{-- Header --}}
+        <div class="mb-16">
+            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Onboarding Lifecycle</p>
+            <h2 class="text-4xl md:text-5xl font-semibold text-dark mb-5 leading-tight tracking-tight">
+                Launch your digital academy in 3 simple steps.
             </h2>
-            <p class="text-lg text-slate-400 font-medium">
-                No coding required. Our streamlined onboarding process gets your institution online and ready to accept students faster than ever.
+            <p class="text-dark/70 leading-relaxed text-lg max-w-3xl">
+                Start managing operations, teaching online, and billing students without complex code integrations or engineering setups.
             </p>
         </div>
 
-        <div class="relative max-w-5xl mx-auto">
-            <!-- Animated Connector Line (Desktop) -->
-            <div class="hidden lg:block absolute top-[60px] left-[10%] right-[10%] h-0.5 bg-slate-800 rounded-full overflow-hidden">
-                <div class="absolute top-0 left-0 h-full w-1/3 bg-linear-to-r from-accent via-accent-secondary to-accent animate-[slide_3s_linear_infinite]"></div>
+        {{-- Steps --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 relative">
+
+            {{-- Step 1 --}}
+            <div class="rounded-lg border border-gray-200 bg-white p-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-full text-white text-sm font-bold flex items-center justify-center bg-accent">01</div>
+                    <h3 class="text-lg font-semibold text-dark">Setup & Domain</h3>
+                </div>
+                <p class="text-dark/60 text-sm leading-relaxed">
+                    Configure your institute's name, brand logo, colors, and connect your custom domain (e.g., learn.youracademy.com) to provide a fully white-labeled experience to students.
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 relative z-10 auto-rows-fr">
-                
-                <!-- Step 1 -->
-                <div class="group reveal-on-scroll stagger-1 h-full">
-                    <!-- Step Indicator -->
-                    <div class="w-32 h-32 mx-auto relative mb-8 perspective-1000">
-                        <div class="absolute inset-0 bg-accent/20 rounded-full blur-xl group-hover:bg-accent/40 transition-colors duration-500 animate-pulse-glow"></div>
-                        <div class="relative w-full h-full rounded-2xl bg-slate-800 border border-white/10 flex items-center justify-center transform-style-3d transition-transform duration-700 group-hover:rotate-y-180 shadow-2xl">
-                            <!-- Front -->
-                            <div class="absolute inset-0 flex items-center justify-center backface-hidden">
-                                <span class="text-5xl font-black text-transparent bg-clip-text bg-linear-to-br from-white to-slate-500">01</span>
-                            </div>
-                            <!-- Back -->
-                            <div class="absolute inset-0 flex items-center justify-center backface-hidden rotate-y-180 bg-linear-to-br from-accent to-accent-secondary rounded-2xl">
-                                <i class="fa-solid fa-pen-nib text-4xl text-white"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Content Card -->
-                    <div class="glass-panel-dark p-8 rounded-3xl text-center h-[calc(100%-160px)] flex flex-col items-center justify-center border-t-2 border-transparent group-hover:border-accent transition-all duration-500 transform group-hover:-translate-y-2">
-                        <h3 class="text-2xl font-bold text-white mb-4">Branding</h3>
-                        <p class="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-                            Claim your unique identity. Custom subdomain or connect your own domain instantly.
-                        </p>
-                    </div>
+            {{-- Step 2 --}}
+            <div class="rounded-lg border border-gray-200 bg-white p-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-full text-white text-sm font-bold flex items-center justify-center bg-accent-secondary">02</div>
+                    <h3 class="text-lg font-semibold text-dark">Onboard & Organize</h3>
                 </div>
+                <p class="text-dark/60 text-sm leading-relaxed">
+                    Import student rosters, set up academic courses, batch timings, teacher logs, and configure fee installment plans. Your custom portals are instantly provisioned.
+                </p>
+            </div>
 
-                <!-- Step 2 -->
-                <div class="group reveal-on-scroll stagger-2 h-full lg:mt-12">
-                     <!-- Step Indicator -->
-                     <div class="w-32 h-32 mx-auto relative mb-8 perspective-1000">
-                        <div class="absolute inset-0 bg-accent-secondary/20 rounded-full blur-xl group-hover:bg-accent-secondary/40 transition-colors duration-500 animate-pulse-glow" style="animation-delay: 1s;"></div>
-                        <div class="relative w-full h-full rounded-2xl bg-slate-800 border border-white/10 flex items-center justify-center transform-style-3d transition-transform duration-700 group-hover:rotate-y-180 shadow-2xl">
-                            <!-- Front -->
-                            <div class="absolute inset-0 flex items-center justify-center backface-hidden">
-                                <span class="text-5xl font-black text-transparent bg-clip-text bg-linear-to-br from-white to-slate-500">02</span>
-                            </div>
-                            <!-- Back -->
-                            <div class="absolute inset-0 flex items-center justify-center backface-hidden rotate-y-180 bg-linear-to-br from-accent-secondary to-blue-500 rounded-2xl">
-                                <i class="fa-solid fa-sliders text-4xl text-white"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Content Card -->
-                    <div class="glass-panel-dark p-8 rounded-3xl text-center h-[calc(100%-160px)] flex flex-col items-center justify-center border-t-2 border-transparent group-hover:border-accent-secondary transition-all duration-500 transform group-hover:-translate-y-2">
-                        <h3 class="text-2xl font-bold text-white mb-4">Curation</h3>
-                        <p class="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-                            Design your vision with our zero-code builder. Set rules, fee structures, and workflows.
-                        </p>
-                    </div>
+            {{-- Step 3 --}}
+            <div class="rounded-lg border border-gray-200 bg-white p-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-full text-white text-sm font-bold flex items-center justify-center bg-dark">03</div>
+                    <h3 class="text-lg font-semibold text-dark">Grow & Automate</h3>
                 </div>
-
-                <!-- Step 3 -->
-                <div class="group reveal-on-scroll stagger-3 h-full">
-                     <!-- Step Indicator -->
-                     <div class="w-32 h-32 mx-auto relative mb-8 perspective-1000">
-                        <div class="absolute inset-0 bg-blue-500/20 rounded-full blur-xl group-hover:bg-blue-500/40 transition-colors duration-500 animate-pulse-glow" style="animation-delay: 2s;"></div>
-                        <div class="relative w-full h-full rounded-2xl bg-slate-800 border border-white/10 flex items-center justify-center transform-style-3d transition-transform duration-700 group-hover:rotate-y-180 shadow-2xl">
-                            <!-- Front -->
-                            <div class="absolute inset-0 flex items-center justify-center backface-hidden">
-                                <span class="text-5xl font-black text-transparent bg-clip-text bg-linear-to-br from-white to-slate-500">03</span>
-                            </div>
-                            <!-- Back -->
-                            <div class="absolute inset-0 flex items-center justify-center backface-hidden rotate-y-180 bg-linear-to-br from-blue-500 to-accent rounded-2xl">
-                                <i class="fa-solid fa-rocket text-4xl text-white"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Content Card -->
-                    <div class="glass-panel-dark p-8 rounded-3xl text-center h-[calc(100%-160px)] flex flex-col items-center justify-center border-t-2 border-transparent group-hover:border-blue-500 transition-all duration-500 transform group-hover:-translate-y-2">
-                        <h3 class="text-2xl font-bold text-white mb-4">Growth</h3>
-                        <p class="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-                            Go live globally. Manage scaling operations from a single powerful command center.
-                        </p>
-                    </div>
-                </div>
-
+                <p class="text-dark/60 text-sm leading-relaxed">
+                    Deliver learning, accept payments online, track attendance automations, and view live growth data reports directly on your central management dashboard.
+                </p>
             </div>
         </div>
 
-        <!-- Trust Banners -->
-        <div class="mt-32 max-w-5xl mx-auto">
-            <div class="glass-panel border-white/10 rounded-3xl p-8 md:p-12 reveal-on-scroll">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 divide-y md:divide-y-0 md:divide-x divide-white/10">
-                    <!-- Trust 1 -->
-                    <div class="flex gap-6 items-start group pt-6 md:pt-0 pb-6 md:pb-0">
-                        <div class="w-14 h-14 shrink-0 rounded-2xl bg-slate-800 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-300 shadow-lg">
-                            <i class="fa-solid fa-bolt-lightning text-xl group-hover:animate-bounce"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-bold text-white mb-2">Zero Latency Launch</h4>
-                            <p class="text-slate-400 leading-relaxed">Platform provisioned and globally accessible in under 60 seconds.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Trust 2 -->
-                    <div class="flex gap-6 items-start group pt-6 md:pt-0 md:pl-12">
-                        <div class="w-14 h-14 shrink-0 rounded-2xl bg-slate-800 border border-white/10 flex items-center justify-center text-accent-secondary group-hover:bg-accent-secondary group-hover:text-white transition-all duration-300 shadow-lg">
-                            <i class="fa-solid fa-shield-halved text-xl group-hover:animate-bounce"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-bold text-white mb-2">Enterprise Security</h4>
-                            <p class="text-slate-400 leading-relaxed">Bank-grade encryption and isolated data architecture for every tenant.</p>
-                        </div>
-                    </div>
+        {{-- Highlighting reliability --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex gap-4 items-start rounded-lg p-6 border border-accent/15">
+                <div class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-white shrink-0">
+                    <i class="fa-solid fa-shield-halved text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-dark mb-1">Encrypted Data Architecture</h4>
+                    <p class="text-sm text-dark/70">Each tenant operates under an isolated security schema ensuring maximum data protection for student records.</p>
+                </div>
+            </div>
+            <div class="flex gap-4 items-start rounded-lg p-6 border border-accent/15">
+                <div class="w-10 h-10 rounded-lg bg-accent-secondary flex items-center justify-center text-white shrink-0">
+                    <i class="fa-solid fa-bolt text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-dark mb-1">Instant Activation</h4>
+                    <p class="text-sm text-dark/70">No server setups or deployment delays. Your white-label subdomain is live in less than 60 seconds.</p>
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 
 <style>
-    @keyframes slide {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(300%); }
-    }
+.{ opacity:0; transform:translateY(15px); transition:opacity .5s ease,transform .5s ease; transition-delay:var(--reveal-delay,0s); }
+..visible { opacity:1; transform:translateY(0); }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.05});
+    document.querySelectorAll('.').forEach(el=>obs.observe(el));
+});
+</script>

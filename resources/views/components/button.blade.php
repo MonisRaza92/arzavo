@@ -7,6 +7,8 @@
 'iconType' => 'solid',
 'loading' => true,
 'loadingText' => 'Loading...',
+'padding' => 'px-4 py-2',
+'class' => null
 ])
 
 @php
@@ -14,21 +16,24 @@ $isIcon = $variant === 'icon';
 
 $base = $isIcon
 ? 'flex items-center justify-center transition cursor-pointer'
-: 'flex items-center justify-center border-rounded border-primary gap-2 px-4 py-2 font-medium transition cursor-pointer';
+: 'flex items-center justify-center border-rounded border-primary gap-2 w-fit ' . $padding . ' ' . $class . ' font-medium transition cursor-pointer';
 
 $variants = [
 'primary' => 'bg-invert text-invert hover:bg-transparent hover:text-black',
 'secondary' => 'bg-transparent text-primary',
+'accent' => 'bg-accent text-white hover:bg-transparent',
+'accent-secondary' => 'bg-accent-secondary text-white hover:bg-transparent',
 'icon' => 'md:text-lg lg:text-2xl',
 ];
 
-$classes = $base.' '.($variants[$variant] ?? $variants['primary']);
+$classes = $base.' '.($variants[$variant] ?? $variants['primary']).' '.$class;
 @endphp
 
 <a
     x-data="{ loading: false }"
     @click="if (!{{ $disabled ? 'true' : 'false' }}) loading = {{ $loading ? 'true' : 'false' }}"
     @button-reset.window="loading = false"
+    @pageshow.window="loading = false"
     @if($url) href="{{ $url }}" @endif
     @if($id) id="{{ $id }}" @endif
     {{ $attributes->merge(['class' => $classes]) }}

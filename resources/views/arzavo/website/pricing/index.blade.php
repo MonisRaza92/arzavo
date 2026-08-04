@@ -1,169 +1,139 @@
 @extends('layouts.app')
-
 @section('title', 'Pricing Plans - Arzavo Educational Management Platform')
-
 @section('content')
 @include('arzavo.website.partials.navbar')
 
-<!-- Page Header -->
-<div class="pt-32 pb-20 bg-slate-950 relative overflow-hidden min-h-[50vh] flex flex-col justify-center">
-    <!-- Sophisticated Background Glow -->
-    <div class="absolute inset-0 opacity-30 mix-blend-screen pointer-events-none">
-        <div class="absolute w-[800px] h-[800px] bg-accent/20 rounded-full blur-[120px] top-[-20%] left-[10%] animate-[spin_20s_linear_infinite]"></div>
-        <div class="absolute w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[100px] bottom-[-20%] right-[-10%] animate-[spin_15s_linear_infinite_reverse]"></div>
-    </div>
-    
-    <div class="container mx-auto px-4 md:px-6 relative z-10 text-center">
-        <div class="max-w-4xl mx-auto reveal-on-scroll">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 group hover:bg-white/10 transition-colors cursor-default">
-                <i class="fa-solid fa-tags text-accent animate-pulse"></i>
-                <span class="text-xs font-bold uppercase tracking-widest text-slate-300">Investment</span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight mb-8 leading-tight">
-                Predictable <br class="hidden md:block"/>
-                <span class="text-transparent bg-clip-text bg-linear-to-r from-accent via-accent-secondary to-blue-500">Pricing.</span>
+{{-- Hero --}}
+<section class="relative pt-32 pb-16 flex items-center overflow-hidden"
+         style="background: linear-gradient(135deg, #fff 0%, #fffdf5 50%, #fff8f8 100%);"
+         x-data="{ annual: true }">
+    <div class="container relative z-10">
+        <div class="max-w-3xl mx-auto text-center">
+            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3 animate-fade-in-down">Transparent Pricing</p>
+            <h1 class="text-5xl md:text-7xl font-semibold text-dark tracking-tight mb-5 leading-tight animate-fade-in-up">
+                Simple, predictable
+                <span class="text-accent">pricing.</span>
             </h1>
-            <p class="text-xl text-slate-400 font-medium max-w-2xl mx-auto leading-relaxed mb-12">
-                No hidden fees. Scale your institution with confidence on a platform built for infinite growth.
+            <p class="text-lg text-dark/60 leading-relaxed mb-10 animate-fade-in-up" style="animation-delay:.1s;">
+                No hidden fees. No surprises. Scale your institution with confidence on a platform built for infinite growth.
             </p>
-            
-            <!-- Pricing Toggle (Visual Only) -->
-            <div class="flex items-center justify-center gap-4">
-                <span class="text-sm font-bold text-white">Monthly</span>
-                <button type="button" class="relative inline-flex h-8 w-16 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-slate-900 transition-colors duration-300" role="switch" aria-checked="false">
-                    <span aria-hidden="true" class="pointer-events-none absolute h-6 w-full rounded-full bg-transparent"></span>
-                    <span aria-hidden="true" class="pointer-events-none absolute left-1 h-6 w-6 transform rounded-full bg-accent shadow ring-0 transition duration-300 ease-in-out translate-x-8"></span>
+
+            {{-- Toggle --}}
+            <div class="flex items-center justify-center gap-3 animate-fade-in-up" style="animation-delay:.2s;">
+                <span class="text-sm font-semibold transition-colors" :class="!annual ? 'text-dark' : 'text-dark/40'">Monthly</span>
+                <button @click="annual = !annual"
+                        class="w-12 h-6 rounded-full relative focus:outline-none transition-colors cursor-pointer"
+                        :class="annual ? 'bg-accent' : 'bg-gray-300'">
+                    <div class="absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-200"
+                         :class="annual ? 'right-1' : 'left-1'"></div>
                 </button>
-                <span class="text-sm font-bold text-slate-400">Annually <span class="ml-1 text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">Save 20%</span></span>
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold transition-colors" :class="annual ? 'text-dark' : 'text-dark/40'">Annually</span>
+                    <span class="text-xs font-semibold bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">Save 20%</span>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<!-- Pricing Grid -->
-<div class="py-24 bg-slate-900 relative">
-    <div class="container mx-auto px-4 md:px-6 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-end">
-
+{{-- Pricing Cards --}}
+<section class="relative py-20 overflow-hidden"
+         style="background: linear-gradient(180deg, #f9f9f9 0%, #fff 100%);"
+         x-data="{ annual: true }">
+    <div class="container">
+        {{-- Sync toggle (re-use same state, or use a shared parent in production) --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
             @foreach($plans as $plan)
-                <div class="glass-panel-dark p-10 rounded-[2.5rem] border {{ $plan->is_popular ? 'border-accent shadow-[0_0_40px_rgba(239,68,68,0.15)] relative scale-105 z-10 bg-slate-800/80 backdrop-blur-2xl' : 'border-white/5 hover:border-white/20 transition-all duration-500' }} flex flex-col h-full reveal-on-scroll group min-h-[500px]">
+            <div class="relative rounded-lg overflow-hidden flex flex-col {{ $plan->is_popular ? 'border-2 border-accent' : 'border border-gray-200' }} bg-white">
 
-                    @if($plan->is_popular)
-                        <!-- Popular Highlight Elements -->
-                        <div class="absolute -top-5 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-linear-to-r from-accent to-accent-secondary text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-[0_0_20px_rgba(239,68,68,0.5)] z-20 whitespace-nowrap">
-                            Most Popular
-                        </div>
-                        <div class="absolute inset-0 bg-linear-to-b from-accent/5 to-transparent rounded-[2.5rem] pointer-events-none"></div>
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-2xl pointer-events-none animate-pulse"></div>
-                    @else
-                         <!-- Hover Gradient for non-popular -->
-                         <div class="absolute inset-0 bg-linear-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem] pointer-events-none"></div>
-                    @endif
-
-                    <div class="relative z-10 flex-grow flex flex-col">
-                        <h3 class="text-sm font-bold uppercase tracking-widest text-slate-400 mb-4">{{ $plan->name }}</h3>
-                        
-                        <div class="flex items-baseline gap-2 mb-4">
-                            <span class="text-5xl font-black text-white tracking-tight">
-                                {{ $plan->monthly_price == 0 ? 'Free' : '₹' . $plan->monthly_price }}
-                            </span>
-                            @if($plan->monthly_price != 0)
-                                <span class="text-sm font-medium text-slate-500">/mo</span>
-                            @endif
-                        </div>
-                        
-                        <p class="text-sm text-slate-400 font-medium mb-8 pb-8 border-b border-white/10">
-                            {{ $plan->short_description }}
-                        </p>
-
-                        <ul class="space-y-4 mb-10 grow">
-                            @foreach($plan->features ?? [] as $key => $value)
-                                @if($value)
-                                    <li class="flex items-start gap-4 text-sm text-slate-300 font-medium group/item hover:text-white transition-colors">
-                                        <div class="shrink-0 w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mt-0.5 group-hover/item:bg-emerald-500 group-hover/item:border-emerald-500 transition-colors">
-                                            <i class="fa-solid fa-check text-[10px] text-emerald-400 group-hover/item:text-white"></i>
-                                        </div>
-                                        <span>{{ ucfirst(str_replace('_', ' ', $key)) }}</span>
-                                    </li>
-                                @endif
-                            @endforeach
-
-                            @foreach($plan->limits ?? [] as $key => $value)
-                                <li class="flex items-start gap-4 text-sm text-slate-300 font-medium group/item hover:text-white transition-colors">
-                                    <div class="shrink-0 w-5 h-5 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mt-0.5 group-hover/item:bg-blue-500 group-hover/item:border-blue-500 transition-colors">
-                                        <i class="fa-solid fa-database text-[10px] text-blue-400 group-hover/item:text-white"></i>
-                                    </div>
-                                    <span><strong class="text-white">{{ $value }}</strong> {{ ucfirst(str_replace('_', ' ', $key)) }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
-
-                        <a href="{{ route('checkout', ['slug' => $plan->slug]) }}" class="mt-auto w-full py-4 text-center text-sm font-bold uppercase tracking-widest rounded-xl transition-all duration-300
-                            {{ $plan->is_popular 
-                                ? 'bg-white text-slate-900 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-slate-200 hover:scale-[1.02]' 
-                                : 'bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20' }}">
-                            {{ $plan->monthly_price == 0 ? 'Get Started Free' : 'Choose Plan' }}
-                        </a>
-                    </div>
+                @if($plan->is_popular)
+                <div class="text-center py-2 bg-accent">
+                    <span class="text-white text-xs font-semibold uppercase tracking-widest">✦ Most Popular</span>
                 </div>
-            @endforeach
+                @endif
 
+                <div class="p-7 flex flex-col flex-1">
+                    <p class="text-xs font-semibold uppercase tracking-widest {{ $plan->is_popular ? 'text-accent' : 'text-dark/40' }} mb-4">{{ $plan->name }}</p>
+                    <div class="flex items-baseline gap-1 mb-2">
+                        <span class="text-4xl font-semibold {{ $plan->is_popular ? 'text-accent' : 'text-dark' }}">
+                            {{ $plan->monthly_price == 0 ? 'Free' : '₹' . $plan->monthly_price }}
+                        </span>
+                        @if($plan->monthly_price != 0)<span class="text-sm text-dark/40">/mo</span>@endif
+                    </div>
+                    <p class="text-sm text-dark/50 pb-5 mb-5 border-b border-gray-100">{{ $plan->short_description }}</p>
+
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        @foreach($plan->features ?? [] as $key => $value)
+                            @if($value)
+                            <li class="flex items-center gap-3 text-sm text-dark/70">
+                                <i class="fa-solid fa-check {{ $plan->is_popular ? 'text-accent' : 'text-dark/30' }} text-xs shrink-0"></i>
+                                {{ ucfirst(str_replace('_', ' ', $key)) }}
+                            </li>
+                            @endif
+                        @endforeach
+                        @foreach($plan->limits ?? [] as $key => $value)
+                        <li class="flex items-center gap-3 text-sm text-dark/70">
+                            <i class="fa-solid fa-database text-accent-secondary text-xs shrink-0"></i>
+                            <span><strong class="text-dark">{{ $value }}</strong> {{ ucfirst(str_replace('_', ' ', $key)) }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+
+                    <a href="{{ route('checkout', ['slug' => $plan->slug]) }}"
+                       class="w-full py-3 text-center text-sm font-semibold rounded transition-all duration-200 block {{ $plan->is_popular ? 'bg-accent text-white hover:opacity-90' : 'bg-gray-50 text-dark/70 hover:bg-gray-100' }}">
+                        {{ $plan->monthly_price == 0 ? 'Get Started Free' : 'Choose Plan' }}
+                    </a>
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
-</div>
+</section>
 
+{{-- Feature Comparison Table --}}
 @php
     $allFeatures = [];
     foreach ($plans as $plan) {
-        foreach (($plan->features ?? []) as $key => $val) {
-            $allFeatures[$key] = true;
-        }
+        foreach (($plan->features ?? []) as $key => $val) { $allFeatures[$key] = true; }
     }
     $allFeatures = array_keys($allFeatures);
 @endphp
 
-<!-- Comprehensive Feature Comparison -->
-<div class="py-32 bg-slate-950 relative overflow-hidden hidden md:block border-t border-white/5">
-    <!-- Glow -->
-    <div class="absolute bottom-1/4 -right-64 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-
-    <div class="container mx-auto px-4 md:px-6 relative z-10">
-        <div class="text-center max-w-3xl mx-auto mb-20 reveal-on-scroll">
-            <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Compare Features</h2>
-            <p class="text-lg text-slate-400 font-medium pb-10">Dive deep into what makes Arzavo the ultimate platform.</p>
+<section class="py-20 hidden md:block overflow-hidden"
+         style="background: linear-gradient(180deg, #fff 0%, #f9f9f9 100%);">
+    <div class="container">
+        <div class="mb-14">
+            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Detailed Comparison</p>
+            <h2 class="text-4xl md:text-5xl font-semibold text-dark mb-5 leading-tight tracking-tight">Compare every feature.</h2>
+            <p class="text-dark/70 leading-relaxed text-lg max-w-3xl">
+                Dive deep into what makes Arzavo the ultimate platform for your institution.
+            </p>
         </div>
-        
-        <div class="max-w-6xl mx-auto glass-panel border border-white/10 rounded-3xl overflow-hidden shadow-2xl reveal-on-scroll stagger-1">
+
+        <div class="rounded-lg border border-gray-200 bg-white overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-left">
                     <thead>
-                        <tr class="bg-white/5 border-b border-white/10">
-                            <th class="p-8 text-xs font-bold uppercase tracking-widest text-slate-400 w-1/4">Core Feature</th>
+                        <tr class="border-b border-gray-200">
+                            <th class="p-5 pl-6 text-xs font-semibold uppercase tracking-widest text-dark/40 w-1/4">Core Feature</th>
                             @foreach($plans as $plan)
-                                <th class="p-8 text-center border-l border-white/5 w-1/4">
-                                    <div class="text-lg font-black text-white mb-1">{{ $plan->name }}</div>
-                                    <div class="text-sm font-medium text-slate-500">{{ $plan->monthly_price == 0 ? 'Free' : '₹'.$plan->monthly_price }}</div>
+                                <th class="p-5 text-center w-1/4 {{ $plan->is_popular ? 'bg-accent/5' : '' }}">
+                                    <div class="text-sm font-semibold {{ $plan->is_popular ? 'text-accent' : 'text-dark' }} mb-0.5">{{ $plan->name }}</div>
+                                    <div class="text-xs text-dark/40">{{ $plan->monthly_price == 0 ? 'Free' : '₹'.$plan->monthly_price.'/mo' }}</div>
                                 </th>
                             @endforeach
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-white/5">
-                        @foreach($allFeatures as $index => $feature)
-                            <tr class="hover:bg-white/5 transition-colors group">
-                                <td class="p-6 text-sm font-bold text-slate-300 group-hover:text-white transition-colors pl-8">
-                                    {{ ucfirst(str_replace('_', ' ', $feature)) }}
-                                </td>
+                    <tbody>
+                        @foreach($allFeatures as $feature)
+                            <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+                                <td class="p-4 pl-6 text-sm font-medium text-dark">{{ ucfirst(str_replace('_', ' ', $feature)) }}</td>
                                 @foreach($plans as $plan)
-                                    <td class="p-6 text-center border-l border-white/5">
+                                    <td class="p-4 text-center {{ $plan->is_popular ? 'bg-accent/5' : '' }}">
                                         @if(($plan->features[$feature] ?? false))
-                                            <div class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all">
-                                                <i class="fa-solid fa-check text-xs text-emerald-400"></i>
-                                            </div>
+                                            <i class="fa-solid fa-check text-accent text-xs"></i>
                                         @else
-                                            <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-slate-600 opacity-50">
-                                                <i class="fa-solid fa-minus text-xs"></i>
-                                            </div>
+                                            <i class="fa-solid fa-xmark text-dark/20 text-xs"></i>
                                         @endif
                                     </td>
                                 @endforeach
@@ -172,16 +142,91 @@
                     </tbody>
                 </table>
             </div>
-            <!-- Bottom CTA bar -->
-            <div class="p-8 bg-black/20 border-t border-white/10 flex items-center justify-between">
-                <p class="text-sm text-slate-400 font-medium">Need a custom enterprise solution?</p>
-                <a href="{{ route('contact') }}" class="text-sm font-bold text-white hover:text-accent transition-colors uppercase tracking-widest flex items-center gap-2">
-                    Contact Sales <i class="fa-solid fa-arrow-right"></i>
+            <div class="p-5 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-gray-200 bg-accent/5">
+                <p class="text-sm text-dark/60">Need a custom enterprise solution?</p>
+                <x-button url="{{ route('contact') }}" padding="px-6 py-2.5">
+                    Contact Sales <i class="fa-solid fa-arrow-right -rotate-45 text-xs"></i>
+                </x-button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- FAQ Mini --}}
+<section class="relative py-20 overflow-hidden"
+         style="background: linear-gradient(180deg, #fff 0%, #fffbf8 100%);"
+         x-data="{ active: null }">
+    <div class="container">
+        <div class="mb-14">
+            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Pricing FAQ</p>
+            <h2 class="text-4xl md:text-5xl font-semibold text-dark mb-5 leading-tight tracking-tight">Common questions about pricing.</h2>
+        </div>
+        <div class="max-w-3xl space-y-3">
+            @php $pricingFaq = [
+                ['q' => 'Can I switch plans at any time?', 'a' => 'Yes, you can upgrade or downgrade your plan anytime from your admin dashboard. Changes take effect immediately, and billing is prorated automatically.'],
+                ['q' => 'Is there a free trial for paid plans?', 'a' => 'Yes, every paid plan comes with a 14-day free trial. No credit card required. You get full access to all features during the trial period.'],
+                ['q' => 'What payment methods do you accept?', 'a' => 'We accept UPI, credit/debit cards, net banking, and wallet payments via Razorpay. For annual enterprise plans, we also support bank transfers and invoicing.'],
+                ['q' => 'What happens when I exceed my plan limits?', 'a' => 'You\'ll receive a notification when you\'re at 80% of your limit. We never suddenly cut access. You can upgrade or contact us for a custom extension.'],
+            ]; @endphp
+            @foreach($pricingFaq as $i => $faq)
+            <div class="rounded-lg border border-gray-200 bg-white overflow-hidden transition-all duration-300"
+                 :class="active === {{ $i }} ? 'border-accent/30' : ''">
+                <button @click="active = active === {{ $i }} ? null : {{ $i }}"
+                        class="w-full flex items-center justify-between p-5 text-left gap-4 cursor-pointer">
+                    <span class="text-sm font-semibold text-dark">{{ $faq['q'] }}</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-dark/30 transition-transform duration-300 shrink-0"
+                       :class="active === {{ $i }} ? 'rotate-180 !text-accent' : ''"></i>
+                </button>
+                <div x-show="active === {{ $i }}"
+                     x-collapse
+                     x-cloak>
+                    <div class="px-5 pb-5 text-sm text-dark/60 leading-relaxed border-t border-gray-100 pt-4">
+                        {{ $faq['a'] }}
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- CTA --}}
+<section class="relative py-20 overflow-hidden"
+         style="background: linear-gradient(180deg, #f9f9f9 0%, #fff 100%);">
+    <div class="container">
+        <div class="rounded-lg p-12 md:p-16 bg-accent text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-15"
+                 style="background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 65%); transform: translate(30%, -30%);"></div>
+            <div class="relative z-10 max-w-2xl mx-auto">
+                <h2 class="text-3xl md:text-5xl font-semibold text-white mb-5 leading-tight tracking-tight">
+                    Start for free. Scale when ready.
+                </h2>
+                <p class="text-white/75 text-lg leading-relaxed mb-10">
+                    No credit card required. Full feature access for 14 days.
+                </p>
+                <a href="{{ route('register.form') }}"
+                   class="px-8 py-3.5 bg-white text-accent font-semibold rounded text-sm inline-flex items-center gap-2 hover:opacity-90 transition-opacity">
+                    Start Free Trial <i class="fa-solid fa-arrow-right -rotate-45 text-xs"></i>
                 </a>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @include('arzavo.website.partials.footer')
 @endsection
+
+<style>
+@keyframes fade-in-down { from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);} }
+@keyframes fade-in-up { from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);} }
+.animate-fade-in-down { animation: fade-in-down .6s ease-out both; }
+.animate-fade-in-up { animation: fade-in-up .6s ease-out both; }
+.{ opacity:0; transform:translateY(15px); transition:opacity .5s ease,transform .5s ease; transition-delay:var(--reveal-delay,0s); }
+..visible { opacity:1; transform:translateY(0); }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.05});
+    document.querySelectorAll('.').forEach(el=>obs.observe(el));
+});
+</script>

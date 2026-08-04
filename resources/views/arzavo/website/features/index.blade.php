@@ -1,154 +1,227 @@
 @extends('layouts.app')
-
 @section('title', 'Features - Arzavo Educational Management Platform')
-
 @section('content')
 @include('arzavo.website.partials.navbar')
 
-<!-- Page Header -->
-<section class="pt-32 pb-20 bg-slate-950 relative overflow-hidden min-h-[50vh] flex items-center">
-    <!-- Sophisticated Background Glow -->
-     <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-accent/10 rounded-full blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/3 animate-pulse"></div>
-     <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/3 translate-y-1/3"></div>
-
-    <div class="container mx-auto px-4 md:px-6 relative z-10 text-center">
-        <div class="max-w-4xl mx-auto reveal-on-scroll">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 group hover:bg-white/10 transition-colors cursor-default">
-                <i class="fa-solid fa-layer-group text-accent animate-[spin_4s_linear_infinite]"></i>
-                <span class="text-xs font-bold uppercase tracking-widest text-slate-300">Capabilities</span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight mb-8 leading-tight">
-                Engineered for <br class="hidden md:block"/>
-                <span class="text-transparent bg-clip-text bg-linear-to-r from-accent via-accent-secondary to-blue-500">Excellence.</span>
+{{-- Hero --}}
+<section class="relative pt-32 pb-20 flex items-center overflow-hidden"
+         style="background: linear-gradient(135deg, #fff 0%, #fff8f8 50%, #fffdf5 100%);">
+    <div class="container relative z-10">
+        <div class="max-w-3xl">
+            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3 animate-fade-in-down">Platform Capabilities</p>
+            <h1 class="text-5xl md:text-7xl font-semibold text-dark tracking-tight mb-5 leading-tight animate-fade-in-up">
+                Everything you need to
+                <span class="text-accent">run your institute.</span>
             </h1>
-            <p class="text-xl text-slate-400 font-medium max-w-2xl mx-auto leading-relaxed">
-                Explore the deep ecosystem of tools designed to make your educational institution thrive in the digital age.
+            <p class="text-lg text-dark/60 leading-relaxed animate-fade-in-up" style="animation-delay:.1s;">
+                Explore the complete ecosystem of tools designed to streamline every aspect of your educational institution — from admissions to analytics.
             </p>
         </div>
     </div>
 </section>
 
-<!-- Detailed Features Bento Grid -->
-<section class="py-24 bg-slate-900 relative">
-    <!-- Grid Background Pattern -->
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMGg0MHY0MEgwem0zOSAzOVYxaC0zOHYzOGgzOHoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMSkiLz4KPC9zdmc+')] opacity-50 z-0 mask-image:linear-gradient(to_bottom,transparent,black,transparent)"></div>
+{{-- Core Modules --}}
+<section class="relative py-20 overflow-hidden"
+         style="background: linear-gradient(180deg, #f9f9f9 0%, #fff 100%);">
+    <div class="container">
+        <div class="mb-14">
+            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Core Modules</p>
+            <h2 class="text-4xl md:text-5xl font-semibold text-dark mb-5 leading-tight tracking-tight">Powerful modules, one unified platform.</h2>
+            <p class="text-dark/70 leading-relaxed text-lg max-w-3xl">
+                Each module is built to work independently or together, giving you complete flexibility in how you manage your institute.
+            </p>
+        </div>
 
-    <div class="container mx-auto px-4 md:px-6 relative z-10">
-        
-        <!-- Bento Grid Layout -->
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[300px]">
-            
-            <!-- Feature 1: Student Management (Large Card) -->
-            <div class="md:col-span-2 md:row-span-2 glass-panel-dark p-10 rounded-[2.5rem] border border-white/5 hover:border-accent/40 transition-all duration-500 group relative overflow-hidden reveal-on-scroll stagger-1 flex flex-col justify-end">
-                <!-- Hover Glow -->
-                <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-accent/20 rounded-full blur-[80px] group-hover:bg-accent/30 transition-colors duration-700"></div>
-                
-                <div class="absolute top-10 pr-10">
-                     <div class="w-16 h-16 bg-white/5 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 border border-white/10 group-hover:scale-110 group-hover:bg-accent group-hover:border-accent transition-all duration-500 shadow-xl">
-                        <i class="fa-solid fa-user-graduate text-3xl text-white"></i>
-                    </div>
-                </div>
-                
-                <div class="relative z-10 mt-auto">
-                    <h3 class="text-3xl font-black text-white mb-4">Student Lifecycle <br/>Management</h3>
-                    <p class="text-lg text-slate-400 font-medium leading-relaxed max-w-md group-hover:text-slate-300 transition-colors">
-                        Manage everything from admission to graduation. Automated ID cards, real-time session tracking, and comprehensive student performance portfolios—all in one place.
-                    </p>
-                </div>
-            </div>
+        {{-- Feature Grid --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-            <!-- Feature 2: Smart Attendance (Standard Card) -->
-            <div class="glass-panel-dark p-8 rounded-[2rem] border border-white/5 hover:border-accent-secondary/40 transition-all duration-500 group relative overflow-hidden reveal-on-scroll stagger-2">
-                 <div class="absolute inset-0 bg-linear-to-br from-accent-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                 
-                 <div class="w-14 h-14 bg-white/5 backdrop-blur-md rounded-xl flex items-center justify-center mb-6 border border-white/10 group-hover:rotate-12 group-hover:bg-accent-secondary group-hover:border-accent-secondary transition-all duration-500 relative z-10">
-                    <i class="fa-solid fa-clock-rotate-left text-2xl text-white"></i>
-                </div>
-                <h3 class="text-2xl font-black text-white mb-3 relative z-10">Hybrid <br/>Attendance</h3>
-                <p class="text-slate-400 font-medium text-sm leading-relaxed relative z-10">
-                    Track attendance for online and offline batches. Real-time SMS alerts for parents and detailed monthly growth charts.
-                </p>
-            </div>
-
-            <!-- Feature 3: Financial Suite (Standard Card) -->
-            <div class="glass-panel-dark p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/40 transition-all duration-500 group relative overflow-hidden reveal-on-scroll stagger-3">
-                 <div class="absolute inset-0 bg-linear-to-bl from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                 
-                 <div class="w-14 h-14 bg-white/5 backdrop-blur-md rounded-xl flex items-center justify-center mb-6 border border-white/10 group-hover:-rotate-12 group-hover:bg-blue-500 group-hover:border-blue-500 transition-all duration-500 relative z-10">
-                    <i class="fa-solid fa-file-invoice-dollar text-2xl text-white"></i>
-                </div>
-                <h3 class="text-2xl font-black text-white mb-3 relative z-10">Automated <br/>Billing</h3>
-                <p class="text-slate-400 font-medium text-sm leading-relaxed relative z-10">
-                    Generate invoices, track pending fees, and collect payments effortlessly via UPI, Credit Cards, or Net Banking.
-                </p>
-            </div>
-            
-            <!-- Feature 4: Course Builder (Wide Card) -->
-            <div class="md:col-span-2 lg:col-span-2 glass-panel-dark p-8 md:p-10 rounded-[2.5rem] border border-white/5 hover:border-purple-500/40 transition-all duration-500 group relative overflow-hidden reveal-on-scroll stagger-4 flex flex-col justify-center">
-                 <div class="absolute right-0 top-0 bottom-0 w-1/2 bg-linear-to-r from-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                 
-                 <div class="flex items-start gap-6 relative z-10">
-                     <div class="w-16 h-16 min-w-16 bg-white/5 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:bg-purple-500 group-hover:border-purple-500 transition-all duration-500 shadow-xl">
-                        <i class="fa-solid fa-layer-group text-3xl text-white"></i>
+            {{-- Student Management - Featured --}}
+            <div class="lg:col-span-2 rounded-lg border border-gray-200 bg-white p-8">
+                <div class="flex items-start gap-5">
+                    <div class="w-11 h-11 rounded-lg bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                        <i class="fa-solid fa-user-graduate text-sm"></i>
                     </div>
                     <div>
-                        <h3 class="text-3xl font-black text-white mb-3">Course Marketplace</h3>
-                        <p class="text-slate-400 font-medium leading-relaxed max-w-md">
-                            Host and sell your recorded videos, PDFs, and live workshops. Built-in, high-performance video player with robust content protection.
+                        <h3 class="text-lg font-semibold text-dark mb-2">Student Lifecycle Management</h3>
+                        <p class="text-sm text-dark/60 leading-relaxed mb-4">
+                            Manage everything from admission to graduation. Automated ID cards, real-time session tracking, batch management, and comprehensive student performance portfolios — all in one place.
                         </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs px-2.5 py-1 rounded bg-accent/5 text-accent/80 font-medium">Admissions</span>
+                            <span class="text-xs px-2.5 py-1 rounded bg-accent/5 text-accent/80 font-medium">Batches</span>
+                            <span class="text-xs px-2.5 py-1 rounded bg-accent/5 text-accent/80 font-medium">ID Cards</span>
+                            <span class="text-xs px-2.5 py-1 rounded bg-accent/5 text-accent/80 font-medium">Transfers</span>
+                        </div>
                     </div>
-                 </div>
+                </div>
             </div>
 
-            <!-- Feature 5: Staff & Payroll (Standard Card) -->
-            <div class="glass-panel-dark p-8 rounded-[2rem] border border-white/5 hover:border-emerald-500/40 transition-all duration-500 group relative overflow-hidden reveal-on-scroll stagger-5">
-                 <div class="absolute inset-0 bg-linear-to-t from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                 
-                <div class="w-14 h-14 bg-white/5 backdrop-blur-md rounded-xl flex items-center justify-center mb-6 border border-white/10 group-hover:rotate-12 group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-500 relative z-10">
-                    <i class="fa-solid fa-users-gear text-2xl text-white"></i>
+            {{-- Attendance --}}
+            <div class="rounded-lg border border-gray-200 bg-white p-7">
+                <div class="w-10 h-10 rounded-lg bg-accent-secondary/10 flex items-center justify-center text-accent-secondary mb-5">
+                    <i class="fa-solid fa-clock-rotate-left text-sm"></i>
                 </div>
-                <h3 class="text-2xl font-black text-white mb-3 relative z-10">Staff <br/>Governance</h3>
-                <p class="text-slate-400 font-medium text-sm leading-relaxed relative z-10">
-                    Manage salaries, attendance, and roles. Grant precise, granular permissions for distinct administrative layers.
-                </p>
-            </div>
-            
-            <!-- Feature 6: Exam & Results (Standard Card) -->
-            <div class="glass-panel-dark p-8 rounded-[2rem] border border-white/5 hover:border-pink-500/40 transition-all duration-500 group relative overflow-hidden reveal-on-scroll stagger-6">
-                 <div class="absolute inset-0 bg-linear-to-bl from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                 
-                <div class="w-14 h-14 bg-white/5 backdrop-blur-md rounded-xl flex items-center justify-center mb-6 border border-white/10 group-hover:-rotate-12 group-hover:bg-pink-500 group-hover:border-pink-500 transition-all duration-500 relative z-10">
-                    <i class="fa-solid fa-square-poll-vertical text-2xl text-white"></i>
-                </div>
-                <h3 class="text-2xl font-black text-white mb-3 relative z-10">Result <br/>Engine</h3>
-                <p class="text-slate-400 font-medium text-sm leading-relaxed relative z-10">
-                    Create dynamic exams, grading systems, and automated report cards that students can download instantly from anywhere.
-                </p>
+                <h3 class="text-sm font-semibold text-dark mb-2">Hybrid Attendance</h3>
+                <p class="text-sm text-dark/60 leading-relaxed">Track attendance for online and offline batches. Real-time SMS/WhatsApp alerts for parents and detailed monthly reports.</p>
             </div>
 
+            {{-- Billing --}}
+            <div class="rounded-lg border border-gray-200 bg-white p-7">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600 mb-5">
+                    <i class="fa-solid fa-file-invoice-dollar text-sm"></i>
+                </div>
+                <h3 class="text-sm font-semibold text-dark mb-2">Automated Billing & Fees</h3>
+                <p class="text-sm text-dark/60 leading-relaxed">Generate invoices, set installment plans, track pending fees, and collect payments via UPI, Credit Cards, or Net Banking.</p>
+            </div>
+
+            {{-- Course Marketplace - Featured --}}
+            <div class="lg:col-span-2 rounded-lg border border-gray-200 bg-white p-8">
+                <div class="flex items-start gap-5">
+                    <div class="w-11 h-11 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-600 shrink-0">
+                        <i class="fa-solid fa-layer-group text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-dark mb-2">LMS & Course Marketplace</h3>
+                        <p class="text-sm text-dark/60 leading-relaxed mb-4">
+                            Host and sell recorded videos, PDFs, and live workshops. Built-in high-performance video player with DRM-level content protection. Students get a branded learning portal.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs px-2.5 py-1 rounded bg-violet-500/5 text-violet-600/80 font-medium">Video Courses</span>
+                            <span class="text-xs px-2.5 py-1 rounded bg-violet-500/5 text-violet-600/80 font-medium">DRM Protection</span>
+                            <span class="text-xs px-2.5 py-1 rounded bg-violet-500/5 text-violet-600/80 font-medium">Test Series</span>
+                            <span class="text-xs px-2.5 py-1 rounded bg-violet-500/5 text-violet-600/80 font-medium">Certificates</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Staff --}}
+            <div class="rounded-lg border border-gray-200 bg-white p-7">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-5">
+                    <i class="fa-solid fa-users-gear text-sm"></i>
+                </div>
+                <h3 class="text-sm font-semibold text-dark mb-2">Staff & HR Governance</h3>
+                <p class="text-sm text-dark/60 leading-relaxed">Manage salaries, leave, attendance, and roles. Grant precise permissions for distinct administrative layers.</p>
+            </div>
+
+            {{-- Results --}}
+            <div class="rounded-lg border border-gray-200 bg-white p-7">
+                <div class="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-600 mb-5">
+                    <i class="fa-solid fa-square-poll-vertical text-sm"></i>
+                </div>
+                <h3 class="text-sm font-semibold text-dark mb-2">Exam & Result Engine</h3>
+                <p class="text-sm text-dark/60 leading-relaxed">Create dynamic MCQ/subjective exams, grading systems, and automated report cards students can download instantly.</p>
+            </div>
+
+            {{-- Communication --}}
+            <div class="rounded-lg border border-gray-200 bg-white p-7">
+                <div class="w-10 h-10 rounded-lg bg-sky-500/10 flex items-center justify-center text-sky-600 mb-5">
+                    <i class="fa-solid fa-bell text-sm"></i>
+                </div>
+                <h3 class="text-sm font-semibold text-dark mb-2">Communication Hub</h3>
+                <p class="text-sm text-dark/60 leading-relaxed">Send targeted notifications via WhatsApp, SMS, and in-app alerts. Auto-reminders for fee dues, exams, and attendance.</p>
+            </div>
+
+            {{-- Analytics - Full Width --}}
+            <div class="lg:col-span-3 rounded-lg border border-gray-200 bg-white p-8">
+                <div class="flex flex-col md:flex-row items-start gap-5">
+                    <div class="w-11 h-11 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-600 shrink-0">
+                        <i class="fa-solid fa-chart-line text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-dark mb-2">Real-time Analytics Dashboard</h3>
+                        <p class="text-sm text-dark/60 leading-relaxed">Monitor enrollment trends, revenue metrics, attendance patterns, and student performance through interactive, always-live dashboards. Make informed decisions backed by data — not guesswork.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Call to Action -->
-<section class="py-32 relative overflow-hidden bg-slate-950 border-t border-white/5">
-    <!-- Animated background grid -->
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjEiIGN5PSIxIiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIi8+Cjwvc3ZnPg==')] opacity-50 z-0 mask-image:linear-gradient(to_bottom,transparent,black,transparent)"></div>
-    
-    <div class="container mx-auto px-4 md:px-6 relative z-10 text-center">
-        <div class="glass-panel p-12 md:p-24 rounded-[3rem] border border-white/10 relative overflow-hidden group">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-linear-to-r from-accent/20 via-blue-500/20 to-accent-secondary/20 rounded-full blur-[100px] opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"></div>
-            
-            <div class="relative z-10 max-w-4xl mx-auto">
-                <i class="fa-solid fa-bolt text-5xl text-accent mb-8 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]"></i>
-                <h2 class="text-5xl md:text-7xl font-black text-white mb-8 tracking-tight">Everything you need, <br/> in one place.</h2>
-                <p class="text-xl text-slate-300 font-medium mb-12 max-w-2xl mx-auto">
+{{-- White-Label Section --}}
+<section class="relative py-20 overflow-hidden"
+         style="background: linear-gradient(180deg, #fff 0%, #fffbf8 50%, #fff 100%);">
+    <div class="container">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div >
+                <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Your Brand, Your Platform</p>
+                <h2 class="text-4xl md:text-5xl font-semibold text-dark mb-5 leading-tight tracking-tight">
+                    Complete white-label experience.
+                </h2>
+                <p class="text-dark/60 leading-relaxed text-lg mb-8">
+                    Your students will never know Arzavo exists. Everything runs under your brand, your domain, and your design system.
+                </p>
+                <div class="space-y-3">
+                    @php $wlFeatures = [
+                        'Custom domain mapping (learn.yourinstitute.com)',
+                        'Your logo, colors, and brand identity throughout',
+                        'White-labeled student & teacher mobile portals',
+                        'Custom email templates with your branding',
+                        'Drag-and-drop website builder for your landing page',
+                    ]; @endphp
+                    @foreach($wlFeatures as $f)
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-check text-accent text-xs"></i>
+                        <span class="text-sm text-dark/70">{{ $f }}</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            <div>
+                <div class="rounded-lg border border-gray-200 bg-white p-8">
+                    <div class="flex items-center gap-3 mb-6 pb-5 border-b border-gray-100">
+                        <div class="w-8 h-8 rounded bg-accent flex items-center justify-center text-white text-xs font-semibold">Y</div>
+                        <div>
+                            <p class="text-sm font-semibold text-dark">Your Academy</p>
+                            <p class="text-xs text-dark/40">learn.youracademy.com</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="h-3 bg-gray-100 rounded w-full"></div>
+                        <div class="h-3 bg-gray-100 rounded w-4/5"></div>
+                        <div class="h-3 bg-gray-100 rounded w-3/5"></div>
+                        <div class="flex gap-3 mt-6">
+                            <div class="h-20 bg-accent/5 rounded flex-1 flex items-center justify-center text-accent/30">
+                                <i class="fa-solid fa-play text-lg"></i>
+                            </div>
+                            <div class="h-20 bg-accent/5 rounded flex-1 flex items-center justify-center text-accent/30">
+                                <i class="fa-solid fa-play text-lg"></i>
+                            </div>
+                            <div class="h-20 bg-accent/5 rounded flex-1 flex items-center justify-center text-accent/30">
+                                <i class="fa-solid fa-play text-lg"></i>
+                            </div>
+                        </div>
+                        <div class="h-3 bg-gray-100 rounded w-2/3 mt-4"></div>
+                        <div class="h-3 bg-gray-100 rounded w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- CTA --}}
+<section class="relative py-20 overflow-hidden"
+         style="background: linear-gradient(180deg, #f9f9f9 0%, #fff 100%);">
+    <div class="container">
+        <div class="rounded-lg p-12 md:p-16 bg-accent text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-15"
+                 style="background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 65%); transform: translate(30%, -30%);"></div>
+            <div class="relative z-10 max-w-2xl mx-auto">
+                <div class="w-14 h-14 mx-auto rounded-xl bg-white/15 flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-bolt text-white text-xl"></i>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-semibold text-white mb-5 leading-tight tracking-tight">
+                    Everything you need, in one place.
+                </h2>
+                <p class="text-white/75 text-lg leading-relaxed mb-10">
                     Stop juggling multiple subscriptions. Bring your entire institution under one powerful, unified system today.
                 </p>
-                <a href="{{ route('register.form') }}" class="px-12 py-5 bg-white text-slate-900 text-lg font-bold rounded-2xl shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all duration-300 inline-flex items-center gap-3 group/btn">
-                    Start Your Journey <i class="fa-solid fa-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
+                <a href="{{ route('register.form') }}"
+                   class="px-8 py-3.5 bg-white text-accent font-semibold rounded text-sm inline-flex items-center gap-2 hover:opacity-90 transition-opacity">
+                    Start Free Trial <i class="fa-solid fa-arrow-right -rotate-45 text-xs"></i>
                 </a>
+                <p class="text-white/50 text-xs mt-6">No credit card required · Setup in under 2 minutes</p>
             </div>
         </div>
     </div>
@@ -156,3 +229,18 @@
 
 @include('arzavo.website.partials.footer')
 @endsection
+
+<style>
+@keyframes fade-in-down { from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);} }
+@keyframes fade-in-up { from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);} }
+.animate-fade-in-down { animation: fade-in-down .6s ease-out both; }
+.animate-fade-in-up { animation: fade-in-up .6s ease-out both; }
+.{ opacity:0; transform:translateY(15px); transition:opacity .5s ease,transform .5s ease; transition-delay:var(--reveal-delay,0s); }
+..visible { opacity:1; transform:translateY(0); }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.05});
+    document.querySelectorAll('.').forEach(el=>obs.observe(el));
+});
+</script>

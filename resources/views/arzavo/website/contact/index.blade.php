@@ -1,155 +1,173 @@
 @extends('layouts.app')
-
 @section('title', 'Contact Us - Arzavo Educational Management Platform')
-
 @section('content')
 @include('arzavo.website.partials.navbar')
 
-<!-- Page Header -->
-<section class="pt-32 pb-20 bg-slate-950 relative overflow-hidden min-h-[40vh] flex flex-col justify-center">
-    <!-- Animated Particles/Glows -->
-    <div class="absolute inset-0 pointer-events-none opacity-30">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[100px] animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] animate-[pulse_4s_ease-in-out_infinite]"></div>
-    </div>
-    
-    <div class="container mx-auto px-4 md:px-6 relative z-10 text-center">
-        <div class="max-w-3xl mx-auto reveal-on-scroll">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 cursor-default">
-                <i class="fa-solid fa-headset text-accent animate-bounce"></i>
-                <span class="text-xs font-bold uppercase tracking-widest text-slate-300">Direct Access</span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight mb-8">
-                Let's <span class="text-transparent bg-clip-text bg-linear-to-r from-accent via-accent-secondary to-blue-500">Connect.</span>
+{{-- Hero --}}
+<section class="relative pt-32 pb-16 flex items-center overflow-hidden"
+         style="background: linear-gradient(135deg, #fff 0%, #fff8f8 50%, #fffdf5 100%);">
+    <div class="container relative z-10">
+        <div class="max-w-3xl">
+            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3 animate-fade-in-down">Get In Touch</p>
+            <h1 class="text-5xl md:text-7xl font-semibold text-dark tracking-tight mb-5 leading-tight animate-fade-in-up">
+                Let's talk about your
+                <span class="text-accent">institute.</span>
             </h1>
-            <p class="text-xl text-slate-400 font-medium max-w-2xl mx-auto leading-relaxed">
+            <p class="text-lg text-dark/60 leading-relaxed animate-fade-in-up" style="animation-delay:.1s;">
                 Have questions about hosting your institution? Our success partners are ready to help you launch.
             </p>
         </div>
     </div>
 </section>
 
-<!-- Contact Section (Split Layout) -->
-<section class="py-24 bg-slate-900 relative">
-    <!-- Subtle Background Grid -->
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMGg0MHY0MEgwem0zOSAzOVYxaC0zOHYzOGgzOHoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMSkiLz4KPC9zdmc+')] opacity-50 z-0"></div>
+{{-- Contact Content --}}
+<section class="relative py-20 overflow-hidden"
+         style="background: linear-gradient(180deg, #f9f9f9 0%, #fff 100%);">
+    <div class="container">
+        <div class="grid lg:grid-cols-5 gap-8 items-start">
 
-    <div class="container mx-auto px-4 md:px-6 relative z-10">
-        <div class="grid lg:grid-cols-5 gap-12 items-start max-w-7xl mx-auto">
-            
-            <!-- Left: Contact Details & Info (2/5 width) -->
-            <div class="lg:col-span-2 space-y-8 reveal-on-scroll">
-                
-                <div class="glass-panel-dark p-8 md:p-10 rounded-[2rem] border border-white/5 relative overflow-hidden group">
-                     <!-- Hover Glow Focus -->
-                    <div class="absolute inset-0 bg-linear-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 bg-white/5 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 border border-white/10 group-hover:scale-110 group-hover:bg-accent group-hover:border-accent transition-all duration-500 shadow-xl">
-                            <i class="fa-solid fa-envelope text-2xl text-white"></i>
+            {{-- Left: Contact Info --}}
+            <div class="lg:col-span-2 space-y-4">
+
+                {{-- Email --}}
+                <div class="rounded-lg border border-gray-200 bg-white p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                            <i class="fa-solid fa-envelope text-sm"></i>
                         </div>
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Email Us</h4>
-                        <a href="mailto:hello@arzavo.com" class="text-2xl font-black text-white hover:text-accent transition-colors">hello@arzavo.com</a>
-                        <p class="text-sm text-slate-500 font-medium mt-3">We typically reply within 2 hours during active business hours.</p>
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-widest text-dark/40 mb-1">Email Us</p>
+                            <a href="mailto:support@arzavo.com" class="text-lg font-semibold text-dark hover:text-accent transition-colors">support@arzavo.com</a>
+                            <p class="text-sm text-dark/50 mt-1">We typically reply within 2 hours during business hours.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="glass-panel-dark p-8 md:p-10 rounded-[2rem] border border-white/5 relative overflow-hidden group">
-                     <!-- Hover Glow Focus -->
-                    <div class="absolute inset-0 bg-linear-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 bg-white/5 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 border border-white/10 group-hover:scale-110 group-hover:bg-blue-500 group-hover:border-blue-500 transition-all duration-500 shadow-xl">
-                            <i class="fa-solid fa-phone text-2xl text-white"></i>
+                {{-- Phone --}}
+                <div class="rounded-lg border border-gray-200 bg-white p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-accent-secondary/10 flex items-center justify-center text-accent-secondary shrink-0">
+                            <i class="fa-solid fa-phone text-sm"></i>
                         </div>
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Call Support</h4>
-                        <a href="tel:+919876543210" class="text-2xl font-black text-white hover:text-blue-400 transition-colors">+91 98765 43210</a>
-                        <p class="text-sm text-slate-500 font-medium mt-3">Priority support line available Mon-Fri, 9 AM to 6 PM IST.</p>
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-widest text-dark/40 mb-1">Call Support</p>
+                            <a href="tel:+918090492602" class="text-lg font-semibold text-dark hover:text-accent transition-colors">+91 80904 92602</a>
+                            <p class="text-sm text-dark/50 mt-1">Priority line available Mon-Fri, 9 AM to 6 PM IST.</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Office / Location -->
-                <div class="p-10 rounded-[2rem] bg-white text-slate-900 relative overflow-hidden group">
-                    <!-- Subtle pattern -->
-                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-accent/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-                    
-                    <div class="relative z-10">
-                        <h4 class="text-xs font-black uppercase tracking-[0.3em] text-accent mb-6">Global Headquarters</h4>
-                        <p class="text-xl font-black leading-relaxed mb-6 text-slate-800">
-                            Innovation Tower, <br/>
-                            Tech City, Digital State, <br/>
-                            India - 400001
-                        </p>
-                        <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-accent transition-colors uppercase tracking-widest">
-                            Get Directions <i class="fa-solid fa-arrow-right"></i>
+                {{-- Address --}}
+                <div class="rounded-lg border border-gray-200 bg-white p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600 shrink-0">
+                            <i class="fa-solid fa-location-dot text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-widest text-dark/40 mb-1">Headquarters</p>
+                            <p class="text-sm font-semibold text-dark leading-relaxed">
+                                ARZAQ INSIGHTS<br/>208/10 Musapur, Sandila,<br/>Hardoi, Uttar Pradesh – 241204
+                            </p>
+                            <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 mt-2 hover:gap-3 transition-all duration-300">
+                                Get Directions <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Social --}}
+                <div class="rounded-lg border border-gray-200 bg-white p-6">
+                    <p class="text-xs font-semibold uppercase tracking-widest text-dark/40 mb-4">Follow Us</p>
+                    <div class="flex gap-2">
+                        @php $socials = [
+                            ['icon' => 'fa-brands fa-x-twitter', 'url' => '#'],
+                            ['icon' => 'fa-brands fa-linkedin-in', 'url' => '#'],
+                            ['icon' => 'fa-brands fa-instagram', 'url' => '#'],
+                            ['icon' => 'fa-brands fa-youtube', 'url' => '#'],
+                        ]; @endphp
+                        @foreach($socials as $social)
+                        <a href="{{ $social['url'] }}" class="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-dark/30 hover:text-accent hover:border-accent/30 transition-colors">
+                            <i class="{{ $social['icon'] }} text-sm"></i>
                         </a>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
-            <!-- Right: Contact Form (3/5 width) -->
-            <div class="lg:col-span-3 glass-panel-dark p-8 md:p-12 lg:p-16 rounded-[2.5rem] border border-white/10 relative shadow-2xl reveal-on-scroll stagger-1">
-                <div class="absolute -top-10 -right-10 w-64 h-64 bg-accent/10 rounded-full blur-[80px] pointer-events-none"></div>
-                <div class="absolute -bottom-10 -left-10 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none"></div>
-                
-                <h3 class="text-3xl font-black text-white mb-2 relative z-10">Send us a message</h3>
-                <p class="text-slate-400 font-medium mb-10 relative z-10 hover:text-slate-300 transition-colors">Fill out the form below and our team will get back to you shortly.</p>
+            {{-- Right: Form --}}
+            <div class="lg:col-span-3">
+                <div class="rounded-lg border border-gray-200 bg-white p-8 md:p-10">
+                    <h3 class="text-xl font-semibold text-dark mb-2">Send us a message</h3>
+                    <p class="text-sm text-dark/50 mb-8">Fill out the form and our team will get back to you shortly.</p>
 
-                <form action="{{ route('contact.submit') }}" method="POST" class="space-y-6 relative z-10">
-                    @csrf
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Floating Label Input -->
-                        <div class="relative group">
-                            <input type="text" name="first_name" id="first_name" required placeholder=" "
-                                   class="block w-full px-5 pb-3 pt-7 text-sm text-white bg-white/5 border border-white/10 rounded-xl appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:bg-white/10 transition-all peer">
-                            <label for="first_name" class="absolute text-sm text-slate-400 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 font-medium cursor-text">First Name</label>
+                    <form action="{{ route('contact.submit') }}" method="POST" class="space-y-5">
+                        @csrf
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-semibold text-dark/60 mb-1.5">First Name</label>
+                                <input type="text" name="first_name" required
+                                       class="w-full px-4 py-3 rounded-lg bg-white text-sm text-dark placeholder-dark/30 outline-none transition-all focus:ring-2 focus:ring-accent/20 border border-gray-200"
+                                       placeholder="Enter first name">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-dark/60 mb-1.5">Last Name</label>
+                                <input type="text" name="last_name" required
+                                       class="w-full px-4 py-3 rounded-lg bg-white text-sm text-dark placeholder-dark/30 outline-none transition-all focus:ring-2 focus:ring-accent/20 border border-gray-200"
+                                       placeholder="Enter last name">
+                            </div>
                         </div>
-                        
-                        <!-- Floating Label Input -->
-                        <div class="relative group">
-                            <input type="text" name="last_name" id="last_name" required placeholder=" "
-                                   class="block w-full px-5 pb-3 pt-7 text-sm text-white bg-white/5 border border-white/10 rounded-xl appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:bg-white/10 transition-all peer">
-                            <label for="last_name" class="absolute text-sm text-slate-400 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 font-medium cursor-text">Last Name</label>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-dark/60 mb-1.5">Email Address</label>
+                            <input type="email" name="email" required
+                                   class="w-full px-4 py-3 rounded-lg bg-white text-sm text-dark placeholder-dark/30 outline-none transition-all focus:ring-2 focus:ring-accent/20 border border-gray-200"
+                                   placeholder="you@example.com">
                         </div>
-                    </div>
 
-                    <!-- Floating Label Input -->
-                    <div class="relative group">
-                        <input type="email" name="email" id="email" required placeholder=" "
-                               class="block w-full px-5 pb-3 pt-7 text-sm text-white bg-white/5 border border-white/10 rounded-xl appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:bg-white/10 transition-all peer">
-                        <label for="email" class="absolute text-sm text-slate-400 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 font-medium cursor-text">Email Address</label>
-                    </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-dark/60 mb-1.5">Institution Name <span class="text-dark/30">(Optional)</span></label>
+                            <input type="text" name="institution"
+                                   class="w-full px-4 py-3 rounded-lg bg-white text-sm text-dark placeholder-dark/30 outline-none transition-all focus:ring-2 focus:ring-accent/20 border border-gray-200"
+                                   placeholder="Your institution">
+                        </div>
 
-                    <!-- Floating Label Input -->
-                    <div class="relative group">
-                        <input type="text" name="institution" id="institution" placeholder=" "
-                               class="block w-full px-5 pb-3 pt-7 text-sm text-white bg-white/5 border border-white/10 rounded-xl appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:bg-white/10 transition-all peer">
-                        <label for="institution" class="absolute text-sm text-slate-400 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 font-medium cursor-text">Institution Name (Optional)</label>
-                    </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-dark/60 mb-1.5">How can we help you?</label>
+                            <textarea name="message" required rows="5"
+                                      class="w-full px-4 py-3 rounded-lg bg-white text-sm text-dark placeholder-dark/30 outline-none transition-all focus:ring-2 focus:ring-accent/20 resize-none border border-gray-200"
+                                      placeholder="Tell us about your requirements..."></textarea>
+                        </div>
 
-                    <!-- Floating Label Textarea -->
-                    <div class="relative group">
-                        <textarea name="message" id="message" required rows="5" placeholder=" "
-                                  class="block w-full px-5 pb-3 pt-7 text-sm text-white bg-white/5 border border-white/10 rounded-xl appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:bg-white/10 transition-all peer resize-none"></textarea>
-                        <label for="message" class="absolute text-sm text-slate-400 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-focus:text-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 font-medium cursor-text">How can we help you?</label>
-                    </div>
-
-                    <button type="submit" class="w-full py-5 bg-white text-slate-900 text-sm font-bold uppercase tracking-widest rounded-xl hover:bg-slate-200 hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] focus:ring-4 focus:ring-white/20 group/btn flex justify-center items-center gap-2">
-                        <span>Send Message</span>
-                        <i class="fa-solid fa-paper-plane group-hover/btn:-translate-y-1 group-hover/btn:translate-x-1 transition-transform"></i>
-                    </button>
-                    
-                    <p class="text-xs text-center text-slate-500 font-medium mt-6">
-                        By submitting this form, you agree to our <a href="#" class="text-slate-400 underline hover:text-white transition-colors">Privacy Policy</a>.
-                    </p>
-                </form>
+                        <button type="submit"
+                                class="w-full py-3.5 bg-accent text-white text-sm font-semibold rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity cursor-pointer">
+                            Send Message
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                        <p class="text-xs text-center text-dark/40">
+                            By submitting, you agree to our <a href="#" class="text-dark/50 underline hover:text-accent transition-colors">Privacy Policy</a>.
+                        </p>
+                    </form>
+                </div>
             </div>
-
         </div>
     </div>
 </section>
 
 @include('arzavo.website.partials.footer')
 @endsection
+
+<style>
+@keyframes fade-in-down { from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);} }
+@keyframes fade-in-up { from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);} }
+.animate-fade-in-down { animation: fade-in-down .6s ease-out both; }
+.animate-fade-in-up { animation: fade-in-up .6s ease-out both; }
+.{ opacity:0; transform:translateY(15px); transition:opacity .5s ease,transform .5s ease; transition-delay:var(--reveal-delay,0s); }
+..visible { opacity:1; transform:translateY(0); }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.05});
+    document.querySelectorAll('.').forEach(el=>obs.observe(el));
+});
+</script>
