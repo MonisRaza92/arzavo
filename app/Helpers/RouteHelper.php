@@ -37,7 +37,9 @@ if (!function_exists('route_to')) {
             'book.category', 'book_category', 'bookcategory', 'book',
 
             // Auth
-            'login', 'register', 'logout', 'profile', 'dashboard',
+            'login', 'login.submit', 'login_submit', 
+            'register', 'register.submit', 'register_submit', 
+            'logout', 'profile', 'dashboard',
 
             // Action forms
             'contact.form', 'contact_form',
@@ -65,7 +67,9 @@ if (!function_exists('route_to')) {
 
                 // Auth
                 'login'                                      => route('tenant.login'),
+                'login.submit', 'login_submit'               => route('tenant.login.handle'),
                 'register'                                   => route('tenant.register'),
+                'register.submit', 'register_submit'         => route('tenant.register.handle'),
                 'logout'                                     => route('tenant.logout'),
                 'profile'                                    => route('profile'),
                 'dashboard'                                  => route('user-dashboard'),

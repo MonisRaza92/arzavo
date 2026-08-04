@@ -6,14 +6,24 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tenant\User;
 use App\Models\Tenant\Courses;
-use App\Models\Tenant\Classes;
-use App\Models\Tenant\Subjects;
+use App\Models\Tenant\ClassCourse as Classes;
+use App\Models\Tenant\Subject as Subjects;
 use App\Models\Tenant\FeePlans;
+use App\Models\Tenant\FeePayments;
 class StudentsController extends Controller
 {
     public function adminStudents()
     {
-        return view('admin.students');
+        $students = User::where('role', 'student')->latest()->get();
+
+        $totalFees = FeePlans::sum('amount');
+        $collectedFees = FeePayments::where('status', 'paid')->sum('amount_paid');
+        $pendingFees = max(0, $totalFees - $collectedFees);
+        $collectionRatio = ($totalFees > 0) ? round(($collectedFees / $totalFees) * 100, 1) : 0;
+
+        return view('tenant.admin.students.students', compact(
+            'students', 'totalFees', 'collectedFees', 'pendingFees', 'collectionRatio'
+        ));
     }
 
     public function updateStudentRole(Request $request)
@@ -51,7 +61,7 @@ class StudentsController extends Controller
         $subjects = Subjects::all();
         $studentProfile = User::where('username', $username)->firstOrFail();
         $feePlan = FeePlans::where('student_id', $student_id)->first();
-        return view('admin.student_profile', compact('studentProfile','classes', 'subjects', 'feePlan'));
+        return view('tenant.admin.students.student_profile', compact('studentProfile','classes', 'subjects', 'feePlan'));
     }
 
     public function studentProfileInfoUpdate(Request $request, $id)
@@ -128,5 +138,42 @@ class StudentsController extends Controller
         );
 
         return back()->with('success', 'Fee details updated successfully.');
+    }
+
+    public function admissions()
+    {
+        $classes = Classes::orderBy('name')->get();
+        $subjects = Subjects::all();
+        return view('tenant.admin.students.admissions', compact('classes', 'subjects'));
+    }
+
+    public function attendance()
+    {
+        $students = User::where('role', 'student')->latest()->get();
+        return view('tenant.admin.students.attendance', compact('students'));
+    }
+
+    public function performance()
+    {
+        $students = User::where('role', 'student')->latest()->get();
+        return view('tenant.admin.students.performance', compact('students'));
+    }
+
+    public function fees()
+    {
+        $students = User::where('role', 'student')->latest()->get();
+        return view('tenant.admin.students.fees', compact('students'));
+    }
+
+    public function feedback()
+    {
+        $students = User::where('role', 'student')->latest()->get();
+        return view('tenant.admin.students.feedback', compact('students'));
+    }
+
+    public function idCard()
+    {
+        $students = User::where('role', 'student')->latest()->get();
+        return view('tenant.admin.students.id_card', compact('students'));
     }
 }

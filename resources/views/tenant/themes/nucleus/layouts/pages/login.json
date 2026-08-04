@@ -1,0 +1,10 @@
+{
+    "login": [
+        {
+            "kind": "section",
+            "name": "login_form"
+        }
+    ],
+    "meta_title": "Login",
+    "meta_description": "Log in to access your account"
+}

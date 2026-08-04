@@ -1,0 +1,10 @@
+{
+    "register": [
+        {
+            "kind": "section",
+            "name": "register_form"
+        }
+    ],
+    "meta_title": "Create Account",
+    "meta_description": "Sign up and create a new account"
+}

@@ -10,11 +10,12 @@ class TenantLoginController
 {
     public function login()
     {
-        // ✅ TENANT GUARD CHECK KARO
-        if (Auth::guard('tenant')->check()) {
+        // ✅ IF ALREADY LOGGED IN -> REDIRECT TO DASHBOARD
+        if (Auth::guard('tenant')->check() || Auth::guard('web')->check()) {
             return redirect($this->redirectTo());
         }
-        return view('auth.tenant.login');
+
+        return app(\App\Http\Controllers\Tenant\Website\ThemePageController::class)->system('login');
     }
 
     public function loginHandle(Request $request)
@@ -49,7 +50,12 @@ class TenantLoginController
 
     public function redirectTo()
     {
-        // ✅ TENANT GUARD SE USER GET KARO
+        // Check web guard (admin)
+        if (Auth::guard('web')->check()) {
+            return url('/admin/dashboard');
+        }
+
+        // Check tenant guard
         $user = Auth::guard('tenant')->user();
 
         if (!$user) return url('/');
@@ -60,7 +66,9 @@ class TenantLoginController
             case 'teacher':
                 return url('/teacher');
             case 'student':
-                return url('/student');
+                return url('/student/dashboard');
+            case 'user':
+                return url('/user/dashboard');
             default:
                 return url('/');
         }
@@ -68,11 +76,12 @@ class TenantLoginController
 
     public function register()
     {
-        // ✅ TENANT GUARD CHECK KARO
-        if (Auth::guard('tenant')->check()) {
+        // ✅ IF ALREADY LOGGED IN -> REDIRECT TO DASHBOARD
+        if (Auth::guard('tenant')->check() || Auth::guard('web')->check()) {
             return redirect($this->redirectTo());
         }
-        return view('auth.tenant.register');
+
+        return app(\App\Http\Controllers\Tenant\Website\ThemePageController::class)->system('register');
     }
 
     public function registerHandle(Request $request)

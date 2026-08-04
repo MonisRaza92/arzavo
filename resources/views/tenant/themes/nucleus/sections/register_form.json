@@ -1,0 +1,90 @@
+{
+    "type": "register_form",
+    "name": "Register Form",
+    "icon": "fa-user-plus",
+    "category": "Authentication",
+    "pages": "register",
+    "color_scheme": "scheme_1",
+    "max_blocks": 0,
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Content",
+            "icon": "fa-pen-to-square"
+        },
+        {
+            "key": "title",
+            "type": "text",
+            "label": "Heading Title",
+            "default": "Create Your Account"
+        },
+        {
+            "key": "subtitle",
+            "type": "textarea",
+            "label": "Subtitle",
+            "default": "Join us to get instant access to learning materials."
+        },
+        {
+            "key": "button_text",
+            "type": "text",
+            "label": "Submit Button Text",
+            "default": "Create Account"
+        },
+        {
+            "key": "button_type",
+            "type": "select",
+            "label": "Button Type",
+            "default": "arz-btn-primary",
+            "options": [
+                { "label": "Primary Button", "value": "arz-btn-primary" },
+                { "label": "Secondary Button", "value": "arz-btn-secondary" }
+            ]
+        },
+        {
+            "key": "show_login_link",
+            "type": "checkbox",
+            "label": "Show Login Link",
+            "default": true
+        },
+        {
+            "key": "login_link_text",
+            "type": "text",
+            "label": "Login Link Text",
+            "default": "Already have an account? Sign In"
+        },
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Layout & Design",
+            "icon": "fa-layer-group"
+        },
+        {
+            "key": "form_width",
+            "type": "select",
+            "label": "Form Container Width",
+            "default": "max-w-md",
+            "options": [
+                { "label": "Compact", "value": "max-w-sm" },
+                { "label": "Standard", "value": "max-w-md" },
+                { "label": "Large", "value": "max-w-lg" },
+                { "label": "Wide", "value": "max-w-xl" }
+            ]
+        },
+        {
+            "preset": "section_bg_type_fields"
+        },
+        {
+            "preset": "bg_overlay_fields"
+        },
+        {
+            "preset": "section_spacing_fields"
+        },
+        {
+            "preset": "section_mobile_spacing_fields"
+        },
+        {
+            "preset": "visibility_fields"
+        }
+    ]
+}

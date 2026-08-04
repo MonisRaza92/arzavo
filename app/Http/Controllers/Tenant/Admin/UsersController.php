@@ -10,7 +10,8 @@ class UsersController extends Controller
 {
     public function adminUsers()
     {
-        return view('admin.users');
+        $users = User::where('role', 'user')->latest()->get();
+        return view('tenant.admin.users.users', compact('users'));
     }
 
     public function updateUserRole(Request $request)

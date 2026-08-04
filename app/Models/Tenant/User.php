@@ -105,6 +105,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(FeePayments::class, 'student_id');
     }
+    public function enrolledCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_enrollments', 'user_id', 'course_id')->withPivot('status', 'enrolled_at', 'completed_at');
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(StudentAttendance::class, 'student_id');
+    }
+
     public function subject()
     {
         return $this->belongsTo(Subject::class, 'subject_id');

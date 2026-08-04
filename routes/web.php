@@ -13,6 +13,8 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Tenant\Website\ThemePageController;
 use App\Http\Controllers\Tenant\Admin\AdminController;
 use App\Http\Controllers\Tenant\Admin\StudentsController as AdminStudentsController;
+use App\Http\Controllers\Tenant\Admin\AttendanceController;
+use App\Http\Controllers\Tenant\Admin\UsersController as AdminUsersController;
 use App\Http\Controllers\Tenant\Admin\ContentController;
 use App\Http\Controllers\Tenant\Admin\BlogController;
 use App\Http\Controllers\Tenant\Admin\CourseController;
@@ -241,6 +243,12 @@ if (!function_exists('registerDomains')) {
                 Route::get('/logout', [TenantLoginController::class, 'logout'])->name('tenant.logout');
             });
 
+            // 🔑 HELPER ROUTE ALIASES FOR TENANT LOGIN & REGISTER
+            Route::get('/login', [TenantLoginController::class, 'login'])->name('login');
+            Route::post('/login', [TenantLoginController::class, 'loginHandle'])->name('login.submit');
+            Route::get('/register', [TenantLoginController::class, 'register'])->name('register');
+            Route::post('/register', [TenantLoginController::class, 'registerHandle'])->name('register.submit');
+
 
             Route::middleware('auth:tenant')->group(function () {
                 //Profile Routes
@@ -250,14 +258,37 @@ if (!function_exists('registerDomains')) {
                 Route::post('/profile/banner/update', [ProfileController::class, 'profileBannerUpdate'])->name('profile-banner-update');
                 Route::post('/profile/picture/update', [ProfileController::class, 'profilePictureUpdate'])->name('profile-picture-update');
 
-                //User Routes
-                Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
+                // User Routes
+                Route::get('/user/dashboard', [UserController::class, 'dashboard'])->middleware('role:user')->name('user-dashboard');
 
-                //Students Routes
-                Route::get('/students-dashboard', [StudentsController::class, 'dashboard'])->name('students-dashboard');
+                // User Portal Routes (role: user)
+                Route::prefix('user')->middleware('role:user')->as('user.')->group(function () {
+                    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+                    Route::get('/orders', [UserController::class, 'orders'])->name('orders');
+                    Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+                    Route::get('/invoices', [UserController::class, 'invoices'])->name('invoices');
+                    Route::get('/inquiries', [UserController::class, 'inquiries'])->name('inquiries');
+                    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+                    Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+                });
 
-                //Teachers Routes
-                Route::get('/teachers-dashboard', [TeachersController::class, 'dashboard'])->name('teachers-dashboard');
+                // Students Routes
+                Route::get('/students-dashboard', [StudentsController::class, 'dashboard'])->middleware('role:student')->name('students-dashboard');
+
+                // Student Portal Routes (role: student)
+                Route::prefix('student')->middleware('role:student')->as('student.')->group(function () {
+                    Route::get('/dashboard', [StudentsController::class, 'dashboard'])->name('dashboard');
+                    Route::get('/courses', [StudentsController::class, 'courses'])->name('courses');
+                    Route::get('/assignments', [StudentsController::class, 'assignments'])->name('assignments');
+                    Route::get('/fees', [StudentsController::class, 'fees'])->name('fees');
+                    Route::get('/attendance', [StudentsController::class, 'attendance'])->name('attendance');
+                    Route::get('/certificates', [StudentsController::class, 'certificates'])->name('certificates');
+                    Route::get('/profile', [StudentsController::class, 'profile'])->name('profile');
+                    Route::post('/profile/update', [StudentsController::class, 'updateProfile'])->name('profile.update');
+                });
+
+                // Teachers Routes
+                Route::get('/teachers-dashboard', [TeachersController::class, 'dashboard'])->middleware('role:teacher')->name('teachers-dashboard');
 
                 Route::prefix('admin')->middleware('role:admin')->as('admin.')->group(function () {
 
@@ -270,11 +301,24 @@ if (!function_exists('registerDomains')) {
                     Route::resource('dashboard', AdminController::class);
                     //Admin Students Routes
                     Route::get('/students', [AdminStudentsController::class, 'adminStudents'])->name('admin-students');
+                    Route::get('/students/admissions', [AdminStudentsController::class, 'admissions'])->name('students.admissions');
+                    Route::get('/students/attendance', [AttendanceController::class, 'index'])->name('students.attendance');
+                    Route::get('/students/attendance/mark', [AttendanceController::class, 'markForm'])->name('students.attendance.mark');
+                    Route::post('/students/attendance/save', [AttendanceController::class, 'save'])->name('students.attendance.save');
+                    Route::get('/students/performance', [AdminStudentsController::class, 'performance'])->name('students.performance');
+                    Route::get('/students/fees', [AdminStudentsController::class, 'fees'])->name('students.fees');
+                    Route::get('/students/feedback', [AdminStudentsController::class, 'feedback'])->name('students.feedback');
+                    Route::get('/students/id-card', [AdminStudentsController::class, 'idCard'])->name('students.id-card');
                     Route::post('/update/student/role', [AdminStudentsController::class, 'updateStudentRole'])->name('update-student-role');
                     Route::post('/update/student/status', [AdminStudentsController::class, 'updateStudentStatus'])->name('update-student-status');
                     Route::get('/student/profile/{username}', [AdminStudentsController::class, 'adminStudentProfile'])->name('admin-student-profile');
                     Route::post('/student/profile/info/update/{id}', [AdminStudentsController::class, 'studentProfileInfoUpdate'])->name('admin-student-profile-info-update');
                     Route::post('/student/fee/update/{id}', [AdminStudentsController::class, 'studentFeeUpdate'])->name('admin-student-fee-update');
+
+                    //Admin Users Routes
+                    Route::get('/users', [AdminUsersController::class, 'adminUsers'])->name('admin-users');
+                    Route::post('/update/user/role', [AdminUsersController::class, 'updateUserRole'])->name('update-user-role');
+                    Route::post('/update/user/status', [AdminUsersController::class, 'updateUserStatus'])->name('update-user-status');
 
 
                     Route::get('/teachers', [AdminController::class, 'teachers'])->name('admin-teachers');

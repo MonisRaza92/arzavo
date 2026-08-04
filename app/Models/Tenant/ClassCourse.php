@@ -40,6 +40,10 @@ class ClassCourse extends Model
     {
         return $this->hasMany(Subject::class, 'class_courses_id')->orderBy('order');
     }
+    public function attendances()
+    {
+        return $this->hasMany(StudentAttendance::class, 'class_course_id');
+    }
     public function scopeActive($query)
     {
         return $query->where('status', true);

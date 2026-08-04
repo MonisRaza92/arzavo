@@ -43,6 +43,8 @@ class TenantSyncSeeder extends Seeder
         ['name' => 'Checkout',       'slug' => 'checkout',        'is_system_page' => true],
         ['name' => 'Checkout Success','slug' => 'checkout-success', 'is_system_page' => true],
         ['name' => 'Contact',          'slug' => 'contact',          'is_system_page' => true],
+        ['name' => 'Login',            'slug' => 'login',            'is_system_page' => true],
+        ['name' => 'Register',         'slug' => 'register',         'is_system_page' => true],
 
         // ── NON-SYSTEM PAGES (pages manager editable) ─────────────
         ['name' => 'Privacy Policy',   'slug' => 'privacy-policy',   'is_system_page' => false],

@@ -49,6 +49,8 @@ class TenantSeeder extends Seeder
             ['name' => 'Books',          'slug' => 'books',           'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
             ['name' => 'View Book',      'slug' => 'book',            'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
             ['name' => 'Contact',        'slug' => 'contact',         'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'Login',          'slug' => 'login',           'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
+            ['name' => 'Register',       'slug' => 'register',        'is_system_page' => true,  'is_active' => true, 'created_at' => now()],
 
             // ── Non-system pages (Pages Manager editable) ─────────────
             ['name' => 'Privacy Policy',    'slug' => 'privacy-policy',   'is_system_page' => false, 'is_active' => true, 'created_at' => now()],
