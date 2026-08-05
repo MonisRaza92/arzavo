@@ -24,7 +24,7 @@
             <div class="arz-prose-content prose max-w-none text-secondary">
                 {!! $fullDesc !!}
             </div>
-        @elseif(isset($isBuilder) && $isBuilder)
+        @elseif(isBuilder())
             <p class="text-secondary text-sm italic">
                 Comprehensive overview of syllabus topics, chapter details, and learning objectives for students.
             </p>

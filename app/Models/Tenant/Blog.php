@@ -14,15 +14,20 @@ class Blog extends Model
         'title',
         'slug',
         'heading',
+        'short_description',
         'content',
         'featured_image',
         'image_alt',
         'author_id',
+        'category',
         'status',
+        'views_count',
         'published_at',
         'meta_title',
         'meta_description',
     ];
+
+
 
     protected $casts = [
         'published_at' => 'datetime',

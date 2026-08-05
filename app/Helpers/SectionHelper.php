@@ -44,3 +44,11 @@ function resolveFieldPresets($fields)
 
     return $resolved;
 }
+
+if (!function_exists('isBuilder')) {
+    function isBuilder(): bool
+    {
+        return app()->bound('builderThemeId')
+            || request()->is('admin/builder/*');
+    }
+}

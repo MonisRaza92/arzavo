@@ -1,0 +1,7 @@
+{
+    "type": "data_count",
+    "name": "Blog Count",
+    "icon": "fa-blog",
+    "category": "Data",
+    "max_blocks": 0
+}

@@ -1,10 +1,15 @@
 {
     "type": "dataset_container",
-    "name": "Blogs",
-    "icon": "fa-blog",
+    "name": "Blogs: Grid",
+    "icon": "fa-newspaper",
     "category": "Storytelling",
     "color_scheme": "scheme_1",
     "max_blocks": 20,
+    "pages": [
+        "home",
+        "blogs",
+        "blog"
+    ],
     "allowed_blocks": [
         "header",
         "heading",
@@ -23,7 +28,7 @@
                 {
                     "type": "heading",
                     "settings": {
-                        "text": "Latest News & Articles",
+                        "text": "Blogs & News",
                         "heading_type": "heading-2",
                         "alignment": "left"
                     }
@@ -31,7 +36,7 @@
                 {
                     "type": "text",
                     "settings": {
-                        "text": "Stay updated with our latest blog posts, news, and insights.",
+                        "text": "Explore our latest articles, news, and insights.",
                         "alignment": "left"
                     }
                 }
@@ -60,7 +65,10 @@
             "key": "width",
             "label": "Container Size",
             "type": "radio",
-            "options": ["full_width", "container"],
+            "options": [
+                "full_width",
+                "container"
+            ],
             "default": "container"
         },
         {
@@ -72,12 +80,21 @@
             "max": 80
         },
         {
+            "key": "enable_cards_limit",
+            "type": "switch",
+            "default": true
+        },
+        {
             "key": "show_limit",
             "label": "Cards Limit",
             "type": "range",
-            "default": 12,
+            "default": 6,
             "min": 1,
-            "max": 48
+            "max": 24,
+            "conditional": {
+                "key": "enable_cards_limit",
+                "value": true
+            }
         },
         {
             "key": "columns",
@@ -94,6 +111,22 @@
             "min": 1,
             "max": 2,
             "default": 1
+        },
+        {
+            "key": "view_all_btn",
+            "label": "View All Button",
+            "type": "switch",
+            "default": true
+        },
+        {
+            "key": "btn_color",
+            "label": "Button Color",
+            "type": "color",
+            "default": "#460ad1",
+            "conditional": {
+                "key": "view_all_btn",
+                "value": true
+            }
         },
         {
             "preset": "section_spacing_fields"

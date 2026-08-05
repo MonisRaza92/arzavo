@@ -12,7 +12,8 @@ class BlogController
      */
     public function index()
     {
-        return view('tenant.admin.blogs.index');
+        $blogs = Blog::orderBy('created_at', 'desc')->get();
+        return view('tenant.admin.blogs.index', compact('blogs'));
     }
 
     /**
@@ -20,7 +21,7 @@ class BlogController
      */
     public function create()
     {
-        //
+        return view('tenant.admin.blogs.create');
     }
 
     /**
@@ -31,22 +32,25 @@ class BlogController
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'heading' => 'nullable|string|max:255',
+            'short_description' => 'nullable|string|max:500',
             'content' => 'nullable|string',
+            'category' => 'nullable|string|max:255',
 
             // image already uploaded elsewhere → just path string
             'featured_image' => 'nullable|string|max:500',
             'image_alt' => 'nullable|string|max:255',
 
             'status' => 'required|in:draft,published',
-            'published_at' => 'nullable|date',
 
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
         ]);
 
-        // auto set publish date if published but no date
-        if ($data['status'] === 'published' && empty($data['published_at'])) {
+        // auto set publish date if published at creation time
+        if ($data['status'] === 'published') {
             $data['published_at'] = now();
+        } else {
+            $data['published_at'] = null;
         }
 
         // author auto attach (optional)
@@ -57,7 +61,7 @@ class BlogController
         Blog::create($data);
         ping_google();
 
-        return back()->with('success', 'Blog created successfully');
+        return redirect()->route('admin.blog.index')->with('success', 'Blog created successfully');
     }
 
     /**
@@ -73,7 +77,8 @@ class BlogController
      */
     public function edit(string $blog)
     {
-        //
+        $blog = Blog::where('slug', $blog)->firstOrFail();
+        return view('tenant.admin.blogs.edit', compact('blog'));
     }
 
     /**
@@ -89,19 +94,25 @@ class BlogController
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'heading' => 'nullable|string|max:255',
+            'short_description' => 'nullable|string|max:500',
             'content' => 'nullable|string',
+            'category' => 'nullable|string|max:255',
 
             $imageField => 'nullable|string',
 
             'image_alt' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published',
-            'published_at' => 'nullable|date',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
         ]);
 
-        if ($data['status'] === 'published' && empty($data['published_at'])) {
-            $data['published_at'] = now();
+        // if changing status to published, record the publish date
+        if ($data['status'] === 'published') {
+            if ($blog->status !== 'published') {
+                $data['published_at'] = now();
+            }
+        } else {
+            $data['published_at'] = null;
         }
 
         // map dynamic input → DB column
@@ -115,7 +126,7 @@ class BlogController
         $blog->update($data);
         ping_google();
 
-        return back()->with('success', 'Blog updated successfully');
+        return redirect()->route('admin.blog.index')->with('success', 'Blog updated successfully');
     }
 
     /**
@@ -127,6 +138,7 @@ class BlogController
 
         $blog->delete();
 
-        return back()->with('success', 'Blog deleted');
+        return redirect()->route('admin.blog.index')->with('success', 'Blog deleted');
     }
 }
+

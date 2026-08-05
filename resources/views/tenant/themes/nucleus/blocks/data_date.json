@@ -1,0 +1,42 @@
+{
+  "type": "data_date",
+  "name": "Published Date",
+  "icon": "fa-calendar",
+  "category": "Basic",
+  "max_blocks": 0,
+  "allowed_blocks": "",
+  "default_blocks": "",
+  "fields": [
+    {
+      "key": "format",
+      "label": "Date Format",
+      "type": "select",
+      "options": [
+        { "label": "Month Day, Year", "value": "M d, Y" },
+        { "label": "Day/Month/Year", "value": "d/m/Y" },
+        { "label": "Month Year", "value": "F Y" }
+      ],
+      "default": "M d, Y"
+    },
+    {
+      "key": "style_group",
+      "type": "group",
+      "label": "Typography Style",
+      "icon": "fa-font"
+    },
+    {
+      "key": "size_type",
+      "label": "Text Size",
+      "type": "radio",
+      "options": ["paragraph", "body-text"],
+      "default": "body-text"
+    },
+    {
+      "key": "alignment",
+      "label": "Alignment",
+      "type": "radio",
+      "options": ["left", "center", "right"],
+      "default": "left"
+    }
+  ]
+}

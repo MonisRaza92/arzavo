@@ -3,17 +3,16 @@
 
 @section('content')
     @include('tenant.admin.blogs.partials.header')
-    @include('tenant.admin.blogs.partials.add-blog')
 
     {{-- Grid --}}
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-4">
 
         @forelse($blogs as $blog)
 
             <div class="bg-primary border-primary border-rounded overflow-hidden flex flex-col">
 
                 {{-- Image --}}
-                <img src="{{ media($blog->featured_image) }}" class="w-full h-40 object-cover">
+                <img src="{{ media($blog->featured_image) }}" class="w-full aspect-video object-cover">
 
                 {{-- Content --}}
                 <div class="p-3 flex flex-col flex-1">
@@ -50,11 +49,10 @@
                     {{-- Actions --}}
                     <div class="mt-auto flex gap-2">
 
-                        <button class="w-full text-center px-3 py-2 border-primary text-xs hover:bg-gray-700! hover:text-white
-                                            transition-all duration-300 bg-secondary border-rounded"
-                            onclick="document.getElementById('blogEditPopup{{ $blog->id }}').classList.remove('hidden')">
+                        <a href="{{ route('admin.blog.edit', ['blog' => $blog->slug]) }}"
+                            class="w-full text-center px-3 py-2 border-primary text-xs hover:bg-gray-700! hover:text-white transition-all duration-300 bg-secondary border-rounded flex items-center justify-center">
                             Edit
-                        </button>
+                        </a>
 
                         <form action="{{ route('admin.blog.destroy', ['blog' => $blog->slug]) }}" method="POST" class="flex-1"
                             onsubmit="return confirm('Delete this blog?')">
@@ -80,9 +78,7 @@
             </div>
 
         @endforelse
-        @foreach ($blogs as $blog)
-            @include('tenant.admin.blogs.partials.edit-blog')
-        @endforeach
+
 
     </div>
 

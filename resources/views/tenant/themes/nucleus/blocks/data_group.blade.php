@@ -21,8 +21,7 @@
         default => 'justify-start',
     };
 @endphp
-<div {!! $block->attributes() !!} 
-    class="w-full flex arz-border {{ $dirClass }} {{ $alignClass }} {{ $justifyClass }}"
-    style="gap: {{ $gap }}px; {{ $block->padding . $block->margin }} width: {{ $block->block_width }}%; border-width: {{ $block->border ?? 0 }}px; border-radius: {{ $block->radius ?? 0 }}px;">
+<div {!! $block->attributes() !!} class="w-full flex arz-border {{ $dirClass }} {{ $alignClass }} {{ $justifyClass }}"
+    style="gap: {{ $gap }}px; {{ $block->padding }} {{ $block->margin }} border-width: {{ $block->border ?? 0 }}px; border-radius: {{ $block->radius ?? 0 }}px;">
     {!! $block->blocks()->render(['data' => $data]) !!}
 </div>

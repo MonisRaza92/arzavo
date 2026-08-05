@@ -96,7 +96,7 @@
                 </button>
             </div>
         @endif
-    @elseif(isset($isBuilder) && $isBuilder)
+    @elseif(isBuilder())
         <div class="p-6 border-2 border-dashed border-primary border-rounded text-center text-secondary text-sm">
             <i class="fa-solid fa-images text-3xl mb-2 text-tertiary"></i>
             <p class="font-semibold">Sample Page Previews</p>

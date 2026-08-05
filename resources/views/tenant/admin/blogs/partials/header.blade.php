@@ -26,11 +26,10 @@
             </button>
         </div>
 
-        <button
-            class="px-3 py-2 text-sm bg-invert text-invert border-primary border-rounded hover-invert"
-            onclick="document.getElementById('blogAddPopup').classList.remove('hidden')">
+        <a href="{{ route('admin.blog.create') }}"
+            class="px-3 py-2 text-sm bg-invert text-invert border-primary border-rounded hover-invert flex items-center justify-center">
             Add New
             <i class="fa fa-square-plus ml-1"></i>
-        </button>
+        </a>
     </div>
 </div>

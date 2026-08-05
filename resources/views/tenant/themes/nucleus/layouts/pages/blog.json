@@ -2,9 +2,9 @@
     "blog": [
         {
             "kind": "section",
-            "name": "blogs_container"
+            "name": "blog_details_container"
         }
     ],
     "meta_title": "Blog Details",
-    "meta_description": "Read full article details and insights."
+    "meta_description": "Read the full article, learn key takeaways, and browse related stories."
 }

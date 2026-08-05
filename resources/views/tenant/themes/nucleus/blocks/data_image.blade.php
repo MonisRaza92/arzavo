@@ -26,7 +26,7 @@
 @endphp
 
 <div {!! $block->attributes() !!}
-    class="relative w-full max-w-sm overflow-hidden arz-border group" style="
+    class="relative w-full overflow-hidden arz-border group" style="
         margin-top: {{ $mt }}px;
         margin-bottom: {{ $mb }}px;
         margin-left: {{ $ml }}px;
@@ -34,8 +34,9 @@
         border-width: {{ $borderWidth }}px;
         border-radius: {{ $borderRadius }}px;
     ">
-    <img src="{{ image($data->cover_image ?? $data->thumbnail ?? $data->image ?? null) }}" alt="{{ substr($data->title ?? $data->name ?? 'Cover Image', 0, 40) }}"
+    <img src="{{ image($data->cover_image ?? $data->thumbnail ?? $data->image ?? $data->featured_image ?? null) }}" alt="{{ substr($data->title ?? $data->name ?? 'Cover Image', 0, 40) }}"
         class="w-full {{ $aspectRatioClass }} object-cover">
+
 
     @if($showPriceOverlay && $hasPricing)
         <div class="absolute top-4 right-4 shadow-lg">

@@ -8,12 +8,14 @@
 
     $badges = [];
 
-    // 1. Library Book Category (e.g. Academic Books)
-    if (!empty($data->bookCategory->name)) {
+    if (is_string($data->category ?? null) && !empty($data->category)) {
+        $badges[] = ['name' => $data->category, 'icon' => 'fa-layer-group', 'bg' => '#eef2ff', 'text' => '#4338ca', 'border' => '#e0e7ff'];
+    } elseif (!empty($data->bookCategory->name)) {
         $badges[] = ['name' => $data->bookCategory->name, 'icon' => 'fa-layer-group', 'bg' => '#eef2ff', 'text' => '#4338ca', 'border' => '#e0e7ff'];
     } elseif (!empty($data->category->name)) {
         $badges[] = ['name' => $data->category->name, 'icon' => 'fa-layer-group', 'bg' => '#eef2ff', 'text' => '#4338ca', 'border' => '#e0e7ff'];
     }
+
 
     // 2. Academic Stream Category (e.g. NEET, JEE, School)
     if (!empty($data->academicCategory->name)) {
@@ -39,8 +41,8 @@
         $badges[] = ['name' => $name, 'icon' => 'fa-certificate', 'bg' => '#ecfdf5', 'text' => '#047857', 'border' => '#a7f3d0'];
     }
 
-    // Builder Mock Fallback if no badges found
-    if (empty($badges) && isset($isBuilder) && $isBuilder) {
+    // Builder Mock Fallback if no badges found — only in admin builder
+    if (empty($badges) && isBuilder()) {
         $badges = [
             ['name' => 'Academic Books', 'icon' => 'fa-layer-group', 'bg' => '#eef2ff', 'text' => '#4338ca', 'border' => '#e0e7ff'],
             ['name' => 'NEET / JEE', 'icon' => 'fa-graduation-cap', 'bg' => '#faf5ff', 'text' => '#7e22ce', 'border' => '#f3e8ff'],

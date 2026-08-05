@@ -271,18 +271,24 @@ class Block implements ArrayAccess
 
             foreach ($keys as $key) {
 
-                if (isset($this->settings[$key])) {
-                    $desktopValue = $this->settings[$key];
+                if (array_key_exists($key, $this->settings) && $this->settings[$key] !== null && $this->settings[$key] !== '') {
+                    $desktopValue = (int) $this->settings[$key];
+                } elseif ($desktopValue === null) {
+                    // fallback to schema default
+                    $schemaVal = $this->getSchemaDefault($key);
+                    if ($schemaVal !== null && $schemaVal !== '' && (int)$schemaVal !== 0) {
+                        $desktopValue = (int) $schemaVal;
+                    }
                 }
 
-                if ($enableMobile && isset($this->settings["mobile_{$key}"])) {
-                    $mobileValue = $this->settings["mobile_{$key}"];
+                if ($enableMobile && array_key_exists("mobile_{$key}", $this->settings) && $this->settings["mobile_{$key}"] !== null && $this->settings["mobile_{$key}"] !== '') {
+                    $mobileValue = (int) $this->settings["mobile_{$key}"];
                 }
             }
 
             /* ---------- DESKTOP ---------- */
 
-            if ($desktopValue !== null && $desktopValue !== '') {
+            if ($desktopValue !== null) {
 
                 $css = $this->buildSpacingCSS($dir, $desktopValue);
 

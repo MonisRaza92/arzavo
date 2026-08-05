@@ -30,11 +30,13 @@ if (!function_exists('route_to')) {
             'home', 'courses', 'blogs',
             'book-categories', 'book_categories', 'bookcategories',
             'books',
+            'blog-categories', 'blog_categories', 'blogcategories',
 
             // Dynamic resource types
             'categories', 'category',
             'class', 'subject', 'course', 'blog',
             'book.category', 'book_category', 'bookcategory', 'book',
+            'blog.category', 'blog_category', 'blogcategory',
 
             // Auth
             'login', 'login.submit', 'login_submit', 
@@ -64,6 +66,8 @@ if (!function_exists('route_to')) {
                 'book-categories', 'book_categories',
                 'bookcategories'                             => route('tenant.book-categories'),
                 'books'                                      => route('tenant.books'),
+                'blog-categories', 'blog_categories',
+                'blogcategories'                             => route('tenant.blog-categories'),
 
                 // Auth
                 'login'                                      => route('tenant.login'),
@@ -123,6 +127,8 @@ if (!function_exists('route_to')) {
             'course'      => route('tenant.course')  . '?' . ($slug ? "slug={$slug}"        : "id={$id}"),
 
             // Blog
+            'blog.category', 'blog_category', 'blogcategory'
+                          => route('tenant.blogs')   . '?' . ($slug ? "category={$slug}"   : "category_id={$id}"),
             'blog'        => route('tenant.blog')    . '?' . ($slug ? "slug={$slug}"        : "id={$id}"),
 
             // Book ecosystem

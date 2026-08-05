@@ -132,4 +132,10 @@ class User extends Authenticatable
             'email'
         );
     }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class, 'author_id');
+    }
 }
+

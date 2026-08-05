@@ -47,7 +47,7 @@
                 @endif
             @endforeach
         </div>
-    @elseif(isset($isBuilder) && $isBuilder)
+    @elseif(isBuilder())
         <div class="grid {{ $gridClass }} gap-2.5">
             <div class="flex items-start gap-2.5 p-2.5 {{ $bgClass }} arz-border" style="{{ $itemStyle }}">
                 <i class="fa-solid fa-{{ $bulletIcon }} mt-0.5 text-base shrink-0" style="color: {{ $iconColor }};"></i>

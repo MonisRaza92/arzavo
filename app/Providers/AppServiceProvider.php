@@ -132,7 +132,31 @@ class AppServiceProvider extends ServiceProvider
             }
 
             if ($blogs === null && class_exists(\App\Models\Tenant\Blog::class)) {
-                $blogs = \App\Models\Tenant\Blog::published()->orderBy('created_at', 'desc')->get();
+                $blogsQuery = \App\Models\Tenant\Blog::published();
+                if (request()->has('category') || request()->has('blog_category')) {
+                    $val = request('category') ?: request('blog_category');
+                    $blogsQuery->where('category', $val);
+                }
+                $blogs = $blogsQuery->orderBy('created_at', 'desc')->get();
+            }
+
+            static $blogCategories = null;
+            if ($blogCategories === null && class_exists(\App\Models\Tenant\Blog::class)) {
+                $blogCategories = \App\Models\Tenant\Blog::published()
+                    ->whereNotNull('category')
+                    ->where('category', '!=', '')
+                    ->select('category')
+                    ->distinct()
+                    ->get()
+                    ->map(function ($blog) {
+                        return (object) [
+                            'name' => $blog->category,
+                            'slug' => $blog->category,
+                            'title' => $blog->category,
+                            'image' => null,
+                            'description' => 'Browse all articles under ' . $blog->category
+                        ];
+                    });
             }
 
             if ($categories === null && class_exists(\App\Models\Tenant\AcademicCategory::class)) {
@@ -215,6 +239,42 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
+            static $currentBlog = null;
+            static $relatedBlogs = null;
+
+            if ($currentBlog === null && class_exists(\App\Models\Tenant\Blog::class)) {
+                if (request()->has('slug') || request()->has('id')) {
+                    $val = request('slug') ?: request('id');
+                    $query = \App\Models\Tenant\Blog::published()->with(['author']);
+
+                    if (is_numeric(request('id'))) {
+                        $currentBlog = (clone $query)->where('id', request('id'))->first();
+                    } else {
+                        $currentBlog = (clone $query)->where('slug', $val)->first();
+                    }
+                }
+
+                // 🔥 Fallback to FIRST blog (e.g. for Theme Builder preview)
+                if (!$currentBlog) {
+                    $currentBlog = \App\Models\Tenant\Blog::published()
+                        ->with(['author'])
+                        ->first() ?? \App\Models\Tenant\Blog::with(['author'])->first();
+                }
+
+                if ($currentBlog) {
+                    $relatedBlogs = \App\Models\Tenant\Blog::published()
+                        ->where('id', '!=', $currentBlog->id)
+                        ->where(function ($q) use ($currentBlog) {
+                            if ($currentBlog->category) {
+                                $q->orWhere('category', $currentBlog->category);
+                            }
+                        })
+                        ->orderBy('created_at', 'desc')
+                        ->take(4)
+                        ->get();
+                }
+            }
+
             \View::share([
                 'settings' => $settings,
                 'customizes' => $customizes,
@@ -224,12 +284,16 @@ class AppServiceProvider extends ServiceProvider
                 'courses' => $courses,
                 'classes' => $classes,
                 'blogs' => $blogs,
+                'blogCategories' => $blogCategories ?? collect(),
                 'categories' => $categories,
                 'bookCategories' => $bookCategories,
                 'books' => $books,
                 'currentBook' => $currentBook,
                 'relatedBooks' => $relatedBooks ?? collect(),
+                'currentBlog' => $currentBlog,
+                'relatedBlogs' => $relatedBlogs ?? collect(),
             ]);
+
 
 
             return $view;
