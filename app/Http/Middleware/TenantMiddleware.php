@@ -13,7 +13,7 @@ class TenantMiddleware
     public function handle(Request $request, Closure $next)
     {
         $host = strtolower($request->getHost());
-        $base = strtolower(config('app.domain')) ?? 'www.' . strtolower(config('app.domain')) ;
+        $base = strtolower(config('app.domain'));
 
         // 1. Skip main domain
         if ($this->isMainDomain($host, $base)) {
@@ -44,7 +44,10 @@ class TenantMiddleware
 
     private function isMainDomain($host, $base)
     {
-        return $host === $base || $host === "www.$base";
+        $hostWithoutWww = str_starts_with($host, 'www.') ? substr($host, 4) : $host;
+        $baseWithoutWww = str_starts_with($base, 'www.') ? substr($base, 4) : $base;
+
+        return $hostWithoutWww === $baseWithoutWww;
     }
 
     private function resolveTenant($host)
