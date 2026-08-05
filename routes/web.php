@@ -230,6 +230,10 @@ if (!function_exists('registerDomains')) {
                 return app(ThemePageController::class)->system('book');
             })->name('tenant.book');
 
+            Route::get('contact', function () {
+                return app(ThemePageController::class)->system('contact');
+            })->name('tenant.contact');
+
 
             Route::get('/preview/{theme}/{theme_id}/{slug}', function ($theme, $themeId = null, $slug = 'home') {
                 return app(ThemePageController::class)->preview($theme, $themeId, $slug);
