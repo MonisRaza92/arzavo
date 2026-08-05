@@ -23,7 +23,7 @@
         </div>
 
         <div class="flex items-center gap-3">
-            <a target="_blank" href="{{ $tenant->custom_domain && $tenant->domain_verified ? 'https://' . $tenant->custom_domain . '/admin/dashboard' : 'https://' . $tenant->subdomain . '/admin/dashboard' }}" 
+            <a target="_blank" href="{{ $tenant->url }}/admin/dashboard" 
                class="px-4 py-2.5 bg-invert text-invert border-rounded font-bold text-xs hover-invert transition  flex items-center gap-1.5">
                 Open workspace <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
@@ -52,7 +52,7 @@
                 <div class="space-y-3 text-xs">
                     <div>
                         <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">PRIMARY SUBDOMAIN</span>
-                        <a target="_blank" href="https://{{ $tenant->subdomain }}" class="font-mono text-primary hover:underline font-semibold block mt-0.5 truncate">
+                        <a target="_blank" href="{{ $tenant->url }}" class="font-mono text-primary hover:underline font-semibold block mt-0.5 truncate">
                             {{ $tenant->subdomain }}
                         </a>
                     </div>

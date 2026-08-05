@@ -102,14 +102,16 @@ class Tenant extends Model
      */
     public function getUrlAttribute()
     {
+        $scheme = request() ? request()->getScheme() : (parse_url(config('app.url'), PHP_URL_SCHEME) ?: 'https');
+
         // Custom Domain (school.com)
         if ($this->custom_domain && $this->domain_verified) {
-            return "https://{$this->custom_domain}";
+            return "{$scheme}://{$this->custom_domain}";
         }
 
         // Subdomain (tenant.arzavo.in)
         if ($this->subdomain) {
-            return "https://{$this->subdomain}";
+            return "{$scheme}://{$this->subdomain}";
         }
 
         return null;

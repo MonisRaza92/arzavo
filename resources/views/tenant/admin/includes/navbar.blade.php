@@ -55,9 +55,7 @@
                     <div class="max-h-40 overflow-auto">
 
                         @forelse($tenants as $tenant)
-                                            <a href="{{ $tenant->custom_domain && $tenant->domain_verified
-                            ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
-                            : 'https://' . $tenant->subdomain . '/admin/dashboard' }}"
+                                            <a href="{{ $tenant->url }}/admin/dashboard"
                                                 class="flex items-center justify-between gap-2 p-3 text-sm border-bottom bg-hover-secondary">
                                                 <span class="truncate"><i
                                                         class="fa-solid fa-building-columns text-tertiary text-sm mr-1"></i>

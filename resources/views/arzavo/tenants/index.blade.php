@@ -119,11 +119,11 @@
                                 </div>
                                 <div class="flex items-center gap-3 text-sm text-tertiary font-mono mt-1 flex-wrap">
                                     @if($tenant->custom_domain && $tenant->domain_verified)
-                                        <a target="_blank" href="https://{{ $tenant->custom_domain }}" class="hover:underline flex items-center gap-1.5 font-semibold text-emerald-600">
+                                        <a target="_blank" href="{{ $tenant->url }}" class="hover:underline flex items-center gap-1.5 font-semibold text-emerald-600">
                                             {{ $tenant->custom_domain }} <i class="fa-solid fa-circle-check text-[11px]"></i>
                                         </a>
                                     @else
-                                        <a target="_blank" href="https://{{ $tenant->subdomain }}" class="hover:underline flex items-center gap-1 font-semibold">
+                                        <a target="_blank" href="{{ $tenant->url }}" class="hover:underline flex items-center gap-1 font-semibold">
                                             {{ $tenant->subdomain }} <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                                         </a>
                                     @endif
@@ -140,7 +140,7 @@
                             </a>
 
                             <!-- Open Admin Dashboard -->
-                            <a target="_blank" href="{{ $tenant->custom_domain && $tenant->domain_verified ? 'https://' . $tenant->custom_domain . '/admin/dashboard' : 'https://' . $tenant->subdomain . '/admin/dashboard' }}" 
+                            <a target="_blank" href="{{ $tenant->url }}/admin/dashboard" 
                                class="text-xs px-4 py-2.5 bg-invert text-invert border-rounded hover-invert font-bold transition  flex items-center gap-1.5">
                                 Open workspace <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                             </a>
@@ -188,7 +188,7 @@
                         </div>
                         <div class="border-dashed p-4 rounded">
                             <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">PRIMARY DOMAIN</span>
-                            <a target="_blank" href="https://{{ $tenant->subdomain }}" class="font-mono text-tertiary hover:text-primary block mt-0.5 truncate">
+                            <a target="_blank" href="{{ $tenant->url }}" class="font-mono text-tertiary hover:text-primary block mt-0.5 truncate">
                                 {{ $tenant->subdomain }}
                             </a>
                         </div>

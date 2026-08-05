@@ -158,9 +158,10 @@ class TenantController
             $this->initializeTenant($tenant, $user);
             ping_google();
 
+            $scheme = request()->getScheme();
             $tenantUrl = $tenant->custom_domain && $tenant->domain_verified
-                ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
-                : 'https://' . $tenant->subdomain . '/admin/dashboard';
+                ? $scheme . '://' . $tenant->custom_domain . '/admin/dashboard'
+                : $scheme . '://' . $tenant->subdomain . '/admin/dashboard';
 
             return response()->json([
                 'success' => true,

@@ -20,7 +20,7 @@ WHY ARZAVO
         <div class="flex flex-col-reverse lg:flex-row items-center gap-16">
             <div class="relative w-full lg:w-1/2">
                 <img src="{{ asset('images/website/dashboard.png') }}" alt="Features Image"
-                    class="relative z-10 object-cover w-full rounded-lg border shadow-xl">
+                    class="relative z-10 object-cover w-full rounded-lg border">
                 {{-- floating badge on image --}}
                 <div
                     class="absolute -bottom-6 -right-4 z-20 bg-white rounded-xl shadow-lg px-5 py-3 border hidden md:flex items-center gap-3">

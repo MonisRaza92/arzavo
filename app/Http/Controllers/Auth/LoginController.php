@@ -41,7 +41,7 @@ class LoginController extends Controller
             }
 
             $user->update(['last_login' => now(), 'status' => 'active']);
-            return redirect()->intended($this->redirectTo());
+            return redirect($this->redirectTo());
         }
 
         // Authentication failed
@@ -78,11 +78,13 @@ class LoginController extends Controller
 
     private function tenantDashboardUrl($tenant)
     {
+        $scheme = request() ? request()->getScheme() : (parse_url(config('app.url'), PHP_URL_SCHEME) ?: 'https');
+        
         if ($tenant->custom_domain && $tenant->domain_verified) {
-            return "https://{$tenant->custom_domain}/admin/dashboard";
+            return "{$scheme}://{$tenant->custom_domain}/admin/dashboard";
         }
 
-        return "https://{$tenant->subdomain}/admin/dashboard";
+        return "{$scheme}://{$tenant->subdomain}/admin/dashboard";
     }
     public function register()
     {

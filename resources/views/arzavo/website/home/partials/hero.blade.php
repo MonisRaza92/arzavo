@@ -43,7 +43,7 @@
                 <x-button url="{{ route('register.form') }}" class="w-full! md:w-auto!" padding="px-6 py-3">Get Started
                     <i class="fa-solid fa-arrow-right -rotate-45"></i></x-button>
                 <x-button url="{{ route('login.form') }}" class="w-full! md:w-auto!" padding="px-6 py-3"
-                    variant="accent">Request Demo <i class="fa-solid fa-right-to-bracket"></i></x-button>
+                    variant="accent">Request For Demo <i class="fa-solid fa-right-to-bracket"></i></x-button>
             </div>
 
             <div class="stats grid grid-cols-2 md:grid-cols-4 items-center gap-6 mt-5">
@@ -61,7 +61,7 @@
                 </div>
                 <div class="stat flex items-center justify-center md:justify-start">
                     <div>
-                        <div class="text-5xl font-bold text-black">99%</div>
+                        <div class="text-5xl font-bold text-black">99.8%</div>
                         <div class="text-dark/80 text-sm">SERVER UPTIME</div>
                     </div>
                 </div>

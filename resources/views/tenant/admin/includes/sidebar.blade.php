@@ -37,9 +37,7 @@
                 class="absolute hidden z-50 mt-2 w-full border-rounded bg-primary shadow-xl border border-primary overflow-hidden">
 
                 @forelse($tenants as $tenant)
-                            <a href="{{ $tenant->custom_domain && $tenant->domain_verified
-                    ? 'https://' . $tenant->custom_domain . '/admin/dashboard'
-                    : 'https://' . $tenant->subdomain . '/admin/dashboard' }}"
+                            <a href="{{ $tenant->url }}/admin/dashboard"
                                 class="flex items-center gap-2 px-3 py-2 border-bottom text-sm hover:bg-hover-secondary transition">
 
                                 <i class="fa-solid fa-building-columns text-tertiary text-sm"></i>
