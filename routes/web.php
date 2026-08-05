@@ -44,75 +44,83 @@ use App\Http\Controllers\Tenant\Admin\CommunicationController;
 Route::view('/offline', 'offline');
 Route::post('/cashfree/webhook', [PaymentController::class, 'webhook']);
 
-Route::domain(config('app.domain'))->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/about', [HomeController::class, 'about'])->name('about');
-    Route::prefix('documentation')->as('documentation.')->group(function () {
-        Route::get('/', [DocumentationController::class, 'index'])->name('index');
-        Route::get('/{slug}', [DocumentationController::class, 'show'])->name('show');
-    });
-    Route::get('/docs', function () {
-        return redirect()->route('documentation.index');
-    })->name('docs');
-    Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
-    Route::get('/features', [HomeController::class, 'features'])->name('features');
-    Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-    Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
-    Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
-    Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
-    Route::get('/refund-policy', [HomeController::class, 'refunds'])->name('refunds');
-    Route::get('/cookie-policy', [HomeController::class, 'cookiePolicy'])->name('cookies');
-    Route::get('/data-retention', [HomeController::class, 'dataRetention'])->name('retention');
-    Route::get('/acceptable-use', [HomeController::class, 'acceptableUse'])->name('aup');
-    Route::get('/security-policy', [HomeController::class, 'security'])->name('security');
-    Route::get('/data-ownership', [HomeController::class, 'dataOwnership'])->name('ownership');
-    Route::get('/student-privacy', [HomeController::class, 'studentPrivacy'])->name('student-privacy');
-    Route::get('/communication-policy', [HomeController::class, 'communicationPolicy'])->name('communication-policy');
-    Route::get('/dpa', [HomeController::class, 'dpa'])->name('dpa');
-    Route::get('/subprocessors', [HomeController::class, 'subprocessors'])->name('subprocessors');
-    Route::get('/trust', [HomeController::class, 'trust'])->name('trust');
-    Route::get('/legal-notices', [HomeController::class, 'legal'])->name('legal');
+$mainDomains = [config('app.domain')];
+if (!str_starts_with(config('app.domain'), 'www.')) {
+    $mainDomains[] = 'www.' . config('app.domain');
+}
+
+foreach ($mainDomains as $mainDomain) {
+    Route::domain($mainDomain)->group(function () {
+        Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::get('/about', [HomeController::class, 'about'])->name('about');
+        Route::prefix('documentation')->as('documentation.')->group(function () {
+            Route::get('/', [DocumentationController::class, 'index'])->name('index');
+            Route::get('/{slug}', [DocumentationController::class, 'show'])->name('show');
+        });
+        Route::get('/docs', function () {
+            return redirect()->route('documentation.index');
+        })->name('docs');
+        Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
+        Route::get('/features', [HomeController::class, 'features'])->name('features');
+        Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+        Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
+        Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
+        Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
+        Route::get('/refund-policy', [HomeController::class, 'refunds'])->name('refunds');
+        Route::get('/cookie-policy', [HomeController::class, 'cookiePolicy'])->name('cookies');
+        Route::get('/data-retention', [HomeController::class, 'dataRetention'])->name('retention');
+        Route::get('/acceptable-use', [HomeController::class, 'acceptableUse'])->name('aup');
+        Route::get('/security-policy', [HomeController::class, 'security'])->name('security');
+        Route::get('/data-ownership', [HomeController::class, 'dataOwnership'])->name('ownership');
+        Route::get('/student-privacy', [HomeController::class, 'studentPrivacy'])->name('student-privacy');
+        Route::get('/communication-policy', [HomeController::class, 'communicationPolicy'])->name('communication-policy');
+        Route::get('/dpa', [HomeController::class, 'dpa'])->name('dpa');
+        Route::get('/subprocessors', [HomeController::class, 'subprocessors'])->name('subprocessors');
+        Route::get('/trust', [HomeController::class, 'trust'])->name('trust');
+        Route::get('/legal-notices', [HomeController::class, 'legal'])->name('legal');
 
 
-    Route::get('/pay', [PaymentController::class, 'index']);
-    Route::get('/pay/{tenant}', [PaymentController::class, 'pay']);
-    Route::get('/billing/checkout', [PaymentController::class, 'checkout'])->name('billing.checkout');
-    Route::post('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
+        Route::get('/pay', [PaymentController::class, 'index']);
+        Route::get('/pay/{tenant}', [PaymentController::class, 'pay']);
+        Route::get('/billing/checkout', [PaymentController::class, 'checkout'])->name('billing.checkout');
+        Route::post('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
 
-    //Auth Routes
-    Route::prefix('auth')->group(function () {
-        Route::get('/login', [LoginController::class, 'login'])->name('login.form');
-        Route::post('/login', [LoginController::class, 'loginHandle'])->name('login.handle');
-        Route::get('/register', [LoginController::class, 'register'])->name('register.form');
-        Route::post('/register', [LoginController::class, 'registerHandle'])->name('register.handle');
-        Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-        Route::get('/{provider}', [LoginController::class, 'redirect'])->name('social.redirect');
-        Route::get('/{provider}/callback', [LoginController::class, 'callback'])->name('social.callback');
-        Route::post('/google/onetap', [LoginController::class, 'oneTap'])->name('google.onetap');
-    });
+        //Auth Routes
+        Route::prefix('auth')->group(function () {
+            Route::get('/login', [LoginController::class, 'login'])->name('login.form');
+            Route::post('/login', [LoginController::class, 'loginHandle'])->name('login.handle');
+            Route::get('/register', [LoginController::class, 'register'])->name('register.form');
+            Route::post('/register', [LoginController::class, 'registerHandle'])->name('register.handle');
+            Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+            Route::get('/{provider}', [LoginController::class, 'redirect'])->name('social.redirect');
+            Route::get('/{provider}/callback', [LoginController::class, 'callback'])->name('social.callback');
+            Route::post('/google/onetap', [LoginController::class, 'oneTap'])->name('google.onetap');
+        });
 
-    //Admin Routes
-    Route::middleware('auth:web')->group(function () {
-        // Dashboard
-        Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+        //Admin Routes
+        Route::middleware('auth:web')->group(function () {
+            // Dashboard
+            Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
-        //Admin Tenant Routes
-        Route::resource('tenants', TenantController::class);
-        Route::post('tenants/{tenant}/reset-password', [TenantController::class, 'resetAdminPassword'])->name('tenants.reset-password');
-        Route::get('/checkout/plan/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout');
-        Route::get('/checkout/process/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout.process');
-        Route::post('/plans/{slug}/subscribe', [BillingController::class, 'subscribe'])->name('subscribe');
-        Route::get('/check-subdomain', [TenantController::class, 'checkSubdomain']);
-        Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
-        Route::get('/verify-domain/{tenant}', [DomainController::class, 'verifyDomain'])->name('domain.verify');
+            //Admin Tenant Routes
+            Route::resource('tenants', TenantController::class);
+            Route::post('tenants/{tenant}/reset-password', [TenantController::class, 'resetAdminPassword'])->name('tenants.reset-password');
+            Route::get('/checkout/plan/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout');
+            Route::get('/checkout/process/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout.process');
+            Route::post('/plans/{slug}/subscribe', [BillingController::class, 'subscribe'])->name('subscribe');
+            Route::get('/check-subdomain', [TenantController::class, 'checkSubdomain']);
+            Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
+            Route::get('/verify-domain/{tenant}', [DomainController::class, 'verifyDomain'])->name('domain.verify');
 
-        Route::prefix('admin')->middleware('role:admin')->as('arzavo.admin.')->group(function () {
-            Route::resource('plans', Arzavo\Admin\PlanController::class);
-            Route::resource('users', Arzavo\Admin\UserController::class);
-            Route::resource('tenants', Arzavo\Admin\TenantController::class);
+            Route::prefix('admin')->middleware('role:admin')->as('arzavo.admin.')->group(function () {
+                Route::resource('plans', Arzavo\Admin\PlanController::class);
+                Route::resource('users', Arzavo\Admin\UserController::class);
+                Route::resource('tenants', Arzavo\Admin\TenantController::class);
+            });
         });
     });
-});
+}
+
 
 if (!function_exists('registerDomains')) {
     function registerDomains($domain)
