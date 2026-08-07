@@ -18,7 +18,7 @@ Themes are self-contained folders that are dynamically parsed by the system. All
 
 ## 2. Directory & File Structure Blueprint
 
-Every theme folder resides inside the directory path `resources/views/tenant/themes/{theme_slug}/`. The folder name must match the slug exactly (e.g., `nucleus`).
+Every theme folder resides inside the directory path. The folder name must match the slug exactly (e.g., `nucleus`).
 
 ```text
 theme_slug/

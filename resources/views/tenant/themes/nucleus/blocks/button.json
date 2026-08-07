@@ -1,5 +1,5 @@
 {
-    "type": "button",
+    "view": "button",
     "name": "Button",
     "icon": "fa-arrow-pointer",
     "order": 3,

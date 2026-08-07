@@ -1,5 +1,5 @@
 {
-    "type": "slide",
+    "view": "slide",
     "name": "Slide",
     "icon": "fa-images",
     "category": "Basic",

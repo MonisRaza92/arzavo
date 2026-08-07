@@ -1,5 +1,5 @@
 {
-    "type": "dataset_container",
+    "view": "dataset_container",
     "name": "Courses Container",
     "icon": "fa-graduation-cap",
     "category": "Content",
@@ -60,7 +60,10 @@
             "key": "width",
             "label": "Container Size",
             "type": "radio",
-            "options": ["full_width", "container"],
+            "options": [
+                "full_width",
+                "container"
+            ],
             "default": "container"
         },
         {

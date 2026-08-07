@@ -1,5 +1,5 @@
 {
-    "type": "dataset_container",
+    "view": "dataset_container",
     "name": "Books: Grid",
     "icon": "fa-book",
     "category": "Content",

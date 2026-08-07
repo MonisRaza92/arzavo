@@ -196,7 +196,7 @@
 
     .arz-block {
         position: relative;
-        background: var(--arz-bg);
+        /* background: var(--arz-bg); */
     }
     
 

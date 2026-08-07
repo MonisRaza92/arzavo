@@ -23,8 +23,4 @@
         class="arz-{{ $sizeType }} {{ $alignClass }}">
         {{ $formattedDate }}
     </div>
-@elseif(isBuilder())
-    <div class="arz-{{ $sizeType }} italic {{ $alignClass }}">
-        {{ now()->format($format) }}
-    </div>
 @endif

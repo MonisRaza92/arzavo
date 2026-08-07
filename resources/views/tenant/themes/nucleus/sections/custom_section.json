@@ -1,5 +1,5 @@
 {
-    "type": "custom_section",
+    "view": "custom_section",
     "name": "Custom Section",
     "icon": "fa-square-plus",
     "order": 3,

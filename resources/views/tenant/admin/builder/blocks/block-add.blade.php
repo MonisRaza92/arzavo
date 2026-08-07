@@ -15,7 +15,7 @@
                 ->groupBy('category')
                 ->map(function ($blocks) use ($allowedBlocks) {
                     if (!empty($allowedBlocks)) {
-                        return $blocks->filter(fn($block) => in_array($block['schema'] ?? $block['type'], $allowedBlocks));
+                        return $blocks->filter(fn($block) => in_array($block['type'], $allowedBlocks));
                     }
                     return $blocks;
                 });
@@ -36,18 +36,17 @@
 
                         <div class="category-items transition-all duration-300">
                             @foreach ($blocks->sortBy('order') as $s)
-                                <form class="blockAddForm" id="blockAddForm{{ $section['id'] }}-{{ $s['schema'] ?? $s['type'] }}"
+                                <form class="blockAddForm" id="blockAddForm{{ $section['id'] }}-{{ $s['type'] }}"
                                     method="POST"
                                     action="{{ route('admin.builder.sections.blocks.store', ['theme' => $theme->theme_slug, 'page' => $page->id, 'sectionId' => $section['id']]) }}">
                                     @csrf
 
                                     <input type="hidden" name="block_type" value="{{ $s['type'] }}">
                                     <input type="hidden" name="block_name" value="{{ $s['name'] }}">
-                                    <input type="hidden" name="schema" value="{{ $s['schema'] ?? $s['type'] }}">
 
                                     <button type="button"
-                                        onclick="submitAddBlockForm('{{ $section['id'] }}', '{{ $s['schema'] ?? $s['type'] }}')"
-                                        id="blockAddBtn{{ $section['id'] }}-{{ $s['schema'] ?? $s['type'] }}"
+                                        onclick="submitAddBlockForm('{{ $section['id'] }}', '{{ $s['type'] }}')"
+                                        id="blockAddBtn{{ $section['id'] }}-{{ $s['type'] }}"
                                         class="blockAddBtn w-full text-xs text-left p-4 border-top bg-hover-secondary flex items-center gap-2">
                                         <i class="fa-solid {{ $s['icon'] }}"></i>
                                         {{ $s['name'] }}

@@ -1,5 +1,5 @@
 {
-    "type": "grid_images",
+    "view": "grid_images",
     "name": "Images: Grid Layout",
     "icon": "fa-images",
     "order": 7,

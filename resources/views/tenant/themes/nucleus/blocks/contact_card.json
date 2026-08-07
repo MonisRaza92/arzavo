@@ -1,5 +1,5 @@
 {
-    "type": "contact_card",
+    "view": "contact_card",
     "name": "Contact Card",
     "icon": "fa-address-card",
     "category": "Content",

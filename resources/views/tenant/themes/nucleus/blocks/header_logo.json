@@ -1,5 +1,5 @@
 {
-    "type": "header_logo",
+    "view": "header_logo",
     "name": "Logo",
     "icon": "fa-expand",
     "order": 6,

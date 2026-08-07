@@ -1,5 +1,5 @@
 {
-    "type": "spacer",
+    "view": "spacer",
     "name": "Spacer",
     "icon": "fa-arrows-up-down",
     "order": 0,
@@ -36,7 +36,11 @@
             "key": "background_type",
             "label": "Background Type",
             "type": "radio",
-            "options": ["none", "color", "image"],
+            "options": [
+                "none",
+                "color",
+                "image"
+            ],
             "default": "none"
         },
         {

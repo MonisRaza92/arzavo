@@ -71,7 +71,6 @@ class BlockController
         $blockData = \App\Services\Theme\ThemeBlockFactory::build($blockConfig, $themeSlug, $order);
 
         $blockData['name'] = $name;
-        $blockData['schema'] = $schemaName;
         $blockData['type'] = $type;
 
         return $blockData;
@@ -637,9 +636,8 @@ class BlockController
             $data = json_decode(file_get_contents($file), true);
 
             return [
-                'type' => $data['type'] ?? basename($file, '.json'),
+                'type' => basename($file, '.json'),
                 'name' => $data['name'] ?? basename($file, '.json'),
-                'schema' => basename($file, '.json'),
                 'icon' => $data['icon'] ?? 'fa-code',
                 'category' => $data['category'] ?? null,
                 'preview' => $data['preview'] ?? null,
@@ -654,7 +652,7 @@ class BlockController
         return collect($this->availableBlocks($themeSlug))
             ->mapWithKeys(function ($block) {
                 return [
-                    $block['schema'] ?? $block['type'] => [
+                    $block['type'] => [
                         'max_blocks' => $block['max_blocks'] ?? null,
                         'allowed_blocks' => $block['allowed_blocks'] ?? [],
                         'moveable' => $block['moveable'] ?? 'allow',

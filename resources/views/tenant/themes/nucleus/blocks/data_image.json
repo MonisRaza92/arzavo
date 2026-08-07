@@ -1,5 +1,5 @@
 {
-    "type": "data_image",
+    "view": "data_image",
     "name": "Media: Image",
     "icon": "fa-image",
     "category": "Content",

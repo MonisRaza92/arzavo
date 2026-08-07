@@ -1,9 +1,13 @@
 {
-    "type": "wave_animation",
+    "view": "wave_animation",
     "name": "Wave Animation",
     "icon": "fa-water",
     "order": 2,
-    "page": ["home", "about", "contact"],
+    "page": [
+        "home",
+        "about",
+        "contact"
+    ],
     "category": "Layout",
     "color_scheme": "scheme_1",
     "max_blocks": 0,
@@ -27,7 +31,10 @@
             "key": "wave_direction",
             "label": "Wave Direction",
             "type": "radio",
-            "options": ["up", "down"],
+            "options": [
+                "up",
+                "down"
+            ],
             "default": "up"
         },
         {
@@ -42,28 +49,43 @@
             "key": "wave_style",
             "label": "Wave Style",
             "type": "select",
-            "options": ["smooth", "sharp", "layered", "minimal"],
+            "options": [
+                "smooth",
+                "sharp",
+                "layered",
+                "minimal"
+            ],
             "default": "smooth"
         },
         {
             "key": "wave_count",
             "label": "Number of Waves",
             "type": "radio",
-            "options": ["1", "2", "3"],
+            "options": [
+                "1",
+                "2",
+                "3"
+            ],
             "default": "3"
         },
         {
             "key": "enable_animation",
             "label": "Enable Animation",
             "type": "radio",
-            "options": ["enable", "disable"],
+            "options": [
+                "enable",
+                "disable"
+            ],
             "default": "enable"
         },
         {
             "key": "reverse_animation",
             "label": "Reverse Animation",
             "type": "radio",
-            "options": ["enable", "disable"],
+            "options": [
+                "enable",
+                "disable"
+            ],
             "default": "disable"
         },
         {
@@ -86,7 +108,11 @@
             "key": "show_on",
             "label": "Show Section On",
             "type": "radio",
-            "options": ["desktop", "mobile", "both"],
+            "options": [
+                "desktop",
+                "mobile",
+                "both"
+            ],
             "default": "both"
         }
     ]

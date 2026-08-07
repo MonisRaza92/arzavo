@@ -2,7 +2,7 @@
     <div class="flex justify-between items-center py-0.5 px-1 border-rounded relative group bg-hover-secondary">
         <div class="flex items-center grow section-items">
             @php
-                $rules = $availableSections->firstWhere('schema', $section['schema'] ?? null) ?? $availableSections->firstWhere('type', $section['type'] ?? null) ?? [];
+                $rules = $availableSections->firstWhere('type', $section['type'] ?? null) ?? [];
             @endphp
             @if (!empty($rules['allowed_blocks']))
                 <button id="section-btn-{{ $section['id'] }}" type="button"

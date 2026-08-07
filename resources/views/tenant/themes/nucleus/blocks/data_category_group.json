@@ -1,5 +1,5 @@
 {
-    "type": "data_group",
+    "view": "data_group",
     "name": "Group",
     "icon": "fa-layer-group",
     "category": "Layout",

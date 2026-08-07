@@ -1,5 +1,5 @@
 {
-    "type": "header_menu",
+    "view": "header_menu",
     "name": "Menu",
     "icon": "fa-arrow-up-right-from-square",
     "order": 7,
@@ -10,7 +10,6 @@
     "allowed_blocks": "",
     "default_blocks": "",
     "fields": [
-
         {
             "key": "group",
             "type": "group",
@@ -39,7 +38,6 @@
                 "value": "1"
             }
         },
-
         {
             "key": "group",
             "type": "group",

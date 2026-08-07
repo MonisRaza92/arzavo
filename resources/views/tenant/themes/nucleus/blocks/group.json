@@ -1,5 +1,5 @@
 {
-    "type": "group",
+    "view": "group",
     "name": "Group",
     "icon": "fa-folder fa-regular",
     "category": "Layout",

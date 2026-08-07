@@ -4,7 +4,7 @@
         class="bg-hover-secondary relative group/block border-rounded cursor-pointer select-none py-0.5 px-1 mt-1 flex justify-between items-center">
 
         @php
-            $blockRules = $availableBlocks->firstWhere('schema', $block['schema'] ?? null) ?? $availableBlocks->firstWhere('type', $block['type'] ?? null) ?? [];
+            $blockRules = $availableBlocks->firstWhere('type', $block['type'] ?? null) ?? [];
         @endphp
         <div class="flex items-center grow">
 

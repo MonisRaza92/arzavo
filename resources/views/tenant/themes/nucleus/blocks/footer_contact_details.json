@@ -1,5 +1,5 @@
 {
-    "type": "footer_contact_details",
+    "view": "footer_contact_details",
     "name": "Contact Details",
     "icon": "fa-list",
     "category": "Footer",
@@ -43,8 +43,14 @@
             "label": "Text Size",
             "type": "select",
             "options": [
-                {"label": "Paragraph", "value": "arz-paragraph"},
-                {"label": "Body Text", "value": "arz-body-text"}
+                {
+                    "label": "Paragraph",
+                    "value": "arz-paragraph"
+                },
+                {
+                    "label": "Body Text",
+                    "value": "arz-body-text"
+                }
             ],
             "default": "arz-body-text"
         }

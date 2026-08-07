@@ -1,5 +1,5 @@
 {
-    "type": "tabs",
+    "view": "tabs",
     "name": "Tabs",
     "icon": "fa-folder-open",
     "order": 10,

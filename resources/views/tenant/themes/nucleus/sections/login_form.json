@@ -1,5 +1,5 @@
 {
-    "type": "login_form",
+    "view": "login_form",
     "name": "Login Form",
     "icon": "fa-right-to-bracket",
     "category": "Authentication",
@@ -37,8 +37,14 @@
             "label": "Button Type",
             "default": "arz-btn-primary",
             "options": [
-                { "label": "Primary Button", "value": "arz-btn-primary" },
-                { "label": "Secondary Button", "value": "arz-btn-secondary" }
+                {
+                    "label": "Primary Button",
+                    "value": "arz-btn-primary"
+                },
+                {
+                    "label": "Secondary Button",
+                    "value": "arz-btn-secondary"
+                }
             ]
         },
         {
@@ -65,10 +71,22 @@
             "label": "Form Container Width",
             "default": "max-w-md",
             "options": [
-                { "label": "Compact", "value": "max-w-sm" },
-                { "label": "Standard", "value": "max-w-md" },
-                { "label": "Large", "value": "max-w-lg" },
-                { "label": "Wide", "value": "max-w-xl" }
+                {
+                    "label": "Compact",
+                    "value": "max-w-sm"
+                },
+                {
+                    "label": "Standard",
+                    "value": "max-w-md"
+                },
+                {
+                    "label": "Large",
+                    "value": "max-w-lg"
+                },
+                {
+                    "label": "Wide",
+                    "value": "max-w-xl"
+                }
             ]
         },
         {

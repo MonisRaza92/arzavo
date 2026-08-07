@@ -15,7 +15,7 @@
                 ->groupBy('category')
                 ->map(function ($nestedBlocks) use ($allowedNestedBlocks) {
                     if (!empty($allowedNestedBlocks)) {
-                        return $nestedBlocks->filter(fn($block) => in_array($block['schema'] ?? $block['type'], $allowedNestedBlocks));
+                        return $nestedBlocks->filter(fn($block) => in_array($block['type'], $allowedNestedBlocks));
                     }
                     return $nestedBlocks;
                 });
@@ -36,18 +36,17 @@
 
                         <div class="category-items transition-all duration-300">
                             @foreach ($nestedBlocks->sortBy('order') as $s)
-                                <form class="blockAddForm" id="nestedBlockAddForm{{ $block['id'] }}{{ $s['schema'] ?? $s['type'] }}"
+                                <form class="blockAddForm" id="nestedBlockAddForm{{ $block['id'] }}{{ $s['type'] }}"
                                     method="POST"
                                     action="{{ route('admin.builder.sections.blocks.nested.store', ['theme' => $theme->theme_slug, 'page' => $page->id, 'sectionId' => $section['id'], 'blockId' => $block['id']]) }}">
                                     @csrf
 
                                     <input type="hidden" name="block_type" value="{{ $s['type'] }}">
                                     <input type="hidden" name="block_name" value="{{ $s['name'] }}">
-                                    <input type="hidden" name="schema" value="{{ $s['schema'] ?? $s['type'] }}">
 
                                     <button type="button"
-                                        onclick="handleNestedBlockAdd(event, '{{ $block['id'] }}', '{{ $s['schema'] ?? $s['type'] }}')"
-                                        id="nestedBlockAddBtn{{ $block['id'] }}{{  $s['schema'] ?? $s['type'] }}"
+                                        onclick="handleNestedBlockAdd(event, '{{ $block['id'] }}', '{{ $s['type'] }}')"
+                                        id="nestedBlockAddBtn{{ $block['id'] }}{{ $s['type'] }}"
                                         class="blockAddBtn w-full font-semibold text-xs text-left p-4 border-top bg-hover-secondary flex items-center gap-2">
                                         <i class="fa-solid {{ $s['icon'] ?? 'fa-code' }}"></i>
                                         {{ $s['name'] }}

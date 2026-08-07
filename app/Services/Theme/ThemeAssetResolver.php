@@ -16,37 +16,35 @@ use Illuminate\Support\Facades\Storage;
 class ThemeAssetResolver
 {
     /**
-     * Get the raw CSS content for a theme's global.css
+     * Get the raw CSS content for a theme (legacy alias)
      */
     public static function css(string $slug): ?string
     {
-        return self::loadAsset($slug, 'global.css');
+        return self::allCss($slug);
     }
 
     /**
-     * Get the raw JS content for a theme's global.js
+     * Get the raw JS content for a theme (legacy alias)
      */
     public static function js(string $slug): ?string
     {
-        return self::loadAsset($slug, 'global.js');
+        return self::allJs($slug);
     }
 
     /**
-     * Get all CSS files defined in theme.json manifest
+     * Get all CSS files from assets/css directory
      */
     public static function cssFiles(string $slug): array
     {
-        $manifest = self::manifest($slug);
-        return $manifest['assets']['css'] ?? ['assets/global.css'];
+        return self::scanAssetsDirectory($slug, 'assets/css', 'css');
     }
 
     /**
-     * Get all JS files defined in theme.json manifest
+     * Get all JS files from assets/js directory
      */
     public static function jsFiles(string $slug): array
     {
-        $manifest = self::manifest($slug);
-        return $manifest['assets']['js'] ?? ['assets/global.js'];
+        return self::scanAssetsDirectory($slug, 'assets/js', 'js');
     }
 
     /**
@@ -185,5 +183,32 @@ class ThemeAssetResolver
     protected static function uploadedBasePath(string $slug): string
     {
         return storage_path("app/themes/{$slug}");
+    }
+
+    /**
+     * Scan a directory inside the theme and return all files matching the extension
+     */
+    protected static function scanAssetsDirectory(string $slug, string $dirPath, string $extension): array
+    {
+        $basePath = self::resolveBasePath($slug);
+        $fullPath = rtrim($basePath, '/') . '/' . trim($dirPath, '/');
+        
+        $files = [];
+
+        if (is_dir($fullPath)) {
+            $iterator = new \FilesystemIterator($fullPath);
+            foreach ($iterator as $file) {
+                if ($file->isFile() && $file->getExtension() === $extension) {
+                    $files[] = trim($dirPath, '/') . '/' . $file->getFilename();
+                }
+            }
+        }
+        
+        // Also support fallback global.css / global.js in assets folder (legacy/default)
+        if (empty($files) && file_exists($basePath . '/assets/global.' . $extension)) {
+            $files[] = 'assets/global.' . $extension;
+        }
+
+        return $files;
     }
 }

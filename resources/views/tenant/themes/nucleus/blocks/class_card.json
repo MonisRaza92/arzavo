@@ -1,113 +1,119 @@
 {
-  "type": "data_card",
-  "name": "Collections Card",
-  "icon": "fa-address-card",
-  "order": 1,
-  "category": "Content",
-  "max_blocks": 5,
-  "moveable": false,
-  "deletable": false,
-  "toggle": false,
-  "allowed_blocks": [
-    "data_image",
-    "data_title",
-    "data_text"
-  ],
-  "default_blocks": [
-    {
-      "type": "data_image",
-      "settings": {
-        "aspect_ratio": "wide"
-      }
-    },
-    "data_title"
-  ],
-  "fields": [
-    {
-      "key": "style_group",
-      "type": "group",
-      "label": "Card Style",
-      "icon": "fa-square"
-    },
-    {
-      "key": "scheme_mode",
-      "label": "Color Scheme",
-      "type": "radio",
-      "options": ["inherit", "separate"],
-      "default": "inherit"
-    },
-    {
-      "key": "color_scheme",
-      "label": "Color Scheme",
-      "type": "color_scheme_selector",
-      "conditional": {
-        "field": "scheme_mode",
-        "value": "separate"
-      }
-    },
-    {
-      "key": "background_type",
-      "label": "Background Type",
-      "type": "radio",
-      "options": ["transparent", "color"],
-      "default": "color",
-      "help": "Choose 'transparent' for no background or 'color' to select a background color. And for cahange background color you need to change color scheme to separate."
-    },
-    {
-      "key": "border",
-      "label": "Enable Card Border",
-      "type": "switch",
-      "default": "0"
-    },
-    {
-      "key": "border_width",
-      "label": "Border Thickness",
-      "type": "range",
-      "min": 1,
-      "max": 5,
-      "default": 1,
-      "conditional": {
-        "field": "border",
-        "value": "1"
-      }
-    },
-    {
-      "key": "radius",
-      "label": "Border Roundness",
-      "type": "range",
-      "min": 0,
-      "max": 100,
-      "default": 0,
-      "conditional": {
-        "field": "border",
-        "value": "1"
-      }
-    },
-    {
-      "key": "spacing_group",
-      "type": "group",
-      "label": "Spacing",
-      "icon": "fa-arrows-alt"
-    },
-    {
-      "key": "padding",
-      "label": "Inner Padding",
-      "type": "range",
-      "min": 0,
-      "max": 40,
-      "default": 16,
-      "conditional": {
-        "field": "border",
-        "value": "1"
-      }
-    },
-    {
-      "key": "block_gap",
-      "label": "Content Gap",
-      "type": "range",
-      "min": 0,
-      "max": 40,
-      "default": 12
-    }
-  ]
+    "view": "data_card",
+    "name": "Collections Card",
+    "icon": "fa-address-card",
+    "order": 1,
+    "category": "Content",
+    "max_blocks": 5,
+    "moveable": false,
+    "deletable": false,
+    "toggle": false,
+    "allowed_blocks": [
+        "data_image",
+        "data_title",
+        "data_text"
+    ],
+    "default_blocks": [
+        {
+            "type": "data_image",
+            "settings": {
+                "aspect_ratio": "wide"
+            }
+        },
+        "data_title"
+    ],
+    "fields": [
+        {
+            "key": "style_group",
+            "type": "group",
+            "label": "Card Style",
+            "icon": "fa-square"
+        },
+        {
+            "key": "scheme_mode",
+            "label": "Color Scheme",
+            "type": "radio",
+            "options": [
+                "inherit",
+                "separate"
+            ],
+            "default": "inherit"
+        },
+        {
+            "key": "color_scheme",
+            "label": "Color Scheme",
+            "type": "color_scheme_selector",
+            "conditional": {
+                "field": "scheme_mode",
+                "value": "separate"
+            }
+        },
+        {
+            "key": "background_type",
+            "label": "Background Type",
+            "type": "radio",
+            "options": [
+                "transparent",
+                "color"
+            ],
+            "default": "color",
+            "help": "Choose 'transparent' for no background or 'color' to select a background color. And for cahange background color you need to change color scheme to separate."
+        },
+        {
+            "key": "border",
+            "label": "Enable Card Border",
+            "type": "switch",
+            "default": "0"
+        },
+        {
+            "key": "border_width",
+            "label": "Border Thickness",
+            "type": "range",
+            "min": 1,
+            "max": 5,
+            "default": 1,
+            "conditional": {
+                "field": "border",
+                "value": "1"
+            }
+        },
+        {
+            "key": "radius",
+            "label": "Border Roundness",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "default": 0,
+            "conditional": {
+                "field": "border",
+                "value": "1"
+            }
+        },
+        {
+            "key": "spacing_group",
+            "type": "group",
+            "label": "Spacing",
+            "icon": "fa-arrows-alt"
+        },
+        {
+            "key": "padding",
+            "label": "Inner Padding",
+            "type": "range",
+            "min": 0,
+            "max": 40,
+            "default": 16,
+            "conditional": {
+                "field": "border",
+                "value": "1"
+            }
+        },
+        {
+            "key": "block_gap",
+            "label": "Content Gap",
+            "type": "range",
+            "min": 0,
+            "max": 40,
+            "default": 12
+        }
+    ]
 }

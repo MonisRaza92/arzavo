@@ -1,5 +1,5 @@
 {
-    "type": "data_button",
+    "view": "data_button",
     "name": "Button",
     "icon": "fa-arrow-pointer",
     "order": 3,

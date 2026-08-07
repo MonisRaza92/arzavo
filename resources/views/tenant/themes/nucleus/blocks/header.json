@@ -1,13 +1,23 @@
 {
-    "type": "header",
+    "view": "header",
     "name": "Header",
     "icon": "fa-text-height",
     "order": 2,
     "category": "Layout",
     "max_blocks": 3,
     "moveable": false,
-    "allowed_blocks": ["heading", "text", "button", "divider", "spacer", "icon", "group"],
-    "default_blocks": ["heading"],
+    "allowed_blocks": [
+        "heading",
+        "text",
+        "button",
+        "divider",
+        "spacer",
+        "icon",
+        "group"
+    ],
+    "default_blocks": [
+        "heading"
+    ],
     "fields": [
         {
             "key": "group",
@@ -18,21 +28,33 @@
             "key": "direction",
             "label": "Direction",
             "type": "radio",
-            "options": ["vertical", "horizontal"],
+            "options": [
+                "vertical",
+                "horizontal"
+            ],
             "default": "vertical"
         },
         {
             "key": "alignment",
             "label": "Alignment",
             "type": "radio",
-            "options": ["start", "center", "end"],
+            "options": [
+                "start",
+                "center",
+                "end"
+            ],
             "default": "center"
         },
         {
             "key": "position",
             "label": "Content Position",
             "type": "select",
-            "options": ["start", "center", "end", "between"],
+            "options": [
+                "start",
+                "center",
+                "end",
+                "between"
+            ],
             "default": "center"
         },
         {

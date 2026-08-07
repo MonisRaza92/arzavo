@@ -1,26 +1,26 @@
 {
-  "type": "data_reviews",
-  "name": "Reviews & Ratings",
-  "icon": "fa-comments",
-  "order": 10,
-  "category": "Content",
-  "fields": [
-    {
-      "key": "group",
-      "type": "group",
-      "label": "Review Settings"
-    },
-    {
-      "key": "title",
-      "label": "Section Heading",
-      "type": "text",
-      "default": "Customer Reviews & Ratings"
-    },
-    {
-      "key": "allow_media_upload",
-      "label": "Allow Photo Upload",
-      "type": "switch",
-      "default": true
-    }
-  ]
+    "view": "data_reviews",
+    "name": "Reviews & Ratings",
+    "icon": "fa-comments",
+    "order": 10,
+    "category": "Content",
+    "fields": [
+        {
+            "key": "group",
+            "type": "group",
+            "label": "Review Settings"
+        },
+        {
+            "key": "title",
+            "label": "Section Heading",
+            "type": "text",
+            "default": "Customer Reviews & Ratings"
+        },
+        {
+            "key": "allow_media_upload",
+            "label": "Allow Photo Upload",
+            "type": "switch",
+            "default": true
+        }
+    ]
 }

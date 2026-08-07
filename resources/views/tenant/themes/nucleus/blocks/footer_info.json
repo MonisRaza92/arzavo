@@ -1,11 +1,23 @@
 {
-    "type": "footer_info",
+    "view": "footer_info",
     "name": "Footer Group",
     "icon": "fa-layer-group",
     "order": 1,
     "category": "Footer",
-    "allowed_blocks": ["footer_logo", "text", "social_icons", "heading", "button", "footer_contact_details", "newsletter_form"],
-    "default_blocks": ["footer_logo", "text", "social_icons"],
+    "allowed_blocks": [
+        "footer_logo",
+        "text",
+        "social_icons",
+        "heading",
+        "button",
+        "footer_contact_details",
+        "newsletter_form"
+    ],
+    "default_blocks": [
+        "footer_logo",
+        "text",
+        "social_icons"
+    ],
     "fields": [
         {
             "key": "group",

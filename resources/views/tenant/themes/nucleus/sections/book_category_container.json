@@ -1,11 +1,15 @@
 {
-    "type": "dataset_container",
+    "view": "dataset_container",
     "name": "Books: Grid",
     "icon": "fa-layer-group",
     "category": "Categories",
     "color_scheme": "scheme_1",
     "max_blocks": 20,
-    "pages": ["home", "book-categories", "books"],
+    "pages": [
+        "home",
+        "book-categories",
+        "books"
+    ],
     "allowed_blocks": [
         "header",
         "heading",
@@ -61,11 +65,12 @@
             "key": "width",
             "label": "Container Size",
             "type": "radio",
-            "options": ["full_width", "container"],
+            "options": [
+                "full_width",
+                "container"
+            ],
             "default": "container"
-            
         },
-
         {
             "key": "gap",
             "label": "Cards Gap",
@@ -91,7 +96,6 @@
                 "value": true
             }
         },
-
         {
             "key": "columns",
             "label": "Desktop Columns",

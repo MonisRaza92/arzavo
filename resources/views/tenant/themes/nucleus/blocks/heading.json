@@ -1,5 +1,5 @@
 {
-    "type": "heading",
+    "view": "heading",
     "name": "Heading",
     "icon": "fa-heading",
     "order": 1,

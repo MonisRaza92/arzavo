@@ -569,12 +569,15 @@ class Section implements ArrayAccess
             return null;
         }
 
-        $path = resource_path("views/tenant/themes/{$themeSlug}/sections/{$type}.json");
-        if (!file_exists($path)) {
+        $schema = getThemeSchema($themeSlug, $type, 'sections');
+        if (!$schema) {
             return null;
         }
+        
+        if (array_key_exists($key, $schema)) {
+            return $schema[$key];
+        }
 
-        $schema = json_decode(file_get_contents($path), true);
         $fields = resolveFieldPresets($schema['fields'] ?? []);
 
         foreach ($fields as $field) {

@@ -4,9 +4,7 @@
         class="relative group/nested bg-hover-secondary border-rounded cursor-pointer select-none py-1 pl-2 pr-1 my-1 flex justify-between items-center">
         @php
             $avail = collect($availableBlocks);
-            $blockRule = $avail->firstWhere('schema', $block['schema'] ?? null) 
-                      ?? $avail->firstWhere('type', $block['type'] ?? null) 
-                      ?? [];
+            $blockRule = $avail->firstWhere('type', $block['type'] ?? null) ?? [];
             $moveable = $blockRule['moveable'] ?? true;
             $deletable = $blockRule['deletable'] ?? true;
             $toggle = $blockRule['toggle'] ?? true;

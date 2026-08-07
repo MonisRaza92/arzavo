@@ -27,7 +27,9 @@ if (!function_exists('renderBlocks')) {
                 continue;
             }
 
-            $view = "tenant.themes.$theme.blocks.{$block['type']}";
+            $blockObj = block($block);
+            $viewName = $blockObj->view ?? $block['type'] ?? '';
+            $view = "tenant.themes.$theme.blocks.{$viewName}";
 
             if (!View::exists($view)) {
                 continue;
@@ -36,7 +38,7 @@ if (!function_exists('renderBlocks')) {
             $html .= View::make($view, array_merge(
                 $context,
                 [
-                    'block' => block($block),
+                    'block' => $blockObj,
                     'theme' => $theme,
                 ]
             ))->render();
@@ -71,7 +73,9 @@ if (!function_exists('renderManualBlocks')) {
                 continue;
             }
 
-            $view = "tenant.themes.$theme.blocks.{$block['type']}";
+            $blockObj = block($block);
+            $viewName = $blockObj->view ?? $block['type'] ?? '';
+            $view = "tenant.themes.$theme.blocks.{$viewName}";
 
             if (!View::exists($view)) {
                 continue;
@@ -82,7 +86,7 @@ if (!function_exists('renderManualBlocks')) {
                 array_merge(
                     $context,
                     [
-                        'block' => block($block),
+                        'block' => $blockObj,
                         'theme' => $theme,
                     ]
                 )

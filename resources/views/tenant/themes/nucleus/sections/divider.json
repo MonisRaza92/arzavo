@@ -1,5 +1,5 @@
 {
-    "type": "divider",
+    "view": "divider",
     "name": "Divider",
     "icon": "fa-grip-lines",
     "order": 1,
@@ -18,7 +18,10 @@
             "key": "size",
             "label": "Size",
             "type": "radio",
-            "options": ["full", "container"],
+            "options": [
+                "full",
+                "container"
+            ],
             "default": "container"
         },
         {
@@ -41,7 +44,10 @@
             "key": "rounded",
             "label": "Rounded",
             "type": "select",
-            "options": ["enable", "disable"],
+            "options": [
+                "enable",
+                "disable"
+            ],
             "default": "disable"
         },
         {

@@ -1,5 +1,5 @@
 {
-    "type": "video",
+    "view": "video",
     "name": "Video",
     "icon": "fa-play-circle",
     "order": 8,
@@ -12,7 +12,11 @@
             "key": "video_type",
             "label": "Video Type",
             "type": "select",
-            "options": ["youtube", "vimeo", "upload"],
+            "options": [
+                "youtube",
+                "vimeo",
+                "upload"
+            ],
             "default": "youtube"
         },
         {
@@ -45,14 +49,23 @@
             "key": "aspect_ratio",
             "label": "Aspect Ratio",
             "type": "select",
-            "options": ["16:9", "4:3", "1:1", "21:9"],
+            "options": [
+                "16:9",
+                "4:3",
+                "1:1",
+                "21:9"
+            ],
             "default": "16:9"
         },
         {
             "key": "video_width",
             "label": "Video Width",
             "type": "select",
-            "options": ["full", "container", "custom"],
+            "options": [
+                "full",
+                "container",
+                "custom"
+            ],
             "default": "full"
         },
         {
@@ -67,35 +80,52 @@
             "key": "alignment",
             "label": "Video Alignment",
             "type": "select",
-            "options": ["left", "center", "right"],
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
             "default": "center"
         },
         {
             "key": "mobile_alignment",
             "label": "Mobile Alignment",
             "type": "select",
-            "options": ["left", "center", "right"],
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
             "default": "center"
         },
         {
             "key": "autoplay",
             "label": "Autoplay",
             "type": "radio",
-            "options": ["yes", "no"],
+            "options": [
+                "yes",
+                "no"
+            ],
             "default": "no"
         },
         {
             "key": "muted",
             "label": "Muted",
             "type": "radio",
-            "options": ["yes", "no"],
+            "options": [
+                "yes",
+                "no"
+            ],
             "default": "yes"
         },
         {
             "key": "controls",
             "label": "Show Controls",
             "type": "radio",
-            "options": ["yes", "no"],
+            "options": [
+                "yes",
+                "no"
+            ],
             "default": "yes"
         },
         {

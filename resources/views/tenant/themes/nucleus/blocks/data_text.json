@@ -1,5 +1,5 @@
 {
-    "type": "data_text",
+    "view": "data_text",
     "name": "Description",
     "icon": "fa-align-left ml-0.5",
     "order": 2,
@@ -38,27 +38,27 @@
             "options": [
                 {
                     "label": "Heading 1",
-                    "value": "h1" 
+                    "value": "h1"
                 },
                 {
                     "label": "Heading 2",
-                    "value": "h2" 
+                    "value": "h2"
                 },
                 {
                     "label": "Heading 3",
-                    "value": "h3" 
+                    "value": "h3"
                 },
                 {
                     "label": "Heading 4",
-                    "value": "h4" 
+                    "value": "h4"
                 },
                 {
                     "label": "Heading 5",
-                    "value": "h5" 
+                    "value": "h5"
                 },
                 {
                     "label": "Heading 6",
-                    "value": "h6" 
+                    "value": "h6"
                 }
             ],
             "default": "h6",
@@ -67,7 +67,6 @@
                 "value": true
             }
         },
-
         {
             "key": "group",
             "label": "Content",
@@ -78,7 +77,10 @@
             "key": "text_type",
             "label": "Text Type",
             "type": "select",
-            "options": ["paragraph", "body-text"],
+            "options": [
+                "paragraph",
+                "body-text"
+            ],
             "default": "body-text"
         },
         {
@@ -97,7 +99,6 @@
                 "value": true
             }
         },
-
         {
             "key": "group",
             "label": "Layout",
@@ -115,7 +116,6 @@
             ],
             "default": "left"
         },
-        
         {
             "key": "group",
             "label": "Spacing",

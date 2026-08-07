@@ -1,5 +1,5 @@
 {
-    "type": "slideshow",
+    "view": "slideshow",
     "name": "Slideshow: Images",
     "icon": "fa-images",
     "order": 5,

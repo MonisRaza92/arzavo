@@ -1,5 +1,5 @@
 {
-    "type": "data_classes",
+    "view": "data_classes",
     "name": "Classes",
     "icon": "fa-align-left ml-0.5",
     "order": 2,
@@ -29,13 +29,16 @@
             "label": "Text Size",
             "type": "range",
             "default": "16",
-            "min" : 10,
-            "max" : 30
+            "min": 10,
+            "max": 30
         },
         {
             "key": "font_weight",
             "type": "radio",
-            "options": ["normal","bold"],
+            "options": [
+                "normal",
+                "bold"
+            ],
             "default": "normal"
         },
         {

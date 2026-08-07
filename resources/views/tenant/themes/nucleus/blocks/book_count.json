@@ -1,5 +1,5 @@
 {
-    "type": "data_count",
+    "view": "data_count",
     "name": "Book Count",
     "icon": "fa-check-square",
     "category": "Data",

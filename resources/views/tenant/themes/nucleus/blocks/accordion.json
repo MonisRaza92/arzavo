@@ -1,5 +1,5 @@
 {
-    "type": "accordion",
+    "view": "accordion",
     "name": "Accordion",
     "icon": "fa-plus-minus",
     "category": "Content",
@@ -32,7 +32,11 @@
             "key": "icon_style",
             "label": "Icon Style",
             "type": "radio",
-            "options": ["plus", "chevron", "none"],
+            "options": [
+                "plus",
+                "chevron",
+                "none"
+            ],
             "default": "plus"
         },
         {

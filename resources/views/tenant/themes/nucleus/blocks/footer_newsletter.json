@@ -1,10 +1,18 @@
 {
-    "type": "footer_info",
+    "view": "footer_info",
     "name": "Footer Newsletter",
     "icon": "fa-paper-plane",
     "order": 1,
     "category": "Footer",
-    "allowed_blocks": ["footer_logo", "text", "social_icons", "heading", "button", "footer_contact_details", "newsletter_form"],
+    "allowed_blocks": [
+        "footer_logo",
+        "text",
+        "social_icons",
+        "heading",
+        "button",
+        "footer_contact_details",
+        "newsletter_form"
+    ],
     "default_blocks": [
         {
             "type": "heading",

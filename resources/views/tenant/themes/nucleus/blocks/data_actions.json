@@ -1,5 +1,5 @@
 {
-    "type": "data_actions",
+    "view": "data_actions",
     "name": "Action Buttons",
     "icon": "fa-hand-pointer",
     "category": "Content",
@@ -96,4 +96,3 @@
         }
     ]
 }
-

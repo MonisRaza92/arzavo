@@ -1,5 +1,5 @@
 {
-    "type": "stat_item",
+    "view": "stat_item",
     "name": "Stat Item",
     "icon": "fa-hashtag",
     "category": "Content",

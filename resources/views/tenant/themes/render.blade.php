@@ -75,7 +75,7 @@
         $themeCss = \App\Services\Theme\ThemeAssetResolver::allCss($theme);
     @endphp
     @if($themeCss)
-        <style data-theme-assets="{{ $theme }}">
+        <style data-theme="{{ $theme }}">
             {!! $themeCss !!}
         </style>
     @endif
@@ -132,12 +132,14 @@
                     @endif
 
                     @php
-                        $viewPath = 'tenant.themes.' . $theme . '.sections.' . ($section['type'] ?? '');
+                        $sectionObj = section($section);
+                        $viewName = $sectionObj->view ?? $section['type'] ?? '';
+                        $viewPath = 'tenant.themes.' . $theme . '.sections.' . $viewName;
                     @endphp
 
-                    @if(!empty($section['type']) && View::exists($viewPath))
+                    @if(!empty($viewName) && View::exists($viewPath))
                         @includeIf($viewPath, [
-                            'section' => section($section),
+                            'section' => $sectionObj,
                             'theme' => $theme,
                             'context' => 'page'
                         ])
@@ -217,7 +219,7 @@
         $themeJs = \App\Services\Theme\ThemeAssetResolver::allJs($theme);
     @endphp
     @if($themeJs)
-        <script data-theme-js="{{ $theme }}">
+        <script data-theme="{{ $theme }}">
             {!! $themeJs !!}
         </script>
     @endif

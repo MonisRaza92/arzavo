@@ -1,5 +1,5 @@
 {
-    "type": "data_specs",
+    "view": "data_specs",
     "name": "Item Specifications",
     "icon": "fa-list-check",
     "category": "Content",

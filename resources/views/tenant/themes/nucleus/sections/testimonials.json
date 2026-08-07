@@ -1,5 +1,5 @@
 {
-    "type": "testimonials",
+    "view": "testimonials",
     "name": "Testimonials",
     "icon": "fa-quote-left",
     "category": "Trust Building",
@@ -58,7 +58,10 @@
             "key": "layout_style",
             "label": "Layout Style",
             "type": "radio",
-            "options": ["grid", "carousel"],
+            "options": [
+                "grid",
+                "carousel"
+            ],
             "default": "grid"
         },
         {

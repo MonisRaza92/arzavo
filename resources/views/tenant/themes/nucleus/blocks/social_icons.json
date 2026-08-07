@@ -1,5 +1,5 @@
 {
-    "type": "social_icons",
+    "view": "social_icons",
     "name": "Social Icons",
     "icon": "fa-share-nodes",
     "category": "Content",

@@ -1,5 +1,5 @@
 {
-    "type": "faq",
+    "view": "faq",
     "name": "FAQ",
     "icon": "fa-quote-left",
     "category": "Trust Building",
@@ -90,7 +90,10 @@
             "key": "faq_columns",
             "label": "Columns",
             "type": "radio",
-            "options": ["1", "2"],
+            "options": [
+                "1",
+                "2"
+            ],
             "default": "1"
         },
         {

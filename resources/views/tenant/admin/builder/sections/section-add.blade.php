@@ -69,15 +69,14 @@
                     <div class="category-items transition-all duration-300">
                         @foreach($items as $item)
                             @if($item['type'] === 'section')
-                                <form id="sectionAddForm{{  $item['data']['schema'] ?? $item['data']['type'] }}" method="POST"
+                                <form id="sectionAddForm{{ $item['data']['type'] }}" method="POST"
                                     action="{{ route('admin.builder.sections.store', ['theme' => $theme->theme_slug, 'page' => $page,]) }}">
                                     @csrf
                                     <input type="hidden" name="section_type" value="{{ $item['data']['type'] }}">
                                     <input type="hidden" name="section_name" value="{{ $item['data']['name'] }}">
-                                    <input type="hidden" name="schema" value="{{ $item['data']['schema'] ?? $item['data']['type'] }}">
                                     <input type="hidden" name="target" id="sectionTarget" value="page">
-                                    <button type="button" onclick="SubmitSectionForm('{{ $item['data']['schema'] ?? $item['data']['type'] }}')"
-                                        id="sectionAddBtn{{ $item['data']['schema'] ?? $item['data']['type'] }}"
+                                    <button type="button" onclick="SubmitSectionForm('{{ $item['data']['type'] }}')"
+                                        id="sectionAddBtn{{ $item['data']['type'] }}"
                                         class="w-full text-xs text-left p-4 border-top bg-hover-secondary flex items-center gap-2">
                                         <i class="fa-solid {{ $item['data']['icon'] ?? 'fa-cube' }}"></i>
                                         {{ $item['data']['name'] }}
@@ -91,7 +90,6 @@
                                     <input type="hidden" name="template_type"
                                         value="{{ $item['data']['template_file'] ?? $item['data']['type'] }}">
                                     <input type="hidden" name="section_name" value="{{ $item['data']['name'] }}">
-                                    <input type="hidden" name="schema" value="{{ $item['data']['schema'] ?? $item['data']['type'] }}">
                                     <button type="button"
                                         onclick="SubmitTemplateForm('{{ $item['data']['template_file'] ?? $item['data']['type'] }}')"
                                         id="templateAddbtn{{ $item['data']['template_file'] ?? $item['data']['type'] }}"

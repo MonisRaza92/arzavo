@@ -241,6 +241,15 @@ if (!function_exists('registerDomains')) {
                 ->where('slug', '[A-Za-z0-9-_]+')
                 ->name('website.preview');
 
+            // 🎨 Theme Asset Server Route
+            Route::get('/theme-asset/{theme}/{path}', function ($theme, $path) {
+                $fullPath = resource_path("views/tenant/themes/{$theme}/assets/{$path}");
+                if (file_exists($fullPath)) {
+                    return response()->file($fullPath);
+                }
+                abort(404);
+            })->where('path', '.*')->name('theme.asset');
+
             Route::post('/contact-submit', [ThemePageController::class, 'contactSubmit'])->name('contact.form');
             Route::post('/newsletter-submit', [ThemePageController::class, 'newsletterSubmit'])->name('newsletter.submit');
 

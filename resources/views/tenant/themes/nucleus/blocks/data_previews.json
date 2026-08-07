@@ -1,5 +1,5 @@
 {
-    "type": "data_previews",
+    "view": "data_previews",
     "name": "Item Previews",
     "icon": "fa-images",
     "category": "Content",
@@ -33,12 +33,30 @@
             "label": "Heading Size / Type",
             "type": "select",
             "options": [
-                { "label": "Heading 1", "value": "h1" },
-                { "label": "Heading 2", "value": "h2" },
-                { "label": "Heading 3", "value": "h3" },
-                { "label": "Heading 4", "value": "h4" },
-                { "label": "Heading 5", "value": "h5" },
-                { "label": "Heading 6", "value": "h6" }
+                {
+                    "label": "Heading 1",
+                    "value": "h1"
+                },
+                {
+                    "label": "Heading 2",
+                    "value": "h2"
+                },
+                {
+                    "label": "Heading 3",
+                    "value": "h3"
+                },
+                {
+                    "label": "Heading 4",
+                    "value": "h4"
+                },
+                {
+                    "label": "Heading 5",
+                    "value": "h5"
+                },
+                {
+                    "label": "Heading 6",
+                    "value": "h6"
+                }
             ],
             "default": "h6",
             "conditional": {
@@ -46,7 +64,6 @@
                 "value": true
             }
         },
-
         {
             "key": "group",
             "type": "group",
@@ -73,7 +90,6 @@
             },
             "help": "Number of preview cards to show initially before '+More' overlay."
         },
-
         {
             "key": "group",
             "type": "group",
@@ -110,7 +126,6 @@
             "max": 30,
             "help": "Corner rounding for preview images."
         },
-
         {
             "key": "group",
             "type": "group",

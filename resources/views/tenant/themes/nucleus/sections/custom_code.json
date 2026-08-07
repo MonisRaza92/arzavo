@@ -1,9 +1,14 @@
 {
-    "type": "custom_code",
+    "view": "custom_code",
     "name": "Custom Code",
     "icon": "fa-code",
     "order": 4,
-    "page": ["home", "about", "contact", "product"],
+    "page": [
+        "home",
+        "about",
+        "contact",
+        "product"
+    ],
     "category": "Layout",
     "color_scheme": "scheme_1",
     "max_blocks": 0,
@@ -26,14 +31,21 @@
             "key": "container_width",
             "label": "Container Width",
             "type": "radio",
-            "options": ["full", "container"],
+            "options": [
+                "full",
+                "container"
+            ],
             "default": "container"
         },
         {
             "key": "text_alignment",
             "label": "Content Alignment",
             "type": "radio",
-            "options": ["left", "center", "right"],
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
             "default": "center"
         },
         {
@@ -80,21 +92,31 @@
             "key": "show_on",
             "label": "Show Section On",
             "type": "radio",
-            "options": ["desktop", "mobile", "both"],
+            "options": [
+                "desktop",
+                "mobile",
+                "both"
+            ],
             "default": "both"
         },
         {
             "key": "enable_border",
             "label": "Enable Border",
             "type": "radio",
-            "options": ["enable", "disable"],
+            "options": [
+                "enable",
+                "disable"
+            ],
             "default": "disable"
         },
         {
             "key": "enable_shadow",
             "label": "Enable Shadow",
             "type": "radio",
-            "options": ["enable", "disable"],
+            "options": [
+                "enable",
+                "disable"
+            ],
             "default": "disable"
         }
     ]

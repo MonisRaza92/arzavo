@@ -10,10 +10,5 @@
     "price": 0,
     "source": "system",
     "is_active": true,
-    "preview_image": "/themes/nucleus/preview.jpg",
-    "assets": {
-        "css": ["assets/global.css"],
-        "js": ["assets/global.js"]
-    },
-    "supports": ["sections", "blocks", "templates", "color_schemes"]
+    "preview_image": "/themes/nucleus/preview.jpg"
 }

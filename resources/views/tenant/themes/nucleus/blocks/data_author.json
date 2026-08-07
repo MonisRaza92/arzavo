@@ -1,5 +1,5 @@
 {
-    "type": "data_author",
+    "view": "data_author",
     "name": "Author",
     "icon": "fa-user",
     "order": 2,
@@ -17,14 +17,20 @@
             "key": "text_type",
             "label": "Text Type",
             "type": "select",
-            "options": ["paragraph", "secondary-text"],
+            "options": [
+                "paragraph",
+                "secondary-text"
+            ],
             "default": "paragraph"
         },
         {
             "key": "font_style",
             "label": "Font Style",
             "type": "radio",
-            "options": ["normal", "italic"],
+            "options": [
+                "normal",
+                "italic"
+            ],
             "default": "normal"
         },
         {
@@ -36,7 +42,11 @@
             "key": "alignment",
             "label": "Text Alignment",
             "type": "radio",
-            "options": ["left", "center", "right"],
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
             "default": "left"
         },
         {

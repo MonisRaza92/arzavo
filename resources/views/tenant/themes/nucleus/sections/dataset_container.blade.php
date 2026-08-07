@@ -52,7 +52,6 @@
 @endphp
 
 
-
 <section {!! $section->attributes() !!} class="arz-section relative overflow-hidden {{ $section->visibility }}"
     style="{{ $section->margin . $section->padding }}">
     <div class="section-content {{ $section->container }} relative z-30">

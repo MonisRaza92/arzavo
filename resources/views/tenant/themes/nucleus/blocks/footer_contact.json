@@ -1,10 +1,18 @@
 {
-    "type": "footer_info",
+    "view": "footer_info",
     "name": "Footer Contact",
     "icon": "fa-user",
     "order": 3,
     "category": "Footer",
-    "allowed_blocks": ["footer_logo", "text", "social_icons", "heading", "button", "footer_contact_details", "newsletter_form"],
+    "allowed_blocks": [
+        "footer_logo",
+        "text",
+        "social_icons",
+        "heading",
+        "button",
+        "footer_contact_details",
+        "newsletter_form"
+    ],
     "default_blocks": [
         {
             "type": "heading",

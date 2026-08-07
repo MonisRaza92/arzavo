@@ -1,5 +1,5 @@
 {
-    "type": "announcement",
+    "view": "announcement",
     "name": "Announcement",
     "icon": "fa-bell",
     "category": "Header",

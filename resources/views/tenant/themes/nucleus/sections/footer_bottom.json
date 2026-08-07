@@ -1,5 +1,5 @@
 {
-    "type": "footer_bottom",
+    "view": "footer_bottom",
     "name": "Footer Bottom",
     "icon": "fa-tv",
     "category": "Footer",

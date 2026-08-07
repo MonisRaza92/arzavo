@@ -29,8 +29,8 @@
     </div>
 
     @php
-        $schema = collect($availableSections)->firstWhere('schema', $section['schema'] ?? null) ?? collect($availableSections)->firstWhere('type', $section['type'] ?? null) ?? [];
-        $fields = resolveFieldPresets($schema['fields'] ?? []);
+        $schema = collect($availableSections)->firstWhere('type', $section['type'] ?? null) ?? [];
+        $fields = resolveFieldPresets($schema['fields'] ?? [], $theme->theme_slug ?? $theme);
     @endphp
 
     @if (count($fields) > 0)

@@ -1,5 +1,5 @@
 {
-    "type": "details_container",
+    "view": "details_container",
     "name": "Blog: Details",
     "icon": "fa-newspaper",
     "category": "Content",

@@ -1,5 +1,5 @@
 {
-    "type": "navbar",
+    "view": "navbar",
     "name": "Header: Navbar",
     "icon": "fa-solid fa-bars",
     "category": "Header",

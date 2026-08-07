@@ -1,5 +1,5 @@
 {
-    "type": "dataset_container",
+    "view": "dataset_container",
     "name": "Blogs: Grid",
     "icon": "fa-newspaper",
     "category": "Storytelling",

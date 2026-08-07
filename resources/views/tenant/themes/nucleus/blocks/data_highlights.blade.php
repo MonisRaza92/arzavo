@@ -47,16 +47,5 @@
                 @endif
             @endforeach
         </div>
-    @elseif(isBuilder())
-        <div class="grid {{ $gridClass }} gap-2.5">
-            <div class="flex items-start gap-2.5 p-2.5 {{ $bgClass }} arz-border" style="{{ $itemStyle }}">
-                <i class="fa-solid fa-{{ $bulletIcon }} mt-0.5 text-base shrink-0" style="color: {{ $iconColor }};"></i>
-                <span class="leading-snug font-medium {{ $textStyle }}">500+ Practice Questions & Solved Examples</span>
-            </div>
-            <div class="flex items-start gap-2.5 p-2.5 {{ $bgClass }} arz-border" style="{{ $itemStyle }}">
-                <i class="fa-solid fa-{{ $bulletIcon }} mt-0.5 text-base shrink-0" style="color: {{ $iconColor }};"></i>
-                <span class="leading-snug font-medium {{ $textStyle }}">Comprehensive Syllabus Coverage & Chapter Formula Sheets</span>
-            </div>
-        </div>
     @endif
 </div>

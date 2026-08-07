@@ -1,5 +1,5 @@
 {
-    "type": "spacer",
+    "view": "spacer",
     "name": "Spacer",
     "icon": "fa-arrows-v",
     "order": 15,
@@ -28,7 +28,11 @@
             "key": "visibility",
             "label": "Visibility",
             "type": "radio",
-            "options": ["both", "desktop_only", "mobile_only"],
+            "options": [
+                "both",
+                "desktop_only",
+                "mobile_only"
+            ],
             "default": "both"
         }
     ]

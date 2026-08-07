@@ -1,5 +1,5 @@
 {
-    "type": "footer_menu",
+    "view": "footer_menu",
     "name": "Footer Menu",
     "icon": "fa-link",
     "order": 2,
@@ -49,8 +49,14 @@
             "label": "Direction",
             "type": "select",
             "options": [
-                {"label": "Vertical (Column)", "value": "flex-col"},
-                {"label": "Horizontal (Row)", "value": "flex-row"}
+                {
+                    "label": "Vertical (Column)",
+                    "value": "flex-col"
+                },
+                {
+                    "label": "Horizontal (Row)",
+                    "value": "flex-row"
+                }
             ],
             "default": "flex-col"
         },
@@ -59,8 +65,14 @@
             "label": "Text Size",
             "type": "select",
             "options": [
-                {"label": "Paragraph", "value": "arz-paragraph"},
-                {"label": "Body Text", "value": "arz-body-text"}
+                {
+                    "label": "Paragraph",
+                    "value": "arz-paragraph"
+                },
+                {
+                    "label": "Body Text",
+                    "value": "arz-body-text"
+                }
             ],
             "default": "arz-paragraph"
         },

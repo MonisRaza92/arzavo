@@ -19,6 +19,9 @@ if (!function_exists('media')) {
             return null;
         }
 
+        $theme = app('currentThemeSlug');
+        $path = str_replace("themes/{$theme}/", '', $path);
+
         // Clean the path
         $path = ltrim($path, '/');
 
@@ -28,8 +31,13 @@ if (!function_exists('media')) {
             return $path;
         }
 
-        // 2. Check if file exists in the 'public' folder directly
-        // (Ye check karega ki kya file public directory me physically majood hai like 'images/logo.png')
+        // 2. Check if file exists in the theme's assets folder directly
+        // (Agar image/video resource folder me hai to naye route se serve karenge)
+        if ($theme && file_exists(resource_path("views/tenant/themes/{$theme}/assets/{$path}"))) {
+            return route('theme.asset', ['theme' => $theme, 'path' => $path]);
+        }
+
+        // 3. Fallback to public folder (agar user directly public me upload kare)
         if (file_exists(public_path($path))) {
             return asset($path);
         }

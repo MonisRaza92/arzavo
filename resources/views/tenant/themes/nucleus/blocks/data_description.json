@@ -1,5 +1,5 @@
 {
-    "type": "data_description",
+    "view": "data_description",
     "name": "Description (Rich Text)",
     "icon": "fa-align-left",
     "category": "Data",

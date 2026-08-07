@@ -98,7 +98,9 @@ class BlockQuery
                 }
             }
 
-            $view = "tenant.themes.$theme.blocks.$type";
+            $blockObj = block($block);
+            $viewName = $blockObj->view ?? $type;
+            $view = "tenant.themes.$theme.blocks.$viewName";
 
             if (!View::exists($view)) {
                 continue;
@@ -107,7 +109,7 @@ class BlockQuery
             $html .= View::make($view, array_merge(
                 $extra,
                 [
-                    'block' => block($block),
+                    'block' => $blockObj,
                     'theme' => $theme,
                 ]
             ))->render();

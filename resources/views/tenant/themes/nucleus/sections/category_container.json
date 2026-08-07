@@ -1,5 +1,5 @@
 {
-    "type": "dataset_container",
+    "view": "dataset_container",
     "name": "Course Categories",
     "icon": "fa-layer-group",
     "category": "Content",
@@ -60,11 +60,12 @@
             "key": "width",
             "label": "Container Size",
             "type": "radio",
-            "options": ["full_width", "container"],
+            "options": [
+                "full_width",
+                "container"
+            ],
             "default": "container"
-            
         },
-
         {
             "key": "gap",
             "label": "Cards Gap",
@@ -81,7 +82,6 @@
             "min": 1,
             "max": 24
         },
-
         {
             "key": "columns",
             "label": "Desktop Columns",

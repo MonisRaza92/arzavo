@@ -1,5 +1,5 @@
 {
-    "type": "text",
+    "view": "text",
     "name": "Text",
     "icon": "fa-align-left",
     "order": 2,
@@ -25,10 +25,12 @@
             "label": "Text Type",
             "type": "select",
             "help": "Select the text type. To change the font, size, weight, or text casing of headings, go to Settings>Typography.",
-            "options": ["paragraph", "body-text"],
+            "options": [
+                "paragraph",
+                "body-text"
+            ],
             "default": "paragraph"
         },
-
         {
             "type": "group",
             "label": "Alignment"
@@ -78,9 +80,8 @@
             ],
             "default": "left"
         },
-        
         {
-           "preset": "margin"
+            "preset": "margin"
         }
     ]
 }

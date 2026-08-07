@@ -1,10 +1,8 @@
 {
-    "type": "data_pills",
+    "view": "data_pills",
     "name": "Pills",
     "icon": "fa-tags",
     "category": "Content",
     "moveable": false,
-    "fields": [
-        
-    ]
+    "fields": []
 }

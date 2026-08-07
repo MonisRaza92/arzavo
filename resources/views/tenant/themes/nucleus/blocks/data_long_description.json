@@ -1,5 +1,5 @@
 {
-    "type": "data_long_description",
+    "view": "data_long_description",
     "name": "Full Description (Rich Text)",
     "icon": "fa-file-lines",
     "category": "Data",

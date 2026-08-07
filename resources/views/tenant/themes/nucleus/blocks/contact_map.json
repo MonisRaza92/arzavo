@@ -1,5 +1,5 @@
 {
-    "type": "contact_map",
+    "view": "contact_map",
     "name": "Contact Map",
     "icon": "fa-map",
     "category": "Content",

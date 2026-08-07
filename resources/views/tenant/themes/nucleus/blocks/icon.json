@@ -1,5 +1,5 @@
 {
-    "type": "icon",
+    "view": "icon",
     "name": "Icon",
     "icon": "fa-icons",
     "order": 7,

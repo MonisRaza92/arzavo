@@ -55,7 +55,7 @@ class SectionController
             'target' => 'required|in:header,page,footer,globals',
         ]);
 
-        $schemaName = $request->input('schema');
+        $schemaName = $request->input('section_type');
         // Load section schema
         $schemaPath = resource_path("views/tenant/themes/{$themeSlug}/sections/{$schemaName}.json");
 
@@ -134,7 +134,6 @@ class SectionController
         $section = [
             'id' => 'sec_' . uniqid(),
             'type' => $request->section_type,
-            'schema' => $request->schema,
             'name' => $request->section_name,
             'icon' => $schema['icon'] ?? 'fa-shapes',
             'settings' => $settings,
@@ -211,9 +210,8 @@ class SectionController
 
         $blockData = [
             'id' => 'blk_' . uniqid(),
-            'type' => $schema['type'] ?? $type,
+            'type' => $type,
             'name' => $schema['name'] ?? ucfirst($type),
-            'schema' => $type,
             'icon' => $schema['icon'] ?? 'fa-box',
             'settings' => $settings,
             'is_active' => true,
@@ -763,9 +761,8 @@ class SectionController
             }
 
             return [
-                'type' => $data['type'] ?? basename($file, '.json'),
+                'type' => basename($file, '.json'),
                 'name' => $data['name'] ?? basename($file, '.json'),
-                'schema' => basename($file, '.json'),
                 'icon' => $data['icon'] ?? 'fa-code',
                 'category' => $data['category'] ?? null,
                 'preview' => $data['preview'] ?? null,
@@ -787,9 +784,8 @@ class SectionController
             $data = json_decode(file_get_contents($file), true);
 
             return [
-                'type' => $data['type'] ?? basename($file, '.json'),
+                'type' => basename($file, '.json'),
                 'name' => $data['name'] ?? basename($file, '.json'),
-                'schema' => basename($file, '.json'),
                 'icon' => $data['icon'] ?? 'fa-code',
                 'category' => $data['category'] ?? null,
                 'preview' => $data['preview'] ?? null,
@@ -807,7 +803,7 @@ class SectionController
         return collect($this->availableSections($themeSlug, $page))
             ->mapWithKeys(function ($section) {
                 return [
-                    $section['schema'] ?? $section['type'] => [
+                    $section['type'] => [
                         'max_blocks' => $section['max_blocks'] ?? null,
                         'allowed_blocks' => $section['allowed_blocks'] ?? [],
                         'moveable' => $section['moveable'] ?? true,
@@ -822,7 +818,7 @@ class SectionController
         return collect($this->availableBlocks($themeSlug))
             ->mapWithKeys(function ($block) {
                 return [
-                    $block['schema'] ?? $block['type'] => [
+                    $block['type'] => [
                         'max_blocks' => $block['max_blocks'] ?? null,
                         'allowed_blocks' => $block['allowed_blocks'] ?? [],
                         'moveable' => $block['moveable'] ?? true,

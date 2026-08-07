@@ -1,5 +1,5 @@
 {
-    "type": "newsletter_form",
+    "view": "newsletter_form",
     "name": "Newsletter Form",
     "icon": "fa-paper-plane",
     "category": "Content",
@@ -28,9 +28,18 @@
             "label": "Button Style",
             "type": "select",
             "options": [
-                { "label": "Primary Button", "value": "arz-btn-primary" },
-                { "label": "Secondary Button", "value": "arz-btn-secondary" },
-                { "label": "Custom Colors", "value": "custom" }
+                {
+                    "label": "Primary Button",
+                    "value": "arz-btn-primary"
+                },
+                {
+                    "label": "Secondary Button",
+                    "value": "arz-btn-secondary"
+                },
+                {
+                    "label": "Custom Colors",
+                    "value": "custom"
+                }
             ],
             "default": "arz-btn-primary"
         },
@@ -59,8 +68,14 @@
             "label": "Layout Alignment",
             "type": "radio",
             "options": [
-                { "label": "Horizontal", "value": "horizontal" },
-                { "label": "Vertical", "value": "vertical" }
+                {
+                    "label": "Horizontal",
+                    "value": "horizontal"
+                },
+                {
+                    "label": "Vertical",
+                    "value": "vertical"
+                }
             ],
             "default": "Vertical"
         }

@@ -1,5 +1,5 @@
 {
-    "type": "image",
+    "view": "image",
     "name": "Image",
     "icon": "fa-image",
     "order": 4,
@@ -31,7 +31,6 @@
             "placeholder": "Describe the image (SEO & accessibility)",
             "help": "This text will be used for SEO and accessibility purposes. It describes the content of the image."
         },
-
         {
             "key": "group",
             "type": "group",
@@ -54,7 +53,6 @@
                 "value": ""
             }
         },
-
         {
             "key": "group",
             "type": "group",
@@ -65,14 +63,24 @@
             "label": "Aspect Radio",
             "type": "select",
             "default": "auto",
-            "options": ["auto", "square", "portrait", "landscape", "wide"]
+            "options": [
+                "auto",
+                "square",
+                "portrait",
+                "landscape",
+                "wide"
+            ]
         },
         {
             "key": "image_fit",
             "label": "Image Fit",
             "type": "select",
             "default": "cover",
-            "options": ["cover", "contain", "auto"]
+            "options": [
+                "cover",
+                "contain",
+                "auto"
+            ]
         },
         {
             "key": "border_width",
@@ -98,7 +106,6 @@
             "max": 100,
             "default": "100"
         },
-
         {
             "key": "group",
             "type": "group",
@@ -136,7 +143,6 @@
             "max": 100,
             "default": "0"
         },
-
         {
             "key": "group",
             "type": "group",

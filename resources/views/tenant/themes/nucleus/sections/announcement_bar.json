@@ -1,5 +1,5 @@
 {
-    "type": "announcement_bar",
+    "view": "announcement_bar",
     "name": "Announcement Bar",
     "icon": "fa-solid fa-bullhorn",
     "category": "Header",

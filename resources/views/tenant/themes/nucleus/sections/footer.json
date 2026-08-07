@@ -1,5 +1,5 @@
 {
-    "type": "footer",
+    "view": "footer",
     "name": "Footer",
     "icon": "fa-tv",
     "category": "Footer",
@@ -52,7 +52,7 @@
             "min": 0,
             "max": 100
         },
-               {
+        {
             "key": "container",
             "label": "Width",
             "type": "radio",

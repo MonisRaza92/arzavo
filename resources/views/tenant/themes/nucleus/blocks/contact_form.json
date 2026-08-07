@@ -1,5 +1,5 @@
 {
-    "type": "contact_form",
+    "view": "contact_form",
     "name": "Contact Form",
     "icon": "fa-envelope",
     "category": "Content",
@@ -30,9 +30,18 @@
             "label": "Button Style",
             "type": "select",
             "options": [
-                { "label": "Primary Button", "value": "arz-btn-primary" },
-                { "label": "Secondary Button", "value": "arz-btn-secondary" },
-                { "label": "Custom Colors", "value": "custom" }
+                {
+                    "label": "Primary Button",
+                    "value": "arz-btn-primary"
+                },
+                {
+                    "label": "Secondary Button",
+                    "value": "arz-btn-secondary"
+                },
+                {
+                    "label": "Custom Colors",
+                    "value": "custom"
+                }
             ],
             "default": "arz-btn-primary",
             "help": "Select the visual style class for the form submit button."

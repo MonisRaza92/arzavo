@@ -28,8 +28,8 @@
         </div>
     </div>
     @php
-        $schema = collect($availableBlocks)->firstWhere('schema', $block['schema'] ?? null) ?? collect($availableBlocks)->firstWhere('type', $block['type'] ?? null) ?? [];
-        $fields = resolveFieldPresets($schema['fields'] ?? []);
+        $schema = collect($availableBlocks)->firstWhere('type', $block['type'] ?? null) ?? [];
+        $fields = resolveFieldPresets($schema['fields'] ?? [], $theme->theme_slug ?? $theme);
     @endphp
 
 

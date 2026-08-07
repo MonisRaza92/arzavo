@@ -1,5 +1,5 @@
 {
-    "type": "testimonial_card",
+    "view": "testimonial_card",
     "name": "Testimonial Card",
     "icon": "fa-quote-left",
     "category": "Content",
@@ -11,7 +11,6 @@
             "type": "group",
             "label": "Content"
         },
-        
         {
             "key": "quote",
             "label": "Quote",

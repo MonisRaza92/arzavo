@@ -1,5 +1,5 @@
 {
-    "type": "footer_logo",
+    "view": "footer_logo",
     "name": "Footer Logo",
     "icon": "fa-image",
     "category": "Content",

@@ -42,9 +42,5 @@
         <p class="arz-{{ $type }} text-secondary">
             {{ $enableLimit ? Str::limit($rawText, $textLimit) : $rawText }}
         </p>
-    @elseif(isBuilder())
-        <p class="arz-{{ $type }} text-secondary italic">
-            Essential physics guide for JEE Main & Advanced aspirants with chapter-wise theory and solved examples.
-        </p>
     @endif
 </div>

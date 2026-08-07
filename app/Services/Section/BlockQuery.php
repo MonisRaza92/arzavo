@@ -99,13 +99,16 @@ class BlockQuery implements \Countable
                 continue;
             }
 
-            $view = "tenant.themes.$theme.blocks.$type";
+            $blockObj = block($block);
+            $viewName = $blockObj->view ?? $type;
+            $view = "tenant.themes.$theme.blocks.$viewName";
+            
             if (!\Illuminate\Support\Facades\View::exists($view)) {
                 continue;
             }
 
             $results[] = \Illuminate\Support\Facades\View::make($view, [
-                'block' => block($block),
+                'block' => $blockObj,
                 'theme' => $theme,
             ])->render();
         }
@@ -230,7 +233,9 @@ class BlockQuery implements \Countable
                 }
             }
 
-            $view = "tenant.themes.$theme.blocks.$type";
+            $blockObj = block($block);
+            $viewName = $blockObj->view ?? $type;
+            $view = "tenant.themes.$theme.blocks.$viewName";
 
             if (!View::exists($view)) {
                 continue;
@@ -239,7 +244,7 @@ class BlockQuery implements \Countable
             $html .= View::make($view, array_merge(
                 $extra,
                 [
-                    'block' => block($block),
+                    'block' => $blockObj,
                     'theme' => $theme,
                 ]
             ))->render();

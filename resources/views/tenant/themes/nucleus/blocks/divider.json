@@ -1,5 +1,5 @@
 {
-    "type": "divider",
+    "view": "divider",
     "name": "Divider",
     "icon": "fa-grip-lines",
     "order": 6,
@@ -12,7 +12,12 @@
             "key": "divider_style",
             "label": "Divider Style",
             "type": "select",
-            "options": ["solid", "dashed", "dotted", "double"],
+            "options": [
+                "solid",
+                "dashed",
+                "dotted",
+                "double"
+            ],
             "default": "solid"
         },
         {
@@ -35,21 +40,32 @@
             "key": "alignment",
             "label": "Alignment",
             "type": "select",
-            "options": ["left", "center", "right"],
+            "options": [
+                "left",
+                "center",
+                "right"
+            ],
             "default": "center"
         },
         {
             "key": "color_type",
             "label": "Color Type",
             "type": "select",
-            "options": ["border", "heading", "paragraph"],
+            "options": [
+                "border",
+                "heading",
+                "paragraph"
+            ],
             "default": "border"
         },
         {
             "key": "rounded",
             "label": "Rounded Ends",
             "type": "radio",
-            "options": ["enable", "disable"],
+            "options": [
+                "enable",
+                "disable"
+            ],
             "default": "disable"
         },
         {

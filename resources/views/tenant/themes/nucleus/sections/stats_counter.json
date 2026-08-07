@@ -1,5 +1,5 @@
 {
-    "type": "stats_counter",
+    "view": "stats_counter",
     "name": "Achievements",
     "icon": "fa-list",
     "order": -1,

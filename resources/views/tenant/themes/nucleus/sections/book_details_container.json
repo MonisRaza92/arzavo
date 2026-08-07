@@ -1,5 +1,5 @@
 {
-    "type": "details_container",
+    "view": "details_container",
     "name": "Book: Details",
     "icon": "fa-book-open",
     "category": "Content",

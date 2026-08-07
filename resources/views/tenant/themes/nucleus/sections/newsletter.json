@@ -1,5 +1,5 @@
 {
-    "type": "newsletter",
+    "view": "newsletter",
     "name": "Newsletter",
     "icon": "fa-solid fa-envelope-open-text",
     "category": "Footer",

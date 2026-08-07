@@ -41,15 +41,6 @@
         $badges[] = ['name' => $name, 'icon' => 'fa-certificate', 'bg' => '#ecfdf5', 'text' => '#047857', 'border' => '#a7f3d0'];
     }
 
-    // Builder Mock Fallback if no badges found — only in admin builder
-    if (empty($badges) && isBuilder()) {
-        $badges = [
-            ['name' => 'Academic Books', 'icon' => 'fa-layer-group', 'bg' => '#eef2ff', 'text' => '#4338ca', 'border' => '#e0e7ff'],
-            ['name' => 'NEET / JEE', 'icon' => 'fa-graduation-cap', 'bg' => '#faf5ff', 'text' => '#7e22ce', 'border' => '#f3e8ff'],
-            ['name' => 'Class 10', 'icon' => 'fa-book-open', 'bg' => '#eff6ff', 'text' => '#1d4ed8', 'border' => '#dbeafe'],
-            ['name' => 'Physics', 'icon' => 'fa-flask', 'bg' => '#fffbeb', 'text' => '#b45309', 'border' => '#fef3c7'],
-        ];
-    }
 @endphp
 
 @if(count($badges) > 0)

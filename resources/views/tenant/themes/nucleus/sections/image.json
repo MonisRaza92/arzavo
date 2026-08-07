@@ -1,5 +1,5 @@
 {
-    "type": "image",
+    "view": "image",
     "name": "Image: Full Width",
     "icon": "fa-image",
     "order": 8,

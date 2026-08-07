@@ -1,5 +1,5 @@
 {
-    "type": "data_badge",
+    "view": "data_badge",
     "name": "Badges",
     "icon": "fa-tags",
     "category": "Content",
@@ -51,4 +51,3 @@
         }
     ]
 }
-
