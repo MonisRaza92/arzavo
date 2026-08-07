@@ -19,8 +19,12 @@ if (!function_exists('media')) {
             return null;
         }
 
-        $theme = app('currentThemeSlug');
-        $path = str_replace("themes/{$theme}/", '', $path);
+        $theme = app()->bound('currentThemeSlug') 
+            ? app('currentThemeSlug') 
+            : (app()->bound('activeTheme') ? app('activeTheme')->theme_slug : null);
+        if ($theme) {
+            $path = str_replace("themes/{$theme}/", '', $path);
+        }
 
         // Clean the path
         $path = ltrim($path, '/');

@@ -130,8 +130,10 @@ class ThemePageController extends Controller
     {
         $layout = $this->getLayoutForPage($page);
 
-        $theme = app('currentThemeSlug');
-        $themeId = app('currentThemeId');
+        $theme = app()->bound('currentThemeSlug') 
+            ? app('currentThemeSlug') 
+            : (app()->bound('activeTheme') ? app('activeTheme')->theme_slug : 'nucleus');
+        $themeId = app()->bound('currentThemeId') ? app('currentThemeId') : null;
 
         return view($view ?? 'tenant.themes.render', compact('page', 'layout', 'theme', 'themeId'));
     }

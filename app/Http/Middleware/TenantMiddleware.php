@@ -47,7 +47,7 @@ class TenantMiddleware
         $hostWithoutWww = str_starts_with($host, 'www.') ? substr($host, 4) : $host;
         $baseWithoutWww = str_starts_with($base, 'www.') ? substr($base, 4) : $base;
 
-        return $hostWithoutWww === $baseWithoutWww;
+        return $hostWithoutWww === $baseWithoutWww || $hostWithoutWww === 'super.' . $baseWithoutWww;
     }
 
     private function resolveTenant($host)

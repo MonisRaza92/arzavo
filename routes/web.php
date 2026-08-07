@@ -148,7 +148,7 @@ if (!function_exists('registerDomains')) {
                         "Disallow: /preview/",
                         "",
                     ]);
-                    
+
                     if ($settings['sitemap_enabled'] ?? 1) {
                         $content .= "\nSitemap: " . url('/sitemap.xml');
                     }

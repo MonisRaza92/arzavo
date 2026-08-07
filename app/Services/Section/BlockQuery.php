@@ -81,7 +81,9 @@ class BlockQuery implements \Countable
      */
     public function filter(string ...$types): array
     {
-        $theme = app('currentThemeSlug');
+        $theme = app()->bound('currentThemeSlug') 
+            ? app('currentThemeSlug') 
+            : (app()->bound('activeTheme') ? app('activeTheme')->theme_slug : 'nucleus');
         $blocks = $this->section->getBlocks();
         $results = [];
 
@@ -153,7 +155,9 @@ class BlockQuery implements \Countable
 
     public function render(array $extra = []): string
     {
-        $theme = app('currentThemeSlug');
+        $theme = app()->bound('currentThemeSlug') 
+            ? app('currentThemeSlug') 
+            : (app()->bound('activeTheme') ? app('activeTheme')->theme_slug : 'nucleus');
         $html = '';
 
         // ✅ SAFE ACCESS (no direct property access)

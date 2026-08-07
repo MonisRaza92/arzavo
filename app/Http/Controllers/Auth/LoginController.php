@@ -58,6 +58,10 @@ class LoginController extends Controller
             return url('/');
         }
 
+        if ($user->role === 'super_admin') {
+            return route('arzavo.admin.users.index');
+        }
+
         // tenants load karo (safe way)
         $tenants = $user->tenants()->get();
 
@@ -78,13 +82,7 @@ class LoginController extends Controller
 
     private function tenantDashboardUrl($tenant)
     {
-        $scheme = request() ? request()->getScheme() : (parse_url(config('app.url'), PHP_URL_SCHEME) ?: 'https');
-        
-        if ($tenant->custom_domain && $tenant->domain_verified) {
-            return "{$scheme}://{$tenant->custom_domain}/admin/dashboard";
-        }
-
-        return "{$scheme}://{$tenant->subdomain}/admin/dashboard";
+        return route('admin.dashboard.index', $tenant);
     }
     public function register()
     {

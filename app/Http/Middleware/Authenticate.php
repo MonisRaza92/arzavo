@@ -12,9 +12,20 @@ class Authenticate
         $mainDomain = trim(config('app.domain'));
         $currentDomain = trim($request->getHost());
 
+        $baseDomain = config('app.domain');
+        if (str_starts_with($baseDomain, 'www.')) {
+            $baseDomain = substr($baseDomain, 4);
+        }
+        $superDomain = 'super.' . $baseDomain;
+
         // ✅ FIX: GUARD SPECIFIC CHECK
-        if ($currentDomain === $mainDomain || $currentDomain === "www." . $mainDomain) {
-            // Main domain - web guard check
+        if (
+            $currentDomain === $mainDomain || 
+            $currentDomain === "www." . $mainDomain ||
+            $currentDomain === $superDomain ||
+            $currentDomain === "www." . $superDomain
+        ) {
+            // Main / Super domain - web guard check
             if (!Auth::guard('web')->check()) {
                 return redirect()->route('login.form');
             }

@@ -42,9 +42,9 @@
          x-data="{ annual: true }">
     <div class="container">
         {{-- Sync toggle (re-use same state, or use a shared parent in production) --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach($plans as $plan)
-            <div class="relative rounded-lg overflow-hidden flex flex-col {{ $plan->is_popular ? 'border-2 border-accent' : 'border border-gray-200' }} bg-white">
+            <div class="relative rounded-lg overflow-hidden flex flex-col {{ $plan->is_popular ? 'border border-accent!' : 'border' }} bg-white">
 
                 @if($plan->is_popular)
                 <div class="text-center py-2 bg-accent">

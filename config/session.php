@@ -156,7 +156,13 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', null),
+    'domain' => env('SESSION_DOMAIN', (function () {
+        $host = config('app.domain', 'arzavo.com');
+        if (str_starts_with($host, 'www.')) {
+            $host = substr($host, 4);
+        }
+        return '.' . ltrim($host, '.');
+    })()),
 
     /*
     |--------------------------------------------------------------------------

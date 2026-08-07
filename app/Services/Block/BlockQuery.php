@@ -53,7 +53,9 @@ class BlockQuery
             return '';
         }
 
-        $theme = app('currentThemeSlug');
+        $theme = app()->bound('currentThemeSlug') 
+            ? app('currentThemeSlug') 
+            : (app()->bound('activeTheme') ? app('activeTheme')->theme_slug : 'nucleus');
         $html = '';
 
         foreach ($blocks as $block) {

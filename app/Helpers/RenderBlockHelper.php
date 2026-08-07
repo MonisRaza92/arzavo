@@ -5,7 +5,9 @@ if (!function_exists('renderBlocks')) {
 
     function renderBlocks(array $blocks, array $context = [], ?string $theme = null): string
     {
-        $theme = $theme ?? app('currentThemeSlug');
+        $theme = $theme 
+            ?? (app()->bound('currentThemeSlug') ? app('currentThemeSlug') : null)
+            ?? (app()->bound('activeTheme') ? app('activeTheme')->theme_slug : 'nucleus');
         $html = '';
 
         // 👇 CENTRAL SKIP LIST
@@ -57,7 +59,9 @@ if (!function_exists('renderManualBlocks')) {
         ?string $theme = null
     ): string {
 
-        $theme = $theme ?? app('currentThemeSlug');
+        $theme = $theme 
+            ?? (app()->bound('currentThemeSlug') ? app('currentThemeSlug') : null)
+            ?? (app()->bound('activeTheme') ? app('activeTheme')->theme_slug : 'nucleus');
 
         // normalize → always array
         $types = (array) $types;
