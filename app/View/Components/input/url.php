@@ -23,64 +23,88 @@ class url extends Component
         if ($cachedUrls === null) {
             $pages = [];
             if (class_exists(\App\Models\Tenant\Page::class)) {
-                $pages = \App\Models\Tenant\Page::where('is_active', true)
-                    ->where('slug', '!=', 'checkout')
-                    ->where('slug', 'not like', '%checkout%')
-                    ->get(['name', 'slug'])
-                    ->map(fn($p) => [
-                        'label' => $p->name,
-                        'url' => $p->slug === 'home' ? '/' : '/' . $p->slug
-                    ])->toArray();
+                try {
+                    $pages = \App\Models\Tenant\Page::where('is_active', true)
+                        ->where('slug', '!=', 'checkout')
+                        ->where('slug', 'not like', '%checkout%')
+                        ->get(['name', 'slug'])
+                        ->map(fn($p) => [
+                            'label' => $p->name,
+                            'url' => $p->slug === 'home' ? '/' : '/' . $p->slug
+                        ])->toArray();
+                } catch (\Throwable $e) {
+                    $pages = [];
+                }
             }
 
             $courses = [];
             if (class_exists(\App\Models\Tenant\Course::class)) {
-                $courses = \App\Models\Tenant\Course::where('status', 'published')
-                    ->get(['title', 'slug'])
-                    ->map(fn($c) => [
-                        'label' => $c->title,
-                        'url' => '/course?slug=' . $c->slug
-                    ])->toArray();
+                try {
+                    $courses = \App\Models\Tenant\Course::where('status', 'published')
+                        ->get(['title', 'slug'])
+                        ->map(fn($c) => [
+                            'label' => $c->title,
+                            'url' => '/course?slug=' . $c->slug
+                        ])->toArray();
+                } catch (\Throwable $e) {
+                    $courses = [];
+                }
             }
 
             $books = [];
             if (class_exists(\App\Models\Tenant\Book::class)) {
-                $books = \App\Models\Tenant\Book::where('is_active', true)
-                    ->get(['title', 'slug'])
-                    ->map(fn($b) => [
-                        'label' => $b->title,
-                        'url' => '/book?slug=' . $b->slug
-                    ])->toArray();
+                try {
+                    $books = \App\Models\Tenant\Book::where('is_active', true)
+                        ->get(['title', 'slug'])
+                        ->map(fn($b) => [
+                            'label' => $b->title,
+                            'url' => '/book?slug=' . $b->slug
+                        ])->toArray();
+                } catch (\Throwable $e) {
+                    $books = [];
+                }
             }
 
             $bookCategories = [];
             if (class_exists(\App\Models\Tenant\BookCategory::class)) {
-                $bookCategories = \App\Models\Tenant\BookCategory::where('status', true)
-                    ->get(['name', 'slug'])
-                    ->map(fn($bc) => [
-                        'label' => $bc->name,
-                        'url' => '/books?book_category=' . $bc->slug
-                    ])->toArray();
+                try {
+                    $bookCategories = \App\Models\Tenant\BookCategory::where('status', true)
+                        ->get(['name', 'slug'])
+                        ->map(fn($bc) => [
+                            'label' => $bc->name,
+                            'url' => '/books?book_category=' . $bc->slug
+                        ])->toArray();
+                } catch (\Throwable $e) {
+                    $bookCategories = [];
+                }
             }
 
             $academicCategories = [];
             if (class_exists(\App\Models\Tenant\AcademicCategory::class)) {
-                $academicCategories = \App\Models\Tenant\AcademicCategory::active()
-                    ->get(['name', 'slug'])
-                    ->map(fn($ac) => [
-                        'label' => $ac->name,
-                        'url' => '/courses?category=' . $ac->slug
-                    ])->toArray();
+                try {
+                    $academicCategories = \App\Models\Tenant\AcademicCategory::active()
+                        ->get(['name', 'slug'])
+                        ->map(fn($ac) => [
+                            'label' => $ac->name,
+                            'url' => '/courses?category=' . $ac->slug
+                        ])->toArray();
+                } catch (\Throwable $e) {
+                    $academicCategories = [];
+                }
             }
 
             $blogs = [];
             if (class_exists(\App\Models\Tenant\Blog::class)) {
-                $blogs = \App\Models\Tenant\Blog::where('status', 'published')
-                    ->get(['title', 'slug'])
-                    ->map(fn($bl) => [
-                        'label' => $bl->title,
-                        'url' => '/blog?slug=' . $bl->slug
-                    ])->toArray();
+                try {
+                    $blogs = \App\Models\Tenant\Blog::where('status', 'published')
+                        ->get(['title', 'slug'])
+                        ->map(fn($bl) => [
+                            'label' => $bl->title,
+                            'url' => '/blog?slug=' . $bl->slug
+                        ])->toArray();
+                } catch (\Throwable $e) {
+                    $blogs = [];
+                }
             }
 
             $cachedUrls = [];
@@ -103,28 +127,6 @@ class url extends Component
             if (count($blogs)) {
                 $cachedUrls['Blog Posts'] = $blogs;
             }
-
-            /*
-            // 💡 Future Expansion: Enable these if you want to show Class Courses & Subjects in the picker
-            if (class_exists(\App\Models\Tenant\ClassCourse::class)) {
-                $classCourses = \App\Models\Tenant\ClassCourse::where('status', true)->get(['name', 'slug']);
-                if (count($classCourses)) {
-                    $cachedUrls['Course Classes'] = $classCourses->map(fn($cc) => [
-                        'label' => $cc->name,
-                        'url' => '/courses?class=' . $cc->slug
-                    ])->toArray();
-                }
-            }
-            if (class_exists(\App\Models\Tenant\Subject::class)) {
-                $subjects = \App\Models\Tenant\Subject::where('status', true)->get(['name', 'slug']);
-                if (count($subjects)) {
-                    $cachedUrls['Course Subjects'] = $subjects->map(fn($s) => [
-                        'label' => $s->name,
-                        'url' => '/courses?subject=' . $s->slug
-                    ])->toArray();
-                }
-            }
-            */
         }
 
         $this->urls = $cachedUrls;

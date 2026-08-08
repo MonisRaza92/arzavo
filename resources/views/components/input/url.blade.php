@@ -1,4 +1,8 @@
-@props(['name', 'label' => '', 'value' => '', 'placeholder' => 'Paste link or select', 'class' => '', 'urls' => [],])
+@props(['name', 'label' => '', 'value' => '', 'placeholder' => 'Paste link or select', 'class' => '', 'urls' => null])
+
+@php
+    $urls = (is_array($urls) && count($urls) > 0) ? $urls : ((new \App\View\Components\input\url())->urls ?? []);
+@endphp
 
 <x-input.wrapper :label="$label">
     <div class="relative url-picker">

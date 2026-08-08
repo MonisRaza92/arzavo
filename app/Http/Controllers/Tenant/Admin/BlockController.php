@@ -14,7 +14,6 @@ class BlockController
     {
         $request->validate([
             'block_type' => 'required|string',
-            'schema' => 'required|string',
             'block_name' => 'required|string',
         ]);
 
@@ -42,7 +41,6 @@ class BlockController
         $block = $this->buildBlock(
             $request->block_type,
             $request->block_name,
-            $request->schema ?? null,
             $themeSlug,
             count($section['blocks']) + 1
         );
@@ -61,10 +59,10 @@ class BlockController
         ])->render();
     }
 
-    private function buildBlock(string $type, string $name, string $schemaName, string $themeSlug, int $order)
+    private function buildBlock(string $type, string $name, string $themeSlug, int $order)
     {
         $blockConfig = [
-            'type' => $schemaName,
+            'type' => $type,
             'settings' => [],
         ];
 
@@ -81,7 +79,6 @@ class BlockController
     {
         $request->validate([
             'block_type' => 'required|string',
-            'schema' => 'required|string',
             'block_name' => 'required|string'
         ]);
 
@@ -108,7 +105,7 @@ class BlockController
             $section =& $layout['sections'][$found['index']];
         }
 
-        $blockPath = $request->schema ?? $request->block_type;
+        $blockPath = $request->block_type;
         // 📄 Load schema
         $jsonPath = resource_path("views/tenant/themes/{$themeSlug}/blocks/{$blockPath}.json");
 
@@ -123,7 +120,6 @@ class BlockController
         $newBlock = $this->buildBlock(
             $request->block_type,
             $request->block_name,
-            $request->schema,
             $themeSlug,
             1 // Order will be corrected in recursion
         );

@@ -607,11 +607,25 @@ function openUrlPicker(input) {
     picker.classList.remove('hidden');
 
     // reset view
-    picker.querySelector('.url-back').classList.add('hidden');
+    picker.querySelector('.url-back')?.classList.add('hidden');
 
     picker.querySelectorAll('.url-links').forEach(l => l.classList.add('hidden'));
 
-    picker.querySelector('.url-groups').classList.remove('hidden');
+    picker.querySelector('.url-groups')?.classList.remove('hidden');
+
+    // Calculate available space above and below input
+    const rect = input.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    const estimatedPopupHeight = 280;
+
+    if (spaceBelow < estimatedPopupHeight && spaceAbove > spaceBelow) {
+        picker.classList.remove('top-full', 'mt-1.5');
+        picker.classList.add('bottom-full', 'mb-1.5');
+    } else {
+        picker.classList.remove('bottom-full', 'mb-1.5');
+        picker.classList.add('top-full', 'mt-1.5');
+    }
 
 }
 
@@ -688,13 +702,28 @@ document.addEventListener('input', e => {
 
     if (!e.target.classList.contains('url-search')) return;
 
-    const q = e.target.value.toLowerCase();
+    const q = e.target.value.toLowerCase().trim();
     const popup = e.target.closest('.url-popup');
 
-    popup.querySelectorAll('.url-links button').forEach(btn => {
-        btn.style.display =
-            btn.textContent.toLowerCase().includes(q) ? 'block' : 'none';
-    });
+    if (q !== '') {
+        popup.querySelector('.url-groups')?.classList.add('hidden');
+        popup.querySelector('.url-back')?.classList.remove('hidden');
+
+        popup.querySelectorAll('.url-links').forEach(groupEl => {
+            let hasMatch = false;
+            groupEl.querySelectorAll('button').forEach(btn => {
+                const match = btn.textContent.toLowerCase().includes(q);
+                btn.style.display = match ? 'flex' : 'none';
+                if (match) hasMatch = true;
+            });
+            groupEl.classList.toggle('hidden', !hasMatch);
+        });
+    } else {
+        const backBtn = popup.querySelector('.url-back');
+        if (backBtn && typeof urlBack === 'function') {
+            urlBack(backBtn);
+        }
+    }
 
 });
 
