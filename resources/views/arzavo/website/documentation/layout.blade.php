@@ -145,4 +145,39 @@
     </div>
 </div>
 
+@php
+$breadcrumbItems = [
+    [
+        '@type' => 'ListItem',
+        'position' => 1,
+        'name' => 'Home',
+        'item' => url('/')
+    ],
+    [
+        '@type' => 'ListItem',
+        'position' => 2,
+        'name' => 'Documentation',
+        'item' => route('documentation.index')
+    ]
+];
+
+if (request()->routeIs('documentation.show')) {
+    $breadcrumbItems[] = [
+        '@type' => 'ListItem',
+        'position' => 3,
+        'name' => ucwords(str_replace('-', ' ', request()->route('slug'))),
+        'item' => url()->current()
+    ];
+}
+
+$breadcrumbSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => $breadcrumbItems
+];
+@endphp
+<script type="application/ld+json">
+{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+
 @endsection

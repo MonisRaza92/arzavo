@@ -123,6 +123,30 @@
     </div>
 </section>
 
+@php
+$faqSchemaEntities = [];
+foreach (array_merge($faqsLeft, $faqsRight) as $item) {
+    $faqSchemaEntities[] = [
+        '@type' => 'Question',
+        'name' => $item['q'],
+        'acceptedAnswer' => [
+            '@type' => 'Answer',
+            'text' => $item['a']
+        ]
+    ];
+}
+
+$faqPageSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => $faqSchemaEntities
+];
+@endphp
+
+<script type="application/ld+json">
+{!! json_encode($faqPageSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+
 <style>
 .{ opacity:0; transform:translateY(15px); transition:opacity .5s ease,transform .5s ease; transition-delay:var(--reveal-delay,0s); }
 ..visible { opacity:1; transform:translateY(0); }
