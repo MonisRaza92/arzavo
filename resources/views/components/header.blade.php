@@ -17,7 +17,7 @@
 
     $defaultDesc = 'Welcome to ' . $siteName . '. Explore our courses, books, educational programs and resources online.';
     $pageMetaDesc = View::hasSection('meta_description') ? html_entity_decode(View::yieldContent('meta_description'), ENT_QUOTES, 'UTF-8') : ($settings['meta_description'] ?? $defaultDesc);
-    $pageOgImage = View::hasSection('og_image') ? View::yieldContent('og_image') : url(media($customizes['favicon'] ?? $textToImageUrl));
+    $pageOgImage = View::hasSection('og_image') ? View::yieldContent('og_image') : url(media($customizes['logo'] ?? $textToImageUrl));
     $pageKeywords = View::hasSection('meta_keywords') ? html_entity_decode(View::yieldContent('meta_keywords'), ENT_QUOTES, 'UTF-8') : ($settings['meta_keywords'] ?? $siteName . ', school, coaching institute, education, courses, books');
     $pageTitle = View::hasSection('title') ? html_entity_decode(View::yieldContent('title'), ENT_QUOTES, 'UTF-8') . ' • ' . $siteName : ($settings['meta_title'] ?? $siteName);
 @endphp

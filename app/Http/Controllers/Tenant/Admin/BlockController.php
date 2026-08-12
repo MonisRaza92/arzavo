@@ -212,27 +212,14 @@ class BlockController
             $section =& $found['layout']['sections'][$found['sectionIndex']];
         }
 
-        // 🔥 Recursive block search (nested support)
-        $foundBlock = $this->findBlockRecursive($section['blocks'], $blockId);
+        // 🔥 Recursive block update (nested support)
+        $updated = $this->updateBlockRecursive($section['blocks'], $blockId, $validated);
 
-        if (!$foundBlock) {
+        if (!$updated) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Block not found'
             ], 404);
-        }
-
-        // ✅ Merge settings
-        if (!empty($validated['settings'])) {
-            $foundBlock['block']['settings'] = array_merge(
-                $foundBlock['block']['settings'] ?? [],
-                $validated['settings']
-            );
-        }
-
-        // ✅ Update color scheme
-        if (array_key_exists('color_scheme', $validated)) {
-            $foundBlock['block']['color_scheme'] = $validated['color_scheme'];
         }
 
         // 💾 Save correct design
@@ -375,18 +362,15 @@ class BlockController
             $section =& $found['layout']['sections'][$found['sectionIndex']];
         }
 
-        // 🔥 Recursive search (nested-safe)
-        $result = $this->findBlockRecursive($section['blocks'], $blockId);
+        // 🔥 Recursive toggle (nested-safe)
+        $newActiveState = $this->toggleActiveBlockRecursive($section['blocks'], $blockId);
 
-        if (!$result) {
+        if ($newActiveState === null) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Block not found'
             ], 404);
         }
-
-        // ✅ Toggle
-        $result['block']['is_active'] = !($result['block']['is_active'] ?? true);
 
         // 💾 Save in correct design
         $found['design']->update([
@@ -395,28 +379,53 @@ class BlockController
 
         return response()->json([
             'status' => 'success',
-            'is_active' => $result['block']['is_active'],
+            'is_active' => $newActiveState,
             'refresh' => true
         ]);
     }
 
 
-    private function findBlockRecursive(array &$blocks, string $blockId): ?array
+    private function updateBlockRecursive(array &$blocks, string $blockId, array $validated): bool
     {
         foreach ($blocks as $index => &$block) {
-
             if ($block['id'] === $blockId) {
-                return [
-                    'block' => &$block,
-                    'index' => $index,
-                    'parent' => &$blocks,
-                ];
+                // ✅ Merge settings
+                if (!empty($validated['settings'])) {
+                    $block['settings'] = array_merge(
+                        $block['settings'] ?? [],
+                        $validated['settings']
+                    );
+                }
+
+                // ✅ Update color scheme
+                if (array_key_exists('color_scheme', $validated)) {
+                    $block['color_scheme'] = $validated['color_scheme'];
+                }
+                return true;
             }
 
             if (!empty($block['blocks']) && is_array($block['blocks'])) {
-                $found = $this->findBlockRecursive($block['blocks'], $blockId);
-                if ($found) {
-                    return $found;
+                if ($this->updateBlockRecursive($block['blocks'], $blockId, $validated)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function toggleActiveBlockRecursive(array &$blocks, string $blockId): ?bool
+    {
+        foreach ($blocks as $index => &$block) {
+            if ($block['id'] === $blockId) {
+                $block['is_active'] = !($block['is_active'] ?? true);
+                return $block['is_active'];
+            }
+
+            if (!empty($block['blocks']) && is_array($block['blocks'])) {
+                $result = $this->toggleActiveBlockRecursive($block['blocks'], $blockId);
+                if ($result !== null) {
+                    return $result;
                 }
             }
         }

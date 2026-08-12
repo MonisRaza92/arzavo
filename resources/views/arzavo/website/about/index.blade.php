@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'About Us - Arzavo Educational Platform')
+@section('title', 'About Arzavo by Arzaq Insights - Our Story & Mission')
 @section('content')
 @include('arzavo.website.partials.navbar')
 
@@ -70,7 +70,7 @@
                             <div>
                                 <h4 class="text-sm font-semibold text-dark mb-2">The Observation</h4>
                                 <p class="text-sm text-dark/60 leading-relaxed">
-                                    Founded in 2024, Arzavo emerged from a simple observation: educational institutions were struggling with outdated, inflexible platforms that couldn't adapt to their unique workflows. Schools and coaching centers were forced to compromise their vision due to technological constraints.
+                                    Founded in 2024 by <strong class="text-dark">Arzaq Insights</strong>, Arzavo emerged from a simple observation: educational institutions were struggling with outdated, inflexible platforms that couldn't adapt to their unique workflows. Schools and coaching centers were forced to compromise their vision due to technological constraints.
                                 </p>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
             <div class="space-y-0">
                 <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-6">Timeline</p>
                 @php $timeline = [
-                    ['year' => '2024 Q1', 'label' => 'Foundation', 'text' => 'Arzavo was founded with a vision to make institutional-grade software accessible to every school and coaching center.'],
+                    ['year' => '2024 Q1', 'label' => 'Foundation', 'text' => 'Arzaq Insights founded Arzavo with a vision to make institutional-grade software accessible to every school and coaching center.'],
                     ['year' => '2024 Q3', 'label' => 'First 50 Tenants', 'text' => 'Rapid adoption by coaching institutes, leading to our first major product release with LMS integration.'],
                     ['year' => '2025 Q1', 'label' => 'Scale & Growth', 'text' => 'Crossed 500 active tenants and 50,000 students. Launched digital academy features and payment integrations.'],
                     ['year' => 'Now', 'label' => 'Enterprise Ready', 'text' => 'Serving schools, coaching institutes, and digital academies across India with a world-class feature set.'],
