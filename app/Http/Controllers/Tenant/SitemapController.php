@@ -106,7 +106,7 @@ class SitemapController
         */
         if (class_exists(\App\Models\Tenant\Book::class)) {
             \App\Models\Tenant\Book::query()
-                ->where('status', 'published')
+                ->where('is_active', true)
                 ->select('slug', 'updated_at')
                 ->chunk(100, function ($books) use ($add) {
                     foreach ($books as $book) {
@@ -127,7 +127,7 @@ class SitemapController
         */
         if (class_exists(\App\Models\Tenant\BookCategory::class)) {
             \App\Models\Tenant\BookCategory::query()
-                ->where('status', 'published')
+                ->where('status', true)
                 ->select('slug', 'updated_at')
                 ->chunk(100, function ($cats) use ($add) {
                     foreach ($cats as $cat) {
