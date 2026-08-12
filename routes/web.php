@@ -79,6 +79,24 @@ foreach ($mainDomains as $mainDomain) {
         Route::get('/trust', [HomeController::class, 'trust'])->name('trust');
         Route::get('/legal-notices', [HomeController::class, 'legal'])->name('legal');
 
+        // Main domain Sitemap & Robots.txt
+        Route::get('/sitemap.xml', [Arzavo\SitemapController::class, 'index'])->name('sitemap');
+        Route::get('/robots.txt', function () {
+            $content = implode("\n", [
+                "User-agent: *",
+                "Allow: /",
+                "",
+                "Disallow: /admin/",
+                "Disallow: /auth/",
+                "Disallow: /dashboard",
+                "Disallow: /checkout/",
+                "",
+                "Sitemap: " . url('/sitemap.xml'),
+            ]);
+
+            return response($content, 200)->header('Content-Type', 'text/plain');
+        });
+
 
         Route::get('/pay', [PaymentController::class, 'index']);
         Route::get('/pay/{tenant}', [PaymentController::class, 'pay']);
