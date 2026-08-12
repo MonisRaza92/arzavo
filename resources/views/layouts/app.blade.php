@@ -52,48 +52,53 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
     {{-- Organization + SoftwareApplication Structured Data --}}
+    @php
+    $orgSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Organization',
+        'name' => 'Arzaq Insights',
+        'url' => 'https://arzaqinsights.com',
+        'logo' => url(media('images/logo/icon-dark.png')),
+        'brand' => [
+            '@type' => 'Brand',
+            'name' => 'Arzavo',
+        ],
+        'sameAs' => [
+            'https://arzaqinsights.com',
+            'https://arzavo.com',
+        ],
+    ];
+
+    $appSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'SoftwareApplication',
+        'name' => 'Arzavo',
+        'url' => 'https://arzavo.com',
+        'applicationCategory' => 'EducationalApplication',
+        'operatingSystem' => 'Web',
+        'description' => 'Arzavo by Arzaq Insights — the complete ERP & LMS platform for schools, coaching centers, and digital academies.',
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => '0',
+            'priceCurrency' => 'INR',
+        ],
+        'creator' => [
+            '@type' => 'Organization',
+            'name' => 'Arzaq Insights',
+            'url' => 'https://arzaqinsights.com',
+        ],
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'Arzaq Insights',
+            'url' => 'https://arzaqinsights.com',
+        ],
+    ];
+    @endphp
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Arzaq Insights",
-        "url": "https://arzaqinsights.com",
-        "logo": "{{ url(media('images/logo/icon-dark.png')) }}",
-        "brand": {
-            "@type": "Brand",
-            "name": "Arzavo"
-        },
-        "sameAs": [
-            "https://arzaqinsights.com",
-            "https://arzavo.com"
-        ]
-    }
+    {!! json_encode($orgSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "Arzavo",
-        "url": "https://arzavo.com",
-        "applicationCategory": "EducationalApplication",
-        "operatingSystem": "Web",
-        "description": "Arzavo by Arzaq Insights — the complete ERP & LMS platform for schools, coaching centers, and digital academies.",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "INR"
-        },
-        "creator": {
-            "@type": "Organization",
-            "name": "Arzaq Insights",
-            "url": "https://arzaqinsights.com"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Arzaq Insights",
-            "url": "https://arzaqinsights.com"
-        }
-    }
+    {!! json_encode($appSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
 </head>
 
