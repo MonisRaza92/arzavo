@@ -35,10 +35,10 @@ return [
         ],
     ],
 
-    'cashfree' => [
-        'env' => env('CASHFREE_ENV', 'sandbox'),
-        'app_id' => env('CASHFREE_APP_ID'),
-        'secret' => env('CASHFREE_SECRET_KEY'),
+    'payu' => [
+        'key' => env('PAYU_KEY', env('PAYU_MERCHANT_KEY', '')),
+        'salt' => env('PAYU_SALT', env('PAYU_MERCHANT_SALT', '')),
+        'env' => env('PAYU_ENV', env('APP_ENV') === 'production' ? 'production' : 'test'),
     ],
 
     'google' => [

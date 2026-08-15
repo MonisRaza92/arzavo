@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Arzavo;
 use App\Models\Arzavo\Tenant;
 use Illuminate\Http\Request;
 use App\Models\Arzavo\Invoice;
-use App\Services\PaymentService;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Arzavo\Plan;
 use App\Models\Arzavo\Payment;
+use App\Models\Arzavo\Subscription;
+use App\Services\PayUService;
+use App\Services\PaymentService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController
 {
@@ -43,8 +46,7 @@ class PaymentController
             return response()->json($response);
 
         } catch (\Throwable $e) {
-
-            \Log::error('Payment Error:', [
+            Log::error('Payment Error:', [
                 'message' => $e->getMessage(),
             ]);
 
@@ -55,96 +57,26 @@ class PaymentController
         }
     }
 
-    public function webhook(Request $request)
-    {
-        \Log::info('Cashfree Webhook:', $request->all());
-
-        $data = $request->all();
-        \Log::info('RAW DATA:', [
-            'order' => $request->all()['order'] ?? null,
-            'data' => $request->all()['data'] ?? null,
-        ]);
-
-        $order = $data['order'] ?? $data['data']['order'] ?? null;
-        $paymentData = $data['payment'] ?? $data['data']['payment'] ?? null;
-
-        $orderId = $order['order_id'] ?? null;
-        $status = $paymentData['payment_status'] ?? null;
-
-        if (!$orderId) {
-            return response()->json(['status' => 'invalid']);
-        }
-
-        $payment = Payment::where('order_id', $orderId)->first();
-
-        if (!$payment) {
-            return response()->json(['status' => 'payment not found']);
-        }
-
-        if ($payment->status === 'paid') {
-            return response()->json(['status' => 'already processed']);
-        }
-
-        // 🔥 FIX HERE
-        if ($status === 'SUCCESS' || $status === 'PAID') {
-
-            $payment->update([
-                'status' => 'paid',
-                'payment_id' => $paymentData['cf_payment_id'] ?? null
-            ]);
-
-            $invoice = $payment->invoice;
-
-            $invoice->update([
-                'status' => 'paid'
-            ]);
-
-            // 🔥 NEW: ACTIVATE PLAN
-            $meta = $invoice->meta ?? [];
-
-            if (($meta['type'] ?? null) === 'plan_upgrade') {
-
-                $planId = $meta['plan_id'] ?? null;
-
-                if ($planId) {
-                    $tenant = $invoice->tenant;
-                    $subscription = $tenant->subscription;
-
-                    if ($subscription) {
-                        $subscription->update([
-                            'plan_id' => $planId,
-                            'status' => 'active',
-                            'starts_at' => now(),
-                            'ends_at' => now()->addDays(30),
-                            'trial_ends_at' => null,
-                        ]);
-                    } else {
-                        \App\Models\Arzavo\Subscription::create([
-                            'tenant_id' => $tenant->id,
-                            'plan_id' => $planId,
-                            'status' => 'active',
-                            'starts_at' => now(),
-                            'ends_at' => now()->addDays(30),
-                        ]);
-                    }
-                }
-            }
-        }
-
-        return response()->json(['status' => 'ok']);
-    }
-    public function planSession(Request $request, Plan $plan)
+    /**
+     * Initialize PayU Payment Session from Checkout
+     */
+    public function payuInit(Request $request, Plan $plan)
     {
         try {
-            $tenantId = $request->tenant_id;
+            $request->validate([
+                'tenant_id' => 'required|exists:tenants,id',
+                'first_name' => 'required|string|max:100',
+                'last_name' => 'required|string|max:100',
+                'email' => 'required|email|max:150',
+                'phone' => 'required|string|max:20',
+            ]);
 
-            if (!$tenantId) {
-                return response()->json(['error' => 'Tenant required'], 422);
-            }
+            $tenantId = $request->tenant_id;
+            $billingCycle = $request->input('billing_cycle', 'monthly');
 
             $tenant = Tenant::findOrFail($tenantId);
 
-            // ❌ Same plan dubara purchase mat hone do
+            // ❌ Check if already active on same plan
             if (
                 $tenant->subscription &&
                 $tenant->subscription->plan_id == $plan->id &&
@@ -152,52 +84,62 @@ class PaymentController
                 (!$tenant->subscription->ends_at || now()->lessThan($tenant->subscription->ends_at))
             ) {
                 return response()->json([
-                    'error' => 'You are already on this plan'
+                    'error' => 'This tenant is already active on this plan.'
                 ], 400);
             }
 
-            $existingInvoice = Invoice::where('tenant_id', $tenant->id)
-                ->where('status', 'pending')
-                ->latest()
-                ->first();
+            $baseAmount = ($billingCycle === 'yearly' && $plan->yearly_price) ? $plan->yearly_price : $plan->monthly_price;
+            $taxAmount = round($baseAmount * 0.18, 2);
+            $totalAmount = round($baseAmount + $taxAmount, 2);
 
-            if ($existingInvoice) {
-                return response()->json([
-                    'payment_session_id' => app(PaymentService::class)->createPayment($existingInvoice)['payment_session_id']
-                ]);
-            }
-
-            // ✅ STEP 1: CREATE INVOICE
+            // ✅ STEP 1: CREATE OR REUSE INVOICE
             $invoice = Invoice::create([
                 'tenant_id' => $tenant->id,
-                'total_amount' => $plan->monthly_price,
+                'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'meta' => [
                     'plan_id' => $plan->id,
-                    'type' => 'plan_upgrade'
+                    'type' => 'plan_upgrade',
+                    'billing_cycle' => $billingCycle,
+                    'base_amount' => $baseAmount,
+                    'tax' => $taxAmount,
+                    'customer' => [
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'email' => $request->email,
+                        'phone' => $request->phone,
+                        'address_line1' => $request->address_line1,
+                        'city' => $request->city,
+                        'state' => $request->state,
+                        'pincode' => $request->pincode,
+                        'gstin' => $request->gstin,
+                    ]
                 ]
             ]);
 
-            // ✅ STEP 2: CALL PAYMENT SERVICE FIRST
-            $response = app(PaymentService::class)->createPayment($invoice);
-
-            if (
-                empty($response['payment_session_id']) ||
-                empty($response['order_id'])
-            ) {
-                throw new \Exception('Invalid payment response from gateway');
-            }
-
+            // ✅ STEP 2: PREPARE PAYU HOSTED PARAMS
+            $payuService = app(PayUService::class);
+            $paymentData = $payuService->preparePayment(
+                $invoice,
+                $plan,
+                [
+                    'first_name' => $request->first_name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                ],
+                $billingCycle
+            );
 
             return response()->json([
-                'payment_session_id' => $response['payment_session_id']
+                'success' => true,
+                'action' => $paymentData['action'],
+                'params' => $paymentData['params'],
             ]);
 
         } catch (\Throwable $e) {
-
-            \Log::error('PLAN SESSION ERROR', [
+            Log::error('PAYU INIT ERROR', [
                 'message' => $e->getMessage(),
-                'tenant_id' => $tenant->id ?? null,
+                'tenant_id' => $request->tenant_id ?? null,
                 'plan_id' => $plan->id ?? null,
             ]);
 
@@ -207,11 +149,100 @@ class PaymentController
             ], 500);
         }
     }
-    // public function checkout(Request $request)
-    // {
-    //     dd($request->all());
-    //     $plan = Plan::findOrFail($request->plan_id);
 
-    //     return view('tenant.admin.billing.checkout', compact('plan'));
-    // }
+    /**
+     * PayU Success Callback
+     */
+    public function payuSuccess(Request $request)
+    {
+        Log::info('PayU Success Callback Received:', $request->all());
+
+        $payuService = app(PayUService::class);
+
+        if (!$payuService->verifyResponseHash($request->all())) {
+            Log::error('PayU Verification Hash Failed on Success', $request->all());
+            return redirect()->route('pricing')->with('error', 'Payment verification failed due to hash signature mismatch.');
+        }
+
+        $txnid = $request->txnid;
+        $status = strtolower($request->status ?? '');
+        $invoiceId = $request->udf2;
+        $planId = $request->udf3;
+        $billingCycle = $request->udf4 ?? 'monthly';
+        $tenantId = $request->udf1;
+
+        if ($status === 'success') {
+            $payment = Payment::where('order_id', $txnid)->first();
+
+            if ($payment) {
+                $payment->update([
+                    'status' => 'paid',
+                    'payment_id' => $request->mihpayid ?? $request->bank_ref_num ?? $txnid,
+                ]);
+            }
+
+            $invoice = Invoice::find($invoiceId);
+            if ($invoice) {
+                $invoice->update(['status' => 'paid']);
+            }
+
+            // ✅ ACTIVATE SUBSCRIPTION
+            if ($tenantId && $planId) {
+                $tenant = Tenant::find($tenantId);
+                if ($tenant) {
+                    $endsAt = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
+
+                    $tenant->subscription()->updateOrCreate(
+                        ['tenant_id' => $tenant->id],
+                        [
+                            'plan_id' => $planId,
+                            'status' => 'active',
+                            'starts_at' => now(),
+                            'ends_at' => $endsAt,
+                            'trial_ends_at' => null,
+                        ]
+                    );
+                }
+            }
+
+            return redirect()->route('dashboard')->with('success', 'Congratulations! Your payment was successful and your plan is now active.');
+        }
+
+        return redirect()->route('pricing')->with('error', 'Payment could not be completed.');
+    }
+
+    /**
+     * PayU Failure Callback
+     */
+    public function payuFailure(Request $request)
+    {
+        Log::warning('PayU Failure Callback Received:', $request->all());
+
+        $txnid = $request->txnid;
+        $errorMessage = $request->error_Message ?? $request->unmappedstatus ?? 'Transaction was cancelled or failed.';
+
+        $payment = Payment::where('order_id', $txnid)->first();
+        if ($payment) {
+            $payment->update(['status' => 'failed']);
+        }
+
+        return redirect()->route('pricing')->with('error', 'Payment failed: ' . $errorMessage);
+    }
+
+    /**
+     * PayU Webhook
+     */
+    public function payuWebhook(Request $request)
+    {
+        Log::info('PayU Webhook Received:', $request->all());
+        return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * Cashfree legacy session handler (fallback)
+     */
+    public function planSession(Request $request, Plan $plan)
+    {
+        return $this->payuInit($request, $plan);
+    }
 }

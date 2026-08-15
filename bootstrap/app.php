@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->validateCsrfTokens(except: [
             'cashfree/webhook',
+            'payment/payu/success',
+            'payment/payu/failure',
+            'payment/payu/webhook',
         ]);
 
         $middleware->alias([

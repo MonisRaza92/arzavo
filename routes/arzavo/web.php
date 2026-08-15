@@ -60,6 +60,10 @@ Route::domain(config('app.domain'))->group(function () {
     Route::get('/pay/{tenant}', [PaymentController::class, 'pay']);
     Route::get('/billing/checkout', [PaymentController::class, 'checkout'])->name('billing.checkout');
     Route::post('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
+    Route::post('/tenant/payment/payu/{plan}', [PaymentController::class, 'payuInit'])->name('payment.payu.init');
+    Route::match(['get', 'post'], '/payment/payu/success', [PaymentController::class, 'payuSuccess'])->name('payment.payu.success');
+    Route::match(['get', 'post'], '/payment/payu/failure', [PaymentController::class, 'payuFailure'])->name('payment.payu.failure');
+    Route::post('/payment/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('payment.payu.webhook');
 
     // User Dashboard & Tenant Management Routes
     Route::middleware('auth:web')->group(function () {
