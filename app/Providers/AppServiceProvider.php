@@ -18,9 +18,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Tenant::observe(TenantObserver::class);
         
-        if (app()->environment('production')) {
-            URL::forceScheme('https');
-        }
+        // Enforce HTTPS everywhere (both local SSL and production)
+        URL::forceScheme('https');
         view()->composer('*', function ($view) {
 
             if (!app()->bound('currentTenant')) {

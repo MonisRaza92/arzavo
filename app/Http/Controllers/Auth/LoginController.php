@@ -58,6 +58,8 @@ class LoginController extends Controller
 
             $user->update(['last_login' => now(), 'status' => 'active']);
 
+            $request->session()->save();
+
             return redirect()->to($this->redirectTo());
         }
 
