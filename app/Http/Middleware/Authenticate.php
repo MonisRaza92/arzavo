@@ -9,15 +9,18 @@ class Authenticate
 {
     public function handle($request, Closure $next, $guard = null)
     {
-        // Check if system domain (main, super, admin, login, register)
-        if (isSystemDomain()) {
-            // Main / Super / Admin domain - web guard check
-            if (!Auth::guard('web')->check()) {
+        $targetGuard = $guard ?? (isSystemDomain() ? 'web' : 'tenant');
+
+        if (!Auth::guard($targetGuard)->check()) {
+            if (isSystemDomain()) {
+                if ($request->is('login') || $request->is('register') || $request->routeIs('login.*')) {
+                    return $next($request);
+                }
                 return redirect()->route('login.form');
-            }
-        } else {
-            // Tenant domain - tenant guard check  
-            if (!Auth::guard('tenant')->check()) {
+            } else {
+                if ($request->is('account/login') || $request->is('account/register') || $request->is('login') || $request->is('register')) {
+                    return $next($request);
+                }
                 return redirect('/account/login');
             }
         }

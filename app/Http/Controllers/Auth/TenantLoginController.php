@@ -10,8 +10,8 @@ class TenantLoginController
 {
     public function login()
     {
-        // ✅ IF ALREADY LOGGED IN -> REDIRECT TO DASHBOARD
-        if (Auth::guard('tenant')->check() || Auth::guard('web')->check()) {
+        // ✅ IF ALREADY LOGGED IN AS TENANT USER -> REDIRECT TO DASHBOARD
+        if (Auth::guard('tenant')->check()) {
             return redirect($this->redirectTo());
         }
 
@@ -27,7 +27,6 @@ class TenantLoginController
         ]);
 
         $credentials = $request->only('email', 'password');
-       
 
         // ✅ TENANT GUARD USE KARO
         if (Auth::guard('tenant')->attempt($credentials)) {
@@ -50,15 +49,10 @@ class TenantLoginController
 
     public function redirectTo()
     {
-        // Check web guard (admin)
-        if (Auth::guard('web')->check()) {
-            return url('/admin/dashboard');
-        }
-
         // Check tenant guard
         $user = Auth::guard('tenant')->user();
 
-        if (!$user) return url('/');
+        if (!$user) return url('/account/login');
 
         switch ($user->role) {
             case 'admin':
@@ -76,8 +70,8 @@ class TenantLoginController
 
     public function register()
     {
-        // ✅ IF ALREADY LOGGED IN -> REDIRECT TO DASHBOARD
-        if (Auth::guard('tenant')->check() || Auth::guard('web')->check()) {
+        // ✅ IF ALREADY LOGGED IN AS TENANT USER -> REDIRECT TO DASHBOARD
+        if (Auth::guard('tenant')->check()) {
             return redirect($this->redirectTo());
         }
 
