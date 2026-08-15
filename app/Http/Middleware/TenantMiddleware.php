@@ -63,7 +63,7 @@ class TenantMiddleware
         $status = strtolower(trim((string) $tenant->status));
 
         if ($status === 'suspended') {
-            abort(403, $tenant->name . 'suspended');
+            abort(403, $tenant->name . ' is currently suspended.');
         }
     }
 

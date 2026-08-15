@@ -12,8 +12,12 @@ class Authenticate
         $targetGuard = $guard ?? (isSystemDomain() ? 'web' : 'tenant');
 
         if (!Auth::guard($targetGuard)->check()) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Unauthenticated.'], 401);
+            }
+
             if (isSystemDomain()) {
-                if ($request->is('login') || $request->is('register') || $request->routeIs('login.*')) {
+                if ($request->is('login') || $request->is('register') || $request->routeIs('login.*') || $request->routeIs('register.*')) {
                     return $next($request);
                 }
                 return redirect()->route('login.form');
