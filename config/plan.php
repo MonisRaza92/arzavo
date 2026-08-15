@@ -24,13 +24,12 @@ return [
         'books_and_notes'       => 'Books & Notes Library',
 
         // People & Campus Management
-        'student_management'    => 'Students Management (Admissions, ID Cards & Profile)',
-        'staff'                 => 'Teachers & Staff Management',
-        'salary_payroll'        => 'Salary & Payroll System',
+        'student_management'    => 'Students Management',
+        'teacher_management'    => 'Teachers Management',
+        'staff_management'      => 'Staff Management',
 
         // Finance & Billing
         'online_fee_collection' => 'Online Fee Collection & Payments',
-        'finance_orders'        => 'Finance, Orders & Invoice Ledger',
 
         // Website Builder & Branding
         'custom_domain'         => 'Custom Domain Mapping',
