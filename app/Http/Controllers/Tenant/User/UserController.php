@@ -48,9 +48,14 @@ class UserController extends Controller
     public function downloads()
     {
         $user = Auth::guard('tenant')->user();
+        $entitlements = \App\Models\Tenant\UserEntitlement::with(['entitable', 'variant', 'order'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
         $orders = $this->userOrdersQuery($user)->where('payment_status', 'paid')->get();
 
-        return view('tenant.user.downloads', compact('user', 'orders'));
+        return view('tenant.user.downloads', compact('user', 'entitlements', 'orders'));
     }
 
     public function invoices()

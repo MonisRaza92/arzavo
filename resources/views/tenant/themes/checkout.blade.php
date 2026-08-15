@@ -90,7 +90,37 @@
         $itemPrice = (float) ($variant?->price ?? $item?->sale_price ?? $item?->price ?? 0);
     @endphp
 
-    <form id="checkout-form" action="{{ route('checkout.submit') }}" method="POST" enctype="multipart/form-data">
+    @if(!empty($isPurchased) && $isPurchased)
+        {{-- 🎉 ALREADY PURCHASED BANNER --}}
+        <div class="mb-8 p-6 sm:p-8 rounded-2xl bg-emerald-50 border border-emerald-200 shadow-xs text-center space-y-4">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl shadow-xs">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <span class="px-3 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800 uppercase tracking-wider">Item Already Purchased</span>
+                <h2 class="text-2xl font-black text-emerald-950 mt-2">Aap Yeh Item Pehle Hi Buy Kar Chuke Hain!</h2>
+                <p class="text-sm text-emerald-700 mt-1 max-w-lg mx-auto">
+                    Yeh {{ ($purchasableType ?? '') === 'course' ? 'course' : 'book' }} aapke account me already active hai. Aap direct ise access kar sakte hain.
+                </p>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                @if(($purchasableType ?? '') === 'course' || ($item instanceof \App\Models\Tenant\Course))
+                    <a href="{{ route('student.courses') }}" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap"></i> Go to My Courses
+                    </a>
+                @else
+                    <a href="{{ route('user.downloads') }}" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-book-open"></i> View in My Downloads
+                    </a>
+                @endif
+                <a href="{{ route_to('home') }}" class="px-6 py-3 rounded-xl bg-white border border-gray-300 text-gray-700 font-bold text-sm hover:bg-gray-50 transition">
+                    Browse Other Items
+                </a>
+            </div>
+        </div>
+    @endif
+
+    <form id="checkout-form" action="{{ route('checkout.submit') }}" method="POST" enctype="multipart/form-data" class="{{ !empty($isPurchased) && $isPurchased ? 'opacity-50 pointer-events-none' : '' }}">
         @csrf
 
         @if($item)
@@ -103,9 +133,9 @@
         @endif
 
         {{-- Hidden Auto-Filled Customer Details --}}
-        <input type="hidden" name="customer_name" value="{{ $authUser?->name ?? 'Student' }}">
-        <input type="hidden" name="customer_email" value="{{ $authUser?->email ?? 'student@' . request()->getHost() }}">
-        <input type="hidden" name="customer_phone" value="{{ $authUser?->phone ?? '' }}">
+        <input type="hidden" name="customer_name" value="{{ $authUser ? ($authUser->name ?? trim(($authUser->fname ?? '') . ' ' . ($authUser->lname ?? ''))) : 'Student' }}">
+        <input type="hidden" name="customer_email" value="{{ $authUser?->email ?? ('student@' . request()->getHost()) }}">
+        <input type="hidden" name="customer_phone" value="{{ $authUser?->number ?? $authUser?->phone ?? '' }}">
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             

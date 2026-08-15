@@ -123,6 +123,8 @@ class CashfreeDriver implements PaymentDriverInterface
                         'status' => 'success',
                         'gateway_payload' => $payload,
                     ]);
+
+                    \App\Services\Commerce\CheckoutService::fulfillOrder($order);
                 }
             }
         }

@@ -8,7 +8,9 @@ use App\Models\Tenant\Order;
 use App\Models\Tenant\Book;
 use App\Models\Tenant\Course;
 use App\Models\Tenant\ProductVariant;
+use App\Models\Tenant\UserEntitlement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -30,11 +32,12 @@ class CheckoutController extends Controller
 
         $item = null;
         $variant = null;
+        $modelClass = null;
 
         if ($purchasableType && $purchasableId) {
-            $modelClass = match ($purchasableType) {
-                'book', 'Book', 'App\Models\Tenant\Book' => Book::class,
-                'course', 'Course', 'App\Models\Tenant\Course' => Course::class,
+            $modelClass = match (strtolower($purchasableType)) {
+                'book', 'books', 'app\models\tenant\book' => Book::class,
+                'course', 'courses', 'app\models\tenant\course' => Course::class,
                 default => Book::class,
             };
 
@@ -46,7 +49,46 @@ class CheckoutController extends Controller
             }
         }
 
-        return view("tenant.themes.checkout", compact('item', 'variant', 'purchasableType', 'purchasableId'));
+        $authUser = auth('tenant')->user() ?? auth()->user();
+        $isPurchased = false;
+
+        if ($authUser && $item) {
+            // Check UserEntitlement
+            $isPurchased = UserEntitlement::where('user_id', $authUser->id)
+                ->where('entitable_id', $item->id)
+                ->where(function ($q) use ($modelClass) {
+                    $q->where('entitable_type', $modelClass)
+                      ->orWhere('entitable_type', class_basename($modelClass))
+                      ->orWhere('entitable_type', strtolower(class_basename($modelClass)));
+                })
+                ->exists();
+
+            // Check Course Enrollments
+            if (!$isPurchased && ($modelClass === Course::class || $item instanceof Course)) {
+                try {
+                    $isPurchased = DB::connection('tenant')
+                        ->table('course_enrollments')
+                        ->where('user_id', $authUser->id)
+                        ->where('course_id', $item->id)
+                        ->where('status', 'active')
+                        ->exists();
+                } catch (\Throwable $e) {
+                    // Ignore if table doesn't exist
+                }
+            }
+
+            // Check previous paid orders
+            if (!$isPurchased) {
+                $isPurchased = \App\Models\Tenant\OrderItem::whereHas('order', function ($q) use ($authUser) {
+                    $q->where('user_id', $authUser->id)
+                      ->where('payment_status', 'paid');
+                })
+                ->where('purchasable_id', $item->id)
+                ->exists();
+            }
+        }
+
+        return view("tenant.themes.checkout", compact('item', 'variant', 'purchasableType', 'purchasableId', 'isPurchased', 'authUser'));
     }
 
     /**
@@ -63,8 +105,9 @@ class CheckoutController extends Controller
         ]);
 
         $payload = $request->all();
-        $payload['customer_name'] = $request->input('customer_name') ?: ($authUser?->name ?: 'Guest Student');
-        $payload['customer_email'] = $request->input('customer_email') ?: ($authUser?->email ?: 'student@' . request()->getHost());
+        $payload['customer_name'] = $request->input('customer_name') ?: ($authUser ? ($authUser->name ?? trim(($authUser->fname ?? '') . ' ' . ($authUser->lname ?? ''))) : 'Student');
+        $payload['customer_email'] = $request->input('customer_email') ?: ($authUser?->email ?? ('student@' . request()->getHost()));
+        $payload['customer_phone'] = $request->input('customer_phone') ?: ($authUser?->number ?? $authUser?->phone ?? null);
         $payload['payment_gateway'] = $request->input('payment_gateway', 'razorpay');
 
         // Handle proof screenshot upload for manual bank transfer
@@ -97,6 +140,10 @@ class CheckoutController extends Controller
     public function success($orderNumber)
     {
         $order = Order::with('items')->where('order_number', $orderNumber)->firstOrFail();
-        return view("tenant.themes.success", compact('order'));
+
+        // Auto-fulfill order on success page view
+        CheckoutService::fulfillOrder($order);
+
+        return view('tenant.themes.checkout_success', compact('order'));
     }
 }

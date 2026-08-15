@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="pt-3 border-top">
-                        <a href="#" onclick="alert('Opening video course player...'); return false;" 
+                        <a href="{{ route('tenant.course', ['id' => $course->id]) }}" 
                            class="w-full py-2.5 px-3 bg-invert text-invert border-rounded font-bold text-xs hover-invert transition text-center flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-circle-play"></i> Watch Lectures & Notes
                         </a>

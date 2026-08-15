@@ -6,7 +6,10 @@ use App\Models\Tenant\Order;
 use App\Models\Tenant\OrderItem;
 use App\Models\Tenant\UserEntitlement;
 use App\Models\Tenant\ProductVariant;
+use App\Models\Tenant\Course;
+use App\Models\Tenant\Book;
 use App\Services\Payment\PaymentManager;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Exception;
 
@@ -25,7 +28,14 @@ class CheckoutService
     public function processCheckout(array $data): array
     {
         $orderNumber = 'ORD-' . strtoupper(Str::random(4)) . '-' . rand(1000, 9999);
-        $user = auth()->user();
+        $user = auth('tenant')->user() ?? auth()->user();
+
+        $customerName = $data['customer_name'] ?: ($user ? ($user->name ?? trim(($user->fname ?? '') . ' ' . ($user->lname ?? ''))) : 'Student');
+        if (empty($customerName)) {
+            $customerName = 'Student';
+        }
+        $customerEmail = $data['customer_email'] ?: ($user?->email ?? ('student@' . request()->getHost()));
+        $customerPhone = $data['customer_phone'] ?: ($user?->number ?? $user?->phone ?? null);
 
         // 1. Calculate items & grand total
         $itemsData = $data['items'] ?? [];
@@ -34,9 +44,9 @@ class CheckoutService
         $order = Order::create([
             'order_number' => $orderNumber,
             'user_id' => $user?->id,
-            'customer_name' => $data['customer_name'] ?? ($user?->name ?? 'Customer'),
-            'customer_email' => $data['customer_email'] ?? ($user?->email ?? ''),
-            'customer_phone' => $data['customer_phone'] ?? null,
+            'customer_name' => $customerName,
+            'customer_email' => $customerEmail,
+            'customer_phone' => $customerPhone,
             'currency' => 'INR',
             'subtotal' => 0,
             'discount_amount' => 0,
@@ -44,7 +54,7 @@ class CheckoutService
             'grand_total' => 0,
             'payment_status' => 'unpaid',
             'fulfillment_status' => 'unfulfilled',
-            'payment_gateway' => $data['payment_gateway'] ?? 'cod',
+            'payment_gateway' => $data['payment_gateway'] ?? 'razorpay',
             'shipping_address' => $data['shipping_address'] ?? null,
             'billing_address' => $data['billing_address'] ?? null,
             'notes' => $data['notes'] ?? null,
@@ -74,20 +84,6 @@ class CheckoutService
                 'fulfillment_type' => $variant?->fulfillment_type ?? ($item['fulfillment_type'] ?? 'digital_download'),
                 'options_snapshot' => $variant?->attributes,
             ]);
-
-            // Grant Instant Entitlements if item is free or digital instant access
-            if ($user && ($orderItem->fulfillment_type === 'digital_download' || $orderItem->fulfillment_type === 'online_access')) {
-                UserEntitlement::firstOrCreate([
-                    'user_id' => $user->id,
-                    'entitable_type' => $purchasableType,
-                    'entitable_id' => $purchasableId,
-                    'variant_id' => $variantId,
-                ], [
-                    'order_id' => $order->id,
-                    'can_download' => $variant ? $variant->is_downloadable : true,
-                    'can_stream_online' => $variant ? $variant->is_streamable : true,
-                ]);
-            }
         }
 
         $grandTotal = $subtotal + ($data['shipping_amount'] ?? 0);
@@ -95,6 +91,12 @@ class CheckoutService
             'subtotal' => $subtotal,
             'grand_total' => $grandTotal,
         ]);
+
+        // Auto-fulfill free orders immediately
+        if ($grandTotal <= 0) {
+            $order->update(['payment_status' => 'paid']);
+            static::fulfillOrder($order);
+        }
 
         // 2. Execute Payment Driver
         $driver = $this->paymentManager->driver($order->payment_gateway);
@@ -104,5 +106,58 @@ class CheckoutService
             'order' => $order,
             'payment' => $paymentResult,
         ];
+    }
+
+    /**
+     * Fulfill order: Grant entitlements and enrollments to student.
+     */
+    public static function fulfillOrder(Order $order): void
+    {
+        if (!$order->user_id) {
+            return;
+        }
+
+        $order->loadMissing('items');
+
+        foreach ($order->items as $item) {
+            $rawType = strtolower(class_basename($item->purchasable_type));
+            $isCourse = in_array($rawType, ['course', 'courses', 'app\models\tenant\course'], true);
+            $isBook = in_array($rawType, ['book', 'books', 'app\models\tenant\book'], true);
+
+            $modelClass = $isCourse ? Course::class : ($isBook ? Book::class : $item->purchasable_type);
+
+            // Grant Entitlement
+            UserEntitlement::updateOrCreate([
+                'user_id' => $order->user_id,
+                'entitable_type' => $modelClass,
+                'entitable_id' => $item->purchasable_id,
+            ], [
+                'order_id' => $order->id,
+                'variant_id' => $item->variant_id,
+                'can_download' => true,
+                'can_stream_online' => true,
+            ]);
+
+            // If Course, also enroll student in course_enrollments
+            if ($isCourse) {
+                try {
+                    DB::connection('tenant')->table('course_enrollments')->updateOrInsert(
+                        [
+                            'course_id' => $item->purchasable_id,
+                            'user_id' => $order->user_id,
+                        ],
+                        [
+                            'status' => 'active',
+                            'enrolled_at' => now(),
+                            'updated_at' => now(),
+                        ]
+                    );
+                } catch (\Throwable $e) {
+                    // Fail gracefully if table not present or constraints matched
+                }
+            }
+        }
+
+        $order->update(['fulfillment_status' => 'fulfilled']);
     }
 }
