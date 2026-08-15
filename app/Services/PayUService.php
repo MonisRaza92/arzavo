@@ -19,8 +19,10 @@ class PayUService
     {
         $this->key = config('services.payu.key') ?? '';
         $this->salt = config('services.payu.salt') ?? '';
-        $this->env = config('services.payu.env', 'test');
-        $this->endpoint = $this->env === 'production'
+        $this->env = strtolower((string) config('services.payu.env', 'production'));
+        
+        $isProduction = in_array($this->env, ['production', 'live', 'prod'], true);
+        $this->endpoint = $isProduction
             ? 'https://secure.payu.in/_payment'
             : 'https://test.payu.in/_payment';
     }

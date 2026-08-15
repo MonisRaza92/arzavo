@@ -38,7 +38,7 @@ return [
     'payu' => [
         'key' => env('PAYU_KEY', env('PAYU_MERCHANT_KEY', '')),
         'salt' => env('PAYU_SALT', env('PAYU_MERCHANT_SALT', '')),
-        'env' => env('PAYU_ENV', env('APP_ENV') === 'production' ? 'production' : 'test'),
+        'env' => env('PAYU_ENV', 'production'),
     ],
 
     'google' => [
