@@ -23,7 +23,7 @@ class TenantLoginController
         // Validate the request data
         $request->validate([
             'email' => 'required|string|email',
-            'password' => 'required|string|min:4',
+            'password' => 'required|string|min:8',
         ]);
 
         $credentials = $request->only('email', 'password');
