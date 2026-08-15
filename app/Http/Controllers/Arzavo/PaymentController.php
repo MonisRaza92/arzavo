@@ -202,6 +202,11 @@ class PaymentController
                             'trial_ends_at' => null,
                         ]
                     );
+
+                    $tenant->updateQuietly([
+                        'has_used_trial' => true,
+                        'trial_used_at' => $tenant->trial_used_at ?? now(),
+                    ]);
                 }
             }
 

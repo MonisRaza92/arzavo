@@ -136,10 +136,85 @@
                         </div>
                     </div>
 
-                    {{-- ── STEP 2: Contact Information ── --}}
+                    {{-- ── STEP 2: Choose Activation Mode (Trial vs Direct Payment) ── --}}
+                    @if(($plan->trial_days ?? 0) > 0 && !$isFreePlan)
+                    <div id="activationModeContainer" class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="w-6 h-6 rounded-full bg-dark text-white text-xs font-bold flex items-center justify-center">2</span>
+                                <h2 class="text-sm font-bold text-dark">Choose Activation Option</h2>
+                            </div>
+                            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                {{ $plan->trial_days }} Days Free Trial Available
+                            </span>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                
+                                {{-- OPTION A: FREE TRIAL --}}
+                                <label id="cardModeTrial" onclick="setActivationMode('trial')"
+                                    class="activation-card border-2 rounded-xl p-4 cursor-pointer transition relative flex flex-col justify-between border-emerald-500 bg-emerald-50/40">
+                                    <input type="radio" name="activation_mode" id="modeRadioTrial" value="trial" checked class="sr-only">
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                                                <i class="fa-solid fa-sparkles text-emerald-600"></i> Free Trial
+                                            </span>
+                                            <div id="radioCircleTrial" class="w-4 h-4 rounded-full border-2 border-emerald-600 flex items-center justify-center">
+                                                <div id="radioDotTrial" class="w-2 h-2 rounded-full bg-emerald-600"></div>
+                                            </div>
+                                        </div>
+                                        <p class="text-lg font-extrabold text-dark">₹0 Due Today</p>
+                                        <p class="text-xs text-dark/60 mt-1">Get full access for {{ $plan->trial_days }} days. Zero payment or card details required today.</p>
+                                    </div>
+
+                                    <div class="mt-4 pt-3 border-t border-emerald-200/60 flex items-center justify-between text-[11px] font-semibold text-emerald-700">
+                                        <span>Instant access</span>
+                                        <span>Cancel anytime</span>
+                                    </div>
+                                </label>
+
+                                {{-- OPTION B: DIRECT PAYMENT --}}
+                                <label id="cardModeDirect" onclick="setActivationMode('direct')"
+                                    class="activation-card border-2 rounded-xl p-4 cursor-pointer transition relative flex flex-col justify-between border-gray-200 hover:border-gray-300 bg-white">
+                                    <input type="radio" name="activation_mode" id="modeRadioDirect" value="direct" class="sr-only">
+
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-bold text-dark flex items-center gap-1.5">
+                                                <i class="fa-solid fa-shield-check text-blue-600"></i> Direct Activation
+                                            </span>
+                                            <div id="radioCircleDirect" class="w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center">
+                                                <div id="radioDotDirect" class="w-2 h-2 rounded-full bg-dark hidden"></div>
+                                            </div>
+                                        </div>
+                                        <p class="text-lg font-extrabold text-dark" id="directCardPriceLabel">₹{{ number_format($monthlyPrice, 2) }} / mo</p>
+                                        <p class="text-xs text-dark/60 mt-1">Skip trial and activate regular billing cycle immediately via PayU hosted payment gateway.</p>
+                                    </div>
+
+                                    <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold text-dark/60">
+                                        <span>Full cycle active</span>
+                                        <span>Official invoice</span>
+                                    </div>
+                                </label>
+
+                            </div>
+
+                            {{-- Notice if trial already used --}}
+                            <div id="trialAlreadyUsedNotice" class="hidden mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-exclamation text-amber-600"></i>
+                                <span>Free trial was already used for this institution. Automatically switched to <strong>Direct Payment</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- ── STEP 3: Contact Information ── --}}
                     <div class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full bg-dark text-white text-xs font-bold flex items-center justify-center">2</span>
+                            <span class="w-6 h-6 rounded-full bg-dark text-white text-xs font-bold flex items-center justify-center">{{ (($plan->trial_days ?? 0) > 0 && !$isFreePlan) ? '3' : '2' }}</span>
                             <h2 class="text-sm font-bold text-dark">Contact Information</h2>
                         </div>
 
@@ -365,7 +440,8 @@ const planData = {
 };
 
 let currentCycle = 'monthly';
-let isSelectedTenantTrialEligible = false;
+let isSelectedTenantTrialEligible = planData.trialDays > 0;
+let currentActivationMode = planData.trialDays > 0 ? 'trial' : 'direct';
 
 function changeBillingCycle(cycle) {
     currentCycle = cycle;
@@ -382,6 +458,48 @@ function changeBillingCycle(cycle) {
         btnYearly.className = "py-2 text-xs font-medium rounded-md text-dark/60 transition flex items-center justify-center gap-1";
     }
 
+    const directPriceLabel = document.getElementById('directCardPriceLabel');
+    if (directPriceLabel) {
+        directPriceLabel.textContent = cycle === 'yearly' 
+            ? '₹' + new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2 }).format(planData.yearly) + ' / yr'
+            : '₹' + new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2 }).format(planData.monthly) + ' / mo';
+    }
+
+    updateSummaryPricing();
+}
+
+function setActivationMode(mode) {
+    if (mode === 'trial' && !isSelectedTenantTrialEligible) {
+        return; // Locked if trial already used
+    }
+
+    currentActivationMode = mode;
+
+    const cardTrial = document.getElementById('cardModeTrial');
+    const cardDirect = document.getElementById('cardModeDirect');
+    const dotTrial = document.getElementById('radioDotTrial');
+    const dotDirect = document.getElementById('radioDotDirect');
+    const circleTrial = document.getElementById('radioCircleTrial');
+    const circleDirect = document.getElementById('radioCircleDirect');
+
+    if (cardTrial && cardDirect) {
+        if (mode === 'trial') {
+            cardTrial.className = "activation-card border-2 rounded-xl p-4 cursor-pointer transition relative flex flex-col justify-between border-emerald-500 bg-emerald-50/40";
+            cardDirect.className = "activation-card border-2 rounded-xl p-4 cursor-pointer transition relative flex flex-col justify-between border-gray-200 hover:border-gray-300 bg-white";
+            if (dotTrial) dotTrial.classList.remove('hidden');
+            if (dotDirect) dotDirect.classList.add('hidden');
+            if (circleTrial) circleTrial.className = "w-4 h-4 rounded-full border-2 border-emerald-600 flex items-center justify-center";
+            if (circleDirect) circleDirect.className = "w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center";
+        } else {
+            cardDirect.className = "activation-card border-2 rounded-xl p-4 cursor-pointer transition relative flex flex-col justify-between border-blue-600 bg-blue-50/30";
+            cardTrial.className = "activation-card border-2 rounded-xl p-4 cursor-pointer transition relative flex flex-col justify-between border-gray-200 hover:border-gray-300 bg-white";
+            if (dotDirect) dotDirect.classList.remove('hidden');
+            if (dotTrial) dotTrial.classList.add('hidden');
+            if (circleDirect) circleDirect.className = "w-4 h-4 rounded-full border-2 border-blue-600 flex items-center justify-center";
+            if (circleTrial) circleTrial.className = "w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center";
+        }
+    }
+
     updateSummaryPricing();
 }
 
@@ -393,13 +511,12 @@ function updateSummaryPricing() {
     const total = Math.round((base + tax) * 100) / 100;
 
     const fmt = n => '₹' + new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
-
     const btnText = document.getElementById('btnCheckoutText');
 
-    if (isSelectedTenantTrialEligible) {
+    if (currentActivationMode === 'trial' && isSelectedTenantTrialEligible) {
         document.getElementById('summaryBasePrice').textContent = fmt(base) + ` (Trial for ${planData.trialDays}d)`;
         document.getElementById('summaryTaxPrice').textContent = "₹0.00";
-        document.getElementById('summaryTotalPrice').textContent = "₹0.00 (Due Now)";
+        document.getElementById('summaryTotalPrice').textContent = "₹0.00 (Due Today)";
         document.getElementById('summaryCycleLabel').textContent = `${planData.trialDays}-day free trial, then ${currentCycle === 'yearly' ? 'billed annually' : 'billed monthly'}`;
         if (btnText) btnText.textContent = `Start ${planData.trialDays}-Day Free Trial (₹0 Due Now)`;
     } else {
@@ -407,7 +524,7 @@ function updateSummaryPricing() {
         document.getElementById('summaryTaxPrice').textContent = fmt(tax);
         document.getElementById('summaryTotalPrice').textContent = fmt(total);
         document.getElementById('summaryCycleLabel').textContent = currentCycle === 'yearly' ? 'Billed annually' : 'Billed monthly';
-        if (btnText) btnText.textContent = "Proceed to Payment";
+        if (btnText) btnText.textContent = `Proceed to Payment (${fmt(total)})`;
     }
 }
 
@@ -415,6 +532,25 @@ function selectTenantItem(id, name, hasUsedTrial) {
     document.getElementById('selectedTenantId').value = id;
 
     isSelectedTenantTrialEligible = !hasUsedTrial && planData.trialDays > 0;
+
+    const cardTrial = document.getElementById('cardModeTrial');
+    const trialUsedNotice = document.getElementById('trialAlreadyUsedNotice');
+
+    if (hasUsedTrial && planData.trialDays > 0) {
+        if (cardTrial) {
+            cardTrial.classList.add('opacity-40', 'pointer-events-none');
+            cardTrial.title = "Free trial already used on this institution";
+        }
+        if (trialUsedNotice) trialUsedNotice.classList.remove('hidden');
+        setActivationMode('direct');
+    } else if (planData.trialDays > 0) {
+        if (cardTrial) {
+            cardTrial.classList.remove('opacity-40', 'pointer-events-none');
+            cardTrial.title = "";
+        }
+        if (trialUsedNotice) trialUsedNotice.classList.add('hidden');
+        setActivationMode('trial');
+    }
 
     document.querySelectorAll('.tenant-item').forEach(el => {
         el.classList.remove('border-dark', 'bg-blue-50/50', 'ring-1', 'ring-dark');
@@ -435,7 +571,7 @@ function selectTenantItem(id, name, hasUsedTrial) {
     
     let noticeHtml = `<span>Selected: <strong>${name}</strong></span>`;
     if (isSelectedTenantTrialEligible) {
-        noticeHtml += ` <span class="ml-auto text-[10px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded">${planData.trialDays}-Day Free Trial Active</span>`;
+        noticeHtml += ` <span class="ml-auto text-[10px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded">${planData.trialDays}-Day Free Trial Available</span>`;
     } else if (hasUsedTrial && planData.trialDays > 0) {
         noticeHtml += ` <span class="ml-auto text-[10px] font-medium text-amber-800 bg-amber-100 px-2 py-0.5 rounded">Trial previously used</span>`;
     }
@@ -500,7 +636,7 @@ async function processCheckout() {
     const formData = new FormData(form);
 
     try {
-        if (planData.isFree || isSelectedTenantTrialEligible) {
+        if (planData.isFree || (currentActivationMode === 'trial' && isSelectedTenantTrialEligible)) {
             // Free plan or Free Trial direct activation
             const res = await fetch("{{ route('subscribe', $plan->slug) }}", {
                 method: "POST",
@@ -514,17 +650,17 @@ async function processCheckout() {
             const data = await res.json().catch(() => ({}));
 
             if (res.ok && data.success) {
-                alert(data.message || (isSelectedTenantTrialEligible ? "Free trial activated successfully!" : "Plan activated successfully!"));
+                alert(data.message || "Free trial activated successfully!");
                 window.location.href = data.redirect || "{{ route('dashboard') }}";
             } else {
-                alert(data.message || "Failed to activate plan.");
+                alert(data.message || "Failed to activate trial.");
                 btn.disabled = false;
-                btnText.textContent = isSelectedTenantTrialEligible ? `Start ${planData.trialDays}-Day Free Trial` : "Activate Free Plan";
+                btnText.textContent = "Start Free Trial";
             }
             return;
         }
 
-        // Paid Plan PayU Checkout
+        // Direct Paid Plan PayU Checkout
         const res = await fetch("{{ route('payment.payu.init', $plan->id) }}", {
             method: "POST",
             headers: {
@@ -561,7 +697,7 @@ async function processCheckout() {
         console.error(err);
         alert(err.message || "An error occurred during checkout.");
         btn.disabled = false;
-        btnText.textContent = (planData.isFree || isSelectedTenantTrialEligible) ? "Start Free Trial" : "Proceed to Payment";
+        btnText.textContent = "Proceed to Payment";
     }
 }
 
