@@ -16,9 +16,9 @@
                     <h2 class="text-3xl font-bold mb-4">Welcome Back!</h2>
                     <p class="mb-4">Please enter your credentials to access your account.</p>
                     <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email or Number</label>
-                        <input type="email" name="email" required autofocus value="{{ old('email') }}"
-                            class="border-primary block w-full border-rounded p-2" placeholder="Enter your email or number">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email, Username or Phone</label>
+                        <input type="text" name="email" required autofocus value="{{ old('email') }}"
+                            class="border-primary block w-full border-rounded p-2" placeholder="Enter your email, username or phone">
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
