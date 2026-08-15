@@ -138,10 +138,10 @@
                             }
                         }
                     ]
-                },
-                "data_description"
+                }
             ]
-        }
+        },
+        "data_description"
     ],
     "fields": [
         {

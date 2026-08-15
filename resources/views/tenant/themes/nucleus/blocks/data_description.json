@@ -1,6 +1,6 @@
 {
     "view": "data_description",
-    "name": "Description (Rich Text)",
+    "name": "Description",
     "icon": "fa-align-left",
     "category": "Data",
     "fields": [
