@@ -74,28 +74,14 @@ class LoginController extends Controller
         $user = Auth::guard('web')->user();
 
         if (!$user) {
-            return url('/');
+            return route('login.form');
         }
 
         if ($user->role === 'super_admin' || $user->role === 'admin') {
             return route('arzavo.admin.dashboard');
         }
 
-        // tenants load karo (safe way)
-        $tenants = $user->tenants()->get();
-
-        // ❌ No tenant
-        if ($tenants->isEmpty()) {
-            return route('tenants.create');
-        }
-
-        // ✅ Single tenant → direct redirect
-        if ($tenants->count() === 1) {
-            $tenant = $tenants->first();
-            return $this->tenantDashboardUrl($tenant);
-        }
-
-        // ✅ Multiple tenants → selector page
+        // ✅ Arzavo me login hone par hamesha domain/tenants par bhejo
         return route('tenants.index');
     }
 
@@ -322,6 +308,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('login.form');
     }
 }

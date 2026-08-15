@@ -157,6 +157,6 @@ class TenantLoginController
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/account/login');
     }
 }
