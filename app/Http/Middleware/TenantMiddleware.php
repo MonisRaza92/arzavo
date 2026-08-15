@@ -39,6 +39,9 @@ class TenantMiddleware
         // 6. Bind tenant + theme
         $this->bindContext($tenant);
 
+        // 7. Auto-authenticate tenant owner if already authenticated on main platform (SSO)
+        $this->syncTenantOwnerAuth($tenant);
+
         return $next($request);
     }
 
@@ -108,5 +111,22 @@ class TenantMiddleware
         app()->instance('activeTheme', $theme);
         app()->instance('currentThemeSlug', $theme?->theme_slug);
         app()->instance('currentThemeId', $theme?->id);
+    }
+
+    private function syncTenantOwnerAuth($tenant)
+    {
+        try {
+            if (!\Illuminate\Support\Facades\Auth::guard('tenant')->check() && \Illuminate\Support\Facades\Auth::guard('web')->check()) {
+                $webUser = \Illuminate\Support\Facades\Auth::guard('web')->user();
+                if ($webUser && ($tenant->user_id === $webUser->id || $webUser->role === 'super_admin')) {
+                    $tenantAdmin = \App\Models\Tenant\User::where('email', $webUser->email)->first();
+                    if ($tenantAdmin) {
+                        \Illuminate\Support\Facades\Auth::guard('tenant')->login($tenantAdmin);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            // Silently continue if tenant table is not accessible
+        }
     }
 }

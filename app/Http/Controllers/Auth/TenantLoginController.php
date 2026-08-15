@@ -20,25 +20,44 @@ class TenantLoginController
 
     public function loginHandle(Request $request)
     {
-        // Validate the request data
+        // Validate the request data (allow email, phone or username)
         $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:8',
+            'email' => 'required|string',
+            'password' => 'required|string|min:4',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $loginInput = trim($request->input('email'));
+        $password = $request->input('password');
+        $remember = $request->boolean('remember');
+
+        $fieldType = filter_var($loginInput, FILTER_VALIDATE_EMAIL) 
+            ? 'email' 
+            : (is_numeric($loginInput) ? 'number' : 'username');
+
+        $credentials = [
+            $fieldType => $loginInput,
+            'password' => $password,
+        ];
 
         // ✅ TENANT GUARD USE KARO
-        if (Auth::guard('tenant')->attempt($credentials, $request->filled('remember'))) {
+        if (Auth::guard('tenant')->attempt($credentials, $remember)) {
             // Authentication passed
             $user = Auth::guard('tenant')->user();
 
-            // Add null check before updating
             if ($user) {
                 $user->update(['last_login' => now()]);
+
+                // If this is an admin and matches main Arzavo platform user, also sync web guard
+                if ($user->role === 'admin') {
+                    $globalUser = \App\Models\Arzavo\User::where('email', $user->email)->first();
+                    if ($globalUser && !Auth::guard('web')->check()) {
+                        Auth::guard('web')->login($globalUser);
+                    }
+                }
             }
 
             $request->session()->regenerate();
+            $request->session()->save();
 
             $intended = $request->session()->pull('url.intended', $this->redirectTo());
 
