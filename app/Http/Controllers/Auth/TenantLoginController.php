@@ -40,13 +40,20 @@ class TenantLoginController
 
             $request->session()->regenerate();
 
-            return redirect()->intended($this->redirectTo());
+            $intended = $request->session()->pull('url.intended', $this->redirectTo());
+
+            // Never redirect intended back to login or register page
+            if (str_contains($intended, '/login') || str_contains($intended, '/register') || str_contains($intended, '/account/')) {
+                $intended = $this->redirectTo();
+            }
+
+            return redirect()->to($intended);
         }
 
         // Authentication failed
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ])->withInput($request->only('email'));
     }
 
     public function redirectTo()

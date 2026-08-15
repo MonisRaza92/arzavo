@@ -9,20 +9,18 @@ class RoleMiddleware
 {
     public function handle($request, Closure $next, $role)
     {
-        // ✅ AUTO-DETECT GUARD: Current domain ke hisab se
         if (isSystemDomain()) {
             // Main / Super / Admin / Login / Register domain - web guard check karo
             $guard = 'web';
-            $loginRoute = 'login.form';
+            if (!Auth::guard('web')->check()) {
+                return redirect()->route('login.form');
+            }
         } else {
             // Tenant domain - tenant guard check karo  
             $guard = 'tenant';
-            $loginRoute = 'tenant.login.form';
-        }
-
-        // ✅ CHECK AUTH WITH CORRECT GUARD
-        if (!Auth::guard($guard)->check()) {
-            return redirect()->route($loginRoute);
+            if (!Auth::guard('tenant')->check()) {
+                return redirect()->route('tenant.login');
+            }
         }
 
         // ✅ CHECK ROLE
