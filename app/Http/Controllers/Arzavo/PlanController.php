@@ -38,13 +38,61 @@ class PlanController
         $tenant = Tenant::findOrFail($request->tenant_id);
         $subscription = $tenant->subscription;
 
+        $trialDays = (int) ($plan->trial_days ?? 0);
+        $isTrialEligible = $trialDays > 0 && !$tenant->has_used_trial;
 
-        // 🔥 CASE 1: NO SUBSCRIPTION (FIRST TIME USER)
-        if (!$subscription) {
+        // 🔥 CASE 1: TRIAL ELIGIBLE → Instant trial activation without payment
+        if ($isTrialEligible) {
+            $trialEndsAt = now()->addDays($trialDays);
 
-            // FREE PLAN → direct activate
-            if ($plan->monthly_price == 0) {
+            if ($subscription) {
+                $subscription->update([
+                    'plan_id' => $plan->id,
+                    'status' => 'trial',
+                    'starts_at' => now(),
+                    'trial_ends_at' => $trialEndsAt,
+                    'ends_at' => $trialEndsAt,
+                ]);
+            } else {
+                Subscription::create([
+                    'tenant_id' => $tenant->id,
+                    'plan_id' => $plan->id,
+                    'status' => 'trial',
+                    'starts_at' => now(),
+                    'trial_ends_at' => $trialEndsAt,
+                    'ends_at' => $trialEndsAt,
+                ]);
+            }
 
+            // Permanently mark trial as used for this tenant so switching plans never resets trial!
+            $tenant->update([
+                'has_used_trial' => true,
+                'trial_used_at' => now(),
+            ]);
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'is_trial' => true,
+                    'message' => "Congratulations! Your {$trialDays}-day free trial for {$plan->name} has been activated.",
+                    'redirect' => $tenant->url . '/admin/dashboard',
+                ]);
+            }
+
+            return redirect($tenant->url . '/admin/dashboard')->with('success', "Your {$trialDays}-day free trial for {$plan->name} is active.");
+        }
+
+        // 🔥 CASE 2: FREE PLAN → Direct instant activation
+        if ($plan->monthly_price == 0) {
+            if ($subscription) {
+                $subscription->update([
+                    'plan_id' => $plan->id,
+                    'status' => 'active',
+                    'starts_at' => now(),
+                    'ends_at' => null,
+                    'trial_ends_at' => null,
+                ]);
+            } else {
                 Subscription::create([
                     'tenant_id' => $tenant->id,
                     'plan_id' => $plan->id,
@@ -52,53 +100,28 @@ class PlanController
                     'starts_at' => now(),
                     'ends_at' => null,
                 ]);
-
-                return back()->with('success', 'Free plan activated');
             }
 
-            // PAID PLAN → go to payment
-            return redirect()->route('billing.checkout', [
-                'plan_id' => $plan->id
-            ]);
-        }
-
-        // 🔥 EXISTING SUBSCRIPTION FLOW
-        $currentPlan = $subscription->plan;
-
-        // ✅ SAME PLAN
-        if ($currentPlan->id === $plan->id) {
-
-            if ($subscription->ends_at && now()->lessThan($subscription->ends_at)) {
-
-                if ($subscription->pending_plan_id) {
-                    $subscription->update(['pending_plan_id' => null]);
-                }
-
-                return back()->with('success', 'Your current plan is already active');
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Free plan activated successfully!',
+                    'redirect' => $tenant->url . '/admin/dashboard',
+                ]);
             }
 
-            return redirect()->route('billing.checkout', [
-                'plan_id' => $plan->id
+            return redirect($tenant->url . '/admin/dashboard')->with('success', 'Free plan activated successfully!');
+        }
+
+        // 🔥 CASE 3: PAID PLAN (Trial already used or not applicable) → Must Pay
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => false,
+                'requires_payment' => true,
+                'message' => 'Trial already used or not applicable on this plan. Please proceed to payment.',
             ]);
         }
 
-        // 🔥 UPGRADE
-        if ($plan->monthly_price > $currentPlan->monthly_price) {
-            return redirect()->route('billing.checkout', [
-                'plan_id' => $plan->id
-            ]);
-        }
-
-        // 🔥 DOWNGRADE
-        if ($plan->monthly_price < $currentPlan->monthly_price) {
-
-            $subscription->update([
-                'pending_plan_id' => $plan->id
-            ]);
-
-            return back()->with('success', 'Plan will change after billing cycle');
-        }
-
-        return back()->with('error', 'Invalid action');
+        return redirect()->route('billing.checkout', ['plan_id' => $plan->id, 'tenant_id' => $tenant->id]);
     }
 }

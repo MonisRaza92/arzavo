@@ -22,10 +22,22 @@ class CheckSubscription
             return $next($request);
         }
 
+        // Allow billing routes so user can pay/upgrade even when expired
+        if ($request->routeIs('admin.billing.*') || $request->is('admin/billing*') || $request->is('admin/cancel-downgrade')) {
+            return $next($request);
+        }
+
         $subscription = $tenant->subscription;
 
-        // ✅ ACTIVE SUBSCRIPTION → allow
+        // ✅ ACTIVE SUBSCRIPTION / TRIAL → allow
         if ($subscription && $subscription->isActive()) {
+            if ($subscription->aboutToExpire()) {
+                session()->flash('warning', 'Your subscription or trial is expiring soon. Please renew to avoid any interruption.');
+            } elseif ($subscription->isTrial()) {
+                $days = $tenant->trialDaysLeft();
+                session()->flash('info', "You are currently on a free trial ({$days} " . ($days === 1 ? 'day' : 'days') . " remaining).");
+            }
+
             return $next($request);
         }
 
@@ -35,23 +47,8 @@ class CheckSubscription
             return $next($request);
         }
 
-        // 🟢 TRIAL (tenant level) → allow
-        if ($tenant->isTrialActive()) {
-            session()->flash('warning', 'You are on a free trial');
-            return $next($request);
-        }
-        
-        if ($subscription && $subscription->aboutToExpire()) {
-            session()->flash('warning', 'Your subscription is about to expire soon. Please renew.');
-            return $next($request);
-        }
-
-        // ❌ NO ACCESS (expired + no trial)
-        if (!Auth::check()) {
-            return redirect()->route('admin.billing.index')
-                ->with('error', 'Your trial or plan has expired. Please upgrade.');
-        }
-
-        return redirect()->route('subscription.expired');
+        // ❌ EXPIRED TRIAL OR PLAN → Block access and redirect to billing/checkout
+        return redirect()->route('admin.billing.index')
+            ->with('error', 'Your free trial or plan has expired. Please upgrade or make a payment to continue accessing this panel.');
     }
 }

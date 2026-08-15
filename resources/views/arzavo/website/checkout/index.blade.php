@@ -88,20 +88,30 @@
                                     @foreach($tenants as $t)
                                         @php
                                             $isActiveOnThisPlan = $t->subscription && $t->subscription->plan_id == $plan->id && $t->subscription->status === 'active';
+                                            $hasUsedTrial = (bool) $t->has_used_trial;
+                                            $isEligibleForTrial = !$hasUsedTrial && ($plan->trial_days ?? 0) > 0;
                                         @endphp
                                         <div class="tenant-item border rounded-lg p-3.5 flex items-center justify-between transition cursor-pointer {{ $isActiveOnThisPlan ? 'bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed' : 'hover:border-dark border-gray-200 bg-white' }}"
                                              data-id="{{ $t->id }}"
                                              data-name="{{ $t->name }}"
+                                             data-has-used-trial="{{ $hasUsedTrial ? 'true' : 'false' }}"
                                              data-disabled="{{ $isActiveOnThisPlan ? 'true' : 'false' }}"
                                              data-search="{{ strtolower($t->name . ' ' . $t->subdomain . ' ' . $t->url) }}"
-                                             @if(!$isActiveOnThisPlan) onclick="selectTenantItem({{ $t->id }}, '{{ addslashes($t->name) }}')" @endif>
+                                             @if(!$isActiveOnThisPlan) onclick="selectTenantItem({{ $t->id }}, '{{ addslashes($t->name) }}', {{ $hasUsedTrial ? 'true' : 'false' }})" @endif>
                                             
                                             <div class="flex items-center gap-3 min-w-0">
                                                 <div class="w-10 h-10 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center font-bold text-dark text-sm shrink-0">
                                                     {{ strtoupper(substr($t->name, 0, 2)) }}
                                                 </div>
                                                 <div class="min-w-0">
-                                                    <p class="text-xs font-bold text-dark truncate">{{ $t->name }}</p>
+                                                    <div class="flex items-center gap-2">
+                                                        <p class="text-xs font-bold text-dark truncate">{{ $t->name }}</p>
+                                                        @if($isEligibleForTrial)
+                                                            <span class="text-[9px] font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">Trial Eligible</span>
+                                                        @elseif($hasUsedTrial && ($plan->trial_days ?? 0) > 0)
+                                                            <span class="text-[9px] font-semibold bg-gray-100 text-gray-600 px-1.5 py-0.2 rounded">Trial Used</span>
+                                                        @endif
+                                                    </div>
                                                     <p class="text-[11px] text-dark/50 truncate">{{ $t->url ?? ($t->subdomain . '.' . config('app.domain')) }}</p>
                                                 </div>
                                             </div>
@@ -346,12 +356,16 @@
 
 <script>
 const planData = {
+    name: "{{ addslashes($plan->name) }}",
+    slug: "{{ $plan->slug }}",
     isFree: {{ $isFreePlan ? 'true' : 'false' }},
+    trialDays: {{ (int) ($plan->trial_days ?? 0) }},
     monthly: {{ $monthlyPrice }},
     yearly: {{ $yearlyPrice }},
 };
 
 let currentCycle = 'monthly';
+let isSelectedTenantTrialEligible = false;
 
 function changeBillingCycle(cycle) {
     currentCycle = cycle;
@@ -380,14 +394,27 @@ function updateSummaryPricing() {
 
     const fmt = n => '₹' + new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 
-    document.getElementById('summaryBasePrice').textContent = fmt(base);
-    document.getElementById('summaryTaxPrice').textContent = fmt(tax);
-    document.getElementById('summaryTotalPrice').textContent = fmt(total);
-    document.getElementById('summaryCycleLabel').textContent = currentCycle === 'yearly' ? 'Billed annually' : 'Billed monthly';
+    const btnText = document.getElementById('btnCheckoutText');
+
+    if (isSelectedTenantTrialEligible) {
+        document.getElementById('summaryBasePrice').textContent = fmt(base) + ` (Trial for ${planData.trialDays}d)`;
+        document.getElementById('summaryTaxPrice').textContent = "₹0.00";
+        document.getElementById('summaryTotalPrice').textContent = "₹0.00 (Due Now)";
+        document.getElementById('summaryCycleLabel').textContent = `${planData.trialDays}-day free trial, then ${currentCycle === 'yearly' ? 'billed annually' : 'billed monthly'}`;
+        if (btnText) btnText.textContent = `Start ${planData.trialDays}-Day Free Trial (₹0 Due Now)`;
+    } else {
+        document.getElementById('summaryBasePrice').textContent = fmt(base);
+        document.getElementById('summaryTaxPrice').textContent = fmt(tax);
+        document.getElementById('summaryTotalPrice').textContent = fmt(total);
+        document.getElementById('summaryCycleLabel').textContent = currentCycle === 'yearly' ? 'Billed annually' : 'Billed monthly';
+        if (btnText) btnText.textContent = "Proceed to Payment";
+    }
 }
 
-function selectTenantItem(id, name) {
+function selectTenantItem(id, name, hasUsedTrial) {
     document.getElementById('selectedTenantId').value = id;
+
+    isSelectedTenantTrialEligible = !hasUsedTrial && planData.trialDays > 0;
 
     document.querySelectorAll('.tenant-item').forEach(el => {
         el.classList.remove('border-dark', 'bg-blue-50/50', 'ring-1', 'ring-dark');
@@ -405,7 +432,16 @@ function selectTenantItem(id, name) {
     const notice = document.getElementById('selectedTenantNotice');
     notice.classList.remove('hidden');
     notice.classList.add('flex');
-    document.getElementById('selectedTenantNoticeName').textContent = name;
+    
+    let noticeHtml = `<span>Selected: <strong>${name}</strong></span>`;
+    if (isSelectedTenantTrialEligible) {
+        noticeHtml += ` <span class="ml-auto text-[10px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded">${planData.trialDays}-Day Free Trial Active</span>`;
+    } else if (hasUsedTrial && planData.trialDays > 0) {
+        noticeHtml += ` <span class="ml-auto text-[10px] font-medium text-amber-800 bg-amber-100 px-2 py-0.5 rounded">Trial previously used</span>`;
+    }
+    notice.innerHTML = `<i class="fa-solid fa-circle-check text-blue-600"></i> ` + noticeHtml;
+
+    updateSummaryPricing();
 }
 
 function filterTenants(query) {
@@ -464,8 +500,8 @@ async function processCheckout() {
     const formData = new FormData(form);
 
     try {
-        if (planData.isFree) {
-            // Free plan direct subscription
+        if (planData.isFree || isSelectedTenantTrialEligible) {
+            // Free plan or Free Trial direct activation
             const res = await fetch("{{ route('subscribe', $plan->slug) }}", {
                 method: "POST",
                 headers: {
@@ -475,14 +511,15 @@ async function processCheckout() {
                 body: formData
             });
 
-            if (res.ok) {
-                alert("Free plan activated successfully!");
-                window.location.href = "{{ route('dashboard') }}";
+            const data = await res.json().catch(() => ({}));
+
+            if (res.ok && data.success) {
+                alert(data.message || (isSelectedTenantTrialEligible ? "Free trial activated successfully!" : "Plan activated successfully!"));
+                window.location.href = data.redirect || "{{ route('dashboard') }}";
             } else {
-                const data = await res.json().catch(() => ({}));
                 alert(data.message || "Failed to activate plan.");
                 btn.disabled = false;
-                btnText.textContent = "Activate Free Plan";
+                btnText.textContent = isSelectedTenantTrialEligible ? `Start ${planData.trialDays}-Day Free Trial` : "Activate Free Plan";
             }
             return;
         }
@@ -524,7 +561,7 @@ async function processCheckout() {
         console.error(err);
         alert(err.message || "An error occurred during checkout.");
         btn.disabled = false;
-        btnText.textContent = planData.isFree ? "Activate Free Plan" : "Proceed to Payment";
+        btnText.textContent = (planData.isFree || isSelectedTenantTrialEligible) ? "Start Free Trial" : "Proceed to Payment";
     }
 }
 
@@ -533,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const items = document.querySelectorAll('.tenant-item:not([data-disabled="true"])');
     if (items.length === 1) {
         const first = items[0];
-        selectTenantItem(first.dataset.id, first.dataset.name);
+        selectTenantItem(first.dataset.id, first.dataset.name, first.dataset.hasUsedTrial === 'true');
     }
 });
 </script>

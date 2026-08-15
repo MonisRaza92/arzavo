@@ -49,10 +49,44 @@ class Subscription extends Model
         return $this->belongsTo(Plan::class);
     }
 
-    // 🔥 Active check (VERY IMPORTANT)
+    // 🔥 Trial & Active checks
+    public function isTrial()
+    {
+        return $this->status === 'trial' || ($this->trial_ends_at !== null && $this->ends_at === null);
+    }
+
+    public function isTrialActive()
+    {
+        return $this->trial_ends_at && now()->lessThanOrEqualTo($this->trial_ends_at);
+    }
+
+    public function isTrialExpired()
+    {
+        return $this->trial_ends_at && now()->greaterThan($this->trial_ends_at);
+    }
+
     public function isActive()
     {
-        return $this->status === 'active' && (!$this->ends_at || now()->lessThan($this->ends_at));
+        // Cancelled or explicit expired status
+        if ($this->status === 'cancelled' || $this->status === 'expired') {
+            return false;
+        }
+
+        // Trial mode
+        if ($this->status === 'trial') {
+            return $this->trial_ends_at && now()->lessThanOrEqualTo($this->trial_ends_at);
+        }
+
+        // Active status
+        if ($this->status === 'active') {
+            // If it was a trial-based active subscription
+            if ($this->trial_ends_at && $this->ends_at && $this->trial_ends_at->equalTo($this->ends_at)) {
+                return now()->lessThanOrEqualTo($this->trial_ends_at);
+            }
+            return !$this->ends_at || now()->lessThanOrEqualTo($this->ends_at);
+        }
+
+        return false;
     }
 
     public function isInGracePeriod()
@@ -62,7 +96,8 @@ class Subscription extends Model
 
     public function aboutToExpire()
     {
-        return $this->status === 'active' && $this->ends_at && now()->diffInDays($this->ends_at) <= 7;
+        $expiryDate = $this->ends_at ?? $this->trial_ends_at;
+        return $this->isActive() && $expiryDate && now()->diffInDays($expiryDate, false) <= 3 && now()->diffInDays($expiryDate, false) >= 0;
     }
     
     public function overrides()

@@ -28,11 +28,18 @@ class TenantObserver
         Subscription::create([
             'tenant_id' => $tenant->id,
             'plan_id' => $plan->id,
-            'status' => 'active',
+            'status' => $trialDays > 0 ? 'trial' : 'active',
             'starts_at' => now(),
             'trial_ends_at' => $trialEndsAt,
             'ends_at' => $trialEndsAt,
         ]);
+
+        if ($trialDays > 0) {
+            $tenant->updateQuietly([
+                'has_used_trial' => true,
+                'trial_used_at' => now(),
+            ]);
+        }
     }
 
     /**

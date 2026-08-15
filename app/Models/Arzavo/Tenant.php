@@ -28,6 +28,8 @@ class Tenant extends Model
         'country',
         'pincode',
         'status',
+        'has_used_trial',
+        'trial_used_at',
         'db_name',
         'db_username',
         'db_password',
@@ -38,40 +40,34 @@ class Tenant extends Model
         'social_links' => 'array',
         'domain_verified_at' => 'datetime',
         'domain_verified' => 'boolean',
+        'has_used_trial' => 'boolean',
+        'trial_used_at' => 'datetime',
     ];
 
     /**
      * Tenant Admin User Relation
      * Main Platform User who created/owns the tenant
      */
-    public function isTrialActive($days = 3)
+    public function isTrialActive()
     {
-        return $this->created_at
-            && now()->lessThanOrEqualTo($this->created_at->copy()->addDays($days));
+        if ($this->subscription) {
+            return $this->subscription->isTrialActive();
+        }
+        return false;
     }
-    public function trialDaysLeft($days = 3)
-    {
-        if (!$this->created_at)
-            return 0;
 
-        return now()->diffInDays(
-            $this->created_at->copy()->addDays($days),
-            false
-        );
+    public function trialDaysLeft()
+    {
+        if (!$this->subscription || !$this->subscription->trial_ends_at) {
+            return 0;
+        }
+
+        return max(0, (int) now()->diffInDays($this->subscription->trial_ends_at, false));
     }
+
     public function canAccess()
     {
-        // paid plan active
-        if ($this->subscription && $this->subscription->isActive()) {
-            return true;
-        }
-
-        // trial active
-        if ($this->isTrialActive()) {
-            return true;
-        }
-
-        return false;
+        return $this->subscription && $this->subscription->isActive();
     }
     public function admin()
     {
