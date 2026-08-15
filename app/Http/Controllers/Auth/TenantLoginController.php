@@ -46,14 +46,6 @@ class TenantLoginController
 
             if ($user) {
                 $user->update(['last_login' => now()]);
-
-                // If this is an admin and matches main Arzavo platform user, also sync web guard
-                if ($user->role === 'admin') {
-                    $globalUser = \App\Models\Arzavo\User::where('email', $user->email)->first();
-                    if ($globalUser && !Auth::guard('web')->check()) {
-                        Auth::guard('web')->login($globalUser);
-                    }
-                }
             }
 
             $request->session()->regenerate();
