@@ -70,6 +70,12 @@ class TenantMiddleware
     private function setupSession($host)
     {
         $base = strtolower(config('app.domain'));
+
+        // Use dedicated session cookie name for tenant domains to prevent cookie collisions with Arzavo platform
+        config([
+            'session.cookie' => 'tenant_session',
+        ]);
+
         // If it is a third-party custom domain (e.g. school.com), scope cookie to that custom domain
         if (!str_ends_with($host, '.' . $base) && $host !== $base) {
             config([

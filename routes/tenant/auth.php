@@ -12,11 +12,11 @@ Route::prefix('account')->group(function () {
     Route::get('/logout', [TenantLoginController::class, 'logout'])->name('tenant.logout');
 });
 
-// Helper aliases
-Route::get('/login', [TenantLoginController::class, 'login'])->name('login');
-Route::post('/login', [TenantLoginController::class, 'loginHandle'])->name('login.submit');
-Route::get('/register', [TenantLoginController::class, 'register'])->name('register');
-Route::post('/register', [TenantLoginController::class, 'registerHandle'])->name('register.submit');
+// Helper aliases on tenant domain
+Route::get('/login', [TenantLoginController::class, 'login'])->name('tenant.login.short');
+Route::post('/login', [TenantLoginController::class, 'loginHandle'])->name('tenant.login.submit');
+Route::get('/register', [TenantLoginController::class, 'register'])->name('tenant.register.short');
+Route::post('/register', [TenantLoginController::class, 'registerHandle'])->name('tenant.register.submit');
 
 Route::middleware('auth:tenant')->group(function () {
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');

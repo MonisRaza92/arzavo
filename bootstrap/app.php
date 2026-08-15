@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
 
+        $middleware->web(prepend: [
+            \App\Http\Middleware\TenantMiddleware::class,
+        ]);
+
         $middleware->validateCsrfTokens(except: [
             'cashfree/webhook',
             'payment/payu/success',

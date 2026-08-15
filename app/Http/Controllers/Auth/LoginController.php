@@ -308,6 +308,12 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login.form');
+        $baseDomain = config('app.domain');
+        if (str_starts_with($baseDomain, 'www.')) {
+            $baseDomain = substr($baseDomain, 4);
+        }
+
+        $scheme = $request->getScheme();
+        return redirect()->to("{$scheme}://login.{$baseDomain}");
     }
 }
