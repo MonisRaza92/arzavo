@@ -69,11 +69,13 @@ class TenantMiddleware
 
     private function setupSession($host)
     {
-        config([
-            'session.cookie' => 'tenant_' . md5($host),
-            'session.domain' => null,
-            'session.path' => '/',
-        ]);
+        $base = strtolower(config('app.domain'));
+        // If it is a third-party custom domain (e.g. school.com), scope cookie to that custom domain
+        if (!str_ends_with($host, '.' . $base) && $host !== $base) {
+            config([
+                'session.domain' => $host,
+            ]);
+        }
     }
 
     private function switchDatabase($tenant)

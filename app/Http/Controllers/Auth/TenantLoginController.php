@@ -29,7 +29,7 @@ class TenantLoginController
         $credentials = $request->only('email', 'password');
 
         // ✅ TENANT GUARD USE KARO
-        if (Auth::guard('tenant')->attempt($credentials)) {
+        if (Auth::guard('tenant')->attempt($credentials, $request->filled('remember'))) {
             // Authentication passed
             $user = Auth::guard('tenant')->user();
 
@@ -37,6 +37,8 @@ class TenantLoginController
             if ($user) {
                 $user->update(['last_login' => now()]);
             }
+
+            $request->session()->regenerate();
 
             return redirect()->intended($this->redirectTo());
         }
