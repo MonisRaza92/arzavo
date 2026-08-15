@@ -1,3 +1,4 @@
+<!-- PLAN CREATE / EDIT MODAL -->
 <div id="planModal" class="fixed inset-0 flex bg-black/80 hidden items-center justify-center z-100 p-4 backdrop-blur-xs">
 
     <div class="modal-content bg-primary border-primary border-rounded w-full max-w-4xl shadow-2xl p-6 space-y-6 overflow-y-auto max-h-[90vh]">
@@ -95,6 +96,18 @@
                     </label>
                 </div>
 
+                <!-- LIMITED TIME OFFER -->
+                <div class="flex items-center justify-between border-primary border-rounded px-4 py-3 bg-primary">
+                    <div class="pr-2">
+                        <p class="font-semibold text-xs text-primary"><i class="fa-solid fa-fire mr-1.5 text-orange-500"></i> Limited Time Offer</p>
+                        <p class="text-[11px] text-tertiary">Show limited time deal badge on website</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="plan_is_limited_time" name="is_limited_time" value="1" class="sr-only peer" onchange="toggleLimitedDate(this.checked)">
+                        <div class="w-9 h-5 bg-neutral-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-accent"></div>
+                    </label>
+                </div>
+
                 <!-- COMING SOON -->
                 <div class="flex items-center justify-between border-primary border-rounded px-4 py-3 bg-primary">
                     <div class="pr-2">
@@ -108,7 +121,7 @@
                 </div>
 
                 <!-- HIDDEN / ADMIN ONLY -->
-                <div class="flex items-center justify-between border-primary border-rounded px-4 py-3 bg-primary">
+                <div class="flex items-center justify-between border-primary border-rounded px-4 py-3 bg-primary col-span-1 sm:col-span-2">
                     <div class="pr-2">
                         <p class="font-semibold text-xs text-primary"><i class="fa-solid fa-eye-slash mr-1.5 text-purple-500"></i> Hide from Website</p>
                         <p class="text-[11px] text-tertiary">Admin-only plan (manual tenant assignment)</p>
@@ -119,6 +132,15 @@
                     </label>
                 </div>
 
+            </div>
+
+            <!-- OPTIONAL LIMITED TIME EXPIRY DATE -->
+            <div id="limitedTimeDateContainer" class="bg-secondary p-4 border-rounded hidden">
+                <label class="text-xs font-semibold text-secondary block mb-1">
+                    <i class="fa-solid fa-calendar-xmark text-orange-500 mr-1"></i> Offer Expiration Date (Optional)
+                </label>
+                <input type="date" id="plan_limited_time_ends_at" name="limited_time_ends_at"
+                    class="input border-primary border-rounded p-2.5 bg-primary text-xs w-full text-primary">
             </div>
 
             <!-- FEATURES LIST -->
@@ -151,7 +173,7 @@
                         <div class="flex justify-between items-center bg-primary p-2.5 border-rounded border-primary gap-3">
                             <span class="text-xs font-medium text-primary">{{ $label }}</span>
                             <input type="number" name="limits[{{ $key }}]" id="limit_{{ $key }}" placeholder="Unlimited"
-                                class="limit-input input border-primary border-rounded p-1.5 px-2.5 text-xs bg-secondary text-right w-28 text-primary font-mono">
+                                class="limit-input input border-primary border-rounded p-1.5 px-2.5 text-xs bg-secondary text-right w-28 text-primary">
                         </div>
                     @endforeach
                 </div>
@@ -159,11 +181,11 @@
 
             <!-- ACTIONS -->
             <div class="flex justify-end gap-3 pt-4 border-top">
-                <button type="button" onclick="closeModel('planModal')" class="px-4 py-2 text-xs font-semibold border-rounded border-primary bg-primary text-secondary hover:bg-hover-secondary transition">
+                <button type="button" onclick="closeModel('planModal')" class="px-4 py-2 text-xs font-semibold border-rounded border-primary bg-primary text-secondary hover-primary transition cursor-pointer">
                     Cancel
                 </button>
 
-                <button type="submit" class="px-5 py-2 text-xs font-semibold bg-invert text-invert border-rounded shadow-sm hover:opacity-90 transition flex items-center gap-2">
+                <button type="submit" class="px-5 py-2 text-xs font-semibold bg-invert text-invert border-rounded shadow-xs hover-invert transition flex items-center gap-2 cursor-pointer">
                     <i class="fa-regular fa-floppy-disk"></i>
                     <span id="planSubmitBtnText">Save Plan</span>
                 </button>
@@ -175,6 +197,16 @@
 
 {{-- EDIT / CREATE PLAN JAVASCRIPT --}}
 <script>
+function toggleLimitedDate(checked) {
+    const container = document.getElementById('limitedTimeDateContainer');
+    if (checked) {
+        container.classList.remove('hidden');
+    } else {
+        container.classList.add('hidden');
+        document.getElementById('plan_limited_time_ends_at').value = '';
+    }
+}
+
 function openCreatePlanModal() {
     const form = document.getElementById('planForm');
     form.action = "{{ route('arzavo.admin.plans.store') }}";
@@ -186,7 +218,9 @@ function openCreatePlanModal() {
     document.getElementById('plan_is_active').checked = true;
     document.getElementById('plan_is_popular').checked = false;
     document.getElementById('plan_is_coming_soon').checked = false;
+    document.getElementById('plan_is_limited_time').checked = false;
     document.getElementById('plan_is_hidden').checked = false;
+    document.getElementById('limitedTimeDateContainer').classList.add('hidden');
 
     // Reset feature checkboxes
     document.querySelectorAll('.feature-checkbox').forEach(cb => cb.checked = false);
@@ -227,7 +261,18 @@ function editPlan(planId) {
         document.getElementById('plan_is_active').checked = Boolean(plan.is_active);
         document.getElementById('plan_is_popular').checked = Boolean(plan.is_popular);
         document.getElementById('plan_is_coming_soon').checked = Boolean(plan.is_coming_soon);
+        document.getElementById('plan_is_limited_time').checked = Boolean(plan.is_limited_time);
         document.getElementById('plan_is_hidden').checked = Boolean(plan.is_hidden);
+
+        if (plan.is_limited_time) {
+            document.getElementById('limitedTimeDateContainer').classList.remove('hidden');
+            if (plan.limited_time_ends_at) {
+                document.getElementById('plan_limited_time_ends_at').value = plan.limited_time_ends_at.split('T')[0];
+            }
+        } else {
+            document.getElementById('limitedTimeDateContainer').classList.add('hidden');
+            document.getElementById('plan_limited_time_ends_at').value = '';
+        }
 
         // Features
         document.querySelectorAll('.feature-checkbox').forEach(cb => {

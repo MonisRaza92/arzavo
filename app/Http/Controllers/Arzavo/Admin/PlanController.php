@@ -24,11 +24,13 @@ class PlanController extends Controller
             'trial_days' => 'nullable|integer|min:0',
             'short_description' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'limited_time_ends_at' => 'nullable|date',
         ]);
 
         $data['is_active'] = $request->boolean('is_active');
         $data['is_popular'] = $request->boolean('is_popular');
         $data['is_coming_soon'] = $request->boolean('is_coming_soon');
+        $data['is_limited_time'] = $request->boolean('is_limited_time');
         $data['is_hidden'] = $request->boolean('is_hidden');
 
         $features = $request->input('features', []);
@@ -61,11 +63,13 @@ class PlanController extends Controller
             'trial_days' => 'nullable|integer|min:0',
             'short_description' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'limited_time_ends_at' => 'nullable|date',
         ]);
 
         $data['is_active'] = $request->boolean('is_active');
         $data['is_popular'] = $request->boolean('is_popular');
         $data['is_coming_soon'] = $request->boolean('is_coming_soon');
+        $data['is_limited_time'] = $request->boolean('is_limited_time');
         $data['is_hidden'] = $request->boolean('is_hidden');
 
         $features = $request->input('features', []);

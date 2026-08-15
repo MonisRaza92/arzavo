@@ -54,6 +54,10 @@
                 <div class="text-center py-2 bg-blue-600">
                     <span class="text-white text-xs font-semibold uppercase tracking-widest">⏳ Coming Soon</span>
                 </div>
+                @elseif($plan->is_limited_time)
+                <div class="text-center py-2 bg-orange-600 animate-pulse">
+                    <span class="text-white text-xs font-semibold uppercase tracking-widest">🔥 Limited Time Offer</span>
+                </div>
                 @elseif($plan->is_popular)
                 <div class="text-center py-2 bg-accent">
                     <span class="text-white text-xs font-semibold uppercase tracking-widest">✦ Most Popular</span>

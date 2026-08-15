@@ -29,6 +29,10 @@
                 <div class="absolute top-4 right-4 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded shadow-xs">
                     ⏳ Coming Soon
                 </div>
+                @elseif($plan->is_limited_time)
+                <div class="absolute top-4 right-4 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded shadow-xs animate-pulse">
+                    🔥 Limited Time Offer
+                </div>
                 @elseif($plan->is_popular)
                 <div class="absolute top-4 right-4 bg-accent text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded shadow-xs">
                     ★ Most Popular

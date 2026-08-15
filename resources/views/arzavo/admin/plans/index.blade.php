@@ -24,6 +24,12 @@
                         </span>
                     @endif
 
+                    @if($plan->is_limited_time)
+                        <span class="text-xs bg-tertiary px-2 py-1 border-rounded text-tertiary">
+                            🔥 Limited Time
+                        </span>
+                    @endif
+
                     @if($plan->is_coming_soon)
                         <span class="text-xs bg-tertiary px-2 py-1 border-rounded text-tertiary">
                             ⏳ Coming Soon
