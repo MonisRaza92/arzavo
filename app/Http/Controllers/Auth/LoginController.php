@@ -14,40 +14,57 @@ class LoginController extends Controller
 {
     public function login()
     {
-        if (Auth::check()) {
-            return redirect($this->redirectTo());
+        if (Auth::guard('web')->check()) {
+            return redirect()->to($this->redirectTo());
         }
         return view('arzavo.auth.login');
     }
+
     public function loginHandle(Request $request)
     {
-        // Validate the request data
+        // Validate the request data (allow email, username, or phone number)
         $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:8',
+            'email' => 'required|string',
+            'password' => 'required|string',
         ]);
-        $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('web')->attempt($credentials)) {
-            // Authentication passed
-            $user = Auth::user();
+        $loginInput = trim($request->input('email'));
+        $password = $request->input('password');
+        $remember = $request->boolean('remember');
+
+        // Determine whether input is email, phone number, or username
+        $fieldType = filter_var($loginInput, FILTER_VALIDATE_EMAIL) 
+            ? 'email' 
+            : (is_numeric($loginInput) ? 'number' : 'username');
+
+        $credentials = [
+            $fieldType => $loginInput,
+            'password' => $password,
+        ];
+
+        if (Auth::guard('web')->attempt($credentials, $remember)) {
+            $user = Auth::guard('web')->user();
 
             if ($user->status === 'suspended') {
-                Auth::logout();
+                Auth::guard('web')->logout();
                 $siteName = config('app.domain') ?? 'your tenant';
-                return redirect()->route('login-form')->withErrors([
+                return redirect()->route('login.form')->withErrors([
                     'email' => "Your account is suspended. Please contact {$siteName} support for help.",
                 ]);
             }
 
+            // Regenerate session ID to prevent fixation and commit fresh session cookie
+            $request->session()->regenerate();
+
             $user->update(['last_login' => now(), 'status' => 'active']);
-            return redirect($this->redirectTo());
+
+            return redirect()->to($this->redirectTo());
         }
 
         // Authentication failed
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ])->withInput($request->only('email'));
     }
 
     public function redirectTo()
@@ -58,8 +75,8 @@ class LoginController extends Controller
             return url('/');
         }
 
-        if ($user->role === 'super_admin') {
-            return route('arzavo.admin.users.index');
+        if ($user->role === 'super_admin' || $user->role === 'admin') {
+            return route('arzavo.admin.dashboard');
         }
 
         // tenants load karo (safe way)
@@ -82,12 +99,15 @@ class LoginController extends Controller
 
     private function tenantDashboardUrl($tenant)
     {
-        return route('admin.dashboard.index', $tenant);
+        if ($tenant && !empty($tenant->url)) {
+            return $tenant->url . '/admin/dashboard';
+        }
+        return route('tenants.index');
     }
     public function register()
     {
-        if (Auth::check()) {
-            return redirect($this->redirectTo());
+        if (Auth::guard('web')->check()) {
+            return redirect()->to($this->redirectTo());
         }
         return view('arzavo.auth.register');
     }
@@ -99,15 +119,14 @@ class LoginController extends Controller
             'lname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'number' => 'required|string|max:15|unique:users',
-            'password' => 'required|string|min:8|',
+            'password' => 'required|string|min:8',
             'role' => 'string|in:admin,user,teacher,student',
-
         ]);
+
         $errors = [];
         if (!empty($errors)) {
             return back()->withErrors($errors)->withInput();
         }
-
 
         // Create a new user
         $user = User::create([
@@ -126,7 +145,7 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         // Redirect to the appropriate dashboard
-        return redirect($this->redirectTo());
+        return redirect()->to($this->redirectTo());
     }
     private function generateUniqueUsername($fname, $lname)
     {

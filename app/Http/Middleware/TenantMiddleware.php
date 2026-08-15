@@ -15,8 +15,8 @@ class TenantMiddleware
         $host = strtolower($request->getHost());
         $base = strtolower(config('app.domain'));
 
-        // 1. Skip main domain
-        if ($this->isMainDomain($host, $base)) {
+        // 1. Skip system domain (main platform, admin, login, register, super)
+        if (isSystemDomain($host)) {
             return $next($request);
         }
 
@@ -44,10 +44,7 @@ class TenantMiddleware
 
     private function isMainDomain($host, $base)
     {
-        $hostWithoutWww = str_starts_with($host, 'www.') ? substr($host, 4) : $host;
-        $baseWithoutWww = str_starts_with($base, 'www.') ? substr($base, 4) : $base;
-
-        return $hostWithoutWww === $baseWithoutWww || $hostWithoutWww === 'super.' . $baseWithoutWww;
+        return isSystemDomain($host);
     }
 
     private function resolveTenant($host)

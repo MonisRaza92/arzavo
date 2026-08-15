@@ -15,6 +15,7 @@ class Subscription extends Model
         'ends_at',
         'trial_ends_at',
         'custom_price',
+        'delete_on_expiry',
         'pending_plan_id'
     ];
 
@@ -22,6 +23,7 @@ class Subscription extends Model
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
         'trial_ends_at' => 'datetime',
+        'delete_on_expiry' => 'boolean',
     ];
     public function applyPendingPlan()
     {

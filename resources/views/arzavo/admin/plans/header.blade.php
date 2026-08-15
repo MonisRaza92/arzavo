@@ -26,8 +26,8 @@
                 </button>
             </div>
 
-            <button class="px-3 py-2 text-sm bg-invert text-invert border-primary border-rounded hover-invert"
-                onclick="document.getElementById('planModal').classList.remove('hidden')">
+            <button class="px-3 py-2 text-sm bg-invert text-invert border-primary border-rounded hover-invert cursor-pointer"
+                onclick="openCreatePlanModal()">
                 Add New
                 <i class="fa fa-square-plus ml-1"></i>
             </button>

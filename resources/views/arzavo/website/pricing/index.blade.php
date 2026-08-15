@@ -46,7 +46,11 @@
             @foreach($plans as $plan)
             <div class="relative rounded-lg overflow-hidden flex flex-col {{ $plan->is_popular ? 'border border-accent!' : 'border' }} bg-white">
 
-                @if($plan->is_popular)
+                @if($plan->is_coming_soon)
+                <div class="text-center py-2 bg-blue-600">
+                    <span class="text-white text-xs font-semibold uppercase tracking-widest">⏳ Coming Soon</span>
+                </div>
+                @elseif($plan->is_popular)
                 <div class="text-center py-2 bg-accent">
                     <span class="text-white text-xs font-semibold uppercase tracking-widest">✦ Most Popular</span>
                 </div>
@@ -79,10 +83,17 @@
                         @endforeach
                     </ul>
 
-                    <a href="{{ route('checkout', ['slug' => $plan->slug]) }}"
-                       class="w-full py-3 text-center text-sm font-semibold rounded transition-all duration-200 block {{ $plan->is_popular ? 'bg-accent text-white hover:opacity-90' : 'bg-gray-50 text-dark/70 hover:bg-gray-100' }}">
-                        {{ $plan->monthly_price == 0 ? 'Get Started Free' : 'Choose Plan' }}
-                    </a>
+                    @if($plan->is_coming_soon)
+                        <button disabled
+                           class="w-full py-3 text-center text-sm font-semibold rounded bg-gray-100 text-dark/40 cursor-not-allowed block">
+                            ⏳ Coming Soon
+                        </button>
+                    @else
+                        <a href="{{ route('checkout', ['slug' => $plan->slug]) }}"
+                           class="w-full py-3 text-center text-sm font-semibold rounded transition-all duration-200 block {{ $plan->is_popular ? 'bg-accent text-white hover:opacity-90' : 'bg-gray-50 text-dark/70 hover:bg-gray-100' }}">
+                            {{ $plan->monthly_price == 0 ? 'Get Started Free' : 'Choose Plan' }}
+                        </a>
+                    @endif
                 </div>
             </div>
             @endforeach

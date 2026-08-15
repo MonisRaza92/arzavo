@@ -9,23 +9,9 @@ class RoleMiddleware
 {
     public function handle($request, Closure $next, $role)
     {
-        $mainDomain = config('app.domain');
-        $currentDomain = $request->getHost();
-
-        $baseDomain = config('app.domain');
-        if (str_starts_with($baseDomain, 'www.')) {
-            $baseDomain = substr($baseDomain, 4);
-        }
-        $superDomain = 'super.' . $baseDomain;
-
         // ✅ AUTO-DETECT GUARD: Current domain ke hisab se
-        if (
-            $currentDomain === $mainDomain || 
-            $currentDomain === "www." . $mainDomain ||
-            $currentDomain === $superDomain ||
-            $currentDomain === "www." . $superDomain
-        ) {
-            // Main / Super domain - web guard check karo
+        if (isSystemDomain()) {
+            // Main / Super / Admin / Login / Register domain - web guard check karo
             $guard = 'web';
             $loginRoute = 'login.form';
         } else {

@@ -5,14 +5,17 @@
     {{-- =======================
     HEADER
     ======================== --}}
+    @php
+        $user = $user ?? auth('web')->user();
+    @endphp
     <div class="mb-6 flex items-center gap-2">
         <x-profile-image :user="$user" />
         <div class="info">
             <h2 class="text-base font-semibold text-secondary">
-                {{ $user->fname }} {{ $user->lname }}
+                {{ $user->fname ?? 'Super' }} {{ $user->lname ?? 'Admin' }}
             </h2>
             <p class="text-[11px] text-tertiary">
-                {{ $user->email }}
+                {{ $user->email ?? 'admin@arzavo.com' }}
             </p>
         </div>
     </div>
@@ -28,7 +31,8 @@
                     [
                         'text' => 'Dashboard',
                         'icon' => 'fa-chart-line',
-                        'active' => 'admin/dashboard'
+                        'route' => 'arzavo.admin.dashboard',
+                        'active' => 'dashboard'
                     ],
                 ]
             ],
@@ -107,7 +111,7 @@
 
                 <li>
                     <a href="{{ isset($item['route']) ? route($item['route']) : '#' }}"
-                        class=" text-secondary text-hover-invert bg-hover-invert p-2 border-rounded text-sm block w-full {{ isset($item['active']) && request()->is($item['active']) ? 'bg-invert text-invert' : '' }}">
+                        class=" text-secondary text-hover-invert bg-hover-invert p-2 border-rounded text-sm block w-full {{ (isset($item['route']) && request()->routeIs($item['route'].'*')) || (isset($item['active']) && (request()->is($item['active']) || request()->is(ltrim(str_replace('admin', '', $item['active']), '/')))) ? 'bg-invert text-invert' : '' }}">
 
                         <i class="fa-solid {{ $item['icon'] }} mr-2"></i>
                         {{ $item['text'] }}

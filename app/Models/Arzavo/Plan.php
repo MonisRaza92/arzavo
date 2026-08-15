@@ -19,11 +19,13 @@ class Plan extends Model
         'yearly_price',
         'is_active',
         'is_popular',
+        'is_coming_soon',
+        'is_hidden',
         'short_description',
         'description',
         'trial_days',
-        'features',   // ✅ add
-        'limits',     // ✅ add
+        'features',
+        'limits',
     ];
 
     protected $casts = [
@@ -31,6 +33,8 @@ class Plan extends Model
         'limits' => 'array',
         'is_active' => 'boolean',
         'is_popular' => 'boolean',
+        'is_coming_soon' => 'boolean',
+        'is_hidden' => 'boolean',
         'monthly_price' => 'float',
         'yearly_price' => 'float',
     ];

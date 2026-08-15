@@ -566,11 +566,10 @@ function closeModel(id) {
 /* ---------- Outside Click Logic ---------- */
 
 function attachOutsideClick(modal) {
-
     function outsideHandler(e) {
-        const content = modal.querySelector(".modal-content");
+        const content = modal.querySelector(".modal-content") || modal.firstElementChild;
 
-        if (!content || !content.contains(e.target)) {
+        if (content && !content.contains(e.target) && modal.contains(e.target)) {
             closeModel(modal.id);
         }
     }

@@ -1,3 +1,6 @@
+@php
+    $user = $user ?? auth('web')->user();
+@endphp
 <div
     class="admin-navbar w-full sticky top-0 right-0 z-99 flex gap-8 items-center justify-between px-4 py-3 bg-primary border-bottom">
     <a href="{{ route('home') }}" class="shrink-0">
@@ -41,13 +44,13 @@
                     <p class="text-sm font-semibold">
                         {{ ($user->fname ?? '') . ' ' . ($user->lname ?? '') }}
                     </p>
-                    <p class="text-xs text-tertiary">{{ $user->email }}</p>
+                    <p class="text-xs text-tertiary">{{ $user?->email }}</p>
                 </div>
 
                 <!-- TENANTS SECTION -->
                 <div>
                     @php
-                        $tenants = $user->tenants->collect();
+                        $tenants = $user?->tenants ?? collect();
                     @endphp
 
                     <div class="max-h-40 overflow-auto">

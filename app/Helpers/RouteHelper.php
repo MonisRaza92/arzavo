@@ -140,3 +140,65 @@ if (!function_exists('route_to')) {
         };
     }
 }
+
+if (!function_exists('isSystemDomain')) {
+    /**
+     * Check if a given host (or the current request host) is a system domain
+     * (main platform, admin, super, login, register).
+     *
+     * @param string|null $host
+     * @return bool
+     */
+    function isSystemDomain(?string $host = null): bool
+    {
+        $host = strtolower(trim($host ?? request()->getHost()));
+        $baseDomain = strtolower(trim(config('app.domain')));
+
+        $hostWithoutWww = str_starts_with($host, 'www.') ? substr($host, 4) : $host;
+        $baseWithoutWww = str_starts_with($baseDomain, 'www.') ? substr($baseDomain, 4) : $baseDomain;
+
+        $systemPrefixes = ['', 'admin.', 'super.', 'login.', 'register.'];
+
+        foreach ($systemPrefixes as $prefix) {
+            if ($hostWithoutWww === $prefix . $baseWithoutWww) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('registerTenantRoutes')) {
+    /**
+     * Helper to register routes across all active tenant domains.
+     *
+     * @param \Closure $callback
+     */
+    function registerTenantRoutes(\Closure $callback): void
+    {
+        $currentHost = request()->getHost();
+
+        $registerDomain = function ($domain) use ($callback) {
+            \Illuminate\Support\Facades\Route::domain($domain)
+                ->middleware('tenant')
+                ->group($callback);
+        };
+
+        if (app()->runningInConsole() || isSystemDomain($currentHost)) {
+            $tenants = \App\Models\Arzavo\Tenant::all();
+
+            foreach ($tenants as $tenant) {
+                if (!empty($tenant->subdomain) && !isSystemDomain($tenant->subdomain)) {
+                    $registerDomain($tenant->subdomain);
+                }
+
+                if ($tenant->domain_verified && !empty($tenant->custom_domain) && !isSystemDomain($tenant->custom_domain)) {
+                    $registerDomain($tenant->custom_domain);
+                }
+            }
+        } else {
+            $registerDomain($currentHost);
+        }
+    }
+}

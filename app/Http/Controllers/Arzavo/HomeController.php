@@ -11,6 +11,7 @@ class HomeController
     public function index()
     {
         $plans = Plan::where('is_active', true)
+            ->where('is_hidden', false)
             ->orderByDesc('is_popular')
             ->orderBy('monthly_price')
             ->get();
@@ -22,11 +23,10 @@ class HomeController
         return view('arzavo.website.about.index');
     }
 
-
-
     public function pricing()
     {
         $plans = Plan::where('is_active', true)
+            ->where('is_hidden', false)
             ->orderByDesc('is_popular')
             ->orderBy('monthly_price')
             ->get();

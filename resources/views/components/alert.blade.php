@@ -4,7 +4,7 @@
     @php
         $toasts = [];
 
-        if ($errors->any()) {
+        if (isset($errors) && $errors->any()) {
             foreach ($errors->all() as $error) {
                 $toasts[] = $error;
             }
