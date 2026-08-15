@@ -504,14 +504,18 @@ function setActivationMode(mode) {
 }
 
 function updateSummaryPricing() {
-    if (planData.isFree) return;
+    const btnText = document.getElementById('btnCheckoutText');
+
+    if (planData.isFree) {
+        if (btnText) btnText.textContent = "Activate Free Plan";
+        return;
+    }
 
     const base = currentCycle === 'yearly' ? planData.yearly : planData.monthly;
     const tax = Math.round(base * 0.18 * 100) / 100;
     const total = Math.round((base + tax) * 100) / 100;
 
     const fmt = n => '₹' + new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
-    const btnText = document.getElementById('btnCheckoutText');
 
     if (currentActivationMode === 'trial' && isSelectedTenantTrialEligible) {
         document.getElementById('summaryBasePrice').textContent = fmt(base) + ` (Trial for ${planData.trialDays}d)`;
@@ -531,7 +535,11 @@ function updateSummaryPricing() {
 function selectTenantItem(id, name, hasUsedTrial) {
     document.getElementById('selectedTenantId').value = id;
 
-    isSelectedTenantTrialEligible = !hasUsedTrial && planData.trialDays > 0;
+    if (planData.isFree) {
+        isSelectedTenantTrialEligible = false;
+    } else {
+        isSelectedTenantTrialEligible = !hasUsedTrial && planData.trialDays > 0;
+    }
 
     const cardTrial = document.getElementById('cardModeTrial');
     const trialUsedNotice = document.getElementById('trialAlreadyUsedNotice');

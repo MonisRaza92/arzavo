@@ -75,7 +75,7 @@ Route::domain(config('app.domain'))->group(function () {
         Route::post('tenants/{tenant}/reset-password', [TenantController::class, 'resetAdminPassword'])->name('tenants.reset-password');
         Route::get('/checkout/plan/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout');
         Route::get('/checkout/process/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout.process');
-        Route::post('/plans/{slug}/subscribe', [BillingController::class, 'subscribe'])->name('subscribe');
+        Route::post('/plans/{slug}/subscribe', [Arzavo\PlanController::class, 'subscribe'])->name('subscribe');
         Route::get('/check-subdomain', [TenantController::class, 'checkSubdomain']);
         Route::put('tenant/toggle-status/{id}', [TenantController::class, 'toggleStatus'])->name('tenant.toggle-status');
         Route::get('/verify-domain/{tenant}', [DomainController::class, 'verifyDomain'])->name('domain.verify');
