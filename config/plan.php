@@ -51,7 +51,6 @@ return [
         'teachers'  => 'Teachers Limit',
         'staff'     => 'Staff Limit',
         'students'  => 'Students Limit',
-        'courses'   => 'Courses Limit',
         'storage'   => 'Storage (GB)',
     ],
 

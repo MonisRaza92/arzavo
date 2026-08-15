@@ -95,7 +95,7 @@ return [
                 'icon' => 'fa-book-bookmark',
                 'text' => 'Library',
                 'links' => [
-                    ['icon' => 'fa-layer-group', 'text' => 'Category', 'route' => 'admin.book-categories.index', 'active' => 'admin/book-categories*'],
+                    ['icon' => 'fa-layer-group', 'text' => 'Books Categories', 'route' => 'admin.book-categories.index', 'active' => 'admin/book-categories*'],
                     ['icon' => 'fa-book', 'text' => 'Books & Notes', 'route' => 'admin.books.index', 'active' => 'admin/books*'],
                 ],
             ],

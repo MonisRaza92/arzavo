@@ -54,13 +54,18 @@ class CheckoutController extends Controller
      */
     public function process(Request $request)
     {
+        $authUser = auth('tenant')->user() ?? auth()->user();
+
         $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'customer_email' => 'required|email|max:255',
-            'payment_gateway' => 'required|string',
+            'customer_name' => 'nullable|string|max:255',
+            'customer_email' => 'nullable|email|max:255',
+            'payment_gateway' => 'nullable|string',
         ]);
 
         $payload = $request->all();
+        $payload['customer_name'] = $request->input('customer_name') ?: ($authUser?->name ?: 'Guest Student');
+        $payload['customer_email'] = $request->input('customer_email') ?: ($authUser?->email ?: 'student@' . request()->getHost());
+        $payload['payment_gateway'] = $request->input('payment_gateway', 'razorpay');
 
         // Handle proof screenshot upload for manual bank transfer
         if ($request->hasFile('payment_proof_file')) {

@@ -14,6 +14,10 @@ class BookController
 {
     public function index()
     {
+        $bookCategories = BookCategory::where('status', true)->orderBy('order')->get();
+        if ($bookCategories->count() == 0) {
+            return redirect()->route('admin.book-categories.index')->with('warning', 'Please create at least one book category before uploading a book.');
+        }
         $books = Book::with(['bookCategory', 'academicCategory', 'classCourse', 'subject'])
             ->orderBy('created_at', 'desc')
             ->paginate(15);
@@ -49,21 +53,21 @@ class BookController
             'highlights' => 'nullable|array',
             'highlights.*' => 'nullable|string',
             'pages_count' => 'nullable|integer|min:0',
-            
+
             // Media paths from Content picker
             'cover_image' => 'nullable|string|max:255',
             'file_path' => 'required|string|max:255',
-            
+
             // Pricing
             'price_type' => 'required|in:free,paid',
             'price' => 'nullable|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0|lte:price',
-            
+
             // Access and status
             'access_type' => 'required|in:public,students_only,enrolled_students_only',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
-            
+
             // Relationships
             'book_category_id' => 'required|exists:book_categories,id',
             'academic_category_id' => 'nullable|exists:academic_categories,id',
@@ -146,21 +150,21 @@ class BookController
             'highlights' => 'nullable|array',
             'highlights.*' => 'nullable|string',
             'pages_count' => 'nullable|integer|min:0',
-            
+
             // Media paths
             'cover_image' => 'nullable|string|max:255',
             'file_path' => 'required|string|max:255',
-            
+
             // Pricing
             'price_type' => 'required|in:free,paid',
             'price' => 'nullable|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0|lte:price',
-            
+
             // Access
             'access_type' => 'required|in:public,students_only,enrolled_students_only',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
-            
+
             // Relationships
             'book_category_id' => 'required|exists:book_categories,id',
             'academic_category_id' => 'nullable|exists:academic_categories,id',
