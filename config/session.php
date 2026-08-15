@@ -159,14 +159,14 @@ return [
     'domain' => (function () {
         $envDomain = env('SESSION_DOMAIN');
         if (!empty($envDomain) && $envDomain !== 'null' && $envDomain !== 'none') {
-            return $envDomain;
+            return ltrim($envDomain, '.');
         }
 
         $host = env('APP_DOMAIN', 'arzavo.in');
         if (str_starts_with($host, 'www.')) {
             $host = substr($host, 4);
         }
-        return '.' . ltrim($host, '.');
+        return ltrim($host, '.');
     })(),
 
     /*
