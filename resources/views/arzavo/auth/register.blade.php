@@ -12,7 +12,7 @@
                 <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="Arzavo Logo" class="logo">
             </div>
             <div class="max-w-lg p-4 h-full overflow-y-auto lg:p-6">
-                <form action="{{ route('register.handle') }}" method="POST">
+                <form action="{{ route('register.handle') }}" method="POST" data-turbo="false">
                     @csrf
                     <h2 class="text-3xl font-bold mb-4">Create Account!</h2>
                     <p class="mb-4 text-tertiary">Create your account by filling the form below.</p>

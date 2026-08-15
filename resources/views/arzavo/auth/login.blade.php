@@ -11,7 +11,7 @@
                 <img src="{{ asset('images/logo/arzavo-dark.png') }}" alt="Arzavo Logo" class="logo">
             </div>
             <div class="max-w-lg h-full flex flex-col justify-center items-center p-4 lg:p-6">
-                <form action="{{ route('login.handle') }}" method="POST">
+                <form action="{{ route('login.handle') }}" method="POST" data-turbo="false">
                     @csrf
                     <h2 class="text-3xl font-bold mb-4">Welcome Back!</h2>
                     <p class="mb-4">Please enter your credentials to access your account.</p>
