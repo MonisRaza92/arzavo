@@ -144,6 +144,6 @@ class CheckoutController extends Controller
         // Auto-fulfill order on success page view
         CheckoutService::fulfillOrder($order);
 
-        return view('tenant.themes.checkout_success', compact('order'));
+        return view('tenant.themes.success', compact('order'));
     }
 }

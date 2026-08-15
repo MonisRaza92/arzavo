@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Order Placed')
+@section('title', 'Order Confirmed - ' . ($order->order_number ?? 'Success'))
 
 @section('content')
 <style>
@@ -10,13 +10,9 @@
         --checkout-text: {{ $customizes['checkout_text_color'] ?? '#111827' }};
         --checkout-radius: {{ $customizes['checkout_border_radius'] ?? '12' }}px;
         --checkout-border: {{ $customizes['checkout_input_border_color'] ?? '#e5e7eb' }};
-        
         --checkout-header-bg: {{ $customizes['checkout_header_bg'] ?? '#ffffff' }};
         --checkout-form-bg: {{ $customizes['checkout_form_bg'] ?? '#ffffff' }};
-        --checkout-summary-bg: {{ $customizes['checkout_summary_bg'] ?? '#fafafa' }};
-        
         --checkout-logo-width: {{ $customizes['checkout_logo_width'] ?? 150 }}px;
-        
         --success-icon-color: {{ $customizes['checkout_success_icon_color'] ?? '#16a34a' }};
     }
 
@@ -70,7 +66,7 @@
     }
 </style>
 
-{{-- ??? CHECKOUT HEADER / BRANDING AREA --}}
+{{-- BRANDING HEADER --}}
 <header class="checkout-header py-6 mb-8">
     <div class="max-w-6xl mx-auto px-4">
         <div class="checkout-logo-container">
@@ -99,26 +95,59 @@
     <h1 class="text-3xl font-extrabold mb-2">Order Confirmed!</h1>
     <p class="opacity-80 mb-6">
         {{ $customizes['checkout_success_subtitle'] ?? 'Thank you for your order. Your order number is' }}
-        <strong class="success-text-primary">#{{ $order->order_number }}</strong>.
+        <strong class="success-text-primary font-mono">#{{ $order->order_number }}</strong>.
     </p>
 
     <div class="p-6 success-card text-left max-w-xl mx-auto mb-8 space-y-4 shadow-sm">
+        {{-- Items List --}}
+        @if($order->items && $order->items->count() > 0)
+            <div class="pb-3 border-b success-border-sep space-y-2">
+                <span class="text-xs uppercase font-bold text-gray-400">Purchased Items</span>
+                @foreach($order->items as $item)
+                    <div class="flex justify-between items-center text-sm font-semibold">
+                        <span>{{ $item->item_name }} (x{{ $item->quantity }})</span>
+                        <span>₹{{ number_format($item->total_price, 2) }}</span>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
         <div class="flex justify-between items-center pb-3 border-b success-border-sep">
             <span class="text-sm font-semibold opacity-60">Payment Status:</span>
-            {!! $order->payment_status_badge !!}
+            @if($order->payment_status === 'paid')
+                <span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800">Paid</span>
+            @else
+                <span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-800">{{ ucfirst($order->payment_status) }}</span>
+            @endif
         </div>
+
         <div class="flex justify-between items-center pb-3 border-b success-border-sep">
             <span class="text-sm font-semibold opacity-60">Total Amount:</span>
-            <span class="text-lg font-bold">?{{ number_format($order->grand_total, 2) }}</span>
+            <span class="text-lg font-bold text-emerald-600">₹{{ number_format($order->grand_total, 2) }}</span>
         </div>
+
         <div class="flex justify-between items-center">
             <span class="text-sm font-semibold opacity-60">Payment Method:</span>
             <span class="text-sm font-bold uppercase">{{ str_replace('_', ' ', $order->payment_gateway) }}</span>
         </div>
     </div>
 
-    <div class="flex justify-center gap-4">
-        <a href="{{ route_to('home') }}" class="px-6 py-3 font-bold success-btn">
+    @php
+        $firstItem = $order->items->first();
+        $isCourse = $firstItem && in_array(strtolower(class_basename($firstItem->purchasable_type)), ['course', 'courses', 'app\models\tenant\course']);
+    @endphp
+
+    <div class="flex flex-wrap justify-center gap-4">
+        @if($isCourse)
+            <a href="{{ route('student.courses') }}" class="px-6 py-3 font-bold success-btn flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap"></i> Access My Courses
+            </a>
+        @else
+            <a href="{{ route('user.downloads') }}" class="px-6 py-3 font-bold success-btn flex items-center gap-2">
+                <i class="fa-solid fa-book-open"></i> Read / Download in Dashboard
+            </a>
+        @endif
+        <a href="{{ route_to('home') }}" class="px-6 py-3 font-bold rounded-xl border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition">
             Return to Home
         </a>
     </div>
