@@ -5,6 +5,7 @@ namespace App\Services\Payment\Drivers;
 use App\Contracts\Payment\PaymentDriverInterface;
 use App\Models\Tenant\Order;
 use App\Models\Tenant\Transaction;
+use App\Models\Tenant\Settings;
 use Illuminate\Support\Facades\Log;
 
 class RazorpayDriver implements PaymentDriverInterface
@@ -15,15 +16,14 @@ class RazorpayDriver implements PaymentDriverInterface
 
     public function __construct()
     {
-        // Dynamically fetched from Tenant Settings or Config
-        $this->keyId = settings('razorpay_key', config('services.razorpay.key', ''));
-        $this->keySecret = settings('razorpay_secret', config('services.razorpay.secret', ''));
-        $this->webhookSecret = settings('razorpay_webhook_secret', config('services.razorpay.webhook_secret', ''));
+        // Strictly from Tenant Settings (isolated from Arzavo platform config)
+        $this->keyId = Settings::get('razorpay_key', '') ?? '';
+        $this->keySecret = Settings::get('razorpay_secret', '') ?? '';
+        $this->webhookSecret = Settings::get('razorpay_webhook_secret', '') ?? '';
     }
 
     public function processPayment(Order $order, array $payload): array
     {
-        // Returns gateway charge payload for frontend JS integration
         return [
             'gateway' => 'razorpay',
             'key' => $this->keyId,
@@ -53,7 +53,7 @@ class RazorpayDriver implements PaymentDriverInterface
         $event = $payload['event'] ?? '';
         if ($event === 'payment.captured' || $event === 'order.paid') {
             $paymentEntity = $payload['payload']['payment']['entity'] ?? [];
-            $orderNumber = $paymentEntity['notes']['order_number'] ?? null;
+            $orderNumber = $paymentEntity['notes']['order_number'] ?? ($paymentEntity['description'] ?? null);
 
             if ($orderNumber) {
                 $order = Order::where('order_number', $orderNumber)->first();
@@ -78,7 +78,6 @@ class RazorpayDriver implements PaymentDriverInterface
 
     public function processRefund(Transaction $transaction, float $amount): bool
     {
-        Log::info("Razorpay refund processed for Transaction #{$transaction->id} amount ₹{$amount}");
         return true;
     }
 }

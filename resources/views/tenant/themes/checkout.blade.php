@@ -171,40 +171,133 @@
                 </div>
 
                 {{-- 💳 PAYMENT GATEWAY SELECTION --}}
+                @php
+                    $tenantSettings = \App\Models\Tenant\Settings::pluck('value', 'key')->toArray();
+                    $onlineEnabled = ($tenantSettings['payment_mode_online'] ?? '1') == '1';
+                    $codEnabled = ($tenantSettings['payment_mode_cod'] ?? '0') == '1';
+                    $manualEnabled = ($tenantSettings['payment_mode_manual'] ?? '1') == '1';
+
+                    $razorpayOn = ($tenantSettings['razorpay_enabled'] ?? '1') == '1';
+                    $cashfreeOn = ($tenantSettings['cashfree_enabled'] ?? '0') == '1';
+                    $payuOn = ($tenantSettings['payu_enabled'] ?? '0') == '1';
+                    $paytmOn = ($tenantSettings['paytm_enabled'] ?? '0') == '1';
+
+                    $selectedGateway = 'razorpay';
+                    if ($onlineEnabled) {
+                        if ($razorpayOn) $selectedGateway = 'razorpay';
+                        elseif ($cashfreeOn) $selectedGateway = 'cashfree';
+                        elseif ($payuOn) $selectedGateway = 'payu';
+                        elseif ($paytmOn) $selectedGateway = 'paytm';
+                    } elseif ($manualEnabled) {
+                        $selectedGateway = 'manual_bank';
+                    } elseif ($codEnabled) {
+                        $selectedGateway = 'cod';
+                    }
+                @endphp
+
                 <div class="p-6 checkout-card shadow-sm">
                     <h2 class="text-sm uppercase tracking-wider text-gray-500 font-bold mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-credit-card checkout-text-primary"></i> Select Payment Method
                     </h2>
 
                     <div class="space-y-3">
-                        <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all">
-                            <div class="flex items-center gap-3">
-                                <input type="radio" name="payment_gateway" value="razorpay" checked class="w-4 h-4 text-indigo-600 focus:ring-0">
-                                <div>
-                                    <span class="font-bold text-sm block text-gray-900">Online Payment (UPI / Cards / NetBanking / Wallets)</span>
-                                    <span class="text-xs text-gray-500">Instant digital access after payment</span>
+                        @if($onlineEnabled && $razorpayOn)
+                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_gateway" value="razorpay" {{ $selectedGateway === 'razorpay' ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 focus:ring-0">
+                                    <div>
+                                        <span class="font-bold text-sm block text-gray-900">Razorpay (UPI / Cards / NetBanking / Wallets)</span>
+                                        <span class="text-xs text-gray-500">Instant digital access after payment</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <i class="fa-solid fa-shield-halved text-emerald-600 text-lg"></i>
-                        </label>
+                                <i class="fa-solid fa-shield-halved text-emerald-600 text-lg"></i>
+                            </label>
+                        @endif
 
-                        <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all"
-                               onclick="document.getElementById('manual-payment-box').classList.toggle('hidden')">
-                            <div class="flex items-center gap-3">
-                                <input type="radio" name="payment_gateway" value="manual_bank" class="w-4 h-4 text-indigo-600 focus:ring-0">
-                                <div>
-                                    <span class="font-bold text-sm block text-gray-900">Manual UPI / QR / Bank Transfer</span>
-                                    <span class="text-xs text-gray-500">Pay via scanner & upload transaction screenshot</span>
+                        @if($onlineEnabled && $cashfreeOn)
+                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_gateway" value="cashfree" {{ $selectedGateway === 'cashfree' ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 focus:ring-0">
+                                    <div>
+                                        <span class="font-bold text-sm block text-gray-900">Cashfree Payments (UPI / Cards / NetBanking)</span>
+                                        <span class="text-xs text-gray-500">Fast checkout with instant confirmation</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <i class="fa-solid fa-qrcode text-purple-600 text-lg"></i>
-                        </label>
+                                <i class="fa-solid fa-bolt text-blue-600 text-lg"></i>
+                            </label>
+                        @endif
+
+                        @if($onlineEnabled && $payuOn)
+                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_gateway" value="payu" {{ $selectedGateway === 'payu' ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 focus:ring-0">
+                                    <div>
+                                        <span class="font-bold text-sm block text-gray-900">PayU India (Cards / NetBanking / UPI)</span>
+                                        <span class="text-xs text-gray-500">Secure gateway powered by PayU</span>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-building-columns text-green-600 text-lg"></i>
+                            </label>
+                        @endif
+
+                        @if($onlineEnabled && $paytmOn)
+                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_gateway" value="paytm" {{ $selectedGateway === 'paytm' ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 focus:ring-0">
+                                    <div>
+                                        <span class="font-bold text-sm block text-gray-900">Paytm Wallet & UPI</span>
+                                        <span class="text-xs text-gray-500">Pay directly with Paytm</span>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-wallet text-sky-600 text-lg"></i>
+                            </label>
+                        @endif
+
+                        @if($manualEnabled)
+                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all"
+                                   onclick="document.getElementById('manual-payment-box').classList.toggle('hidden')">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_gateway" value="manual_bank" {{ $selectedGateway === 'manual_bank' ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 focus:ring-0">
+                                    <div>
+                                        <span class="font-bold text-sm block text-gray-900">Manual UPI / QR / Bank Transfer</span>
+                                        <span class="text-xs text-gray-500">Pay via scanner & upload transaction screenshot</span>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-qrcode text-purple-600 text-lg"></i>
+                            </label>
+                        @endif
+
+                        @if($codEnabled)
+                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment_gateway" value="cod" {{ $selectedGateway === 'cod' ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 focus:ring-0">
+                                    <div>
+                                        <span class="font-bold text-sm block text-gray-900">Cash on Delivery (COD)</span>
+                                        <span class="text-xs text-gray-500">Pay in cash when delivered</span>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-hand-holding-dollar text-indigo-600 text-lg"></i>
+                            </label>
+                        @endif
                     </div>
 
                     {{-- MANUAL BANK DETAILS BOX --}}
                     <div id="manual-payment-box" class="hidden mt-4 p-4 rounded-xl bg-purple-50/70 border border-purple-100 space-y-3">
+                        @if(!empty($tenantSettings['manual_payment_bank_name']) || !empty($tenantSettings['manual_payment_upi_id']))
+                            <div class="text-xs text-purple-900 bg-white p-3 rounded-lg border border-purple-200/60 leading-relaxed">
+                                @if(!empty($tenantSettings['manual_payment_upi_id']))
+                                    <strong>UPI ID:</strong> {{ $tenantSettings['manual_payment_upi_id'] }}<br>
+                                @endif
+                                @if(!empty($tenantSettings['manual_payment_bank_name']))
+                                    <strong>Bank:</strong> {{ $tenantSettings['manual_payment_bank_name'] }} | 
+                                    <strong>A/C:</strong> {{ $tenantSettings['manual_payment_bank_account'] ?? '' }} | 
+                                    <strong>IFSC:</strong> {{ $tenantSettings['manual_payment_bank_ifsc'] ?? '' }}
+                                @endif
+                            </div>
+                        @endif
+
                         <p class="text-xs font-semibold text-purple-900">Transfer payment & enter transaction details below:</p>
-                        <div class="grid sm:grid-cols-2 gap-3 pt-2">
+                        <div class="grid sm:grid-cols-2 gap-3 pt-1">
                             <div>
                                 <label class="block text-xs font-semibold text-gray-700 mb-1">Transaction Ref / UTR Number</label>
                                 <input type="text" name="reference_number" placeholder="e.g. 319203910293" 

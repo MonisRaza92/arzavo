@@ -79,6 +79,15 @@ class CheckoutController extends Controller
             return response()->json($result['payment']);
         }
 
+        // Hosted form-post gateways (PayU, Paytm)
+        if (!empty($result['payment']['action']) && !empty($result['payment']['params'])) {
+            return view('tenant.themes.payment_redirect', [
+                'action' => $result['payment']['action'],
+                'params' => $result['payment']['params'],
+                'gateway' => $result['payment']['gateway'] ?? 'gateway',
+            ]);
+        }
+
         return redirect()->away($result['payment']['redirect_url'] ?? route('checkout.success', $result['order']->order_number));
     }
 

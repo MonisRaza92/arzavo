@@ -4,8 +4,9 @@ namespace App\Services\Payment;
 
 use App\Contracts\Payment\PaymentDriverInterface;
 use App\Services\Payment\Drivers\RazorpayDriver;
-use App\Services\Payment\Drivers\StripeDriver;
-use App\Services\Payment\Drivers\PhonePeDriver;
+use App\Services\Payment\Drivers\CashfreeDriver;
+use App\Services\Payment\Drivers\PayuDriver;
+use App\Services\Payment\Drivers\PaytmDriver;
 use App\Services\Payment\Drivers\CodDriver;
 use App\Services\Payment\Drivers\ManualBankDriver;
 use InvalidArgumentException;
@@ -17,8 +18,9 @@ class PaymentManager
     public function __construct()
     {
         $this->registerDriver('razorpay', RazorpayDriver::class);
-        $this->registerDriver('stripe', StripeDriver::class);
-        $this->registerDriver('phonepe', PhonePeDriver::class);
+        $this->registerDriver('cashfree', CashfreeDriver::class);
+        $this->registerDriver('payu', PayuDriver::class);
+        $this->registerDriver('paytm', PaytmDriver::class);
         $this->registerDriver('cod', CodDriver::class);
         $this->registerDriver('manual_bank', ManualBankDriver::class);
     }

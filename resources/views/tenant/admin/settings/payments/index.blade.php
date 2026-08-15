@@ -206,16 +206,29 @@
 
         {{-- WEBHOOK SETUP GUIDE --}}
         <div class="bg-primary border-rounded border-primary p-4 mb-4 space-y-4">
-            <div>
-                <h3 class="font-bold text-primary text-sm flex items-center gap-2 mb-1">
-                    <i class="fa-solid fa-link text-primary"></i> Webhook Setup URL & Instructions
-                </h3>
-                <p class="text-xs text-secondary leading-relaxed">Webhooks are used to automatically update transaction and enrollment status in real time when a user successfully pays.</p>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-primary text-sm flex items-center gap-2 mb-1">
+                        <i class="fa-solid fa-link text-primary"></i> Gateway Webhook Setup URL & Instructions
+                    </h3>
+                    <p class="text-xs text-secondary leading-relaxed">Webhooks automatically grant instant access and update orders in real-time when a student pays via any gateway.</p>
+                </div>
+                <div>
+                    @if(config('app.env') === 'production')
+                        <span class="px-2.5 py-1 text-[11px] font-bold rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                            <i class="fa-solid fa-circle-dot mr-1"></i> Live Gateway Mode
+                        </span>
+                    @else
+                        <span class="px-2.5 py-1 text-[11px] font-bold rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                            <i class="fa-solid fa-flask mr-1"></i> Test Sandbox Mode
+                        </span>
+                    @endif
+                </div>
             </div>
             
             <div class="flex items-center gap-2 bg-secondary p-3 rounded-lg border border-primary font-mono text-xs text-primary">
                 <input type="text" readonly value="{{ $webhookUrl }}" id="webhook-url-input" class="w-full bg-transparent outline-none">
-                <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('webhook-url-input').value); alert('Webhook URL Copied!')" class="p-2 bg-primary text-primary rounded-md border border-primary hover:opacity-90 transition flex items-center justify-center" title="Copy Webhook URL">
+                <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('webhook-url-input').value); alert('Webhook URL Copied!')" class="p-2 bg-primary text-primary rounded-md border border-primary hover:opacity-90 transition flex items-center justify-center shrink-0" title="Copy Webhook URL">
                     <i class="fa-regular fa-copy text-primary text-base"></i>
                 </button>
             </div>
@@ -226,15 +239,16 @@
                 <div>
                     <h4 class="text-xs font-bold text-primary mb-1">Why is this webhook required?</h4>
                     <p class="text-[11px] text-secondary leading-relaxed">
-                        When a payment is captured on your gateway, the gateway fires an event to this URL. Your server catches it and instantly marks the course or book invoice as paid, so users don't have to wait or request manual verification.
+                        Jab koi student UPI, Card ya NetBanking se payment complete karta hai, gateway aapke server ke is URL par instant notification bhejta hai. Server order ko instant <strong>Paid</strong> mark karke student ko course ya book ka digital access provide kar deta hai.
                     </p>
                 </div>
                 <div>
-                    <h4 class="text-xs font-bold text-primary mb-1">Where to add this URL?</h4>
+                    <h4 class="text-xs font-bold text-primary mb-1">Gateway-Specific Webhook Settings:</h4>
                     <ul class="list-disc pl-4 text-[11px] text-secondary space-y-1">
-                        <li><strong>Razorpay:</strong> Add this URL in your Razorpay Dashboard > Settings > Webhooks, selecting the event <code>payment.captured</code>.</li>
-                        <li><strong>Cashfree:</strong> Paste this under Developer Center > Webhooks in Cashfree Dashboard for payment notifications.</li>
-                        <li><strong>PayU / Paytm:</strong> Add this under Notification settings / Webhooks inside your merchant merchant center.</li>
+                        <li><strong>Razorpay:</strong> Razorpay Dashboard > Settings > Webhooks me yeh URL dalein, aur event <code>payment.captured</code> select karein.</li>
+                        <li><strong>Cashfree:</strong> Cashfree Dashboard > Developers > Webhooks me yeh URL dalein for payment capture notifications.</li>
+                        <li><strong>PayU India:</strong> PayU Merchant Center > Developers > Webhooks me yeh URL dalein for <code>payments.successful</code>.</li>
+                        <li><strong>Paytm:</strong> Paytm Dashboard > Notification Preferences / Webhooks me configure karein.</li>
                     </ul>
                 </div>
             </div>
