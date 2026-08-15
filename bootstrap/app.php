@@ -23,6 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'payment/payu/success',
             'payment/payu/failure',
             'payment/payu/webhook',
+            'api/payu/webhook',
+            'payu/webhook',
         ]);
 
         $middleware->alias([

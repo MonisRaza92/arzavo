@@ -5,6 +5,8 @@ use App\Http\Controllers\Arzavo\PaymentController;
 
 Route::view('/offline', 'offline');
 Route::post('/cashfree/webhook', [PaymentController::class, 'webhook']);
+Route::match(['get', 'post'], '/api/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('api.payu.webhook');
+Route::match(['get', 'post'], '/payment/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('payment.payu.webhook');
 
 // Arzavo Main Website, Auth & Arzavo Admin Routes
 require __DIR__ . '/arzavo/web.php';

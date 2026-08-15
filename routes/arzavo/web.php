@@ -63,7 +63,8 @@ Route::domain(config('app.domain'))->group(function () {
     Route::post('/tenant/payment/payu/{plan}', [PaymentController::class, 'payuInit'])->name('payment.payu.init');
     Route::match(['get', 'post'], '/payment/payu/success', [PaymentController::class, 'payuSuccess'])->name('payment.payu.success');
     Route::match(['get', 'post'], '/payment/payu/failure', [PaymentController::class, 'payuFailure'])->name('payment.payu.failure');
-    Route::post('/payment/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('payment.payu.webhook');
+    Route::match(['get', 'post'], '/payment/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('payment.payu.webhook');
+    Route::match(['get', 'post'], '/api/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('arzavo.api.payu.webhook');
 
     // User Dashboard & Tenant Management Routes
     Route::middleware('auth:web')->group(function () {

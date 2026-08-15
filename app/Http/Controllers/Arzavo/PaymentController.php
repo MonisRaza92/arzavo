@@ -273,12 +273,105 @@ class PaymentController
     }
 
     /**
-     * PayU Webhook
+     * PayU Webhook Handler
+     * Handles asynchronous server-to-server notifications for successful and failed payments
      */
     public function payuWebhook(Request $request)
     {
-        Log::info('PayU Webhook Received:', $request->all());
-        return response()->json(['status' => 'ok']);
+        Log::info('PayU Webhook Payload Received:', [
+            'all' => $request->all(),
+            'json' => $request->json()->all(),
+        ]);
+
+        $payload = $request->all();
+
+        // Support both flat form-post fields and nested JSON event payloads
+        $txnid = $payload['txnid'] ?? $payload['txnId'] ?? $payload['merchantTransactionId'] ?? $payload['payment']['txnid'] ?? $payload['payload']['payment']['entity']['txnid'] ?? null;
+        $status = strtolower((string) ($payload['status'] ?? $payload['event'] ?? $payload['payment']['status'] ?? ''));
+        $mihpayid = $payload['mihpayid'] ?? $payload['paymentId'] ?? $payload['payment']['id'] ?? $payload['payload']['payment']['entity']['id'] ?? null;
+        $invoiceId = $payload['udf2'] ?? $payload['payment']['udf2'] ?? null;
+        $planId = $payload['udf3'] ?? $payload['payment']['udf3'] ?? null;
+        $billingCycle = $payload['udf4'] ?? $payload['payment']['udf4'] ?? 'monthly';
+        $tenantId = $payload['udf1'] ?? $payload['payment']['udf1'] ?? null;
+
+        if (!$txnid) {
+            Log::warning('PayU Webhook: Missing txnid in payload');
+            return response()->json(['status' => 'error', 'message' => 'txnid is required'], 400);
+        }
+
+        $payment = Payment::where('order_id', $txnid)->first();
+        if ($payment) {
+            $invoiceId = $invoiceId ?: $payment->invoice_id;
+            $tenantId = $tenantId ?: $payment->tenant_id;
+            $planId = $planId ?: $payment->plan_id;
+        }
+
+        // Determine if payment is successful or failed
+        $isSuccessful = str_contains($status, 'success') || str_contains($status, 'captured') || str_contains($status, 'paid');
+        $isFailed = str_contains($status, 'fail') || str_contains($status, 'cancel') || str_contains($status, 'dropped') || str_contains($status, 'bounced');
+
+        if ($isSuccessful) {
+            // 1. Update Payment record
+            if ($payment) {
+                $payment->update([
+                    'status' => 'paid',
+                    'payment_id' => $mihpayid ?: ($payment->payment_id ?: $txnid),
+                ]);
+            }
+
+            // 2. Update Invoice record
+            if ($invoiceId) {
+                $invoice = Invoice::find($invoiceId);
+                if ($invoice) {
+                    $invoice->update(['status' => 'paid']);
+                }
+            }
+
+            // 3. Activate Subscription for Tenant
+            if ($tenantId && $planId) {
+                $tenant = Tenant::find($tenantId);
+                if ($tenant) {
+                    $endsAt = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
+
+                    $tenant->subscription()->updateOrCreate(
+                        ['tenant_id' => $tenant->id],
+                        [
+                            'plan_id' => $planId,
+                            'status' => 'active',
+                            'starts_at' => now(),
+                            'ends_at' => $endsAt,
+                            'trial_ends_at' => null,
+                        ]
+                    );
+
+                    $tenant->updateQuietly([
+                        'has_used_trial' => true,
+                        'trial_used_at' => $tenant->trial_used_at ?? now(),
+                    ]);
+
+                    Log::info("PayU Webhook: Tenant {$tenant->id} successfully activated plan {$planId} ({$billingCycle}).");
+                }
+            }
+
+            return response()->json(['status' => 'success', 'message' => 'Payment processed and subscription activated.'], 200);
+        } elseif ($isFailed) {
+            // Update payment & invoice as failed
+            if ($payment && $payment->status !== 'paid') {
+                $payment->update(['status' => 'failed']);
+            }
+
+            if ($invoiceId) {
+                $invoice = Invoice::find($invoiceId);
+                if ($invoice && $invoice->status !== 'paid') {
+                    $invoice->update(['status' => 'failed']);
+                }
+            }
+
+            Log::info("PayU Webhook: Payment {$txnid} marked as failed.");
+            return response()->json(['status' => 'success', 'message' => 'Payment marked as failed.'], 200);
+        }
+
+        return response()->json(['status' => 'ignored', 'message' => 'Event unhandled'], 200);
     }
 
     /**
