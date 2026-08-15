@@ -13,17 +13,25 @@ class TenantObserver
      */
     public function created(Tenant $tenant): void
     {
-        // Default plan (Basic ya jo bhi tclearum chaho)
-        $plan = Plan::where('slug', 'basic')->first();
+        // 1. Default free / basic plan dhoondo, warna first active plan
+        $plan = Plan::where('slug', 'basic')->where('is_active', true)->first()
+            ?? Plan::where('monthly_price', 0)->where('is_active', true)->first()
+            ?? Plan::where('is_active', true)->orderBy('monthly_price', 'asc')->first();
 
-        if (!$plan)
-            return; // safety
+        if (!$plan) {
+            return;
+        }
+
+        $trialDays = (int) ($plan->trial_days ?? 0);
+        $trialEndsAt = $trialDays > 0 ? now()->addDays($trialDays) : null;
 
         Subscription::create([
             'tenant_id' => $tenant->id,
             'plan_id' => $plan->id,
             'status' => 'active',
             'starts_at' => now(),
+            'trial_ends_at' => $trialEndsAt,
+            'ends_at' => $trialEndsAt,
         ]);
     }
 
