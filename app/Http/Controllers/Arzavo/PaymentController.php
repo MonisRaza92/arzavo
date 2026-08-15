@@ -92,6 +92,12 @@ class PaymentController
             $taxAmount = round($baseAmount * 0.18, 2);
             $totalAmount = round($baseAmount + $taxAmount, 2);
 
+            // Clean up any older uncompleted pending invoices for this tenant
+            Invoice::where('tenant_id', $tenant->id)
+                ->where('status', 'pending')
+                ->where('created_at', '<', now()->subMinutes(10))
+                ->update(['status' => 'failed']);
+
             // ✅ STEP 1: CREATE OR REUSE INVOICE
             $invoice = Invoice::create([
                 'tenant_id' => $tenant->id,
@@ -161,6 +167,15 @@ class PaymentController
 
         if (!$payuService->verifyResponseHash($request->all())) {
             Log::error('PayU Verification Hash Failed on Success', $request->all());
+
+            // Mark as failed due to signature mismatch
+            if ($request->udf2) {
+                Invoice::where('id', $request->udf2)->update(['status' => 'failed']);
+            }
+            if ($request->txnid) {
+                Payment::where('order_id', $request->txnid)->update(['status' => 'failed']);
+            }
+
             return redirect()->route('pricing')->with('error', 'Payment verification failed due to hash signature mismatch.');
         }
 
@@ -186,7 +201,7 @@ class PaymentController
                 $invoice->update(['status' => 'paid']);
             }
 
-            // ✅ ACTIVATE SUBSCRIPTION
+            // ✅ ONLY ACTIVATE SUBSCRIPTION WHEN PAYMENT SUCCEEDS
             if ($tenantId && $planId) {
                 $tenant = Tenant::find($tenantId);
                 if ($tenant) {
@@ -213,6 +228,14 @@ class PaymentController
             return redirect()->route('dashboard')->with('success', 'Congratulations! Your payment was successful and your plan is now active.');
         }
 
+        // If status is not success, mark invoice as failed
+        if ($invoiceId) {
+            Invoice::where('id', $invoiceId)->where('status', '!=', 'paid')->update(['status' => 'failed']);
+        }
+        if ($txnid) {
+            Payment::where('order_id', $txnid)->where('status', '!=', 'paid')->update(['status' => 'failed']);
+        }
+
         return redirect()->route('pricing')->with('error', 'Payment could not be completed.');
     }
 
@@ -224,11 +247,26 @@ class PaymentController
         Log::warning('PayU Failure Callback Received:', $request->all());
 
         $txnid = $request->txnid;
+        $invoiceId = $request->udf2;
         $errorMessage = $request->error_Message ?? $request->unmappedstatus ?? 'Transaction was cancelled or failed.';
 
-        $payment = Payment::where('order_id', $txnid)->first();
-        if ($payment) {
-            $payment->update(['status' => 'failed']);
+        // ❌ Mark payment record as failed
+        if ($txnid) {
+            $payment = Payment::where('order_id', $txnid)->first();
+            if ($payment) {
+                $payment->update(['status' => 'failed']);
+                if (!$invoiceId && $payment->invoice_id) {
+                    $invoiceId = $payment->invoice_id;
+                }
+            }
+        }
+
+        // ❌ Mark invoice as failed (NEVER keep pending on failure)
+        if ($invoiceId) {
+            $invoice = Invoice::find($invoiceId);
+            if ($invoice && $invoice->status !== 'paid') {
+                $invoice->update(['status' => 'failed']);
+            }
         }
 
         return redirect()->route('pricing')->with('error', 'Payment failed: ' . $errorMessage);
