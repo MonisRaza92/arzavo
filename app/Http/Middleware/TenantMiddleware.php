@@ -71,9 +71,12 @@ class TenantMiddleware
     {
         $base = strtolower(config('app.domain'));
 
-        // Use dedicated session cookie name for tenant domains to prevent cookie collisions with Arzavo platform
+        // Dynamic per-tenant unique cookie name so multiple tenant websites in same browser never collide
+        $tenantIdentifier = preg_replace('/[^a-z0-9_]/', '_', explode('.', $host)[0]);
+        $cookieName = 'tenant_' . $tenantIdentifier . '_session';
+
         config([
-            'session.cookie' => 'tenant_session',
+            'session.cookie' => $cookieName,
         ]);
 
         // If it is a third-party custom domain (e.g. school.com), scope cookie to that custom domain
