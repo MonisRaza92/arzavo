@@ -408,31 +408,86 @@ class StudentsController extends Controller
 
     public function attendance()
     {
-        $students = User::where('role', 'student')->with('class', 'subject')->latest()->get();
-        return view('tenant.admin.students.attendance', compact('students'));
+        $students = User::where('role', 'student')
+            ->with(['academicCategory', 'class', 'subject', 'attendances'])
+            ->latest()
+            ->get();
+
+        $totalLogs = \App\Models\Tenant\StudentAttendance::count();
+        $presentLogs = \App\Models\Tenant\StudentAttendance::whereIn('status', ['present', 'p'])->count();
+        $absentLogsCount = \App\Models\Tenant\StudentAttendance::whereIn('status', ['absent', 'a'])->count();
+        $workingDays = \App\Models\Tenant\StudentAttendance::distinct('date')->count('date');
+        $overallAttendanceRate = $totalLogs > 0 ? round(($presentLogs / $totalLogs) * 100, 1) : 100;
+
+        $lowAttendanceCount = 0;
+        foreach ($students as $student) {
+            $sTotal = $student->attendances->count();
+            $sPresent = $student->attendances->whereIn('status', ['present', 'p'])->count();
+            $student->total_days = $sTotal;
+            $student->present_days = $sPresent;
+            $student->attendance_rate = $sTotal > 0 ? round(($sPresent / $sTotal) * 100, 1) : 100;
+
+            if ($student->attendance_rate < 75 && $sTotal > 0) {
+                $lowAttendanceCount++;
+            }
+        }
+
+        return view('tenant.admin.students.attendance', compact(
+            'students', 'overallAttendanceRate', 'workingDays', 'absentLogsCount', 'lowAttendanceCount'
+        ));
     }
 
     public function performance()
     {
-        $students = User::where('role', 'student')->with('class', 'subject')->latest()->get();
+        $students = User::where('role', 'student')
+            ->with(['academicCategory', 'class', 'subject', 'enrolledCourses', 'entitlements', 'feePlans', 'feePayments', 'attendances'])
+            ->latest()
+            ->get();
+
+        foreach ($students as $student) {
+            $sTotal = $student->attendances->count();
+            $sPresent = $student->attendances->whereIn('status', ['present', 'p'])->count();
+            $student->attendance_rate = $sTotal > 0 ? round(($sPresent / $sTotal) * 100, 1) : 100;
+
+            $totalFee = $student->feePlans->sum('amount');
+            $paidFee = $student->feePayments->where('status', 'paid')->sum('amount_paid');
+            $student->due_fee = max(0, $totalFee - $paidFee);
+        }
+
         return view('tenant.admin.students.performance', compact('students'));
     }
 
     public function fees()
     {
-        $students = User::where('role', 'student')->with('feePlans', 'feePayments')->latest()->get();
-        return view('tenant.admin.students.fees', compact('students'));
+        $students = User::where('role', 'student')
+            ->with(['academicCategory', 'class', 'subject', 'feePlans', 'feePayments'])
+            ->latest()
+            ->get();
+
+        $totalPlanned = FeePlans::sum('amount');
+        $totalCollected = FeePayments::where('status', 'paid')->sum('amount_paid');
+        $totalPending = max(0, $totalPlanned - $totalCollected);
+
+        return view('tenant.admin.students.fees', compact(
+            'students', 'totalPlanned', 'totalCollected', 'totalPending'
+        ));
     }
 
     public function feedback()
     {
-        $students = User::where('role', 'student')->latest()->get();
-        return view('tenant.admin.students.feedback', compact('students'));
+        $feedbacks = \App\Models\Tenant\Review::with(['user'])->latest()->paginate(15);
+        $inquiries = \App\Models\Tenant\Inquiry::latest()->take(10)->get();
+
+        return view('tenant.admin.students.feedback', compact('feedbacks', 'inquiries'));
     }
 
     public function idCard()
     {
-        $students = User::where('role', 'student')->with('class')->latest()->get();
+        $students = User::where('role', 'student')
+            ->with(['academicCategory', 'class', 'subject'])
+            ->latest()
+            ->get();
+
         return view('tenant.admin.students.id_card', compact('students'));
     }
 }

@@ -1,45 +1,118 @@
 @extends('layouts.admin')
-@section('title', 'Admin - ID Card Generator')
-@section('content')
-<div class="rounded-md p-6 my-4" style="background-color: var(--secondary-background); border: 1px solid var(--border-color);">
-    <h2 class="text-2xl font-bold mb-2" style="color: var(--primary-color);">Student ID Card Generator</h2>
-    <p class="text-sm text-gray-500 mb-6">Generate and print official student identification cards with photo & QR code.</p>
+@section('title', 'Admin - Student ID Card Generator')
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+@section('content')
+<div class="my-4 space-y-6">
+    <!-- Header Block -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-2xl font-bold tracking-tight text-primary">Student ID Card Generator</h2>
+            <p class="text-xs text-secondary mt-1">Official printable student identification cards with academic credentials & roll number.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="bg-invert text-invert px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover:opacity-90">
+                <i class="fa-solid fa-print"></i> Print All ID Cards
+            </button>
+        </div>
+    </div>
+
+    <!-- ID CARDS GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="idCardsContainer">
+        @php
+            $academyName = app('currentTenant')->name ?? 'Academy';
+        @endphp
+
         @forelse($students as $student)
-            <div class="border rounded-lg shadow-sm bg-primary border-primary p-4 max-w-sm flex flex-col justify-between" style="aspect-ratio: 8.5 / 5.5;">
-                <div class="flex items-center justify-between border-bottom pb-2 mb-2">
+            <div class="border border-primary rounded-2xl shadow-md bg-primary p-5 flex flex-col justify-between relative overflow-hidden transition hover:shadow-lg" style="min-height: 240px;">
+                <!-- TOP HEADER BAND -->
+                <div class="flex items-center justify-between border-b border-primary pb-3 mb-3">
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-graduation-cap text-indigo-500 text-lg"></i>
-                        <span class="font-extrabold text-xs tracking-tight text-primary">ALSHIFA ACADEMY</span>
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-xs tracking-wider text-primary uppercase">{{ $academyName }}</h3>
+                            <span class="text-[9px] text-tertiary block font-mono">STUDENT IDENTITY CARD</span>
+                        </div>
                     </div>
-                    <span class="text-[9px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">STUDENT</span>
+                    <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                        VERIFIED
+                    </span>
                 </div>
 
-                <div class="flex items-start gap-4">
-                    <div class="w-16 h-16 rounded bg-hover-secondary flex items-center justify-center font-bold text-lg text-primary border border-primary shrink-0">
+                <!-- STUDENT DETAILS BODY -->
+                <div class="flex items-start gap-4 grow">
+                    <!-- Photo / Avatar -->
+                    <div class="w-20 h-24 rounded-xl bg-secondary/50 border border-primary flex items-center justify-center font-bold text-2xl text-primary shrink-0 shadow-xs uppercase">
                         {{ strtoupper(substr($student->fname, 0, 1)) }}{{ strtoupper(substr($student->lname, 0, 1)) }}
                     </div>
-                    <div class="space-y-1 text-xs overflow-hidden">
-                        <h4 class="font-extrabold text-sm text-primary truncate">{{ $student->fname }} {{ $student->lname }}</h4>
-                        <p class="text-secondary"><span class="font-bold text-tertiary">Roll No:</span> STU-{{ str_pad($student->id, 5, '0', STR_PAD_LEFT) }}</p>
-                        <p class="text-secondary"><span class="font-bold text-tertiary">Class:</span> {{ $student->class->name ?? 'Not Assigned' }}</p>
-                        <p class="text-secondary truncate"><span class="font-bold text-tertiary">Email:</span> {{ $student->email }}</p>
+
+                    <!-- Information Ledger -->
+                    <div class="space-y-1 text-xs grow min-w-0">
+                        <h4 class="font-black text-sm text-primary truncate leading-tight">{{ $student->fname }} {{ $student->lname }}</h4>
+                        
+                        <div class="text-[11px] space-y-0.5 pt-1">
+                            <p class="text-secondary flex justify-between">
+                                <span class="text-tertiary font-bold">Roll / ID:</span>
+                                <span class="font-mono font-bold text-primary">{{ $student->username }}</span>
+                            </p>
+                            <p class="text-secondary flex justify-between">
+                                <span class="text-tertiary font-bold">Category:</span>
+                                <span class="font-semibold text-primary">{{ $student->academicCategory->name ?? 'Null' }}</span>
+                            </p>
+                            <p class="text-secondary flex justify-between">
+                                <span class="text-tertiary font-bold">Class / Sub:</span>
+                                <span class="font-semibold text-primary truncate">{{ $student->class->name ?? 'Null' }} {{ $student->subject ? '('.$student->subject->name.')' : '' }}</span>
+                            </p>
+                            <p class="text-secondary flex justify-between">
+                                <span class="text-tertiary font-bold">Contact:</span>
+                                <span class="font-mono text-primary">{{ $student->number ?: 'Null' }}</span>
+                            </p>
+                            @if($student->aadhaar_number)
+                                <p class="text-secondary flex justify-between">
+                                    <span class="text-tertiary font-bold">Aadhaar:</span>
+                                    <span class="font-mono text-primary">{{ $student->aadhaar_number }}</span>
+                                </p>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
-                <div class="border-top pt-2 mt-2 flex justify-between items-center">
-                    <span class="text-[9px] text-tertiary font-bold">VALID: 2026 - 2027</span>
-                    <button onclick="window.print();" class="px-2.5 py-1 bg-hover-secondary text-primary border-primary border-rounded font-bold text-[10px] hover-primary transition">
-                        <i class="fa-solid fa-print"></i> Print ID
-                    </button>
+                <!-- BOTTOM FOOTER BAND -->
+                <div class="border-t border-primary pt-3 mt-3 flex justify-between items-center text-[10px]">
+                    <span class="text-tertiary font-mono font-bold">VALID: {{ date('Y') }} - {{ date('Y') + 1 }}</span>
+                    <a href="{{ route('admin.admin-student-profile', $student->username) }}" class="px-2.5 py-1 bg-secondary text-primary border border-primary border-rounded font-bold text-[10px] hover:bg-hover-secondary transition">
+                        View Profile
+                    </a>
                 </div>
             </div>
         @empty
-            <div class="col-span-full p-8 text-center text-tertiary text-xs border-dashed border-rounded bg-primary">
-                No students registered yet.
+            <div class="col-span-full p-12 text-center text-tertiary text-xs border border-dashed border-primary border-rounded bg-primary space-y-2">
+                <i class="fa-solid fa-id-card text-3xl opacity-40"></i>
+                <h4 class="font-bold text-primary text-sm">No registered students found</h4>
+                <p>Add students manually or approve admission applications to generate ID cards.</p>
             </div>
         @endforelse
     </div>
 </div>
+
+<style>
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #idCardsContainer, #idCardsContainer * {
+        visibility: visible;
+    }
+    #idCardsContainer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+    }
+}
+</style>
 @endsection
