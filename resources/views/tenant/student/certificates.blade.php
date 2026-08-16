@@ -7,33 +7,23 @@
             <h1 class="text-xl font-bold text-primary flex items-center gap-2">
                 <i class="fa-solid fa-award text-amber-500"></i> My Course Completion Certificates
             </h1>
-            <p class="text-xs text-secondary mt-0.5">View and download your official course completion certificates.</p>
+            <p class="text-xs text-secondary mt-0.5">Official course completion and achievement certificates awarded to your student account.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-secondary text-primary border border-primary font-mono">
+                Roll: {{ $user->username }}
+            </span>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        <div class="p-5 border-rounded bg-primary border-primary space-y-4 shadow-xs flex flex-col justify-between">
-            <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                    <span class="px-2 py-0.5 rounded text-[10px] bg-amber-500/10 text-amber-600 font-bold border border-amber-500/20 uppercase">
-                        Verified Certificate
-                    </span>
-                    <span class="text-[10px] font-mono text-tertiary">#CERT-1092</span>
-                </div>
-                <h3 class="text-sm font-bold text-primary leading-snug">
-                    Class 11th Physics Foundation Certificate
-                </h3>
-                <p class="text-xs text-secondary leading-relaxed">
-                    Issued by Academy upon completing 100% course curriculum and passing final evaluation exam.
-                </p>
-            </div>
-
-            <div class="pt-3 border-top">
-                <button onclick="window.print();" 
-                        class="w-full py-2.5 px-3 bg-invert text-invert border-rounded font-bold text-xs hover-invert transition text-center flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-download"></i> Download PDF Certificate
-                </button>
-            </div>
+    <!-- CERTIFICATES CONTAINER -->
+    <div class="p-12 text-center text-tertiary text-xs border border-dashed border-primary border-rounded space-y-3 bg-primary mb-6">
+        <div class="w-14 h-14 rounded-full bg-amber-500/10 text-amber-600 flex items-center justify-center mx-auto text-2xl">
+            <i class="fa-solid fa-award"></i>
+        </div>
+        <div class="space-y-1">
+            <h3 class="font-bold text-primary text-sm">No course completion certificates issued yet</h3>
+            <p class="text-secondary max-w-md mx-auto">Certificates are automatically awarded and available for PDF download once you complete 100% of the lectures in an enrolled course or batch curriculum.</p>
         </div>
     </div>
 @endsection

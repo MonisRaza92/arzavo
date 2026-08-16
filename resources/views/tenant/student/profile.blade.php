@@ -29,16 +29,26 @@
             <div class="pt-3 border-top space-y-2 text-xs">
                 <div class="flex justify-between">
                     <span class="text-tertiary">Roll Number:</span>
-                    <span class="text-primary font-mono font-bold">STU-{{ str_pad($user->id, 5, '0', STR_PAD_LEFT) }}</span>
+                    <span class="text-primary font-mono font-bold">{{ $user->username }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-tertiary">Academic Category:</span>
+                    <span class="text-primary font-bold">{{ $category->name ?? 'General' }}</span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-tertiary">Enrolled Class:</span>
-                    <span class="text-primary font-bold">{{ $classCourse ? $classCourse->name : 'Class 11th' }}</span>
+                    <span class="text-primary font-bold">{{ $classCourse->name ?? 'Not Assigned' }}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-tertiary">Primary Subject:</span>
-                    <span class="text-primary font-bold">{{ $subject ? $subject->name : 'Physics Batch' }}</span>
+                    <span class="text-tertiary">Subject / Stream:</span>
+                    <span class="text-primary font-bold">{{ $subject->name ?? 'All Subjects' }}</span>
                 </div>
+                @if($user->aadhaar_number)
+                    <div class="flex justify-between">
+                        <span class="text-tertiary">Aadhaar Card:</span>
+                        <span class="text-primary font-mono font-bold">{{ $user->aadhaar_number }}</span>
+                    </div>
+                @endif
             </div>
         </div>
 
