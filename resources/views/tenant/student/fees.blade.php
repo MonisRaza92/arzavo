@@ -118,7 +118,7 @@
     <!-- ============================================================ -->
     <!-- MODAL: MULTI-GATEWAY ONLINE & MANUAL FEE PAYMENT -->
     <!-- ============================================================ -->
-    <div id="payModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div id="payModal" class="hidden fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4">
         <div class="bg-primary border border-primary border-rounded w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl">
             <div class="flex justify-between items-center p-4 border-bottom sticky top-0 bg-primary z-10">
                 <h3 class="text-base font-bold text-primary flex items-center gap-2">
