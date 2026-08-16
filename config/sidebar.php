@@ -60,8 +60,8 @@ return [
                 'text' => 'Finance & Sales',
                 'links' => [
                     ['icon' => 'fa-shopping-cart', 'text' => 'Orders & Sales', 'route' => 'admin.finance.orders', 'active' => 'admin/finance/orders*'],
-                    ['icon' => 'fa-file-invoice', 'text' => 'Invoices', 'route' => '#'],
-                    ['icon' => 'fa-chart-line', 'text' => 'Financial Reports', 'route' => '#'],
+                    ['icon' => 'fa-file-invoice', 'text' => 'Invoices', 'route' => 'admin.finance.invoices', 'active' => 'admin/finance/invoices*'],
+                    ['icon' => 'fa-chart-line', 'text' => 'Financial Reports', 'route' => 'admin.finance.reports', 'active' => 'admin/finance/reports*'],
                 ],
             ],
             [

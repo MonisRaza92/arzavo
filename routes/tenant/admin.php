@@ -112,11 +112,14 @@ Route::middleware('auth:tenant')->group(function () {
         Route::get('/communication/subscribers', [CommunicationController::class, 'subscribers'])->name('communication.subscribers');
         Route::delete('/communication/subscribers/{id}', [CommunicationController::class, 'subscriberDelete'])->name('communication.subscribers.delete');
 
-        // Admin Finance & Order Ledger Routes
+        // Admin Finance, Orders & Invoices Routes
         Route::get('/finance/orders', [FinanceController::class, 'index'])->name('finance.orders');
         Route::get('/finance/orders/{id}', [FinanceController::class, 'show'])->name('finance.orders.show');
         Route::post('/finance/orders/{id}/approve', [FinanceController::class, 'approvePayment'])->name('finance.orders.approve');
         Route::post('/finance/orders/{id}/fulfillment', [FinanceController::class, 'updateFulfillment'])->name('finance.orders.fulfillment');
+        Route::get('/finance/invoices', [FinanceController::class, 'invoices'])->name('finance.invoices');
+        Route::get('/finance/invoices/{id}', [FinanceController::class, 'invoiceShow'])->name('finance.invoices.show');
+        Route::get('/finance/reports', [FinanceController::class, 'reports'])->name('finance.reports');
 
         // Payment Settings Routes
         Route::get('/settings/payments', [PaymentSettingsController::class, 'index'])->name('settings.payments');
