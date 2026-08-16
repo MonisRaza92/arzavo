@@ -11,7 +11,7 @@
         </div>
         <div class="flex items-center gap-2">
             <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-secondary text-primary border border-primary">
-                {{ $user->class->name ?? 'Standard Class' }} {{ $user->subject ? '• ' . $user->subject->name : '' }}
+                {{ $user->class ? ($user->class->name . ($user->subject ? ' • ' . $user->subject->name : '')) : 'Null' }}
             </span>
         </div>
     </div>

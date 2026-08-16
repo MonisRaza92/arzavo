@@ -54,17 +54,17 @@
             <div class="space-y-3 text-xs">
                 <div class="p-3 border border-primary border-rounded bg-secondary/30 space-y-1">
                     <span class="text-[10px] text-tertiary uppercase font-bold block">Academic Category</span>
-                    <strong class="text-primary text-sm">{{ $user->academicCategory->name ?? 'General Category' }}</strong>
+                    <strong class="text-primary text-sm">{{ $user->academicCategory->name ?? 'Null' }}</strong>
                 </div>
 
                 <div class="p-3 border border-primary border-rounded bg-secondary/30 space-y-1">
                     <span class="text-[10px] text-tertiary uppercase font-bold block">Class / Course</span>
-                    <strong class="text-primary text-sm">{{ $user->class->name ?? 'Standard Class' }}</strong>
+                    <strong class="text-primary text-sm">{{ $user->class->name ?? 'Null' }}</strong>
                 </div>
 
                 <div class="p-3 border border-primary border-rounded bg-secondary/30 space-y-1">
                     <span class="text-[10px] text-tertiary uppercase font-bold block">Subject / Stream</span>
-                    <strong class="text-primary text-sm">{{ $user->subject->name ?? 'All Subjects' }}</strong>
+                    <strong class="text-primary text-sm">{{ $user->subject->name ?? 'Null' }}</strong>
                 </div>
 
                 <div class="p-3 border border-primary border-rounded bg-secondary/30 space-y-1">

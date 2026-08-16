@@ -11,10 +11,10 @@
                         Student Portal
                     </span>
                     <span class="px-2.5 py-0.5 rounded text-[10px] bg-secondary text-primary font-bold border border-primary">
-                        {{ $category->name ?? 'General' }}
+                        {{ $category->name ?? 'Null' }}
                     </span>
                     <span class="px-2.5 py-0.5 rounded text-[10px] bg-secondary text-primary font-bold border border-primary">
-                        {{ $classCourse ? $classCourse->name : 'Standard' }} {{ $subject ? '• ' . $subject->name : '' }}
+                        {{ $classCourse ? $classCourse->name : 'Null' }} {{ $subject ? '• ' . $subject->name : '' }}
                     </span>
                     <span class="px-2.5 py-0.5 rounded text-[10px] font-mono text-tertiary">
                         Roll: {{ $user->username }}

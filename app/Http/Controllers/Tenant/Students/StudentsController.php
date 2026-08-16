@@ -272,17 +272,40 @@ class StudentsController extends Controller
             'lname' => 'required|string|max:255',
             'number' => 'nullable|string|max:20',
             'dob' => 'nullable|date',
+            'aadhaar_number' => 'nullable|string|max:30',
+            'previous_school' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:500',
             'city' => 'nullable|string|max:100',
             'state' => 'nullable|string|max:100',
             'pincode' => 'nullable|string|max:20',
             'about' => 'nullable|string|max:1000',
+            'aadhaar_front' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'aadhaar_back' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'previous_marksheet' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        $user->update($request->only([
-            'fname', 'lname', 'number', 'dob', 'address', 'city', 'state', 'pincode', 'about'
-        ]));
+        $data = $request->only([
+            'fname', 'lname', 'number', 'dob', 'aadhaar_number', 'previous_school',
+            'address', 'city', 'state', 'pincode', 'about'
+        ]);
 
-        return back()->with('success', 'Profile information updated successfully.');
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('aadhaar_front')) {
+            $data['aadhaar_front'] = $request->file('aadhaar_front')->store('students/documents', 'public');
+        }
+        if ($request->hasFile('aadhaar_back')) {
+            $data['aadhaar_back'] = $request->file('aadhaar_back')->store('students/documents', 'public');
+        }
+        if ($request->hasFile('previous_marksheet')) {
+            $data['previous_marksheet'] = $request->file('previous_marksheet')->store('students/documents', 'public');
+        }
+
+        $user->update($data);
+
+        return back()->with('success', 'Profile and verification documents updated successfully.');
     }
 }
