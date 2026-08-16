@@ -18,16 +18,50 @@
     $itemId = $data->id ?? null;
 
     $filePath    = $data->file_path ?? null;
-    $previewPath = $data->preview_file_path ?? $data->file_path ?? null;
+    $previewPath = $data->preview_file_path ?? null;
 
-    // Paid check: same as data_pricing
-    $isPaid    = ($data->price_type ?? '') === 'paid' || ($data->is_paid ?? false) == true || (($data->price ?? 0) > 0);
-    $salePrice = $data->sale_price ?? $data->discount_price ?? null;
-    $price     = $data->price ?? null;
+    // Price and Paid check
+    $currentPrice = (float) ($data->sale_price ?? $data->discount_price ?? $data->price ?? 0);
+    $isPaid = $currentPrice > 0 || ($data->price_type ?? '') === 'paid' || ($data->is_paid ?? false) == true;
 
-    // Build access gate URLs — slug auto-extracted from Referer by controller
-    $downloadUrl = $itemId ? route('item.download', ['type' => $itemType]) : null;
-    $readUrl     = $itemId ? route('item.read',     ['type' => $itemType]) : null;
+    // Ownership check for logged in tenant user
+    $user = auth('tenant')->user();
+    $isOwned = false;
+
+    if ($user && $itemId) {
+        $morphType = ($itemType === 'course') ? 'App\Models\Tenant\Course' : 'App\Models\Tenant\Book';
+        
+        $isOwned = \App\Models\Tenant\UserEntitlement::where('user_id', $user->id)
+            ->where('entitable_id', $itemId)
+            ->where(function($q) use ($morphType, $itemType) {
+                $q->where('entitable_type', $morphType)
+                  ->orWhere('entitable_type', $itemType)
+                  ->orWhere('entitable_type', strtolower(class_basename($morphType)));
+            })
+            ->exists();
+
+        if (!$isOwned && $itemType === 'course') {
+            try {
+                $isOwned = \Illuminate\Support\Facades\DB::connection('tenant')
+                    ->table('course_enrollments')
+                    ->where('user_id', $user->id)
+                    ->where('course_id', $itemId)
+                    ->where('status', 'active')
+                    ->exists();
+            } catch (\Throwable $e) {}
+        }
+
+        if (!$isOwned) {
+            $isOwned = \App\Models\Tenant\OrderItem::whereHas('order', function($q) use ($user) {
+                $q->where('user_id', $user->id)->where('payment_status', 'paid');
+            })->where('purchasable_id', $itemId)->exists();
+        }
+    }
+
+    // URLs
+    $checkoutUrl = $itemId ? route('checkout.show', ['purchasable_type' => $itemType, 'purchasable_id' => $itemId]) : '#';
+    $downloadUrl = $itemId ? route('item.download', ['type' => $itemType, 'id' => $itemId, 'slug' => $data->slug ?? '']) : null;
+    $readUrl     = $itemId ? route('item.read',     ['type' => $itemType, 'id' => $itemId, 'slug' => $data->slug ?? '']) : null;
 
     $containerClasses   = ['flex', 'items-center', 'gap-3', 'w-full'];
     $containerClasses[] = $singleLine ? 'flex-nowrap' : 'flex-wrap';
@@ -40,39 +74,37 @@
 
 <div {!! $block->attributes() !!} class="{{ implode(' ', $containerClasses) }}" style="{{ $block->margin }}">
 
-    {{-- 💰 Price / Free Badge --}}
-    <!-- @if($isPaid)
-        <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-300">
-            <i class="fa-solid fa-tag text-[10px]"></i>
-            @if($salePrice && $salePrice > 0 && $salePrice != $price)
-                ₹{{ number_format($salePrice, 2) }}
-                <span class="line-through opacity-60 font-normal">₹{{ number_format($price, 2) }}</span>
-            @elseif($price)
-                ₹{{ number_format($price, 2) }}
-            @endif
-        </span>
+    {{-- CASE 1: PAID AND NOT OWNED => SHOW BUY / CHECKOUT BUTTON --}}
+    @if($isPaid && !$isOwned)
+        @if($showDownload && $itemId)
+            <a href="{{ $checkoutUrl }}" class="arz-btn-primary {{ implode(' ', $btnClasses) }}">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Buy Now @if($currentPrice > 0) • ₹{{ number_format($currentPrice, 2) }} @endif</span>
+            </a>
+        @endif
+
+        @if($showPreview && ($previewPath || $filePath) && $readUrl)
+            <a href="{{ $readUrl }}" class="arz-btn-secondary {{ implode(' ', $btnClasses) }}">
+                <i class="fa-solid fa-book-open"></i>
+                <span>{{ $previewPath ? 'Read Sample' : $previewLabel }}</span>
+            </a>
+        @endif
+
+    {{-- CASE 2: FREE OR ALREADY PURCHASED => DIRECT DOWNLOAD & READ FULL ACCESS --}}
     @else
-        <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 border border-green-300">
-            <i class="fa-solid fa-unlock text-[10px]"></i>
-            Free
-        </span>
-    @endif -->
+        @if($showDownload && $filePath && $downloadUrl)
+            <a href="{{ $downloadUrl }}" class="arz-btn-primary {{ implode(' ', $btnClasses) }}">
+                <i class="fa-solid fa-download"></i>
+                <span>{{ $downloadLabel }}</span>
+            </a>
+        @endif
 
-    {{-- 📥 Download Button --}}
-    @if($showDownload && $filePath && $downloadUrl)
-        <a href="{{ $downloadUrl }}" class="arz-btn-primary {{ implode(' ', $btnClasses) }}">
-            <i class="fa-solid fa-download"></i>
-            <span>{{ $downloadLabel }}</span>
-        </a>
-    @endif
-
-    {{-- 📖 Read Online Button --}}
-    @if($showPreview && $previewPath && $readUrl)
-        <a href="{{ $readUrl }}" class="arz-btn-secondary {{ implode(' ', $btnClasses) }}">
-            <i class="fa-solid fa-book-reader"></i>
-            <span>{{ $previewLabel }}</span>
-        </a>
+        @if($showPreview && ($previewPath || $filePath) && $readUrl)
+            <a href="{{ $readUrl }}" class="arz-btn-secondary {{ implode(' ', $btnClasses) }}">
+                <i class="fa-solid fa-book-reader"></i>
+                <span>{{ $previewLabel }}</span>
+            </a>
+        @endif
     @endif
 
 </div>
-

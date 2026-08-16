@@ -6,22 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\Book;
 use App\Models\Tenant\Course;
 use App\Models\Tenant\UserEntitlement;
+use App\Models\Tenant\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ItemAccessController extends Controller
 {
     /**
-     * Resolve the purchasable model from type + slug.
+     * Resolve the purchasable model from request (id or slug).
      */
-    protected function resolveItem(string $type, string $slug): ?object
+    protected function resolveItem(Request $request, string $type): ?object
     {
+        if ($request->filled('id')) {
+            $id = $request->query('id');
+            return match (strtolower($type)) {
+                'book', 'books'     => Book::find($id),
+                'course', 'courses' => Course::find($id),
+                default             => Book::find($id),
+            };
+        }
+
+        $slug = $this->extractSlug($request);
+        if (!$slug) return null;
+
         return match (strtolower($type)) {
-            'book'   => Book::where('slug', $slug)->first(),
-            'course' => Course::where('slug', $slug)->first(),
-            default  => null,
+            'book', 'books'     => Book::where('slug', $slug)->first(),
+            'course', 'courses' => Course::where('slug', $slug)->first(),
+            default             => Book::where('slug', $slug)->first(),
         };
     }
 
@@ -31,12 +45,10 @@ class ItemAccessController extends Controller
      */
     protected function extractSlug(Request $request): string
     {
-        // First try: slug from current request query param
         if ($request->filled('slug')) {
             return $request->query('slug');
         }
 
-        // Second: extract ?slug= from HTTP Referer header
         $referer = $request->header('referer', '');
         if ($referer) {
             $parsed = parse_url($referer);
@@ -44,7 +56,6 @@ class ItemAccessController extends Controller
             if (!empty($params['slug'])) {
                 return $params['slug'];
             }
-            // Also handle path-based slug: /books/some-slug
             $pathSegments = explode('/', trim($parsed['path'] ?? '', '/'));
             $last = end($pathSegments);
             if ($last && $last !== 'book' && $last !== 'course') {
@@ -60,20 +71,24 @@ class ItemAccessController extends Controller
      */
     protected function isPaid(object $item): bool
     {
-        // Book uses price_type field: 'free' | 'paid'
-        if (isset($item->price_type)) {
-            return $item->price_type === 'paid';
+        $price = (float) ($item->sale_price ?? $item->discount_price ?? $item->price ?? 0);
+        if ($price > 0) {
+            return true;
         }
-        // Course uses is_paid boolean
-        if (isset($item->is_paid)) {
-            return (bool) $item->is_paid;
+
+        if (isset($item->price_type) && strtolower($item->price_type) === 'paid') {
+            return true;
         }
-        // Fallback: if price > 0 then paid
-        return (($item->price ?? 0) > 0);
+
+        if (isset($item->is_paid) && (bool) $item->is_paid) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Check if current authenticated tenant user has an active entitlement.
+     * Check if current authenticated tenant user has an active entitlement or paid order.
      */
     protected function hasEntitlement(object $item, string $type): bool
     {
@@ -81,52 +96,83 @@ class ItemAccessController extends Controller
         if (!$user) return false;
 
         $morphType = match (strtolower($type)) {
-            'book'   => 'App\Models\Tenant\Book',
-            'course' => 'App\Models\Tenant\Course',
-            default  => null,
+            'book', 'books'     => 'App\Models\Tenant\Book',
+            'course', 'courses' => 'App\Models\Tenant\Course',
+            default             => 'App\Models\Tenant\Book',
         };
 
-        if (!$morphType) return false;
-
-        return UserEntitlement::where('user_id', $user->id)
-            ->where('entitable_type', $morphType)
+        // 1. Check UserEntitlements table
+        $hasEntitlement = UserEntitlement::where('user_id', $user->id)
             ->where('entitable_id', $item->id)
+            ->where(function ($q) use ($morphType, $type) {
+                $q->where('entitable_type', $morphType)
+                  ->orWhere('entitable_type', $type)
+                  ->orWhere('entitable_type', class_basename($morphType))
+                  ->orWhere('entitable_type', strtolower(class_basename($morphType)));
+            })
             ->exists();
+
+        if ($hasEntitlement) return true;
+
+        // 2. Check Course Enrollment table
+        if ($morphType === 'App\Models\Tenant\Course' || $item instanceof Course) {
+            try {
+                $isEnrolled = DB::connection('tenant')
+                    ->table('course_enrollments')
+                    ->where('user_id', $user->id)
+                    ->where('course_id', $item->id)
+                    ->where('status', 'active')
+                    ->exists();
+                if ($isEnrolled) return true;
+            } catch (\Throwable $e) {}
+        }
+
+        // 3. Check Order items for paid orders
+        return OrderItem::whereHas('order', function ($q) use ($user) {
+            $q->where('user_id', $user->id)
+              ->where('payment_status', 'paid');
+        })
+        ->where('purchasable_id', $item->id)
+        ->exists();
     }
 
     /**
      * Access Gate: Download action.
-     * GET /item/download?type=book
-     * (slug is extracted from the Referer URL automatically)
+     * GET /item/download?type=book&id=xxx or ?slug=xxx
      */
     public function download(Request $request)
     {
         $type = $request->query('type', 'book');
-        $slug = $this->extractSlug($request);
+        $item = $this->resolveItem($request, $type);
 
-        if (!$slug) abort(400, 'Could not determine which item to download.');
-
-        $item = $this->resolveItem($type, $slug);
-        if (!$item) abort(404, 'Item not found.');
-
-        // Step 1: Must be logged in
-        if (!Auth::guard('tenant')->check()) {
-            session(['url.intended' => route('item.download', ['type' => $type, 'slug' => $slug])]);
-            return redirect()->route('tenant.login')
-                ->with('info', 'Please login or register to access this content.');
+        if (!$item) {
+            return redirect()->route('tenant.books')->with('error', 'Item not found.');
         }
 
-        // Step 2: If paid => check entitlement
-        if ($this->isPaid($item) && !$this->hasEntitlement($item, $type)) {
+        // Step 1: Must be logged in if paid
+        $isPaid = $this->isPaid($item);
+
+        if ($isPaid && !Auth::guard('tenant')->check()) {
+            session(['url.intended' => route('checkout.show', ['purchasable_type' => $type, 'purchasable_id' => $item->id])]);
             return redirect()->route('checkout.show', [
                 'purchasable_type' => $type,
                 'purchasable_id'   => $item->id,
-            ])->with('info', 'Please complete payment to access this item.');
+            ])->with('info', 'Please complete checkout to access this item.');
+        }
+
+        // Step 2: If paid => check entitlement. If not owned, redirect to checkout
+        if ($isPaid && !$this->hasEntitlement($item, $type)) {
+            return redirect()->route('checkout.show', [
+                'purchasable_type' => $type,
+                'purchasable_id'   => $item->id,
+            ])->with('info', 'Please complete checkout to access this item.');
         }
 
         // Step 3: Serve the file
         $filePath = $item->file_path ?? null;
-        if (!$filePath) abort(404, 'File not available.');
+        if (!$filePath) {
+            return back()->with('error', 'Download file is not available.');
+        }
 
         // Increment download counter
         if (method_exists($item, 'increment')) {
@@ -145,38 +191,35 @@ class ItemAccessController extends Controller
 
     /**
      * Access Gate: Read / Stream Online action.
-     * GET /item/read?type=book
-     * (slug is extracted from the Referer URL automatically)
+     * GET /item/read?type=book&id=xxx or ?slug=xxx
      */
     public function read(Request $request)
     {
         $type = $request->query('type', 'book');
-        $slug = $this->extractSlug($request);
+        $item = $this->resolveItem($request, $type);
 
-        if (!$slug) abort(400, 'Could not determine which item to read.');
-
-        $item = $this->resolveItem($type, $slug);
-        if (!$item) abort(404, 'Item not found.');
-
-        // Step 1: Must be logged in
-        if (!Auth::guard('tenant')->check()) {
-            session(['url.intended' => route('item.read', ['type' => $type, 'slug' => $slug])]);
-            return redirect()->route('tenant.login')
-                ->with('info', 'Please login or register to read this content.');
+        if (!$item) {
+            return redirect()->route('tenant.books')->with('error', 'Item not found.');
         }
 
-        // Step 2: If paid => check entitlement
-        if ($this->isPaid($item) && !$this->hasEntitlement($item, $type)) {
+        $isPaid = $this->isPaid($item);
+
+        // If preview/sample file exists, allow reading sample without payment
+        $previewPath = $item->preview_file_path ?? null;
+
+        // If no preview path, they are trying to read the full file
+        if (!$previewPath && $isPaid && !$this->hasEntitlement($item, $type)) {
             return redirect()->route('checkout.show', [
                 'purchasable_type' => $type,
                 'purchasable_id'   => $item->id,
-            ])->with('info', 'Please complete payment to read this item.');
+            ])->with('info', 'Please complete checkout to read the full book.');
         }
 
-        // Step 3: Redirect to preview file (opens in browser/PDF viewer)
-        $previewPath = $item->preview_file_path ?? $item->file_path ?? null;
-        if (!$previewPath) abort(404, 'Preview file not available.');
+        $targetPath = $previewPath ?: ($item->file_path ?? null);
+        if (!$targetPath) {
+            return back()->with('error', 'Reading preview is not available.');
+        }
 
-        return redirect(media($previewPath));
+        return redirect(media($targetPath));
     }
 }
