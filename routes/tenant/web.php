@@ -130,6 +130,7 @@ Route::post('/newsletter-submit', [ThemePageController::class, 'newsletterSubmit
 // Universal Checkout & Review Routes
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.submit');
+Route::post('/checkout/razorpay/verify', [CheckoutController::class, 'verifyRazorpay'])->name('checkout.razorpay.verify');
 Route::get('/checkout/success/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
 Route::match(['get', 'post'], '/api/v1/payments/webhook/{gateway?}', [\App\Http\Controllers\Tenant\Website\PaymentWebhookController::class, 'handle'])->name('tenant.payment.webhook');
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');

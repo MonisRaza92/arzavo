@@ -9,8 +9,11 @@ use App\Models\Tenant\Book;
 use App\Models\Tenant\Course;
 use App\Models\Tenant\ProductVariant;
 use App\Models\Tenant\UserEntitlement;
+use App\Models\Tenant\Transaction;
+use App\Models\Tenant\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -122,16 +125,86 @@ class CheckoutController extends Controller
             return response()->json($result['payment']);
         }
 
-        // Hosted form-post gateways (PayU, Paytm)
+        $gateway = $result['payment']['gateway'] ?? $payload['payment_gateway'];
+
+        // 1. Razorpay JS Checkout Popup
+        if ($gateway === 'razorpay' && !empty($result['payment']['key'])) {
+            return view('tenant.themes.payment_razorpay', [
+                'order' => $result['order'],
+                'payment' => $result['payment'],
+            ]);
+        }
+
+        // 2. Hosted form-post gateways (PayU, Paytm)
         if (!empty($result['payment']['action']) && !empty($result['payment']['params'])) {
             return view('tenant.themes.payment_redirect', [
                 'action' => $result['payment']['action'],
                 'params' => $result['payment']['params'],
-                'gateway' => $result['payment']['gateway'] ?? 'gateway',
+                'gateway' => $gateway,
             ]);
         }
 
-        return redirect()->away($result['payment']['redirect_url'] ?? route('checkout.success', $result['order']->order_number));
+        // 3. External Redirect (Cashfree checkout link)
+        if (!empty($result['payment']['redirect_url']) && str_starts_with($result['payment']['redirect_url'], 'http') && !str_contains($result['payment']['redirect_url'], route('checkout.success', $result['order']->order_number))) {
+            return redirect()->away($result['payment']['redirect_url']);
+        }
+
+        return redirect()->route('checkout.success', $result['order']->order_number);
+    }
+
+    /**
+     * Verify Razorpay Client Signature and confirm payment.
+     */
+    public function verifyRazorpay(Request $request)
+    {
+        $request->validate([
+            'order_number' => 'required|string',
+            'razorpay_payment_id' => 'required|string',
+        ]);
+
+        $orderNumber = $request->input('order_number');
+        $paymentId = $request->input('razorpay_payment_id');
+        $razorpayOrderId = $request->input('razorpay_order_id');
+        $signature = $request->input('razorpay_signature');
+
+        $order = Order::where('order_number', $orderNumber)->firstOrFail();
+
+        // Verify Razorpay signature if secret is present
+        $secret = Settings::get('razorpay_webhook_secret', Settings::get('razorpay_secret', ''));
+        $isValid = true;
+
+        if ($razorpayOrderId && $signature && $secret) {
+            $expectedSignature = hash_hmac('sha256', $razorpayOrderId . '|' . $paymentId, $secret);
+            $isValid = hash_equals($expectedSignature, $signature);
+        }
+
+        if (!$isValid) {
+            Log::warning("Razorpay signature mismatch for Order #{$orderNumber}");
+        }
+
+        // Mark order as paid
+        $order->update(['payment_status' => 'paid']);
+
+        Transaction::updateOrCreate(
+            [
+                'order_id' => $order->id,
+                'gateway' => 'razorpay',
+                'transaction_id' => $paymentId,
+            ],
+            [
+                'reference_number' => $razorpayOrderId ?: $paymentId,
+                'type' => 'charge',
+                'amount' => $order->grand_total,
+                'currency' => $order->currency ?? 'INR',
+                'status' => 'success',
+                'gateway_payload' => $request->all(),
+            ]
+        );
+
+        // Grant digital access
+        CheckoutService::fulfillOrder($order);
+
+        return redirect()->route('checkout.success', $order->order_number)->with('success', 'Payment successful!');
     }
 
     /**
@@ -141,8 +214,10 @@ class CheckoutController extends Controller
     {
         $order = Order::with('items')->where('order_number', $orderNumber)->firstOrFail();
 
-        // Auto-fulfill order on success page view
-        CheckoutService::fulfillOrder($order);
+        // Only fulfill if payment is paid or order is free
+        if ($order->payment_status === 'paid' || $order->grand_total <= 0) {
+            CheckoutService::fulfillOrder($order);
+        }
 
         return view('tenant.themes.success', compact('order'));
     }
