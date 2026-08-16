@@ -369,9 +369,9 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="mt-6 w-full py-3.5 px-4 font-bold text-sm shadow-md hover:shadow-lg checkout-btn flex items-center justify-center gap-2">
-                        <span>Pay ₹{{ number_format($itemPrice, 2) }} & Get Access</span>
-                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    <button type="submit" id="pay-button" class="mt-6 w-full py-3.5 px-4 font-bold text-sm shadow-md hover:shadow-lg checkout-btn flex items-center justify-center gap-2 cursor-pointer transition">
+                        <span id="pay-button-text">Pay ₹{{ number_format($itemPrice, 2) }} & Get Access</span>
+                        <i id="pay-button-icon" class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
 
                     <p class="text-center text-[11px] text-gray-400 mt-3 flex items-center justify-center gap-1.5">
@@ -384,4 +384,108 @@
         </div>
     </form>
 </div>
+
+{{-- Hidden Verification Form for Razorpay --}}
+<form id="direct_razorpay_verify_form" method="POST" action="{{ route('checkout.razorpay.verify') }}" style="display: none;">
+    @csrf
+    <input type="hidden" name="order_number" id="rzp_order_number">
+    <input type="hidden" name="razorpay_payment_id" id="rzp_payment_id">
+    <input type="hidden" name="razorpay_order_id" id="rzp_order_id">
+    <input type="hidden" name="razorpay_signature" id="rzp_signature">
+</form>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('checkout-form');
+    const payBtn = document.getElementById('pay-button');
+    const payBtnText = document.getElementById('pay-button-text');
+    const payBtnIcon = document.getElementById('pay-button-icon');
+
+    if (!form || !payBtn) return;
+
+    form.addEventListener('submit', function(e) {
+        const selectedGatewayInput = form.querySelector('input[name="payment_gateway"]:checked');
+        const gateway = selectedGatewayInput ? selectedGatewayInput.value : 'razorpay';
+
+        // Set Loading State
+        payBtn.disabled = true;
+        payBtn.classList.add('opacity-75', 'cursor-not-allowed');
+        payBtnText.textContent = 'Processing Payment...';
+        payBtnIcon.className = 'fa-solid fa-circle-notch fa-spin text-xs';
+
+        // For Razorpay, open modal seamlessly via AJAX
+        if (gateway === 'razorpay') {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.key) {
+                    const options = {
+                        "key": data.key,
+                        "amount": data.amount,
+                        "currency": data.currency || "INR",
+                        "name": "{{ app('currentTenant')->name ?? 'Academy' }}",
+                        "description": "Payment for " + (data.order_id || "Order"),
+                        "prefill": {
+                            "name": data.name || "",
+                            "email": data.email || "",
+                            "contact": data.phone || ""
+                        },
+                        "theme": {
+                            "color": "{{ $customizes['checkout_primary_color'] ?? '#4f46e5' }}"
+                        },
+                        "handler": function (response) {
+                            payBtnText.textContent = 'Verifying Payment...';
+                            document.getElementById('rzp_order_number').value = data.order_id || '';
+                            document.getElementById('rzp_payment_id').value = response.razorpay_payment_id || '';
+                            document.getElementById('rzp_order_id').value = response.razorpay_order_id || '';
+                            document.getElementById('rzp_signature').value = response.razorpay_signature || '';
+                            document.getElementById('direct_razorpay_verify_form').submit();
+                        },
+                        "modal": {
+                            "ondismiss": function() {
+                                payBtn.disabled = false;
+                                payBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                                payBtnText.textContent = 'Pay ₹{{ number_format($itemPrice, 2) }} & Get Access';
+                                payBtnIcon.className = 'fa-solid fa-arrow-right text-xs';
+                            }
+                        }
+                    };
+
+                    const rzp = new Razorpay(options);
+                    rzp.on('payment.failed', function(resp) {
+                        alert('Payment failed: ' + (resp.error.description || 'Unknown error'));
+                        payBtn.disabled = false;
+                        payBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                        payBtnText.textContent = 'Pay ₹{{ number_format($itemPrice, 2) }} & Get Access';
+                        payBtnIcon.className = 'fa-solid fa-arrow-right text-xs';
+                    });
+                    rzp.open();
+                } else if (data && data.redirect_url) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    // Fallback to normal form submit if no key
+                    form.submit();
+                }
+            })
+            .catch(err => {
+                console.error('Checkout error:', err);
+                // Fallback to standard form submit
+                form.submit();
+            });
+        }
+    });
+});
+</script>
 @endsection
