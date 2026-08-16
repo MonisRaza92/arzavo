@@ -284,6 +284,34 @@
                 </div>
             </div>
 
+            {{-- SEO Metadata --}}
+            <div class="bg-primary border-primary border-rounded p-5">
+                <h3 class="text-base font-bold text-primary mb-4 border-bottom pb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-magnifying-glass text-secondary text-sm"></i> SEO & Meta Tags
+                </h3>
+                
+                <div class="space-y-4">
+                    {{-- Meta Title --}}
+                    <div>
+                        <label class="block text-tertiary text-xs font-semibold mb-1">Meta Title</label>
+                        <input type="text" name="meta_title" value="{{ old('meta_title', $book->meta_title) }}" placeholder="e.g. {{ $book->title }} | PDF Notes"
+                            class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm text-primary">
+                    </div>
+
+                    {{-- Meta Keywords --}}
+                    <div>
+                        <label class="block text-tertiary text-xs font-semibold mb-1">Meta Keywords (comma separated)</label>
+                        <input type="text" name="meta_keywords" value="{{ old('meta_keywords', $book->meta_keywords) }}" placeholder="e.g. math book, study notes, pdf download"
+                            class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm text-primary">
+                    </div>
+
+                    {{-- Meta Description --}}
+                    <div>
+                        <x-input.textarea name="meta_description" label="Meta Description" :value="old('meta_description', $book->meta_description)" rows="3" placeholder="Brief search engine meta snippet..." />
+                    </div>
+                </div>
+            </div>
+
             {{-- Form Submission --}}
             <div class="bg-primary border-primary border-rounded p-4 flex gap-2">
                 <button type="submit" class="w-full py-3 bg-invert text-invert border-rounded font-bold text-center hover-invert text-sm">

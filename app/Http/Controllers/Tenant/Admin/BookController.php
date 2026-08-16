@@ -74,6 +74,11 @@ class BookController
             'class_course_id' => 'nullable|exists:class_courses,id',
             'subject_id' => 'nullable|exists:subjects,id',
 
+            // SEO Metadata
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
+
             // Preview Images
             'preview_images' => 'nullable|array',
             'preview_images.*' => 'nullable|string',
@@ -170,6 +175,11 @@ class BookController
             'academic_category_id' => 'nullable|exists:academic_categories,id',
             'class_course_id' => 'nullable|exists:class_courses,id',
             'subject_id' => 'nullable|exists:subjects,id',
+
+            // SEO Metadata
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
 
             // Preview Images
             'preview_images' => 'nullable|array',

@@ -40,6 +40,9 @@ class Book extends Model implements PurchasableContract
         'academic_category_id',
         'class_course_id',
         'subject_id',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     protected $casts = [
