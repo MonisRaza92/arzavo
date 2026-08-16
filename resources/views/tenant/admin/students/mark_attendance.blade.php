@@ -99,41 +99,37 @@
                                         </div>
                                     </td>
                                     <td class="py-3 px-4">
-                                        <div class="flex flex-wrap items-center gap-2">
-                                            <!-- PRESENT (GREEN) -->
+                                        <div class="inline-flex items-center p-1 bg-secondary rounded-lg border border-primary gap-1">
+                                            <!-- PRESENT -->
                                             <label class="relative cursor-pointer select-none">
                                                 <input type="radio" name="attendance[{{ $student->id }}][status]" value="present" class="peer sr-only status-radio-present" {{ $currentStatus === 'present' ? 'checked' : '' }}>
-                                                <div class="px-3 py-1.5 rounded-lg border border-emerald-500/30 text-emerald-600 bg-emerald-500/10 peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:border-emerald-600 peer-checked:shadow-sm font-bold text-xs flex items-center gap-1.5 transition-all hover:bg-emerald-500/20">
-                                                    <i class="fa-solid fa-circle-check text-xs"></i>
-                                                    <span>Present</span>
-                                                </div>
+                                                <span class="px-3 py-1 rounded-md text-xs font-semibold text-secondary hover:text-primary transition-all peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:shadow-xs block">
+                                                    Present
+                                                </span>
                                             </label>
 
-                                            <!-- ABSENT (RED) -->
+                                            <!-- ABSENT -->
                                             <label class="relative cursor-pointer select-none">
                                                 <input type="radio" name="attendance[{{ $student->id }}][status]" value="absent" class="peer sr-only status-radio-absent" {{ $currentStatus === 'absent' ? 'checked' : '' }}>
-                                                <div class="px-3 py-1.5 rounded-lg border border-rose-500/30 text-rose-600 bg-rose-500/10 peer-checked:bg-rose-600 peer-checked:text-white peer-checked:border-rose-600 peer-checked:shadow-sm font-bold text-xs flex items-center gap-1.5 transition-all hover:bg-rose-500/20">
-                                                    <i class="fa-solid fa-circle-xmark text-xs"></i>
-                                                    <span>Absent</span>
-                                                </div>
+                                                <span class="px-3 py-1 rounded-md text-xs font-semibold text-secondary hover:text-primary transition-all peer-checked:bg-rose-600 peer-checked:text-white peer-checked:shadow-xs block">
+                                                    Absent
+                                                </span>
                                             </label>
 
-                                            <!-- LATE (AMBER) -->
+                                            <!-- LATE -->
                                             <label class="relative cursor-pointer select-none">
                                                 <input type="radio" name="attendance[{{ $student->id }}][status]" value="late" class="peer sr-only status-radio-late" {{ $currentStatus === 'late' ? 'checked' : '' }}>
-                                                <div class="px-3 py-1.5 rounded-lg border border-amber-500/30 text-amber-600 bg-amber-500/10 peer-checked:bg-amber-600 peer-checked:text-white peer-checked:border-amber-600 peer-checked:shadow-sm font-bold text-xs flex items-center gap-1.5 transition-all hover:bg-amber-500/20">
-                                                    <i class="fa-solid fa-clock text-xs"></i>
-                                                    <span>Late</span>
-                                                </div>
+                                                <span class="px-3 py-1 rounded-md text-xs font-semibold text-secondary hover:text-primary transition-all peer-checked:bg-amber-600 peer-checked:text-white peer-checked:shadow-xs block">
+                                                    Late
+                                                </span>
                                             </label>
 
-                                            <!-- HALF-DAY (SKY) -->
+                                            <!-- HALF-DAY -->
                                             <label class="relative cursor-pointer select-none">
                                                 <input type="radio" name="attendance[{{ $student->id }}][status]" value="half_day" class="peer sr-only status-radio-half_day" {{ $currentStatus === 'half_day' ? 'checked' : '' }}>
-                                                <div class="px-3 py-1.5 rounded-lg border border-sky-500/30 text-sky-600 bg-sky-500/10 peer-checked:bg-sky-600 peer-checked:text-white peer-checked:border-sky-600 peer-checked:shadow-sm font-bold text-xs flex items-center gap-1.5 transition-all hover:bg-sky-500/20">
-                                                    <i class="fa-solid fa-hourglass-half text-xs"></i>
-                                                    <span>Half-Day</span>
-                                                </div>
+                                                <span class="px-3 py-1 rounded-md text-xs font-semibold text-secondary hover:text-primary transition-all peer-checked:bg-sky-600 peer-checked:text-white peer-checked:shadow-xs block">
+                                                    Half-Day
+                                                </span>
                                             </label>
                                         </div>
                                     </td>
