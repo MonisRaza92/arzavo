@@ -58,21 +58,8 @@ class FinanceController extends Controller
             'status' => 'success',
         ]);
 
-        // Grant entitlements for digital items upon payment approval
-        foreach ($order->items as $item) {
-            if ($order->user_id && in_array($item->fulfillment_type, ['digital_download', 'online_access'])) {
-                UserEntitlement::firstOrCreate([
-                    'user_id' => $order->user_id,
-                    'entitable_type' => $item->purchasable_type,
-                    'entitable_id' => $item->purchasable_id,
-                    'variant_id' => $item->variant_id,
-                ], [
-                    'order_id' => $order->id,
-                    'can_download' => true,
-                    'can_stream_online' => true,
-                ]);
-            }
-        }
+        // Grant entitlements & course access upon admin approval
+        \App\Services\Commerce\CheckoutService::fulfillOrder($order);
 
         return back()->with('success', "Payment for Order #{$order->order_number} has been approved and marked as Paid!");
     }

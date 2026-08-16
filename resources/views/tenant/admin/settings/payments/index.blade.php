@@ -33,8 +33,8 @@
         
         <div class="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
             <x-input.toggle name="payment_mode_online" id="payment_mode_online" label="Online Gateways" :value="($settings['payment_mode_online'] ?? '1') == '1'" hint="Accept payments via Razorpay, Cashfree, PayU, Paytm etc." />
-            <x-input.toggle name="payment_mode_cod" id="payment_mode_cod" label="Cash on Delivery (COD)" :value="($settings['payment_mode_cod'] ?? '0') == '1'" hint="Collect payment upon delivery" />
-            <x-input.toggle name="payment_mode_manual" id="payment_mode_manual" label="Manual Bank / UPI QR" :value="($settings['payment_mode_manual'] ?? '1') == '1'" hint="Allow direct bank transfer or UPI" />
+            <x-input.toggle name="payment_mode_cod" id="payment_mode_cod" label="Cash Pay / Pay at Counter" :value="($settings['payment_mode_cod'] ?? '0') == '1'" hint="Allow students to pay cash directly at academy reception or center." />
+            <x-input.toggle name="payment_mode_manual" id="payment_mode_manual" label="Manual Bank / UPI QR" :value="($settings['payment_mode_manual'] ?? '1') == '1'" hint="Allow direct bank transfer or UPI scanner transfers" />
         </div>
     </div>
 

@@ -284,13 +284,12 @@
                         @endif
 
                         @if($manualEnabled)
-                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all"
-                                   onclick="document.getElementById('manual-payment-box').classList.toggle('hidden')">
+                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all gateway-option-label">
                                 <div class="flex items-center gap-3">
                                     <input type="radio" name="payment_gateway" value="manual_bank" {{ $selectedGateway === 'manual_bank' ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 focus:ring-0">
                                     <div>
                                         <span class="font-bold text-sm block text-gray-900">Manual UPI / QR / Bank Transfer</span>
-                                        <span class="text-xs text-gray-500">Pay via scanner & upload transaction screenshot</span>
+                                        <span class="text-xs text-gray-500">Pay via scanner/bank transfer & upload UTR transaction proof</span>
                                     </div>
                                 </div>
                                 <i class="fa-solid fa-qrcode text-purple-600 text-lg"></i>
@@ -298,44 +297,98 @@
                         @endif
 
                         @if($codEnabled)
-                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all">
+                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 rounded-xl border border-gray-200 transition-all gateway-option-label">
                                 <div class="flex items-center gap-3">
                                     <input type="radio" name="payment_gateway" value="cod" {{ $selectedGateway === 'cod' ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 focus:ring-0">
                                     <div>
-                                        <span class="font-bold text-sm block text-gray-900">Cash on Delivery (COD)</span>
-                                        <span class="text-xs text-gray-500">Pay in cash when delivered</span>
+                                        <span class="font-bold text-sm block text-gray-900">Cash Pay (Pay at Counter / Center)</span>
+                                        <span class="text-xs text-gray-500">Pay cash at academy reception. Access activated upon admin verification</span>
                                     </div>
                                 </div>
-                                <i class="fa-solid fa-hand-holding-dollar text-indigo-600 text-lg"></i>
+                                <i class="fa-solid fa-hand-holding-dollar text-emerald-600 text-lg"></i>
                             </label>
                         @endif
                     </div>
 
-                    {{-- MANUAL BANK DETAILS BOX --}}
-                    <div id="manual-payment-box" class="hidden mt-4 p-4 rounded-xl bg-purple-50/70 border border-purple-100 space-y-3">
-                        @if(!empty($tenantSettings['manual_payment_bank_name']) || !empty($tenantSettings['manual_payment_upi_id']))
-                            <div class="text-xs text-purple-900 bg-white p-3 rounded-lg border border-purple-200/60 leading-relaxed">
-                                @if(!empty($tenantSettings['manual_payment_upi_id']))
-                                    <strong>UPI ID:</strong> {{ $tenantSettings['manual_payment_upi_id'] }}<br>
-                                @endif
-                                @if(!empty($tenantSettings['manual_payment_bank_name']))
-                                    <strong>Bank:</strong> {{ $tenantSettings['manual_payment_bank_name'] }} | 
-                                    <strong>A/C:</strong> {{ $tenantSettings['manual_payment_bank_account'] ?? '' }} | 
-                                    <strong>IFSC:</strong> {{ $tenantSettings['manual_payment_bank_ifsc'] ?? '' }}
-                                @endif
-                            </div>
-                        @endif
+                    {{-- 🏛️ MANUAL BANK & UPI DETAILS CARD --}}
+                    @php
+                        $bankName = $tenantSettings['manual_payment_bank_name'] ?? $tenantSettings['manual_bank_name'] ?? '';
+                        $accHolder = $tenantSettings['manual_payment_account_holder'] ?? $tenantSettings['manual_account_holder'] ?? '';
+                        $accNumber = $tenantSettings['manual_payment_bank_account'] ?? $tenantSettings['manual_bank_account'] ?? '';
+                        $ifscCode = $tenantSettings['manual_payment_bank_ifsc'] ?? $tenantSettings['manual_bank_ifsc'] ?? '';
+                        $upiId = $tenantSettings['manual_payment_upi_id'] ?? $tenantSettings['manual_upi_id'] ?? '';
+                        $swiftCode = $tenantSettings['manual_payment_swift_code'] ?? $tenantSettings['manual_swift_code'] ?? '';
+                    @endphp
 
-                        <p class="text-xs font-semibold text-purple-900">Transfer payment & enter transaction details below:</p>
-                        <div class="grid sm:grid-cols-2 gap-3 pt-1">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Transaction Ref / UTR Number</label>
-                                <input type="text" name="reference_number" placeholder="e.g. 319203910293" 
-                                       class="w-full px-3 py-2 text-xs rounded-lg border border-gray-200 outline-none bg-white">
+                    <div id="manual-payment-box" class="{{ $selectedGateway === 'manual_bank' ? '' : 'hidden' }} mt-5 p-5 rounded-2xl bg-gradient-to-br from-purple-50/80 via-white to-purple-50/40 border border-purple-200/80 shadow-xs space-y-4">
+                        <div class="flex items-center justify-between border-b border-purple-100 pb-3">
+                            <div class="flex items-center gap-2 text-purple-900 font-bold text-sm">
+                                <i class="fa-solid fa-building-columns text-purple-600"></i> Academy Bank Account & UPI Details
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Upload Payment Screenshot</label>
-                                <input type="file" name="payment_proof_file" accept="image/*" class="text-xs w-full py-1">
+                            <span class="text-[11px] font-semibold text-purple-700 bg-purple-100 px-2.5 py-0.5 rounded-full">Direct Payment</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            @if(!empty($bankName))
+                                <div class="bg-white p-2.5 rounded-xl border border-purple-100/80 shadow-2xs">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400 block">Bank Name</span>
+                                    <span class="font-bold text-gray-900 text-xs">{{ $bankName }}</span>
+                                </div>
+                            @endif
+
+                            @if(!empty($accHolder))
+                                <div class="bg-white p-2.5 rounded-xl border border-purple-100/80 shadow-2xs">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400 block">Account Holder</span>
+                                    <span class="font-bold text-gray-900 text-xs">{{ $accHolder }}</span>
+                                </div>
+                            @endif
+
+                            @if(!empty($accNumber))
+                                <div class="bg-white p-2.5 rounded-xl border border-purple-100/80 shadow-2xs">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400 block">Account Number</span>
+                                    <span class="font-mono font-bold text-purple-900 text-xs select-all">{{ $accNumber }}</span>
+                                </div>
+                            @endif
+
+                            @if(!empty($ifscCode))
+                                <div class="bg-white p-2.5 rounded-xl border border-purple-100/80 shadow-2xs">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400 block">IFSC Code</span>
+                                    <span class="font-mono font-bold text-purple-900 text-xs select-all">{{ $ifscCode }}</span>
+                                </div>
+                            @endif
+
+                            @if(!empty($upiId))
+                                <div class="bg-white p-2.5 rounded-xl border border-purple-100/80 shadow-2xs sm:col-span-2 flex items-center justify-between">
+                                    <div>
+                                        <span class="text-[10px] uppercase font-bold text-purple-600 block">UPI ID / VPA</span>
+                                        <span class="font-mono font-black text-gray-900 text-sm select-all">{{ $upiId }}</span>
+                                    </div>
+                                    <span class="px-2 py-1 bg-purple-50 text-purple-700 font-bold text-[10px] rounded-lg">GPay / PhonePe / Paytm</span>
+                                </div>
+                            @endif
+
+                            @if(!empty($swiftCode))
+                                <div class="bg-white p-2.5 rounded-xl border border-purple-100/80 shadow-2xs">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400 block">SWIFT / BIC Code</span>
+                                    <span class="font-mono font-bold text-gray-900 text-xs">{{ $swiftCode }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="pt-2 border-t border-purple-100 space-y-2">
+                            <p class="text-xs font-semibold text-purple-950 flex items-center gap-1.5">
+                                <i class="fa-solid fa-receipt text-purple-600"></i> Submit payment transaction proof after transferring:
+                            </p>
+                            <div class="grid sm:grid-cols-2 gap-3 pt-1">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Transaction Ref / 12-digit UTR No.</label>
+                                    <input type="text" name="reference_number" placeholder="e.g. 423982739102" 
+                                           class="w-full px-3 py-2 text-xs rounded-xl border border-purple-200 outline-none bg-white focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">Upload Payment Screenshot</label>
+                                    <input type="file" name="payment_proof_file" accept="image/*" class="text-xs w-full py-1.5 px-2 bg-white rounded-xl border border-purple-200">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -403,6 +456,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const payBtnIcon = document.getElementById('pay-button-icon');
 
     if (!form || !payBtn) return;
+
+    // Toggle manual payment box based on radio selection
+    const manualBox = document.getElementById('manual-payment-box');
+    const gatewayRadios = form.querySelectorAll('input[name="payment_gateway"]');
+
+    function updateManualBox() {
+        const checkedRadio = form.querySelector('input[name="payment_gateway"]:checked');
+        if (manualBox) {
+            if (checkedRadio && checkedRadio.value === 'manual_bank') {
+                manualBox.classList.remove('hidden');
+            } else {
+                manualBox.classList.add('hidden');
+            }
+        }
+    }
+
+    gatewayRadios.forEach(radio => {
+        radio.addEventListener('change', updateManualBox);
+    });
+    updateManualBox();
 
     form.addEventListener('submit', function(e) {
         const selectedGatewayInput = form.querySelector('input[name="payment_gateway"]:checked');
