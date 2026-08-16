@@ -25,10 +25,10 @@
     <div class="stat border-rounded bg-primary border-primary flex flex-col justify-between">
         <div class="stat-content p-4 flex flex-row justify-between items-center">
             <div class="data">
-                <h2 class="text-tertiary text-xs uppercase tracking-wider font-semibold">Inactive Users</h2>
-                <p class="text-2xl font-bold mt-1 text-primary">{{ $users->where('status', 'inactive')->count() }}</p>
+                <h2 class="text-tertiary text-xs uppercase tracking-wider font-semibold">Paying Customers</h2>
+                <p class="text-2xl font-bold mt-1 text-emerald-600">{{ $payingUsersCount ?? 0 }}</p>
             </div>
-            <div class="bg-tertiary border-rounded p-3"><i class="fas fa-user-times text-lg text-primary"></i></div>
+            <div class="bg-tertiary border-rounded p-3"><i class="fas fa-shopping-bag text-lg text-emerald-600"></i></div>
         </div>
     </div>
     <div class="stat border-rounded bg-primary border-primary flex flex-col justify-between">
@@ -62,7 +62,7 @@
                 <tr class="bg-tertiary">
                     <th class="p-3 pl-4 text-left">User</th>
                     <th class="p-3 text-left">Contact Info</th>
-                    <th class="p-3 text-left">Location</th>
+                    <th class="p-3 text-left">Purchased Items & Spend</th>
                     <th class="p-3 text-center">Role</th>
                     <th class="p-3 text-center">Status</th>
                     <th class="p-3 text-center hidden md:table-cell">Joined</th>
@@ -71,6 +71,12 @@
             </thead>
             <tbody>
                 @forelse($users->sortByDesc('id') as $user)
+                    @php
+                        $paidOrders = $user->orders ? $user->orders->where('payment_status', 'paid') : collect();
+                        $paidOrdersCount = $paidOrders->count();
+                        $totalSpent = $paidOrders->sum('grand_total');
+                        $entitlementsCount = $user->entitlements ? $user->entitlements->count() : 0;
+                    @endphp
                     <tr class="border-top user-row hover:bg-hover-secondary transition">
                         <!-- Profile/Name -->
                         <td class="p-3 pl-4 text-left">
@@ -97,9 +103,36 @@
                             </div>
                         </td>
 
-                        <!-- Location -->
-                        <td class="p-3 text-left text-xs text-secondary">
-                            {{ $user->city ?: 'N/A' }}{{ $user->state ? ', '.$user->state : '' }}
+                        <!-- Purchased Items & Spend -->
+                        <td class="p-3 text-left">
+                            @if($paidOrdersCount > 0 || $entitlementsCount > 0)
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 inline-flex items-center gap-1">
+                                            <i class="fa-solid fa-bag-shopping text-[10px]"></i>
+                                            {{ $paidOrdersCount }} Order(s)
+                                        </span>
+                                        <span class="text-xs font-bold text-primary font-mono">
+                                            ₹{{ number_format($totalSpent, 2) }}
+                                        </span>
+                                    </div>
+
+                                    @if($entitlementsCount > 0)
+                                        <span class="text-[10px] text-secondary block">
+                                            <i class="fa-solid fa-book-open text-tertiary mr-0.5"></i> {{ $entitlementsCount }} Active Digital Library Item(s)
+                                        </span>
+                                    @endif
+
+                                    <a href="{{ route('admin.finance.orders', ['search' => $user->email]) }}" 
+                                       class="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold inline-flex items-center gap-1">
+                                        View Orders Ledger <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                                    </a>
+                                </div>
+                            @else
+                                <span class="text-[11px] text-tertiary">
+                                    <i class="fa-solid fa-cart-shopping opacity-50 mr-1"></i> No Purchases Yet
+                                </span>
+                            @endif
                         </td>
 
                         <!-- Role -->
@@ -127,6 +160,10 @@
                         <!-- Actions -->
                         <td class="p-3 text-right pr-4">
                             <div class="flex items-center justify-end gap-3">
+                                <a href="{{ route('admin.finance.orders', ['search' => $user->email]) }}" 
+                                   class="text-tertiary hover:text-indigo-600 transition text-sm" title="View Customer Orders">
+                                    <i class="fa-solid fa-receipt"></i>
+                                </a>
                                 <button onclick="if(confirm('Promote {{ $user->fname }} to Student?')) { document.getElementById('userRoleForm{{ $user->id }}').submit(); }" 
                                         class="text-tertiary hover:text-primary transition text-sm" title="Promote to Student">
                                     <i class="fa-solid fa-user-graduate"></i>
@@ -149,8 +186,8 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="p-4 text-center text-tertiary text-xs">
-                            No registered users found in the system.
+                        <td colspan="7" class="p-8 text-center text-tertiary text-xs">
+                            No users found.
                         </td>
                     </tr>
                 @endforelse
@@ -161,21 +198,21 @@
 
 <script>
 function filterUsersTable() {
-    let input = document.getElementById("userSearchInput");
+    let input = document.getElementById('userSearchInput');
     let filter = input.value.toLowerCase();
-    let rows = document.getElementsByClassName("user-row");
+    let rows = document.querySelectorAll('.user-row');
 
-    for (let i = 0; i < rows.length; i++) {
-        let fullname = rows[i].querySelector(".user-fullname").innerText.toLowerCase();
-        let username = rows[i].querySelector(".user-username").innerText.toLowerCase();
-        let email = rows[i].querySelector(".user-email").innerText.toLowerCase();
+    rows.forEach(row => {
+        let name = row.querySelector('.user-fullname') ? row.querySelector('.user-fullname').innerText.toLowerCase() : '';
+        let username = row.querySelector('.user-username') ? row.querySelector('.user-username').innerText.toLowerCase() : '';
+        let email = row.querySelector('.user-email') ? row.querySelector('.user-email').innerText.toLowerCase() : '';
 
-        if (fullname.includes(filter) || username.includes(filter) || email.includes(filter)) {
-            rows[i].style.display = "";
+        if (name.includes(filter) || username.includes(filter) || email.includes(filter)) {
+            row.style.display = '';
         } else {
-            rows[i].style.display = "none";
+            row.style.display = 'none';
         }
-    }
+    });
 }
 </script>
 
