@@ -54,6 +54,7 @@ Route::middleware('auth:tenant')->group(function () {
         Route::get('/student/profile/{username}', [AdminStudentsController::class, 'adminStudentProfile'])->name('admin-student-profile');
         Route::post('/student/profile/info/update/{id}', [AdminStudentsController::class, 'studentProfileInfoUpdate'])->name('admin-student-profile-info-update');
         Route::post('/student/fee/update/{id}', [AdminStudentsController::class, 'studentFeeUpdate'])->name('admin-student-fee-update');
+        Route::post('/student/fee/payment/{id}', [AdminStudentsController::class, 'studentFeePaymentStore'])->name('admin-student-fee-payment');
 
         // Admin Users Routes
         Route::get('/users', [AdminUsersController::class, 'adminUsers'])->name('admin-users');
