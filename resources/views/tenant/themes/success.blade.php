@@ -189,12 +189,20 @@
     @php
         $firstItem = $order->items->first();
         $isCourse = $firstItem && in_array(strtolower(class_basename($firstItem->purchasable_type)), ['course', 'courses', 'app\models\tenant\course']);
+
+        $currentUser = auth('tenant')->user() ?? auth()->user() ?? $order->user;
+        $isStudent = $currentUser && $currentUser->role === 'student';
+        $dashboardUrl = $isStudent ? route('student.dashboard') : route('user.dashboard');
+        $dashboardTitle = $isStudent ? 'Student Dashboard' : 'User Dashboard';
+        $dashboardIcon = $isStudent ? 'fa-user-graduate' : 'fa-gauge-high';
+
+        $coursesUrl = $isStudent ? route('student.courses') : route('user.dashboard');
     @endphp
 
     <div class="flex flex-wrap justify-center gap-4">
         @if($isPaid)
             @if($isCourse)
-                <a href="{{ route('student.courses') }}" class="px-6 py-3 font-bold success-btn flex items-center gap-2">
+                <a href="{{ $coursesUrl }}" class="px-6 py-3 font-bold success-btn flex items-center gap-2">
                     <i class="fa-solid fa-graduation-cap"></i> Access My Courses
                 </a>
             @else
@@ -206,8 +214,8 @@
             <a href="{{ route('user.orders') }}" class="px-6 py-3 font-bold success-btn flex items-center gap-2">
                 <i class="fa-solid fa-receipt"></i> View in My Orders
             </a>
-            <a href="{{ route('student.dashboard') }}" class="px-6 py-3 font-bold rounded-xl border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition flex items-center gap-2">
-                <i class="fa-solid fa-user-graduate"></i> Student Dashboard
+            <a href="{{ $dashboardUrl }}" class="px-6 py-3 font-bold rounded-xl border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition flex items-center gap-2">
+                <i class="fa-solid {{ $dashboardIcon }}"></i> {{ $dashboardTitle }}
             </a>
         @endif
         <a href="{{ route_to('home') }}" class="px-6 py-3 font-bold rounded-xl border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition">

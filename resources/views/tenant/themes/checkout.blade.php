@@ -104,8 +104,12 @@
                 </p>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                @php
+                    $isStudentUser = $authUser && $authUser->role === 'student';
+                    $coursesUrl = $isStudentUser ? route('student.courses') : route('user.dashboard');
+                @endphp
                 @if(($purchasableType ?? '') === 'course' || ($item instanceof \App\Models\Tenant\Course))
-                    <a href="{{ route('student.courses') }}" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition flex items-center gap-2">
+                    <a href="{{ $coursesUrl }}" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition flex items-center gap-2">
                         <i class="fa-solid fa-graduation-cap"></i> Go to My Courses
                     </a>
                 @else
