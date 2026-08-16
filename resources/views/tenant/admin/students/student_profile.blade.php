@@ -756,9 +756,28 @@
 
         <form action="{{ route('admin.admin-student-fee-payment', $studentProfile->id) }}" method="POST" class="p-5 space-y-4 text-xs">
             @csrf
+
+            <!-- CURRENT OUTSTANDING DUE DISPLAY -->
+            <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] uppercase font-bold text-amber-700 block">Current Outstanding Balance</span>
+                    <div class="text-base font-extrabold text-amber-700 font-mono">
+                        ₹{{ number_format($pendingFeeDues, 2) }}
+                    </div>
+                </div>
+                @if($pendingFeeDues > 0)
+                    <button type="button" onclick="document.getElementById('amountPaidInput').value = '{{ $pendingFeeDues }}'" class="px-2.5 py-1 bg-amber-600 text-white rounded-md text-[10px] font-bold hover:bg-amber-700 transition">
+                        Pay Full Outstanding
+                    </button>
+                @endif
+            </div>
+
             <div>
-                <label class="block font-bold text-secondary mb-1">Amount Paid (₹) *</label>
-                <input type="number" step="0.01" name="amount_paid" required placeholder="e.g. 3500.00" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                <div class="flex justify-between items-center mb-1">
+                    <label class="font-bold text-secondary">Amount Paid (₹) *</label>
+                    <span class="text-[10px] text-tertiary">Enter payment amount to record</span>
+                </div>
+                <input type="number" step="0.01" id="amountPaidInput" name="amount_paid" value="{{ $pendingFeeDues > 0 ? $pendingFeeDues : ($feePlan->amount ?? '') }}" required placeholder="e.g. {{ $pendingFeeDues > 0 ? $pendingFeeDues : '1000.00' }}" class="w-full p-2.5 border-primary border-rounded bg-primary text-primary text-sm font-mono font-bold input-focus">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
@@ -766,8 +785,8 @@
                     <label class="block font-bold text-secondary mb-1">Payment Method *</label>
                     <select name="payment_method" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
                         <option value="cash">Cash (Counter)</option>
-                        <option value="bank_transfer">Bank Transfer / NEFT</option>
                         <option value="upi">UPI / QR Scan</option>
+                        <option value="bank_transfer">Bank Transfer / NEFT</option>
                         <option value="cheque">Cheque</option>
                         <option value="card">Card (POS Machine)</option>
                     </select>
@@ -781,12 +800,12 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block font-bold text-secondary mb-1">Receipt / Ref Number</label>
-                    <input type="text" name="transaction_id" placeholder="e.g. REC-92019" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    <input type="text" name="transaction_id" placeholder="e.g. REC-{{ rand(10000, 99999) }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
                 </div>
                 <div>
                     <label class="block font-bold text-secondary mb-1">Payment Status *</label>
                     <select name="status" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                        <option value="paid">Paid & Verified</option>
+                        <option value="paid" selected>Paid & Verified</option>
                         <option value="pending">Pending Clearing</option>
                     </select>
                 </div>
@@ -796,8 +815,8 @@
                 <button type="button" onclick="closeModal('recordPaymentModal')" class="px-4 py-2 bg-secondary text-primary border border-primary border-rounded font-bold hover:bg-hover-secondary transition">
                     Cancel
                 </button>
-                <button type="submit" class="px-5 py-2 bg-invert text-invert border-rounded font-bold hover-invert transition">
-                    Confirm & Record Payment
+                <button type="submit" class="px-5 py-2 bg-emerald-600 text-white border-rounded font-bold hover:bg-emerald-700 transition">
+                    <i class="fa-solid fa-check mr-1"></i> Mark & Record as Paid
                 </button>
             </div>
         </form>

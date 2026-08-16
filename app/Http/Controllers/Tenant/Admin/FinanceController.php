@@ -196,7 +196,7 @@ class FinanceController extends Controller
 
         $feePayments = $query->paginate(20)->withQueryString();
 
-        $students = \App\Models\Tenant\User::where('role', 'student')->with(['class', 'feePlans'])->orderBy('fname')->get();
+        $students = \App\Models\Tenant\User::where('role', 'student')->with(['class', 'feePlans', 'feePayments'])->orderBy('fname')->get();
         $classes = \App\Models\Tenant\ClassCourse::orderBy('name')->get();
 
         $totalInvoiced = \App\Models\Tenant\FeePlans::sum('amount');

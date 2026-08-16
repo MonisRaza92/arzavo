@@ -245,19 +245,40 @@
 
         <form action="{{ route('admin.finance.fees.record') }}" method="POST" class="p-5 space-y-4 text-xs">
             @csrf
+
+            <!-- SELECTED STUDENT OUTSTANDING BANNER -->
+            <div id="financeFeeOutstandingBox" class="hidden p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] uppercase font-bold text-amber-700 block">Student Outstanding Dues</span>
+                    <div id="financeFeeOutstandingText" class="text-base font-extrabold text-amber-700 font-mono">
+                        ₹0.00
+                    </div>
+                </div>
+                <button type="button" onclick="fillStudentOutstanding()" class="px-2.5 py-1 bg-amber-600 text-white rounded-md text-[10px] font-bold hover:bg-amber-700 transition">
+                    Fill Full Outstanding
+                </button>
+            </div>
+
             <div>
                 <label class="block font-bold text-secondary mb-1">Select Student *</label>
-                <select name="student_id" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                <select id="financeStudentSelect" name="student_id" required onchange="onStudentFeeSelect(this)" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
                     <option value="">-- Choose Student --</option>
                     @foreach($students as $st)
-                        <option value="{{ $st->id }}">{{ $st->fname }} {{ $st->lname }} ({{ $st->email }}) - {{ $st->class->name ?? 'No Class' }}</option>
+                        @php
+                            $stPlan = $st->feePlans->sum('amount');
+                            $stPaid = $st->feePayments->where('status', 'paid')->sum('amount_paid');
+                            $stDue = max(0, $stPlan - $stPaid);
+                        @endphp
+                        <option value="{{ $st->id }}" data-outstanding="{{ $stDue }}">
+                            {{ $st->fname }} {{ $st->lname }} ({{ $st->email }}) — Due: ₹{{ number_format($stDue, 2) }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
             <div>
-                <label class="block font-bold text-secondary mb-1">Amount (₹) *</label>
-                <input type="number" step="0.01" name="amount_paid" required placeholder="e.g. 5000.00" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                <label class="block font-bold text-secondary mb-1">Amount Paid (₹) *</label>
+                <input type="number" step="0.01" id="financeAmountPaid" name="amount_paid" required placeholder="e.g. 5000.00" class="w-full p-2.5 border-primary border-rounded bg-primary text-primary text-sm font-mono font-bold input-focus">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
@@ -265,7 +286,7 @@
                     <label class="block font-bold text-secondary mb-1">Payment Method *</label>
                     <select name="payment_method" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
                         <option value="cash">Cash (Counter)</option>
-                        <option value="upi">UPI / QR Transfer</option>
+                        <option value="upi">UPI / QR Scan</option>
                         <option value="bank_transfer">Bank Transfer / NEFT</option>
                         <option value="cheque">Cheque</option>
                         <option value="online">Online Payment</option>
@@ -280,12 +301,12 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block font-bold text-secondary mb-1">Receipt / Ref Number</label>
-                    <input type="text" name="transaction_id" placeholder="e.g. REC-84920" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    <input type="text" name="transaction_id" placeholder="e.g. REC-{{ rand(10000, 99999) }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
                 </div>
                 <div>
                     <label class="block font-bold text-secondary mb-1">Status *</label>
                     <select name="status" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                        <option value="paid">Paid & Verified</option>
+                        <option value="paid" selected>Paid & Verified</option>
                         <option value="pending">Pending</option>
                         <option value="overdue">Overdue</option>
                     </select>
@@ -294,15 +315,15 @@
 
             <div>
                 <label class="block font-bold text-secondary mb-1">Notes / Remarks</label>
-                <input type="text" name="notes" placeholder="e.g. Installment 1 for Class 12 Science" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                <input type="text" name="notes" placeholder="e.g. Cleared pending dues for academic cycle" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
             </div>
 
             <div class="flex justify-end gap-2 pt-3 border-top">
                 <button type="button" onclick="closeModal('recordPaymentModal')" class="px-4 py-2 bg-secondary text-primary border border-primary border-rounded font-bold hover:bg-hover-secondary transition">
                     Cancel
                 </button>
-                <button type="submit" class="px-5 py-2 bg-invert text-invert border-rounded font-bold hover-invert transition">
-                    Record Payment
+                <button type="submit" class="px-5 py-2 bg-emerald-600 text-white border-rounded font-bold hover:bg-emerald-700 transition">
+                    <i class="fa-solid fa-check mr-1"></i> Mark & Record as Paid
                 </button>
             </div>
         </form>
@@ -376,6 +397,30 @@ function openUpdateStatusModal(id, status, method, studentName, amount) {
         document.getElementById('modalMethodSelect').value = method;
     }
     document.getElementById('updateStatusModal').classList.remove('hidden');
+}
+
+function onStudentFeeSelect(selectElem) {
+    const selectedOption = selectElem.options[selectElem.selectedIndex];
+    const outstanding = selectedOption.getAttribute('data-outstanding') || 0;
+    const box = document.getElementById('financeFeeOutstandingBox');
+    const text = document.getElementById('financeFeeOutstandingText');
+    const amountInput = document.getElementById('financeAmountPaid');
+
+    if (selectElem.value) {
+        box.classList.remove('hidden');
+        text.textContent = '₹' + parseFloat(outstanding).toFixed(2);
+        amountInput.value = parseFloat(outstanding).toFixed(2);
+    } else {
+        box.classList.add('hidden');
+        amountInput.value = '';
+    }
+}
+
+function fillStudentOutstanding() {
+    const selectElem = document.getElementById('financeStudentSelect');
+    const selectedOption = selectElem.options[selectElem.selectedIndex];
+    const outstanding = selectedOption ? (selectedOption.getAttribute('data-outstanding') || 0) : 0;
+    document.getElementById('financeAmountPaid').value = parseFloat(outstanding).toFixed(2);
 }
 
 function closeModal(modalId) {
