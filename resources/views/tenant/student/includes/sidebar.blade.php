@@ -39,6 +39,14 @@
         </li>
 
         <li>
+            <a href="{{ route('student.books') }}" 
+               class="flex items-center gap-2.5 p-2.5 border-rounded text-xs font-semibold transition {{ request()->routeIs('student.books') ? 'bg-invert text-invert' : 'text-secondary hover:bg-hover-secondary' }}">
+                <i class="fa-solid fa-book-open text-sm w-4"></i>
+                <span>Digital Books & Notes</span>
+            </a>
+        </li>
+
+        <li>
             <a href="{{ route('student.assignments') }}" 
                class="flex items-center gap-2.5 p-2.5 border-rounded text-xs font-semibold transition {{ request()->routeIs('student.assignments') ? 'bg-invert text-invert' : 'text-secondary hover:bg-hover-secondary' }}">
                 <i class="fa-solid fa-pen-ruler text-sm w-4"></i>
@@ -61,6 +69,14 @@
                class="flex items-center gap-2.5 p-2.5 border-rounded text-xs font-semibold transition {{ request()->routeIs('student.attendance') ? 'bg-invert text-invert' : 'text-secondary hover:bg-hover-secondary' }}">
                 <i class="fa-solid fa-calendar-check text-sm w-4"></i>
                 <span>Attendance & Schedule</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('student.orders') }}" 
+               class="flex items-center gap-2.5 p-2.5 border-rounded text-xs font-semibold transition {{ request()->routeIs('student.orders') ? 'bg-invert text-invert' : 'text-secondary hover:bg-hover-secondary' }}">
+                <i class="fa-solid fa-bag-shopping text-sm w-4"></i>
+                <span>My Orders & Invoices</span>
             </a>
         </li>
 

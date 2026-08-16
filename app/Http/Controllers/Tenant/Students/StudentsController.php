@@ -221,6 +221,32 @@ class StudentsController extends Controller
         ));
     }
 
+    public function books()
+    {
+        $user = Auth::guard('tenant')->user();
+        $entitlements = UserEntitlement::with(['entitable', 'order'])
+            ->where('user_id', $user->id)
+            ->where('entitable_type', 'like', '%Book%')
+            ->latest()
+            ->paginate(12);
+
+        return view('tenant.student.books', compact('user', 'entitlements'));
+    }
+
+    public function orders()
+    {
+        $user = Auth::guard('tenant')->user();
+        $orders = Order::with('items')
+            ->where(function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->orWhere('customer_email', $user->email);
+            })
+            ->latest()
+            ->paginate(10);
+
+        return view('tenant.student.orders', compact('user', 'orders'));
+    }
+
     public function certificates()
     {
         $user = Auth::guard('tenant')->user();

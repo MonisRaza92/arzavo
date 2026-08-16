@@ -173,10 +173,12 @@ Route::middleware('auth:tenant')->group(function () {
     Route::prefix('student')->middleware('role:student')->as('student.')->group(function () {
         Route::get('/dashboard', [StudentsController::class, 'dashboard'])->name('dashboard');
         Route::get('/courses', [StudentsController::class, 'courses'])->name('courses');
+        Route::get('/books', [StudentsController::class, 'books'])->name('books');
         Route::get('/assignments', [StudentsController::class, 'assignments'])->name('assignments');
         Route::get('/fees', [StudentsController::class, 'fees'])->name('fees');
         Route::post('/fees/pay-online', [StudentsController::class, 'payFeeOnline'])->name('fees.pay-online');
         Route::get('/attendance', [StudentsController::class, 'attendance'])->name('attendance');
+        Route::get('/orders', [StudentsController::class, 'orders'])->name('orders');
         Route::get('/certificates', [StudentsController::class, 'certificates'])->name('certificates');
         Route::get('/profile', [StudentsController::class, 'profile'])->name('profile');
         Route::post('/profile/update', [StudentsController::class, 'updateProfile'])->name('profile.update');
