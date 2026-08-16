@@ -99,11 +99,11 @@
                                         </div>
                                     </td>
                                     <td class="py-3 px-4">
-                                        <div class="inline-flex items-center p-1 bg-secondary rounded-lg border border-primary gap-1">
+                                        <div class="inline-flex items-center p-1 bg-secondary rounded border border-primary gap-1">
                                             <!-- PRESENT -->
                                             <label class="relative cursor-pointer select-none">
                                                 <input type="radio" name="attendance[{{ $student->id }}][status]" value="present" class="peer sr-only status-radio-present" {{ $currentStatus === 'present' ? 'checked' : '' }}>
-                                                <span class="px-3 py-1 rounded-md text-xs font-semibold text-secondary hover:text-primary transition-all peer-checked:bg-emerald-600 peer-checked:text-white peer-checked:shadow-xs block">
+                                                <span class="px-3 py-1 rounded text-xs font-bold text-secondary hover:text-primary transition-all peer-checked:bg-emerald-600 peer-checked:text-white! block">
                                                     Present
                                                 </span>
                                             </label>
@@ -111,7 +111,7 @@
                                             <!-- ABSENT -->
                                             <label class="relative cursor-pointer select-none">
                                                 <input type="radio" name="attendance[{{ $student->id }}][status]" value="absent" class="peer sr-only status-radio-absent" {{ $currentStatus === 'absent' ? 'checked' : '' }}>
-                                                <span class="px-3 py-1 rounded-md text-xs font-semibold text-secondary hover:text-primary transition-all peer-checked:bg-rose-600 peer-checked:text-white peer-checked:shadow-xs block">
+                                                <span class="px-3 py-1 rounded text-xs font-bold text-secondary hover:text-primary transition-all peer-checked:bg-rose-600 peer-checked:text-white! block">
                                                     Absent
                                                 </span>
                                             </label>
@@ -119,7 +119,7 @@
                                             <!-- LATE -->
                                             <label class="relative cursor-pointer select-none">
                                                 <input type="radio" name="attendance[{{ $student->id }}][status]" value="late" class="peer sr-only status-radio-late" {{ $currentStatus === 'late' ? 'checked' : '' }}>
-                                                <span class="px-3 py-1 rounded-md text-xs font-semibold text-secondary hover:text-primary transition-all peer-checked:bg-amber-600 peer-checked:text-white peer-checked:shadow-xs block">
+                                                <span class="px-3 py-1 rounded text-xs font-bold text-secondary hover:text-primary transition-all peer-checked:bg-amber-600 peer-checked:text-white! block">
                                                     Late
                                                 </span>
                                             </label>
@@ -127,7 +127,7 @@
                                             <!-- HALF-DAY -->
                                             <label class="relative cursor-pointer select-none">
                                                 <input type="radio" name="attendance[{{ $student->id }}][status]" value="half_day" class="peer sr-only status-radio-half_day" {{ $currentStatus === 'half_day' ? 'checked' : '' }}>
-                                                <span class="px-3 py-1 rounded-md text-xs font-semibold text-secondary hover:text-primary transition-all peer-checked:bg-sky-600 peer-checked:text-white peer-checked:shadow-xs block">
+                                                <span class="px-3 py-1 rounded text-xs font-bold text-secondary hover:text-primary transition-all peer-checked:bg-sky-600 peer-checked:text-white! block">
                                                     Half-Day
                                                 </span>
                                             </label>
@@ -163,6 +163,25 @@
         </div>
     @endif
 </div>
+
+<style>
+.status-radio-present:checked + span {
+    background-color: #059669 !important;
+    color: #ffffff !important;
+}
+.status-radio-absent:checked + span {
+    background-color: #e11d48 !important;
+    color: #ffffff !important;
+}
+.status-radio-late:checked + span {
+    background-color: #d97706 !important;
+    color: #ffffff !important;
+}
+.status-radio-half_day:checked + span {
+    background-color: #0284c7 !important;
+    color: #ffffff !important;
+}
+</style>
 
 <script>
     function bulkMark(status) {
