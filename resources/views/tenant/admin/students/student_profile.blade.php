@@ -38,52 +38,59 @@
     </div>
 
     <!-- Profile Overview Card -->
-    <div class="relative bg-primary border-primary border-rounded overflow-hidden">
+    <div class="bg-primary border-primary border-rounded overflow-hidden">
         <!-- Banner -->
-        <div class="w-full bg-secondary relative h-36 sm:h-48 overflow-hidden">
+        <div class="w-full bg-secondary h-28 sm:h-36 relative overflow-hidden">
             @if(!empty($studentProfile->banner))
                 <img src="{{ asset($studentProfile->banner) }}" class="w-full h-full object-cover">
             @else
                 <div class="w-full h-full bg-gradient-to-r from-indigo-900/40 via-purple-900/30 to-indigo-900/40 flex items-center justify-center">
-                    <span class="text-xs text-secondary font-mono uppercase tracking-widest"><i class="fa-solid fa-graduation-cap text-lg block text-center mb-1"></i> Student Portal Profile</span>
+                    <span class="text-xs text-secondary font-mono uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-base"></i> Student Portal Profile</span>
                 </div>
             @endif
         </div>
 
-        <!-- Profile Picture + Quick Details -->
-        <div class="px-6 py-4 flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20">
-            <div class="flex flex-col sm:flex-row sm:items-end gap-4">
-                <div class="w-28 h-28 sm:w-32 sm:h-32 border-rounded overflow-hidden border-4 border-white dark:border-gray-900 bg-secondary shadow-md shrink-0">
-                    @if ($studentProfile->profile_picture)
-                        <img src="{{ asset($studentProfile->profile_picture) }}" class="w-full h-full object-cover">
-                    @else
-                        <div class="w-full h-full font-black text-4xl flex items-center justify-center bg-secondary text-primary">
-                            {{ strtoupper(substr($studentProfile->fname, 0, 1)) }}
-                        </div>
-                    @endif
-                </div>
-                <div class="space-y-1">
-                    <h1 class="text-2xl font-black text-primary leading-tight">{{ $studentProfile->fname }} {{ $studentProfile->lname }}</h1>
-                    <p class="text-xs text-secondary font-medium">{{ $studentProfile->headline ?: 'Student at ' . (app('currentTenant')->name ?? 'Academy') }}</p>
-                    <div class="flex flex-wrap items-center gap-3 text-xs text-tertiary pt-1 font-mono">
-                        <span><i class="fa-solid fa-envelope text-tertiary mr-1"></i>{{ $studentProfile->email }}</span>
-                        @if($studentProfile->number)
-                            <span><i class="fa-solid fa-phone text-tertiary mr-1"></i>{{ $studentProfile->number }}</span>
+        <!-- Profile Details (Avatar + Info + Badges) -->
+        <div class="px-6 pb-4 pt-3 bg-primary">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 -mt-12 sm:-mt-14 rounded-2xl overflow-hidden border-4 border-white dark:border-gray-900 bg-secondary shadow-lg shrink-0 flex items-center justify-center relative z-20">
+                        @if ($studentProfile->profile_picture)
+                            <img src="{{ asset($studentProfile->profile_picture) }}" class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full font-black text-3xl flex items-center justify-center bg-secondary text-primary">
+                                {{ strtoupper(substr($studentProfile->fname, 0, 1)) }}
+                            </div>
                         @endif
-                        <span><i class="fa-solid fa-calendar text-tertiary mr-1"></i>Joined {{ $studentProfile->created_at->format('M Y') }}</span>
+                    </div>
+                    <div class="space-y-0.5">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-xl sm:text-2xl font-black text-primary leading-tight">{{ $studentProfile->fname }} {{ $studentProfile->lname }}</h1>
+                            <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase {{ $studentProfile->status === 'active' ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-600 border border-rose-500/20' }}">
+                                {{ $studentProfile->status }}
+                            </span>
+                        </div>
+                        <p class="text-xs text-secondary font-medium">{{ $studentProfile->headline ?: 'Student at ' . (app('currentTenant')->name ?? 'Academy') }}</p>
+                        <div class="flex flex-wrap items-center gap-3 text-xs text-tertiary pt-0.5 font-mono">
+                            <span><i class="fa-solid fa-envelope text-tertiary mr-1"></i>{{ $studentProfile->email }}</span>
+                            @if($studentProfile->number)
+                                <span><i class="fa-solid fa-phone text-tertiary mr-1"></i>{{ $studentProfile->number }}</span>
+                            @endif
+                            <span><i class="fa-solid fa-calendar text-tertiary mr-1"></i>Joined {{ $studentProfile->created_at->format('M Y') }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Academic Badges -->
-            <div class="flex flex-wrap gap-2 items-center">
-                <div class="px-3 py-2 bg-secondary border border-primary border-rounded text-xs">
-                    <span class="text-[10px] text-tertiary block font-bold uppercase">Class / Course</span>
-                    <strong class="text-primary">{{ $studentProfile->class->name ?? 'None' }}</strong>
-                </div>
-                <div class="px-3 py-2 bg-secondary border border-primary border-rounded text-xs">
-                    <span class="text-[10px] text-tertiary block font-bold uppercase">Subject</span>
-                    <strong class="text-primary">{{ $studentProfile->subject->name ?? 'None' }}</strong>
+                <!-- Academic Badges -->
+                <div class="flex flex-wrap gap-2 items-center">
+                    <div class="px-3 py-1.5 bg-secondary border border-primary border-rounded text-xs">
+                        <span class="text-[9px] text-tertiary block font-bold uppercase">Class / Course</span>
+                        <strong class="text-primary">{{ $studentProfile->class->name ?? 'None' }}</strong>
+                    </div>
+                    <div class="px-3 py-1.5 bg-secondary border border-primary border-rounded text-xs">
+                        <span class="text-[9px] text-tertiary block font-bold uppercase">Subject</span>
+                        <strong class="text-primary">{{ $studentProfile->subject->name ?? 'None' }}</strong>
+                    </div>
                 </div>
             </div>
         </div>

@@ -24,6 +24,8 @@ class FeePayments extends Model
         'payment_date',
         'payment_method',
         'payment_type',
+        'transaction_id',
+        'notes',
         'status',
     ];
 

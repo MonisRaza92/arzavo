@@ -166,4 +166,121 @@ class FinanceController extends Controller
 
         return view('tenant.admin.finance.reports.index', compact('stats', 'gatewayBreakdown', 'topItems', 'recentTransactions'));
     }
+
+    /**
+     * 4. Student Fee Payments & Collection Ledger.
+     */
+    public function fees(Request $request)
+    {
+        $query = \App\Models\Tenant\FeePayments::with(['student.class', 'student.subject', 'feePlan'])->latest();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('payment_method')) {
+            $query->where('payment_method', $request->payment_method);
+        }
+
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->where('transaction_id', 'like', "%{$s}%")
+                  ->orWhereHas('student', function ($sq) use ($s) {
+                      $sq->where('fname', 'like', "%{$s}%")
+                         ->orWhere('lname', 'like', "%{$s}%")
+                         ->orWhere('email', 'like', "%{$s}%");
+                  });
+            });
+        }
+
+        $feePayments = $query->paginate(20)->withQueryString();
+
+        $students = \App\Models\Tenant\User::where('role', 'student')->with(['class', 'feePlans'])->orderBy('fname')->get();
+        $classes = \App\Models\Tenant\ClassCourse::orderBy('name')->get();
+
+        $totalInvoiced = \App\Models\Tenant\FeePlans::sum('amount');
+        $totalCollected = \App\Models\Tenant\FeePayments::where('status', 'paid')->sum('amount_paid');
+        $pendingDues = max(0, $totalInvoiced - $totalCollected);
+
+        $stats = [
+            'total_invoiced' => $totalInvoiced,
+            'total_collected' => $totalCollected,
+            'pending_dues' => $pendingDues,
+            'paid_count' => \App\Models\Tenant\FeePayments::where('status', 'paid')->count(),
+            'pending_count' => \App\Models\Tenant\FeePayments::where('status', 'pending')->count(),
+            'total_students' => $students->count(),
+        ];
+
+        return view('tenant.admin.finance.fees.index', compact('feePayments', 'students', 'classes', 'stats'));
+    }
+
+    /**
+     * Record a Fee Payment (Manual, Cash, Bank, UPI).
+     */
+    public function recordFeePayment(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:users,id',
+            'amount_paid' => 'required|numeric|min:1',
+            'payment_method' => 'required|string',
+            'payment_date' => 'required|date',
+            'status' => 'required|in:paid,pending,overdue',
+            'transaction_id' => 'nullable|string|max:100',
+            'notes' => 'nullable|string|max:500',
+        ]);
+
+        $feePlan = \App\Models\Tenant\FeePlans::where('student_id', $request->student_id)->first();
+
+        \App\Models\Tenant\FeePayments::create([
+            'student_id' => $request->student_id,
+            'fee_plan_id' => $feePlan ? $feePlan->id : null,
+            'amount' => $request->amount_paid,
+            'amount_paid' => $request->amount_paid,
+            'final_amount' => $request->amount_paid,
+            'payment_date' => $request->payment_date,
+            'payment_method' => $request->payment_method,
+            'payment_type' => 'manual',
+            'transaction_id' => $request->transaction_id ?: ('FEE-' . rand(100000, 999999)),
+            'notes' => $request->notes,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('success', 'Fee payment recorded successfully.');
+    }
+
+    /**
+     * Mark or Update Fee Payment Status (e.g. from Pending to Paid with method).
+     */
+    public function updateFeeStatus(Request $request, $id)
+    {
+        $payment = \App\Models\Tenant\FeePayments::findOrFail($id);
+
+        $request->validate([
+            'status' => 'required|in:paid,pending,overdue',
+            'payment_method' => 'nullable|string',
+        ]);
+
+        $payment->status = $request->status;
+        if ($request->filled('payment_method')) {
+            $payment->payment_method = $request->payment_method;
+        }
+        if ($request->status === 'paid' && empty($payment->payment_date)) {
+            $payment->payment_date = now()->toDateString();
+        }
+        $payment->save();
+
+        return redirect()->back()->with('success', 'Fee payment status updated successfully.');
+    }
+
+    /**
+     * Delete Fee Payment Record.
+     */
+    public function deleteFeePayment($id)
+    {
+        $payment = \App\Models\Tenant\FeePayments::findOrFail($id);
+        $payment->delete();
+
+        return redirect()->back()->with('success', 'Fee payment record deleted.');
+    }
 }

@@ -93,11 +93,40 @@ class StudentsController extends Controller
         $feePlan = FeePlans::where('student_id', $user->id)->first();
         $feePayments = FeePayments::where('student_id', $user->id)->latest()->get();
 
-        $totalFee = $feePlan ? $feePlan->total_amount : 0;
-        $paidFee = $feePayments->sum('amount');
+        $totalFee = $feePlan ? $feePlan->amount : 0;
+        $paidFee = $feePayments->where('status', 'paid')->sum('amount_paid');
         $dueFee = max(0, $totalFee - $paidFee);
 
         return view('tenant.student.fees', compact('user', 'feePlan', 'feePayments', 'totalFee', 'paidFee', 'dueFee'));
+    }
+
+    public function payFeeOnline(Request $request)
+    {
+        $user = Auth::guard('tenant')->user();
+        $feePlan = FeePlans::where('student_id', $user->id)->first();
+
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+            'payment_method' => 'required|string',
+        ]);
+
+        $amount = (float) $request->amount;
+        $method = $request->payment_method;
+
+        $payment = FeePayments::create([
+            'student_id' => $user->id,
+            'fee_plan_id' => $feePlan ? $feePlan->id : null,
+            'amount' => $amount,
+            'amount_paid' => $amount,
+            'final_amount' => $amount,
+            'payment_date' => now()->toDateString(),
+            'payment_method' => $method,
+            'payment_type' => 'online',
+            'transaction_id' => 'TXN-FEE-' . strtoupper(uniqid()),
+            'status' => 'paid',
+        ]);
+
+        return redirect()->route('student.fees')->with('success', 'Fee payment of ₹' . number_format($amount, 2) . ' processed successfully! Receipt generated.');
     }
 
     public function attendance()
