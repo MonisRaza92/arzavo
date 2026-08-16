@@ -143,6 +143,10 @@ Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store
 Route::get('/item/download', [ItemAccessController::class, 'download'])->name('item.download');
 Route::get('/item/read', [ItemAccessController::class, 'read'])->name('item.read');
 
+// Academic Cascade Helper Routes
+Route::get('/academic/classes-by-category/{categoryId}', [\App\Http\Controllers\Tenant\Admin\StudentsController::class, 'getClassesByCategory'])->name('web.academic.classes-by-category');
+Route::get('/academic/subjects-by-class/{classId}', [\App\Http\Controllers\Tenant\Admin\StudentsController::class, 'getSubjectsByClass'])->name('web.academic.subjects-by-class');
+
 Route::get('/{slug}', function ($slug) {
     return app(ThemePageController::class)->page($slug);
 })->where('slug', '[A-Za-z0-9-_]+')->name('tenant.pages');
@@ -160,6 +164,7 @@ Route::middleware('auth:tenant')->group(function () {
         Route::get('/inquiries', [UserController::class, 'inquiries'])->name('inquiries');
         Route::get('/profile', [UserController::class, 'profile'])->name('profile');
         Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+        Route::post('/apply-admission', [UserController::class, 'applyAdmission'])->name('apply-admission');
     });
 
     // Students Routes

@@ -103,12 +103,20 @@
                         <!-- Academics -->
                         <td class="p-3.5 text-left text-xs student-academics">
                             <div class="space-y-0.5">
-                                <div class="font-bold text-primary">
+                                <div class="font-bold text-primary flex items-center gap-1.5">
                                     {{ $student->class->name ?? 'No Class Assigned' }}
                                 </div>
-                                <div class="text-[11px] text-secondary">
-                                    {{ $student->subject->name ?? 'No Subject Assigned' }}
+                                <div class="text-[10px] text-secondary flex items-center gap-1.5">
+                                    <span class="px-1.5 py-0.2 rounded bg-secondary text-primary border border-primary text-[9px] font-bold">
+                                        {{ $student->academicCategory->name ?? 'General' }}
+                                    </span>
+                                    <span>{{ $student->subject->name ?? 'All Subjects' }}</span>
                                 </div>
+                                @if($student->aadhaar_number)
+                                    <div class="text-[9px] text-tertiary font-mono">
+                                        <i class="fa-solid fa-id-card text-tertiary mr-0.5"></i> {{ $student->aadhaar_number }}
+                                    </div>
+                                @endif
                             </div>
                         </td>
 

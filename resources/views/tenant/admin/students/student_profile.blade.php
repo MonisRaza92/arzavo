@@ -81,8 +81,12 @@
                     </div>
                 </div>
 
-                <!-- Academic Badges -->
+                <!-- Academic Badges (Category -> Class -> Subject) -->
                 <div class="flex flex-wrap gap-2 items-center">
+                    <div class="px-3 py-1.5 bg-secondary border border-primary border-rounded text-xs">
+                        <span class="text-[9px] text-tertiary block font-bold uppercase">Category</span>
+                        <strong class="text-primary">{{ $studentProfile->academicCategory->name ?? 'General' }}</strong>
+                    </div>
                     <div class="px-3 py-1.5 bg-secondary border border-primary border-rounded text-xs">
                         <span class="text-[9px] text-tertiary block font-bold uppercase">Class / Course</span>
                         <strong class="text-primary">{{ $studentProfile->class->name ?? 'None' }}</strong>
@@ -99,7 +103,7 @@
         <div class="border-top px-6 bg-primary">
             <div class="flex whitespace-nowrap overflow-x-auto gap-2 py-3">
                 <button onclick="switchTab('overview')" id="tab-btn-overview" class="tab-btn px-4 py-2 border-rounded text-xs font-bold bg-invert text-invert transition">
-                    <i class="fa-solid fa-gauge mr-1.5"></i> Academic & Fee Overview
+                    <i class="fa-solid fa-gauge mr-1.5"></i> Academic & KYC Overview
                 </button>
                 <button onclick="switchTab('orders')" id="tab-btn-orders" class="tab-btn px-4 py-2 border-rounded text-xs font-bold bg-secondary text-primary border border-primary hover:bg-hover-secondary transition">
                     <i class="fa-solid fa-bag-shopping mr-1.5"></i> Digital Orders & Purchases ({{ $studentProfile->orders->count() }})
@@ -123,15 +127,15 @@
     <div id="tab-content-overview" class="tab-content space-y-4">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
             
-            <!-- Left: Personal & Academic Details -->
+            <!-- Left: Personal & Academic Details + KYC Documents -->
             <div class="lg:col-span-7 space-y-4">
                 <div class="p-5 bg-primary border-primary border-rounded space-y-4">
                     <div class="flex justify-between items-center border-bottom pb-3">
                         <h3 class="font-bold text-primary text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-id-card text-secondary"></i> Student Personal & Contact Information
+                            <i class="fa-solid fa-id-card text-secondary"></i> Student Personal, Academic & KYC Details
                         </h3>
                         <button onclick="openModal('profileEditModal')" class="text-xs font-bold text-indigo-600 hover:underline">
-                            Edit
+                            Edit Info
                         </button>
                     </div>
 
@@ -153,6 +157,22 @@
                             <span class="text-primary font-mono font-medium">{{ $studentProfile->number ?: 'Not provided' }}</span>
                         </div>
                         <div>
+                            <span class="text-[11px] text-tertiary block font-bold uppercase">Academic Category</span>
+                            <span class="text-primary font-semibold">{{ $studentProfile->academicCategory->name ?? 'Not Assigned' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-[11px] text-tertiary block font-bold uppercase">Class & Subject</span>
+                            <span class="text-primary font-semibold">{{ $studentProfile->class->name ?? 'No Class' }} • {{ $studentProfile->subject->name ?? 'General' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-[11px] text-tertiary block font-bold uppercase">Aadhaar Card Number</span>
+                            <span class="text-primary font-mono font-bold">{{ $studentProfile->aadhaar_number ?: 'Not provided' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-[11px] text-tertiary block font-bold uppercase">Previous School / College</span>
+                            <span class="text-primary font-medium">{{ $studentProfile->previous_school ?: 'N/A' }}</span>
+                        </div>
+                        <div>
                             <span class="text-[11px] text-tertiary block font-bold uppercase">Date of Birth</span>
                             <span class="text-primary font-medium">{{ $studentProfile->dob ? \Carbon\Carbon::parse($studentProfile->dob)->format('M d, Y') : 'Not set' }}</span>
                         </div>
@@ -164,12 +184,31 @@
                             <span class="text-[11px] text-tertiary block font-bold uppercase">Street Address / Location</span>
                             <span class="text-primary font-medium">{{ $studentProfile->address ?: 'N/A' }}{{ $studentProfile->city ? ', '.$studentProfile->city : '' }}{{ $studentProfile->state ? ', '.$studentProfile->state : '' }}{{ $studentProfile->pincode ? ' - '.$studentProfile->pincode : '' }}</span>
                         </div>
-                        @if($studentProfile->about)
-                            <div class="sm:col-span-2">
-                                <span class="text-[11px] text-tertiary block font-bold uppercase">About / Student Notes</span>
-                                <p class="text-secondary text-xs leading-relaxed mt-0.5 bg-secondary/30 p-2.5 rounded-lg border border-primary">{{ $studentProfile->about }}</p>
-                            </div>
-                        @endif
+                    </div>
+
+                    <!-- KYC DOCUMENTS ATTACHMENTS -->
+                    <div class="border-top pt-3 space-y-2">
+                        <h4 class="font-bold text-primary text-xs uppercase tracking-wider">Verification Documents Attached</h4>
+                        <div class="flex flex-wrap gap-2">
+                            @if($studentProfile->aadhaar_front)
+                                <a href="{{ asset('storage/' . $studentProfile->aadhaar_front) }}" target="_blank" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 hover:bg-indigo-500/20 inline-flex items-center gap-1.5 transition">
+                                    <i class="fa-solid fa-id-card"></i> Aadhaar Front <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                </a>
+                            @endif
+                            @if($studentProfile->aadhaar_back)
+                                <a href="{{ asset('storage/' . $studentProfile->aadhaar_back) }}" target="_blank" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 hover:bg-indigo-500/20 inline-flex items-center gap-1.5 transition">
+                                    <i class="fa-solid fa-id-card"></i> Aadhaar Back <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                </a>
+                            @endif
+                            @if($studentProfile->previous_marksheet)
+                                <a href="{{ asset('storage/' . $studentProfile->previous_marksheet) }}" target="_blank" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-500/10 text-purple-600 border border-purple-500/20 hover:bg-purple-500/20 inline-flex items-center gap-1.5 transition">
+                                    <i class="fa-solid fa-file-pdf"></i> Marksheet / Certificate <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                </a>
+                            @endif
+                            @if(!$studentProfile->aadhaar_front && !$studentProfile->previous_marksheet)
+                                <span class="text-tertiary text-xs">No KYC documents uploaded yet.</span>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -505,89 +544,132 @@
     <div class="bg-primary border border-primary border-rounded w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
         <div class="flex justify-between items-center p-4 border-bottom sticky top-0 bg-primary z-10">
             <h3 class="text-base font-bold text-primary flex items-center gap-2">
-                <i class="fa-solid fa-pen-to-square"></i> Edit Student Profile Info
+                <i class="fa-solid fa-pen-to-square"></i> Edit Student Profile & KYC Info
             </h3>
             <button type="button" onclick="closeModal('profileEditModal')" class="text-secondary hover:text-primary transition text-sm">
                 <i class="fa-solid fa-xmark text-base"></i>
             </button>
         </div>
 
-        <form action="{{ route('admin.admin-student-profile-info-update', $studentProfile->id) }}" method="POST" class="p-5 space-y-4 text-xs">
+        <form action="{{ route('admin.admin-student-profile-info-update', $studentProfile->id) }}" method="POST" enctype="multipart/form-data" class="p-5 space-y-4 text-xs">
             @csrf
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                    <label class="block font-bold text-secondary mb-1">First Name *</label>
-                    <input type="text" name="fname" value="{{ $studentProfile->fname }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Last Name *</label>
-                    <input type="text" name="lname" value="{{ $studentProfile->lname }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Username *</label>
-                    <input type="text" name="username" value="{{ $studentProfile->username }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Email Address *</label>
-                    <input type="email" name="email" value="{{ $studentProfile->email }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Phone Number *</label>
-                    <input type="text" name="number" value="{{ $studentProfile->number }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Date of Birth</label>
-                    <input type="date" name="dob" value="{{ $studentProfile->dob }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Class / Course</label>
-                    <select name="class_id" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                        <option value="">-- Select Class --</option>
-                        @foreach($classes as $cls)
-                            <option value="{{ $cls->id }}" {{ $studentProfile->class_id == $cls->id ? 'selected' : '' }}>{{ $cls->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Subject</label>
-                    <select name="subject_id" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                        <option value="">-- Select Subject --</option>
-                        @foreach($subjects as $sub)
-                            <option value="{{ $sub->id }}" {{ $studentProfile->subject_id == $sub->id ? 'selected' : '' }}>{{ $sub->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="sm:col-span-2">
-                    <label class="block font-bold text-secondary mb-1">Headline / Title</label>
-                    <input type="text" name="headline" value="{{ $studentProfile->headline }}" placeholder="e.g. Science Batch Aspirant" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div class="sm:col-span-2">
-                    <label class="block font-bold text-secondary mb-1">Street Address</label>
-                    <input type="text" name="address" value="{{ $studentProfile->address }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">City</label>
-                    <input type="text" name="city" value="{{ $studentProfile->city }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">State</label>
-                    <input type="text" name="state" value="{{ $studentProfile->state }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Country</label>
-                    <input type="text" name="country" value="{{ $studentProfile->country ?: 'India' }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div>
-                    <label class="block font-bold text-secondary mb-1">Pincode</label>
-                    <input type="text" name="pincode" value="{{ $studentProfile->pincode }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
-                </div>
-                <div class="sm:col-span-2">
-                    <label class="block font-bold text-secondary mb-1">About / Bio Notes</label>
-                    <textarea name="about" rows="2" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">{{ $studentProfile->about }}</textarea>
+            
+            <!-- ACADEMIC ASSIGNMENT -->
+            <div>
+                <h4 class="font-bold text-primary uppercase tracking-wider text-[11px] mb-2 pb-1 border-bottom">Academic Assignment</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Academic Category</label>
+                        <select id="editCategorySelect" name="academic_category_id" onchange="loadEditClasses(this.value)" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                            <option value="">-- Choose Category --</option>
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->id }}" {{ $studentProfile->academic_category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Class / Course</label>
+                        <select id="editClassSelect" name="class_id" onchange="loadEditSubjects(this.value)" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                            <option value="">-- Choose Class --</option>
+                            @foreach($classes as $cls)
+                                <option value="{{ $cls->id }}" {{ $studentProfile->class_id == $cls->id ? 'selected' : '' }}>{{ $cls->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Subject</label>
+                        <select id="editSubjectSelect" name="subject_id" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                            <option value="">-- Choose Subject --</option>
+                            @foreach($subjects as $sub)
+                                <option value="{{ $sub->id }}" {{ $studentProfile->subject_id == $sub->id ? 'selected' : '' }}>{{ $sub->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex justify-end gap-2 pt-3 border-top">
+            <!-- PERSONAL INFO -->
+            <div>
+                <h4 class="font-bold text-primary uppercase tracking-wider text-[11px] mb-2 pb-1 border-bottom">Personal & Contact</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">First Name *</label>
+                        <input type="text" name="fname" value="{{ $studentProfile->fname }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Last Name *</label>
+                        <input type="text" name="lname" value="{{ $studentProfile->lname }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Username *</label>
+                        <input type="text" name="username" value="{{ $studentProfile->username }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Email Address *</label>
+                        <input type="email" name="email" value="{{ $studentProfile->email }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Phone Number *</label>
+                        <input type="text" name="number" value="{{ $studentProfile->number }}" required class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Date of Birth</label>
+                        <input type="date" name="dob" value="{{ $studentProfile->dob }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block font-bold text-secondary mb-1">Headline / Bio</label>
+                        <input type="text" name="headline" value="{{ $studentProfile->headline }}" placeholder="e.g. Science Batch Aspirant" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                </div>
+            </div>
+
+            <!-- KYC & DOCUMENTS -->
+            <div>
+                <h4 class="font-bold text-primary uppercase tracking-wider text-[11px] mb-2 pb-1 border-bottom">KYC & Verification Documents</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Aadhaar Card Number</label>
+                        <input type="text" name="aadhaar_number" value="{{ $studentProfile->aadhaar_number }}" placeholder="12-digit Aadhaar" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Previous School / College</label>
+                        <input type="text" name="previous_school" value="{{ $studentProfile->previous_school }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Update Aadhaar Front (Image/PDF)</label>
+                        <input type="file" name="aadhaar_front" accept="image/*,application/pdf" class="w-full p-1.5 border-primary border-rounded bg-primary text-primary text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">Update Aadhaar Back (Image/PDF)</label>
+                        <input type="file" name="aadhaar_back" accept="image/*,application/pdf" class="w-full p-1.5 border-primary border-rounded bg-primary text-primary text-xs">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block font-bold text-secondary mb-1">Update Marksheet / Certificate (Image/PDF)</label>
+                        <input type="file" name="previous_marksheet" accept="image/*,application/pdf" class="w-full p-1.5 border-primary border-rounded bg-primary text-primary text-xs">
+                    </div>
+                </div>
+            </div>
+
+            <!-- POSTAL ADDRESS -->
+            <div>
+                <h4 class="font-bold text-primary uppercase tracking-wider text-[11px] mb-2 pb-1 border-bottom">Address Details</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="sm:col-span-2">
+                        <label class="block font-bold text-secondary mb-1">Street Address</label>
+                        <input type="text" name="address" value="{{ $studentProfile->address }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">City</label>
+                        <input type="text" name="city" value="{{ $studentProfile->city }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-secondary mb-1">State</label>
+                        <input type="text" name="state" value="{{ $studentProfile->state }}" class="w-full p-2 border-primary border-rounded bg-primary text-primary text-xs input-focus">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-3 border-top sticky bottom-0 bg-primary z-10 py-2">
                 <button type="button" onclick="closeModal('profileEditModal')" class="px-4 py-2 bg-secondary text-primary border border-primary border-rounded font-bold hover:bg-hover-secondary transition">
                     Cancel
                 </button>
@@ -724,14 +806,12 @@
 
 <script>
 function switchTab(tabId) {
-    // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('bg-invert', 'text-invert');
         btn.classList.add('bg-secondary', 'text-primary', 'border', 'border-primary');
     });
 
-    // Show active tab
     const targetContent = document.getElementById('tab-content-' + tabId);
     const targetBtn = document.getElementById('tab-btn-' + tabId);
 
@@ -750,6 +830,58 @@ function openModal(modalId) {
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) modal.classList.add('hidden');
+}
+
+function loadEditClasses(categoryId) {
+    const classSelect = document.getElementById('editClassSelect');
+    const subjectSelect = document.getElementById('editSubjectSelect');
+    classSelect.innerHTML = '<option value="">Loading classes...</option>';
+    subjectSelect.innerHTML = '<option value="">-- Choose Subject --</option>';
+
+    if (!categoryId) {
+        classSelect.innerHTML = '<option value="">-- Choose Class --</option>';
+        return;
+    }
+
+    fetch('/academic/classes-by-category/' + categoryId)
+        .then(res => res.json())
+        .then(data => {
+            classSelect.innerHTML = '<option value="">-- Choose Class --</option>';
+            data.forEach(cls => {
+                const opt = document.createElement('option');
+                opt.value = cls.id;
+                opt.textContent = cls.name;
+                classSelect.appendChild(opt);
+            });
+        })
+        .catch(err => {
+            classSelect.innerHTML = '<option value="">-- Choose Class --</option>';
+        });
+}
+
+function loadEditSubjects(classId) {
+    const subjectSelect = document.getElementById('editSubjectSelect');
+    subjectSelect.innerHTML = '<option value="">Loading subjects...</option>';
+
+    if (!classId) {
+        subjectSelect.innerHTML = '<option value="">-- Choose Subject --</option>';
+        return;
+    }
+
+    fetch('/academic/subjects-by-class/' + classId)
+        .then(res => res.json())
+        .then(data => {
+            subjectSelect.innerHTML = '<option value="">-- Choose Subject --</option>';
+            data.forEach(sub => {
+                const opt = document.createElement('option');
+                opt.value = sub.id;
+                opt.textContent = sub.name;
+                subjectSelect.appendChild(opt);
+            });
+        })
+        .catch(err => {
+            subjectSelect.innerHTML = '<option value="">-- Choose Subject --</option>';
+        });
 }
 </script>
 

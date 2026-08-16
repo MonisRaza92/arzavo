@@ -42,6 +42,11 @@ Route::middleware('auth:tenant')->group(function () {
         // Admin Students Routes
         Route::get('/students', [AdminStudentsController::class, 'adminStudents'])->name('admin-students');
         Route::get('/students/admissions', [AdminStudentsController::class, 'admissions'])->name('students.admissions');
+        Route::post('/students/admissions/store', [AdminStudentsController::class, 'admissionsStore'])->name('students.admissions.store');
+        Route::post('/students/admissions/{id}/approve', [AdminStudentsController::class, 'admissionsApprove'])->name('students.admissions.approve');
+        Route::post('/students/admissions/{id}/reject', [AdminStudentsController::class, 'admissionsReject'])->name('students.admissions.reject');
+        Route::get('/academic/classes-by-category/{categoryId}', [AdminStudentsController::class, 'getClassesByCategory'])->name('academic.classes-by-category');
+        Route::get('/academic/subjects-by-class/{classId}', [AdminStudentsController::class, 'getSubjectsByClass'])->name('academic.subjects-by-class');
         Route::get('/students/attendance', [AttendanceController::class, 'index'])->name('students.attendance');
         Route::get('/students/attendance/mark', [AttendanceController::class, 'markForm'])->name('students.attendance.mark');
         Route::post('/students/attendance/save', [AttendanceController::class, 'save'])->name('students.attendance.save');

@@ -30,8 +30,14 @@ class User extends Authenticatable
         'number',
         'email',
         'dob',
+        'academic_category_id',
         'class_id',
         'subject_id',
+        'aadhaar_number',
+        'aadhaar_front',
+        'aadhaar_back',
+        'previous_marksheet',
+        'previous_school',
         'address',
         'city',
         'state',
@@ -41,6 +47,8 @@ class User extends Authenticatable
         'password',
         'role',
         'status',
+        'admission_status',
+        'pending_profile_updates',
         'last_login',
         'email_verified_at',
         'remember_token',
@@ -146,6 +154,21 @@ class User extends Authenticatable
     public function entitlements()
     {
         return $this->hasMany(UserEntitlement::class, 'user_id');
+    }
+
+    public function academicCategory()
+    {
+        return $this->belongsTo(AcademicCategory::class, 'academic_category_id');
+    }
+
+    public function admissions()
+    {
+        return $this->hasMany(Admission::class, 'user_id');
+    }
+
+    public function latestAdmission()
+    {
+        return $this->hasOne(Admission::class, 'user_id')->latestOfMany();
     }
 }
 
