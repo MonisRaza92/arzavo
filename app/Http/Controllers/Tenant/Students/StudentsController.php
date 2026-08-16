@@ -10,6 +10,10 @@ use App\Models\Tenant\Course;
 use App\Models\Tenant\FeePlans;
 use App\Models\Tenant\FeePayments;
 use App\Models\Tenant\Blog;
+use App\Models\Tenant\Order;
+use App\Models\Tenant\UserEntitlement;
+use App\Models\Tenant\StudentAttendance;
+use App\Models\Tenant\Settings;
 
 class StudentsController extends Controller
 {
@@ -17,65 +21,78 @@ class StudentsController extends Controller
     {
         $user = Auth::guard('tenant')->user();
 
-        // Enrolled courses / Fee plans details
+        // Academic details
+        $category = $user->academicCategory;
         $classCourse = $user->class;
         $subject = $user->subject;
 
+        // Real Fee structure
         $feePlan = FeePlans::where('student_id', $user->id)->first();
-        $feePayments = FeePayments::where('student_id', $user->id)->get();
+        $feePayments = FeePayments::where('student_id', $user->id)->latest()->get();
 
-        $totalFee = $feePlan ? $feePlan->amount : 0;
-        $paidFee = $feePayments->where('status', 'paid')->sum('amount_paid');
+        $totalFee = $feePlan ? (float) $feePlan->amount : 0;
+        $paidFee = (float) $feePayments->where('status', 'paid')->sum('amount_paid');
         $dueFee = max(0, $totalFee - $paidFee);
 
-        // Fetch actual enrolled courses count
-        $enrolledCoursesCount = $user->enrolledCourses()->count();
+        // Real Enrolled Courses
+        $enrolledCourses = $user->enrolledCourses()->with(['lessons', 'author'])->get();
+        $enrolledCoursesCount = $enrolledCourses->count();
 
-        // Calculate dynamic properties based on user record to avoid static placeholders
-        $studentLogs = \App\Models\Tenant\StudentAttendance::where('student_id', $user->id)->get();
+        // Real Purchased Books & Entitlements
+        $purchasedBooks = UserEntitlement::with('entitable')
+            ->where('user_id', $user->id)
+            ->where('entitable_type', 'like', '%Book%')
+            ->get();
+
+        // Real Recent Orders
+        $recentOrders = Order::with('items')
+            ->where(function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->orWhere('customer_email', $user->email);
+            })
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // Real Attendance logs
+        $studentLogs = StudentAttendance::where('student_id', $user->id)->get();
         $totalDays = $studentLogs->count();
         if ($totalDays > 0) {
-            $attendanceRate = round((($studentLogs->where('status', 'present')->count() + ($studentLogs->where('status', 'late')->count() * 0.5) + ($studentLogs->where('status', 'half_day')->count() * 0.5)) / $totalDays) * 100, 1);
+            $presentCount = $studentLogs->where('status', 'present')->count();
+            $lateCount = $studentLogs->where('status', 'late')->count();
+            $halfCount = $studentLogs->where('status', 'half_day')->count();
+            $attendanceRate = round((($presentCount + ($lateCount * 0.5) + ($halfCount * 0.5)) / $totalDays) * 100, 1);
         } else {
-            $attendanceRate = 85 + ($user->id % 15);
-        }
-        $pendingAssignments = $user->id % 3;
-
-        // Fetch first course and first lesson to show real resume learning
-        $lastLesson = null;
-        $firstCourse = $user->enrolledCourses()->first();
-        if ($firstCourse) {
-            try {
-                $lastLesson = \App\Models\Tenant\CourseLesson::where('course_id', $firstCourse->id)->first();
-            } catch (\Exception $e) {
-                $lastLesson = null;
-            }
+            $attendanceRate = 100;
         }
 
-        // Fetch announcements from blog
-        $announcements = Blog::latest()->take(3)->get();
+        // Active Gateways & Tenant Settings
+        $tenantSettings = Settings::pluck('value', 'key')->toArray();
 
         return view('tenant.student.dashboard', compact(
             'user',
+            'category',
             'classCourse',
             'subject',
             'feePlan',
+            'feePayments',
             'totalFee',
             'paidFee',
             'dueFee',
+            'enrolledCourses',
             'enrolledCoursesCount',
+            'purchasedBooks',
+            'recentOrders',
             'attendanceRate',
-            'pendingAssignments',
-            'lastLesson',
-            'announcements'
+            'totalDays',
+            'tenantSettings'
         ));
     }
 
     public function courses()
     {
         $user = Auth::guard('tenant')->user();
-        // Fetch actual enrolled courses for this student
-        $courses = $user->enrolledCourses()->latest()->paginate(9);
+        $courses = $user->enrolledCourses()->with(['lessons', 'author'])->latest()->paginate(9);
 
         return view('tenant.student.courses', compact('user', 'courses'));
     }
@@ -83,7 +100,6 @@ class StudentsController extends Controller
     public function assignments()
     {
         $user = Auth::guard('tenant')->user();
-
         return view('tenant.student.assignments', compact('user'));
     }
 
@@ -93,11 +109,13 @@ class StudentsController extends Controller
         $feePlan = FeePlans::where('student_id', $user->id)->first();
         $feePayments = FeePayments::where('student_id', $user->id)->latest()->get();
 
-        $totalFee = $feePlan ? $feePlan->amount : 0;
-        $paidFee = $feePayments->where('status', 'paid')->sum('amount_paid');
+        $totalFee = $feePlan ? (float) $feePlan->amount : 0;
+        $paidFee = (float) $feePayments->where('status', 'paid')->sum('amount_paid');
         $dueFee = max(0, $totalFee - $paidFee);
 
-        return view('tenant.student.fees', compact('user', 'feePlan', 'feePayments', 'totalFee', 'paidFee', 'dueFee'));
+        $tenantSettings = Settings::pluck('value', 'key')->toArray();
+
+        return view('tenant.student.fees', compact('user', 'feePlan', 'feePayments', 'totalFee', 'paidFee', 'dueFee', 'tenantSettings'));
     }
 
     public function payFeeOnline(Request $request)
@@ -107,33 +125,78 @@ class StudentsController extends Controller
 
         $request->validate([
             'amount' => 'required|numeric|min:1',
-            'payment_method' => 'required|string',
+            'payment_gateway' => 'required|string',
+            'utr_number' => 'nullable|string|max:100',
+            'payment_proof' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
         $amount = (float) $request->amount;
-        $method = $request->payment_method;
+        $gateway = $request->payment_gateway;
 
-        $payment = FeePayments::create([
-            'student_id' => $user->id,
-            'fee_plan_id' => $feePlan ? $feePlan->id : null,
-            'amount' => $amount,
-            'amount_paid' => $amount,
-            'final_amount' => $amount,
-            'payment_date' => now()->toDateString(),
-            'payment_method' => $method,
-            'payment_type' => 'online',
-            'transaction_id' => 'TXN-FEE-' . strtoupper(uniqid()),
-            'status' => 'paid',
-        ]);
+        $proofPath = null;
+        if ($request->hasFile('payment_proof')) {
+            $proofPath = $request->file('payment_proof')->store('students/fee_proofs', 'public');
+        }
 
-        return redirect()->route('student.fees')->with('success', 'Fee payment of ₹' . number_format($amount, 2) . ' processed successfully! Receipt generated.');
+        if (in_array($gateway, ['manual_bank', 'bank_transfer', 'upi'])) {
+            // Manual Bank / UPI submission -> Status is Pending Admin Verification
+            FeePayments::create([
+                'student_id' => $user->id,
+                'fee_plan_id' => $feePlan ? $feePlan->id : null,
+                'amount' => $amount,
+                'amount_paid' => $amount,
+                'final_amount' => $amount,
+                'payment_date' => now()->toDateString(),
+                'payment_method' => 'bank_transfer',
+                'payment_type' => 'manual',
+                'transaction_id' => $request->utr_number ? ('UTR-' . $request->utr_number) : ('MANUAL-' . rand(100000, 999999)),
+                'notes' => 'Submitted by student via Bank/UPI transfer. Ref: ' . ($request->utr_number ?: 'N/A') . ($proofPath ? ' (Proof: ' . $proofPath . ')' : ''),
+                'status' => 'pending', // Pending Admin Verification
+            ]);
+
+            return redirect()->route('student.fees')->with('success', 'Fee payment of ₹' . number_format($amount, 2) . ' submitted via Bank Transfer! Status is pending admin verification.');
+        } elseif (in_array($gateway, ['cash', 'cod'])) {
+            // Cash counter payment request -> Status is Pending Admin Confirmation
+            FeePayments::create([
+                'student_id' => $user->id,
+                'fee_plan_id' => $feePlan ? $feePlan->id : null,
+                'amount' => $amount,
+                'amount_paid' => $amount,
+                'final_amount' => $amount,
+                'payment_date' => now()->toDateString(),
+                'payment_method' => 'cash',
+                'payment_type' => 'manual',
+                'transaction_id' => 'CASH-REQ-' . rand(100000, 999999),
+                'notes' => 'Student requested Cash counter payment at academy reception.',
+                'status' => 'pending', // Pending Admin Confirmation
+            ]);
+
+            return redirect()->route('student.fees')->with('success', 'Cash payment request of ₹' . number_format($amount, 2) . ' submitted! Please deposit the amount at the academy desk to verify receipt.');
+        } else {
+            // Online Gateway (Razorpay, PayU, Paytm, Cashfree) -> Processed as Paid
+            FeePayments::create([
+                'student_id' => $user->id,
+                'fee_plan_id' => $feePlan ? $feePlan->id : null,
+                'amount' => $amount,
+                'amount_paid' => $amount,
+                'final_amount' => $amount,
+                'payment_date' => now()->toDateString(),
+                'payment_method' => $gateway,
+                'payment_type' => 'online',
+                'transaction_id' => 'TXN-' . strtoupper($gateway) . '-' . rand(100000, 999999),
+                'notes' => 'Instant online payment via ' . ucfirst($gateway),
+                'status' => 'paid',
+            ]);
+
+            return redirect()->route('student.fees')->with('success', 'Fee installment of ₹' . number_format($amount, 2) . ' paid successfully via ' . ucfirst($gateway) . '! Instant digital receipt generated.');
+        }
     }
 
     public function attendance()
     {
         $user = Auth::guard('tenant')->user();
 
-        $logs = \App\Models\Tenant\StudentAttendance::where('student_id', $user->id)
+        $logs = StudentAttendance::where('student_id', $user->id)
             ->with(['classCourse', 'subject'])
             ->orderBy('date', 'desc')
             ->get();
@@ -144,12 +207,7 @@ class StudentsController extends Controller
         $lateDays = $logs->where('status', 'late')->count();
         $halfDayDays = $logs->where('status', 'half_day')->count();
 
-        $attendanceRate = 0;
-        if ($totalDays > 0) {
-            $attendanceRate = round((($presentDays + ($lateDays * 0.5) + ($halfDayDays * 0.5)) / $totalDays) * 100, 1);
-        } else {
-            $attendanceRate = 85 + ($user->id % 15);
-        }
+        $attendanceRate = $totalDays > 0 ? round((($presentDays + ($lateDays * 0.5) + ($halfDayDays * 0.5)) / $totalDays) * 100, 1) : 100;
 
         return view('tenant.student.attendance', compact(
             'user',
@@ -166,17 +224,17 @@ class StudentsController extends Controller
     public function certificates()
     {
         $user = Auth::guard('tenant')->user();
-
         return view('tenant.student.certificates', compact('user'));
     }
 
     public function profile()
     {
         $user = Auth::guard('tenant')->user();
+        $category = $user->academicCategory;
         $classCourse = $user->class;
         $subject = $user->subject;
 
-        return view('tenant.student.profile', compact('user', 'classCourse', 'subject'));
+        return view('tenant.student.profile', compact('user', 'category', 'classCourse', 'subject'));
     }
 
     public function updateProfile(Request $request)
@@ -187,21 +245,18 @@ class StudentsController extends Controller
             'fname' => 'required|string|max:255',
             'lname' => 'required|string|max:255',
             'number' => 'nullable|string|max:20',
+            'dob' => 'nullable|date',
             'address' => 'nullable|string|max:500',
             'city' => 'nullable|string|max:100',
             'state' => 'nullable|string|max:100',
             'pincode' => 'nullable|string|max:20',
-            'password' => 'nullable|string|min:8|confirmed',
+            'about' => 'nullable|string|max:1000',
         ]);
 
-        $data = $request->only(['fname', 'lname', 'number', 'address', 'city', 'state', 'pincode']);
+        $user->update($request->only([
+            'fname', 'lname', 'number', 'dob', 'address', 'city', 'state', 'pincode', 'about'
+        ]));
 
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $user->update($data);
-
-        return back()->with('success', 'Profile updated successfully!');
+        return back()->with('success', 'Profile information updated successfully.');
     }
 }
