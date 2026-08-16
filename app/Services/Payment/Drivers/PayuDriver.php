@@ -50,8 +50,8 @@ class PayuDriver implements PaymentDriverInterface
         $hashString = "{$this->key}|{$txnid}|{$amount}|{$productinfo}|{$firstname}|{$email}|{$udf1}|{$udf2}|{$udf3}|{$udf4}|{$udf5}||||||{$this->salt}";
         $hash = strtolower(hash('sha512', $hashString));
 
-        $surl = route('checkout.success', $order->order_number);
-        $furl = route('checkout.show') . '?order_id=' . $order->order_number . '&status=failed';
+        $surl = route('checkout.payu.success');
+        $furl = route('checkout.payu.failure');
 
         return [
             'gateway' => 'payu',

@@ -131,6 +131,10 @@ Route::post('/newsletter-submit', [ThemePageController::class, 'newsletterSubmit
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.submit');
 Route::post('/checkout/razorpay/verify', [CheckoutController::class, 'verifyRazorpay'])->name('checkout.razorpay.verify');
+Route::match(['get', 'post'], '/checkout/payu/success', [CheckoutController::class, 'payuSuccess'])->name('checkout.payu.success');
+Route::match(['get', 'post'], '/checkout/payu/failure', [CheckoutController::class, 'payuFailure'])->name('checkout.payu.failure');
+Route::match(['get', 'post'], '/checkout/paytm/callback', [CheckoutController::class, 'paytmCallback'])->name('checkout.paytm.callback');
+Route::get('/checkout/cashfree/verify/{orderNumber}', [CheckoutController::class, 'verifyCashfree'])->name('checkout.cashfree.verify');
 Route::get('/checkout/success/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
 Route::match(['get', 'post'], '/api/v1/payments/webhook/{gateway?}', [\App\Http\Controllers\Tenant\Website\PaymentWebhookController::class, 'handle'])->name('tenant.payment.webhook');
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');

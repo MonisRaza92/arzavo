@@ -34,7 +34,7 @@ class CashfreeDriver implements PaymentDriverInterface
 
     public function processPayment(Order $order, array $payload): array
     {
-        $returnUrl = route('checkout.success', $order->order_number) . '?order_id={order_id}';
+        $returnUrl = route('checkout.cashfree.verify', $order->order_number) . '?order_id={order_id}';
 
         try {
             $response = Http::withHeaders([

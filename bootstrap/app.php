@@ -26,6 +26,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/payu/webhook',
             'payu/webhook',
             'api/v1/payments/webhook*',
+            'checkout/payu/*',
+            'checkout/paytm/*',
+            'checkout/cashfree/*',
         ]);
 
         $middleware->alias([

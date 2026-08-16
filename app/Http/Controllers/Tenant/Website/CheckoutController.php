@@ -13,6 +13,7 @@ use App\Models\Tenant\Transaction;
 use App\Models\Tenant\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
@@ -153,7 +154,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Verify Razorpay Client Signature and confirm payment.
+     * 1. Verify Razorpay Payment.
      */
     public function verifyRazorpay(Request $request)
     {
@@ -182,7 +183,6 @@ class CheckoutController extends Controller
             Log::warning("Razorpay signature mismatch for Order #{$orderNumber}");
         }
 
-        // Mark order as paid
         $order->update(['payment_status' => 'paid']);
 
         Transaction::updateOrCreate(
@@ -201,10 +201,170 @@ class CheckoutController extends Controller
             ]
         );
 
-        // Grant digital access
         CheckoutService::fulfillOrder($order);
 
         return redirect()->route('checkout.success', $order->order_number)->with('success', 'Payment successful!');
+    }
+
+    /**
+     * 2. PayU Return Callback.
+     */
+    public function payuSuccess(Request $request)
+    {
+        $status = $request->input('status');
+        $txnid = $request->input('txnid');
+        $amount = $request->input('amount');
+        $key = $request->input('key');
+        $hash = strtolower($request->input('hash', ''));
+        $mihpayid = $request->input('mihpayid');
+
+        $order = Order::where('order_number', $txnid)->firstOrFail();
+
+        // Calculate PayU hash
+        $salt = Settings::get('payu_salt', '');
+        $udf1 = $request->input('udf1', '');
+        $udf2 = $request->input('udf2', '');
+        $udf3 = $request->input('udf3', '');
+        $productinfo = $request->input('productinfo', '');
+        $firstname = $request->input('firstname', '');
+        $email = $request->input('email', '');
+
+        $hashString = "{$salt}|{$status}||||||||{$udf3}|{$udf2}|{$udf1}|{$email}|{$firstname}|{$productinfo}|{$amount}|{$txnid}|{$key}";
+        $calculatedHash = strtolower(hash('sha512', $hashString));
+
+        if ($status === 'success' && hash_equals($calculatedHash, $hash)) {
+            $order->update(['payment_status' => 'paid']);
+
+            Transaction::updateOrCreate(
+                [
+                    'order_id' => $order->id,
+                    'gateway' => 'payu',
+                    'transaction_id' => $mihpayid,
+                ],
+                [
+                    'reference_number' => $request->input('bank_ref_num', $txnid),
+                    'type' => 'charge',
+                    'amount' => (float) $amount,
+                    'currency' => 'INR',
+                    'status' => 'success',
+                    'gateway_payload' => $request->all(),
+                ]
+            );
+
+            CheckoutService::fulfillOrder($order);
+
+            return redirect()->route('checkout.success', $order->order_number)->with('success', 'PayU Payment Successful!');
+        }
+
+        return redirect()->route('checkout.show')->with('error', 'PayU Payment Verification Failed.');
+    }
+
+    public function payuFailure(Request $request)
+    {
+        $txnid = $request->input('txnid');
+        return redirect()->route('checkout.show', ['order_id' => $txnid])->with('error', 'PayU Payment Cancelled or Failed.');
+    }
+
+    /**
+     * 3. Paytm Return Callback.
+     */
+    public function paytmCallback(Request $request)
+    {
+        $status = strtoupper($request->input('STATUS', ''));
+        $orderId = $request->input('ORDERID', $request->input('order_id'));
+        $txnId = $request->input('TXNID');
+        $amount = (float) $request->input('TXNAMOUNT', 0);
+
+        if (!$orderId) {
+            return redirect()->route('checkout.show')->with('error', 'Invalid Paytm response.');
+        }
+
+        $order = Order::where('order_number', $orderId)->firstOrFail();
+
+        if (in_array($status, ['TXN_SUCCESS', 'SUCCESS', '01'], true)) {
+            $order->update(['payment_status' => 'paid']);
+
+            Transaction::updateOrCreate(
+                [
+                    'order_id' => $order->id,
+                    'gateway' => 'paytm',
+                    'transaction_id' => $txnId ?: $orderId,
+                ],
+                [
+                    'reference_number' => $request->input('BANKTXNID', $orderId),
+                    'type' => 'charge',
+                    'amount' => $amount ?: $order->grand_total,
+                    'currency' => 'INR',
+                    'status' => 'success',
+                    'gateway_payload' => $request->all(),
+                ]
+            );
+
+            CheckoutService::fulfillOrder($order);
+
+            return redirect()->route('checkout.success', $order->order_number)->with('success', 'Paytm Payment Successful!');
+        }
+
+        return redirect()->route('checkout.show', ['order_id' => $order->order_number])->with('error', 'Paytm Payment was not completed.');
+    }
+
+    /**
+     * 4. Cashfree Verification.
+     */
+    public function verifyCashfree(Request $request, $orderNumber)
+    {
+        $order = Order::where('order_number', $orderNumber)->firstOrFail();
+
+        $appId = Settings::get('cashfree_app_id', '');
+        $secretKey = Settings::get('cashfree_secret_key', '');
+        $isProduction = config('app.env') === 'production';
+        $endpoint = $isProduction ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
+
+        try {
+            $response = Http::withHeaders([
+                'x-client-id' => $appId,
+                'x-client-secret' => $secretKey,
+                'x-api-version' => '2023-08-01',
+            ])->get("{$endpoint}/orders/{$orderNumber}");
+
+            if ($response->successful()) {
+                $body = $response->json();
+                $orderStatus = strtoupper($body['order_status'] ?? '');
+
+                if ($orderStatus === 'PAID') {
+                    $order->update(['payment_status' => 'paid']);
+
+                    Transaction::updateOrCreate(
+                        [
+                            'order_id' => $order->id,
+                            'gateway' => 'cashfree',
+                            'transaction_id' => $body['cf_order_id'] ?? $orderNumber,
+                        ],
+                        [
+                            'reference_number' => $orderNumber,
+                            'type' => 'charge',
+                            'amount' => (float) ($body['order_amount'] ?? $order->grand_total),
+                            'currency' => strtoupper($body['order_currency'] ?? 'INR'),
+                            'status' => 'success',
+                            'gateway_payload' => $body,
+                        ]
+                    );
+
+                    CheckoutService::fulfillOrder($order);
+
+                    return redirect()->route('checkout.success', $order->order_number)->with('success', 'Cashfree Payment Successful!');
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('Cashfree Verification Error: ' . $e->getMessage());
+        }
+
+        // If webhook already processed it:
+        if ($order->payment_status === 'paid') {
+            return redirect()->route('checkout.success', $order->order_number);
+        }
+
+        return redirect()->route('checkout.show', ['order_id' => $orderNumber])->with('error', 'Cashfree Payment not verified.');
     }
 
     /**

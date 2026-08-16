@@ -36,7 +36,7 @@ class PaytmDriver implements PaymentDriverInterface
     {
         $orderId = $order->order_number;
         $amount = number_format((float) $order->grand_total, 2, '.', '');
-        $callbackUrl = route('checkout.success', $order->order_number);
+        $callbackUrl = route('checkout.paytm.callback');
 
         $params = [
             'MID' => $this->merchantId,
