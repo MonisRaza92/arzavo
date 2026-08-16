@@ -18,13 +18,13 @@ class PayuDriver implements PaymentDriverInterface
 
     public function __construct()
     {
-        // Strictly from Tenant Settings (isolated from Arzavo platform config)
-        $this->key = Settings::get('payu_merchant_key', '') ?? '';
-        $this->salt = Settings::get('payu_salt', '') ?? '';
-        $this->webhookSalt = Settings::get('payu_webhook_salt', $this->salt) ?? $this->salt;
-
         // Auto-detect production vs test from APP_ENV
         $this->isProduction = config('app.env') === 'production';
+
+        // Strictly from Tenant Settings (with sandbox test fallback for testing)
+        $this->key = Settings::get('payu_merchant_key', '') ?: ($this->isProduction ? '' : 'gtKFFx');
+        $this->salt = Settings::get('payu_salt', '') ?: ($this->isProduction ? '' : 'eCwWELxi');
+        $this->webhookSalt = Settings::get('payu_webhook_salt', $this->salt) ?: $this->salt;
         
         $this->endpoint = $this->isProduction
             ? 'https://secure.payu.in/_payment'

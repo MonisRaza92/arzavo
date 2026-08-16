@@ -482,6 +482,8 @@ document.addEventListener('DOMContentLoaded', function() {
     updateManualBox();
 
     form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
         const selectedGatewayInput = form.querySelector('input[name="payment_gateway"]:checked');
         const gateway = selectedGatewayInput ? selectedGatewayInput.value : 'razorpay';
 
@@ -491,77 +493,105 @@ document.addEventListener('DOMContentLoaded', function() {
         payBtnText.textContent = 'Processing Payment...';
         payBtnIcon.className = 'fa-solid fa-circle-notch fa-spin text-xs';
 
-        // For Razorpay, open modal seamlessly via AJAX
-        if (gateway === 'razorpay') {
-            e.preventDefault();
+        const formData = new FormData(form);
 
-            const formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                },
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.key) {
-                    const options = {
-                        "key": data.key,
-                        "amount": data.amount,
-                        "currency": data.currency || "INR",
-                        "name": "{{ app('currentTenant')->name ?? 'Academy' }}",
-                        "description": "Payment for " + (data.order_id || "Order"),
-                        "prefill": {
-                            "name": data.name || "",
-                            "email": data.email || "",
-                            "contact": data.phone || ""
-                        },
-                        "theme": {
-                            "color": "{{ $customizes['checkout_primary_color'] ?? '#4f46e5' }}"
-                        },
-                        "handler": function (response) {
-                            payBtnText.textContent = 'Verifying Payment...';
-                            document.getElementById('rzp_order_number').value = data.order_id || '';
-                            document.getElementById('rzp_payment_id').value = response.razorpay_payment_id || '';
-                            document.getElementById('rzp_order_id').value = response.razorpay_order_id || '';
-                            document.getElementById('rzp_signature').value = response.razorpay_signature || '';
-                            document.getElementById('direct_razorpay_verify_form').submit();
-                        },
-                        "modal": {
-                            "ondismiss": function() {
-                                payBtn.disabled = false;
-                                payBtn.classList.remove('opacity-75', 'cursor-not-allowed');
-                                payBtnText.textContent = 'Pay ₹{{ number_format($itemPrice, 2) }} & Get Access';
-                                payBtnIcon.className = 'fa-solid fa-arrow-right text-xs';
-                            }
-                        }
-                    };
-
-                    const rzp = new Razorpay(options);
-                    rzp.on('payment.failed', function(resp) {
-                        alert('Payment failed: ' + (resp.error.description || 'Unknown error'));
-                        payBtn.disabled = false;
-                        payBtn.classList.remove('opacity-75', 'cursor-not-allowed');
-                        payBtnText.textContent = 'Pay ₹{{ number_format($itemPrice, 2) }} & Get Access';
-                        payBtnIcon.className = 'fa-solid fa-arrow-right text-xs';
-                    });
-                    rzp.open();
-                } else if (data && data.redirect_url) {
-                    window.location.href = data.redirect_url;
-                } else {
-                    // Fallback to normal form submit if no key
-                    form.submit();
-                }
-            })
-            .catch(err => {
-                console.error('Checkout error:', err);
-                // Fallback to standard form submit
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data) {
                 form.submit();
-            });
-        }
+                return;
+            }
+
+            // 1. RAZORPAY POPUP MODAL
+            if (data.gateway === 'razorpay' && data.key) {
+                const options = {
+                    "key": data.key,
+                    "amount": data.amount,
+                    "currency": data.currency || "INR",
+                    "name": "{{ app('currentTenant')->name ?? 'Academy' }}",
+                    "description": "Payment for " + (data.order_id || "Order"),
+                    "prefill": {
+                        "name": data.name || "",
+                        "email": data.email || "",
+                        "contact": data.phone || ""
+                    },
+                    "theme": {
+                        "color": "{{ $customizes['checkout_primary_color'] ?? '#4f46e5' }}"
+                    },
+                    "handler": function (response) {
+                        payBtnText.textContent = 'Verifying Payment...';
+                        document.getElementById('rzp_order_number').value = data.order_id || '';
+                        document.getElementById('rzp_payment_id').value = response.razorpay_payment_id || '';
+                        document.getElementById('rzp_order_id').value = response.razorpay_order_id || '';
+                        document.getElementById('rzp_signature').value = response.razorpay_signature || '';
+                        document.getElementById('direct_razorpay_verify_form').submit();
+                    },
+                    "modal": {
+                        "ondismiss": function() {
+                            payBtn.disabled = false;
+                            payBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                            payBtnText.textContent = 'Pay ₹{{ number_format($itemPrice, 2) }} & Get Access';
+                            payBtnIcon.className = 'fa-solid fa-arrow-right text-xs';
+                        }
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.on('payment.failed', function(resp) {
+                    alert('Payment failed: ' + (resp.error.description || 'Unknown error'));
+                    payBtn.disabled = false;
+                    payBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                    payBtnText.textContent = 'Pay ₹{{ number_format($itemPrice, 2) }} & Get Access';
+                    payBtnIcon.className = 'fa-solid fa-arrow-right text-xs';
+                });
+                rzp.open();
+                return;
+            }
+
+            // 2. HOSTED FORM-POST GATEWAYS (PayU India, Paytm)
+            if (data.action && data.params) {
+                payBtnText.textContent = 'Redirecting to ' + (data.gateway ? data.gateway.toUpperCase() : 'Gateway') + '...';
+                const tempForm = document.createElement('form');
+                tempForm.method = 'POST';
+                tempForm.action = data.action;
+                tempForm.style.display = 'none';
+
+                for (const [key, value] of Object.entries(data.params)) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = value ?? '';
+                    tempForm.appendChild(input);
+                }
+
+                document.body.appendChild(tempForm);
+                tempForm.submit();
+                return;
+            }
+
+            // 3. DIRECT URL REDIRECT (Cashfree, Manual Bank, Cash Pay, Free Orders)
+            if (data.redirect_url) {
+                payBtnText.textContent = 'Redirecting...';
+                window.location.href = data.redirect_url;
+                return;
+            }
+
+            // Fallback
+            form.submit();
+        })
+        .catch(err => {
+            console.error('Checkout Error:', err);
+            // Fallback to standard native submission
+            form.submit();
+        });
     });
 });
 </script>
