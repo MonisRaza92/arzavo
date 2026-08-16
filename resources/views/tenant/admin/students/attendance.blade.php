@@ -68,22 +68,31 @@
                                 {{ $student->fname }} {{ $student->lname }}
                             </td>
                             <td class="py-3 px-4 text-secondary">
-                                {{ $student->class->academicCategory->name ?? 'No Category' }} - {{ $student->class->name ?? 'No Class' }}
+                                <div class="font-bold text-primary">{{ $student->class->name ?? 'Null' }}</div>
+                                <div class="text-[10px] text-tertiary">{{ $student->academicCategory->name ?? 'Null' }} • {{ $student->subject->name ?? 'Null' }}</div>
                             </td>
                             <td class="py-3 px-4 text-center font-mono text-primary font-medium">
                                 {{ $student->total_days }} Days
                             </td>
                             <td class="py-3 px-4 text-center font-mono font-bold text-primary">
-                                {{ $student->attendance_rate }}%
+                                @if($student->total_days > 0)
+                                    {{ $student->attendance_rate }}%
+                                @else
+                                    <span class="text-tertiary">0%</span>
+                                @endif
                             </td>
                             <td class="py-3 px-4">
-                                @if($student->attendance_rate < 75)
-                                    <span class="px-2 py-0.5 rounded-[3px] text-[10px] font-bold border border-primary bg-primary text-primary font-mono uppercase">
+                                @if($student->total_days == 0)
+                                    <span class="px-2 py-0.5 rounded-[3px] text-[10px] font-bold bg-secondary text-tertiary font-mono uppercase">
+                                        No Logs
+                                    </span>
+                                @elseif($student->attendance_rate < 75)
+                                    <span class="px-2 py-0.5 rounded-[3px] text-[10px] font-bold border border-rose-500/30 bg-rose-500/10 text-rose-600 font-mono uppercase">
                                         Low Attendance
                                     </span>
                                 @else
-                                    <span class="px-2 py-0.5 rounded-[3px] text-[10px] font-bold bg-invert text-invert font-mono uppercase">
-                                        Good Stand
+                                    <span class="px-2 py-0.5 rounded-[3px] text-[10px] font-bold border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 font-mono uppercase">
+                                        Good Standing
                                     </span>
                                 @endif
                             </td>

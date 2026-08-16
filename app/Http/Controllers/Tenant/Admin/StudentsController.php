@@ -417,7 +417,7 @@ class StudentsController extends Controller
         $presentLogs = \App\Models\Tenant\StudentAttendance::whereIn('status', ['present', 'p'])->count();
         $absentLogsCount = \App\Models\Tenant\StudentAttendance::whereIn('status', ['absent', 'a'])->count();
         $workingDays = \App\Models\Tenant\StudentAttendance::distinct('date')->count('date');
-        $overallAttendanceRate = $totalLogs > 0 ? round(($presentLogs / $totalLogs) * 100, 1) : 100;
+        $overallAttendanceRate = $totalLogs > 0 ? round(($presentLogs / $totalLogs) * 100, 1) : 0;
 
         $lowAttendanceCount = 0;
         foreach ($students as $student) {
@@ -425,7 +425,7 @@ class StudentsController extends Controller
             $sPresent = $student->attendances->whereIn('status', ['present', 'p'])->count();
             $student->total_days = $sTotal;
             $student->present_days = $sPresent;
-            $student->attendance_rate = $sTotal > 0 ? round(($sPresent / $sTotal) * 100, 1) : 100;
+            $student->attendance_rate = $sTotal > 0 ? round(($sPresent / $sTotal) * 100, 1) : 0;
 
             if ($student->attendance_rate < 75 && $sTotal > 0) {
                 $lowAttendanceCount++;
@@ -447,7 +447,9 @@ class StudentsController extends Controller
         foreach ($students as $student) {
             $sTotal = $student->attendances->count();
             $sPresent = $student->attendances->whereIn('status', ['present', 'p'])->count();
-            $student->attendance_rate = $sTotal > 0 ? round(($sPresent / $sTotal) * 100, 1) : 100;
+            $student->total_days = $sTotal;
+            $student->present_days = $sPresent;
+            $student->attendance_rate = $sTotal > 0 ? round(($sPresent / $sTotal) * 100, 1) : 0;
 
             $totalFee = $student->feePlans->sum('amount');
             $paidFee = $student->feePayments->where('status', 'paid')->sum('amount_paid');
