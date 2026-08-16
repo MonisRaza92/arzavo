@@ -98,9 +98,9 @@
             </div>
             <div>
                 <span class="px-3 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800 uppercase tracking-wider">Item Already Purchased</span>
-                <h2 class="text-2xl font-black text-emerald-950 mt-2">Aap Yeh Item Pehle Hi Buy Kar Chuke Hain!</h2>
+                <h2 class="text-2xl font-black text-emerald-950 mt-2">You Have Already Purchased This Item!</h2>
                 <p class="text-sm text-emerald-700 mt-1 max-w-lg mx-auto">
-                    Yeh {{ ($purchasableType ?? '') === 'course' ? 'course' : 'book' }} aapke account me already active hai. Aap direct ise access kar sakte hain.
+                    This {{ ($purchasableType ?? '') === 'course' ? 'course' : 'book' }} is already active in your account. You can access it directly from your dashboard.
                 </p>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
