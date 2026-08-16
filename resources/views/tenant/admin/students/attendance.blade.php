@@ -2,14 +2,16 @@
 @section('title', 'Admin - Student Attendance')
 @section('content')
 <div class="my-4 space-y-6">
-    <!-- Header Block -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- Header Block Card -->
+    <div class="mb-4 p-4 sm:p-5 border-rounded bg-primary border-primary shadow-xs flex flex-wrap justify-between items-center gap-4">
         <div>
-            <h2 class="text-2xl font-bold tracking-tight text-primary">Student Attendance Log</h2>
-            <p class="text-xs text-secondary mt-1">Track aggregate attendance sheets and student presence statistics.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2">
+                <i class="fa-solid fa-calendar-check text-indigo-500"></i> Student Attendance Log
+            </h1>
+            <p class="text-xs text-secondary mt-0.5">Track aggregate attendance sheets and student presence statistics.</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{{ route('admin.students.attendance.mark') }}" class="bg-invert text-invert px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover:opacity-90">
+            <a href="{{ route('admin.students.attendance.mark') }}" class="bg-invert text-invert px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover-invert shadow-sm">
                 <i class="fa-solid fa-user-check"></i> Mark Daily Attendance
             </a>
         </div>

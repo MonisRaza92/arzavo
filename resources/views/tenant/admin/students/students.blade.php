@@ -2,6 +2,21 @@
 @section('title', 'Admin Students')
 @section('content')
 
+<!-- HEADER TITLE CARD -->
+<div class="mb-4 p-4 sm:p-5 border-rounded bg-primary border-primary shadow-xs flex flex-wrap justify-between items-center gap-4">
+    <div>
+        <h1 class="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-indigo-500"></i> Students Management Directory
+        </h1>
+        <p class="text-xs text-secondary mt-0.5">Manage enrolled students, academic classes, status, and direct profile records.</p>
+    </div>
+    <div class="flex items-center gap-2">
+        <a href="{{ route('admin.students.admissions') }}" class="bg-invert text-invert px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover-invert shadow-sm">
+            <i class="fa-solid fa-user-plus"></i> Admissions & Add Student
+        </a>
+    </div>
+</div>
+
 <!-- STATS CARDS -->
 <div class="statics grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
     <div class="stat border-rounded bg-primary border-primary flex flex-col justify-between">

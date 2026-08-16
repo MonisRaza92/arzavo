@@ -3,14 +3,16 @@
 
 @section('content')
 <div class="my-4 space-y-6">
-    <!-- Header Block -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- Header Block Card -->
+    <div class="mb-4 p-4 sm:p-5 border-rounded bg-primary border-primary shadow-xs flex flex-wrap justify-between items-center gap-4">
         <div>
-            <h2 class="text-2xl font-bold tracking-tight text-primary">Student Fees & Billing Plans</h2>
-            <p class="text-xs text-secondary mt-1">Monitor fee installments, verified collections, and outstanding student balances.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2">
+                <i class="fa-solid fa-wallet text-indigo-500"></i> Student Fees & Billing Plans
+            </h1>
+            <p class="text-xs text-secondary mt-0.5">Monitor fee installments, verified collections, and outstanding student balances.</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{{ route('admin.finance.fees') }}" class="bg-invert text-invert px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover:opacity-90">
+            <a href="{{ route('admin.finance.fees') }}" class="bg-invert text-invert px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover-invert shadow-sm">
                 <i class="fa-solid fa-receipt"></i> Open Fee Verification Center
             </a>
         </div>

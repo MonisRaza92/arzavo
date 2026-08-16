@@ -3,11 +3,13 @@
 
 @section('content')
 <div class="my-4 space-y-6">
-    <!-- Header Block -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- Header Block Card -->
+    <div class="mb-4 p-4 sm:p-5 border-rounded bg-primary border-primary shadow-xs flex flex-wrap justify-between items-center gap-4">
         <div>
-            <h2 class="text-2xl font-bold tracking-tight text-primary">Student Academic & LMS Progress Reports</h2>
-            <p class="text-xs text-secondary mt-1">Real-time academic portfolio, batch course enrollments, attendance reliability, and learning activity.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2">
+                <i class="fa-solid fa-chart-line text-indigo-500"></i> Student Academic & LMS Progress Reports
+            </h1>
+            <p class="text-xs text-secondary mt-0.5">Real-time academic portfolio, batch course enrollments, attendance reliability, and learning activity.</p>
         </div>
     </div>
 

@@ -2,10 +2,19 @@
 @section('title', 'Admin - Mark Attendance')
 @section('content')
 <div class="my-4 space-y-6">
-    <!-- Header Title block -->
-    <div>
-        <h2 class="text-2xl font-bold tracking-tight text-primary">Daily Student Attendance Cockpit</h2>
-        <p class="text-xs text-secondary mt-1">Select class category and date to log student daily attendance logs.</p>
+    <!-- Header Block Card -->
+    <div class="mb-4 p-4 sm:p-5 border-rounded bg-primary border-primary shadow-xs flex flex-wrap justify-between items-center gap-4">
+        <div>
+            <h1 class="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2">
+                <i class="fa-solid fa-user-check text-indigo-500"></i> Daily Student Attendance Cockpit
+            </h1>
+            <p class="text-xs text-secondary mt-0.5">Select class category and date to log student daily attendance logs.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('admin.students.attendance') }}" class="bg-secondary text-primary border border-primary px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover:bg-hover-secondary shadow-xs">
+                <i class="fa-solid fa-arrow-left"></i> Back to Attendance Log
+            </a>
+        </div>
     </div>
 
     <!-- Configuration Filters Form -->

@@ -3,14 +3,16 @@
 
 @section('content')
 <div class="my-4 space-y-6">
-    <!-- Header Block -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- Header Block Card -->
+    <div class="mb-4 p-4 sm:p-5 border-rounded bg-primary border-primary shadow-xs flex flex-wrap justify-between items-center gap-4">
         <div>
-            <h2 class="text-2xl font-bold tracking-tight text-primary">Student ID Card Generator</h2>
-            <p class="text-xs text-secondary mt-1">Official printable student identification cards with academic credentials & roll number.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2">
+                <i class="fa-solid fa-id-card text-indigo-500"></i> Student ID Card Generator
+            </h1>
+            <p class="text-xs text-secondary mt-0.5">Official printable student identification cards with academic credentials & roll number.</p>
         </div>
         <div class="flex items-center gap-2">
-            <button onclick="window.print()" class="bg-invert text-invert px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover:opacity-90">
+            <button onclick="window.print()" class="bg-invert text-invert px-4 py-2 border-rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition hover-invert shadow-sm">
                 <i class="fa-solid fa-print"></i> Print All ID Cards
             </button>
         </div>
