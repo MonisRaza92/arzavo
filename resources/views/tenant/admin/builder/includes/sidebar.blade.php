@@ -1,6 +1,6 @@
 <div id="editorSidebar"
     class="w-90 pt-16 h-dvh border-right fixed flex top-0 left-0 bg-primary overflow-auto scrollbar">
-    <div class="tab-btns flex flex-col border-right bg-primary z-30">
+    <div class="tab-btns flex flex-col border-right bg-primary z-30" style="border-style:dashed;">
         <button type="button" class="tab-btn font-semibold text-lg p-3 text-secondary bg-tertiary text-primary"
             title="Settings" data-target="basics"><i class="fa-solid fa-cog"></i></button>
         @if(($page->slug ?? '') !== 'checkout' && ($page->slug ?? '') !== 'checkout-success')
