@@ -14,8 +14,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
 
+        $middleware->redirectGuestsTo(fn () => route('login'));
+        $middleware->redirectUsersTo(fn () => (auth('web')->user()?->role === 'super_admin' || auth('web')->user()?->role === 'admin') ? route('arzavo.admin.dashboard') : route('tenants.index'));
+
         $middleware->web(prepend: [
             \App\Http\Middleware\TenantMiddleware::class,
+        ], append: [
+            \App\Http\Middleware\ValidateArzaqSession::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [
@@ -36,6 +41,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth' => \App\Http\Middleware\Authenticate::class,
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'subscription' => \App\Http\Middleware\CheckSubscription::class,
+            'arzaq.session' => \App\Http\Middleware\ValidateArzaqSession::class,
+            'arzaq.auth' => \App\Http\Middleware\ArzaqAuthMiddleware::class,
         ]);
 
         $middleware->priority([

@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+
+    --color-primary: #0e0e0e;
+    --color-secondary: #1e1f20;
+    --color-subtle: #313233;
+    --color-theme-border: #1e1f20;
+    --color-brand: #ffffff;
+    --color-theme-text: #ffffff;
+    --color-theme-text-muted: #a1a1aa;
+
+    /* Semantic Status Tokens (Success, Warning, Danger, Info) */
+    --color-success: #10b981;
+    --color-success-bg: rgba(16, 185, 129, 0.12);
+    --color-warning: #f59e0b;
+    --color-warning-bg: rgba(245, 158, 11, 0.12);
+    --color-danger: #f43f5e;
+    --color-danger-bg: rgba(244, 63, 94, 0.12);
+    --color-info: #38bdf8;
+    --color-info-bg: rgba(56, 189, 248, 0.12);
+}
+
+/* Device System Preference: Light Mode */
+@media (prefers-color-scheme: light) {
+    :root:not(.dark) {
+        --color-primary: #ffffff;
+        --color-secondary: #f0f4f9;
+        --color-subtle: #e1e7f0;
+        --color-theme-border: #e1e7f0;
+        --color-brand: #0b57d0;
+        --color-theme-text: #1f1f1f;
+        --color-theme-text-muted: #444746;
+
+        --color-success: #137333;
+        --color-success-bg: #e6f4ea;
+        --color-warning: #b06000;
+        --color-warning-bg: #fef7e0;
+        --color-danger: #ce4e4c;
+        --color-danger-bg: #fce8e6;
+        --color-info: #0b57d0;
+        --color-info-bg: #e8f0fe;
+    }
+
+    :root:not(.dark) .theme-logo {
+        filter: invert(1);
+    }
+}
+
+/* Explicit Light Mode Override */
+:root.light, .light {
+    --color-primary: #ffffff;
+    --color-secondary: #f0f4f9;
+    --color-subtle: #e1e7f0;
+    --color-theme-border: #e1e7f0;
+    --color-brand: #0b57d0;
+    --color-theme-text: #1f1f1f;
+    --color-theme-text-muted: #444746;
+
+    --color-success: #137333;
+    --color-success-bg: #e6f4ea;
+    --color-warning: #b06000;
+    --color-warning-bg: #fef7e0;
+    --color-danger: #ce4e4c;
+    --color-danger-bg: #fce8e6;
+    --color-info: #0b57d0;
+    --color-info-bg: #e8f0fe;
+}
+:root.light .theme-logo, .light .theme-logo {
+    filter: invert(1);
+}
+
+/* Explicit Dark Mode Override */
+:root.dark, .dark {
+    --color-primary: #0e0e0e;
+    --color-secondary: #1e1f20;
+    --color-subtle: #313233;
+    --color-theme-border: #1e1f20;
+    --color-brand: #ffffff;
+    --color-theme-text: #ffffff;
+    --color-theme-text-muted: #a1a1aa;
+
+    --color-success: #10b981;
+    --color-success-bg: rgba(16, 185, 129, 0.12);
+    --color-warning: #f59e0b;
+    --color-warning-bg: rgba(245, 158, 11, 0.12);
+    --color-danger: #ce4e4c;
+    --color-danger-bg: rgba(244, 63, 94, 0.12);
+    --color-info: #38bdf8;
+    --color-info-bg: rgba(56, 189, 248, 0.12);
+}

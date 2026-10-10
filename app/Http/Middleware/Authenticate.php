@@ -17,10 +17,10 @@ class Authenticate
             }
 
             if (isSystemDomain()) {
-                if ($request->is('login') || $request->is('register') || $request->routeIs('login.*') || $request->routeIs('register.*')) {
+                if ($request->is('login') || $request->is('register') || $request->is('auth/*') || $request->routeIs('login.*') || $request->routeIs('register.*') || $request->routeIs('arzaq.*')) {
                     return $next($request);
                 }
-                return redirect()->route('login.form');
+                return redirect()->route('login');
             } else {
                 if ($request->is('account/login') || $request->is('account/register') || $request->is('login') || $request->is('register')) {
                     return $next($request);

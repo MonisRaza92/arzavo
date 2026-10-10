@@ -28,104 +28,19 @@
             </span>
         </button>
 
-        <!-- USER -->
-        <div class="relative ml-2">
-
-            <button onclick="toggleModel('arzavoUserAction')" class="flex items-center gap-2">
-                <x-profile-image :user="$user" />
-            </button>
-
-            <!-- DROPDOWN -->
-            <div id="arzavoUserAction"
-                class="absolute hidden right-0 mt-2 w-64 bg-primary border-primary border-rounded shadow-md overflow-hidden">
-
-                <!-- USER INFO -->
-                <div class="px-3 py-3 border-bottom">
-                    <p class="text-sm font-semibold">
-                        {{ ($user->fname ?? '') . ' ' . ($user->lname ?? '') }}
-                    </p>
-                    <p class="text-xs text-tertiary">{{ $user?->email }}</p>
-                </div>
-
-                <!-- TENANTS SECTION -->
-                <div>
-                    @php
-                        $tenants = $user?->tenants ?? collect();
-                    @endphp
-
-                    <div class="max-h-40 overflow-auto">
-
-                        @forelse($tenants as $tenant)
-                                            <a href="{{ $tenant->url }}/admin/dashboard"
-                                                class="flex items-center gap-2 p-3 text-sm border-bottom bg-hover-secondary">
-
-                                                <i class="fa-solid fa-building-columns text-tertiary text-sm"></i>
-                                                <span class="truncate">{{ $tenant->name }}</span>
-                                            </a>
-                        @empty
-                            <p class="px-3 py-2 text-xs text-tertiary">
-                                No tenants found
-                            </p>
-                        @endforelse
-
-                    </div>
-
-                    <!-- CREATE TENANT -->
-                    <a href="{{ route('tenants.create') }}"
-                        class="flex items-center gap-2 p-3 text-sm text-secondary bg-hover-secondary border-bottom">
-                        <i class="fa-solid fa-plus text-xs"></i>
-                        Create New
-                    </a>
-                </div>
-
-                <!-- ACCOUNT SECTION -->
-                <div class="pt-2">
-
-
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
-                        <i class="fa-solid fa-user text-tertiary text-sm"></i>
-                        Profile
-                    </a>
-
-                    <!-- <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
-                        <i class="fa-solid fa-gear text-tertiary text-sm"></i>
-                        Account Settings
-                    </a> -->
-
-                    <a href="{{ route('tenants.index') }}"
-                        class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
-                        <i class="fa-solid fa-building-columns text-tertiary text-sm"></i>
-                        Manage Tenants
-                    </a>
-
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
-                        <i class="fa-solid fa-credit-card text-tertiary text-sm"></i>
-                        Billing & Plans
-                    </a>
-
-                    <!-- <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
-                        <i class="fa-regular fa-clock text-tertiary text-sm"></i>
-                        Activity
-                    </a>
-
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm hover-primary">
-                        <i class="fa-regular fa-circle-question text-tertiary text-sm"></i>
-                        Help & Support
-                    </a> -->
-
-                </div>
-
-                <!-- LOGOUT -->
-                <div class="border-top mt-2">
-                    <a href="{{ route('tenant.logout') }}"
-                        class="flex items-center gap-2 px-3 py-3 text-sm hover-primary">
-                        <i class="fa-solid fa-right-from-bracket text-tertiary text-sm"></i>
-                        Logout
-                    </a>
-                </div>
-
-            </div>
+        <!-- USER Profile Dropdown -->
+        <!-- 1. Arzaq Ecosystem Mount Container (Renders Profile, App Grid & Wallet) -->
+        <div id="arzaq-ecosystem-bar"
+            data-auth-url="{{ config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')) }}"
+            data-logout-url="{{ route('logout') }}" data-csrf="{{ csrf_token() }}"
+            data-user-name="{{ $user?->name }}" data-user-email="{{ $user?->email }}"
+            data-user-avatar="{{ $user?->avatar }}" data-theme="light" data-theme-toggle="false">
         </div>
+
+        <!-- 2. Universal Ecosystem SDK Script (Auto-initializes UI & Session Sync) -->
+        <script
+            src="{{ rtrim(config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')), '/') }}/sdk/nav.js"
+            defer></script>
 
     </div>
 </div>

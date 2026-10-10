@@ -159,11 +159,12 @@ class ArzaqAuthController extends Controller
             ]);
         } else {
             $user->update([
-                'arzaq_user_id' => $arzaqUserId,
-                'fname'         => $user->fname ?: ($fname ?? 'User'),
-                'lname'         => $user->lname ?: ($lname ?? ''),
-                'last_login'    => now(),
-                'status'        => $user->status === 'suspended' ? 'suspended' : 'active',
+                'arzaq_user_id'    => $arzaqUserId,
+                'fname'            => $user->fname ?: ($fname ?? 'User'),
+                'lname'            => $user->lname ?: ($lname ?? ''),
+                'profile_picture'  => $userInfo['picture'] ?? $user->profile_picture,
+                'last_login'       => now(),
+                'status'           => $user->status === 'suspended' ? 'suspended' : 'active',
             ]);
         }
 
@@ -188,6 +189,7 @@ class ArzaqAuthController extends Controller
      */
     public function logout(Request $request)
     {
+        Auth::guard('web')->logout();
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();

@@ -13,7 +13,7 @@ class RoleMiddleware
 
         if (!Auth::guard($guard)->check()) {
             return isSystemDomain() 
-                ? redirect()->route('login.form') 
+                ? redirect()->route('login') 
                 : redirect('/account/login');
         }
 
@@ -30,9 +30,11 @@ class RoleMiddleware
             }
         }
 
-        // Super admin on main platform has universal admin access
-        if ($guard === 'web' && $user->role === 'super_admin') {
-            return $next($request);
+        // Super admin or admin on main platform has admin access
+        if ($guard === 'web' && ($user->role === 'super_admin' || $user->role === 'admin')) {
+            if (in_array('admin', $allowedRoles, true) || in_array('super_admin', $allowedRoles, true)) {
+                return $next($request);
+            }
         }
 
         if (!in_array($user->role, $allowedRoles, true)) {

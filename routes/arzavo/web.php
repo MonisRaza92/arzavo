@@ -67,7 +67,7 @@ Route::domain(config('app.domain'))->group(function () {
     Route::match(['get', 'post'], '/api/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('arzavo.api.payu.webhook');
 
     // User Dashboard & Tenant Management Routes
-    Route::middleware('auth:web')->group(function () {
+    Route::middleware('arzaq.auth')->group(function () {
         // Dashboard
         Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
