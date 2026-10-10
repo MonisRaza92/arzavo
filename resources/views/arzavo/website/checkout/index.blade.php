@@ -348,20 +348,13 @@
                         </div>
 
                         @if(!$isFreePlan)
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-dark/60">Applicable GST (18%)</span>
-                                <span id="summaryTaxPrice" class="font-bold text-dark">
-                                    ₹{{ number_format($monthlyPrice * 0.18, 2) }}
-                                </span>
-                            </div>
-
                             <div class="pt-3 border-t border-gray-100 flex justify-between items-baseline">
                                 <div>
                                     <span class="text-sm font-bold text-dark block">Total Amount Due</span>
                                     <span id="summaryCycleLabel" class="text-[11px] text-dark/40 font-normal">Billed monthly</span>
                                 </div>
                                 <span id="summaryTotalPrice" class="text-2xl font-extrabold text-dark">
-                                    ₹{{ number_format($monthlyPrice * 1.18, 2) }}
+                                    ₹{{ number_format($monthlyPrice, 2) }}
                                 </span>
                             </div>
                         @else
@@ -512,20 +505,17 @@ function updateSummaryPricing() {
     }
 
     const base = currentCycle === 'yearly' ? planData.yearly : planData.monthly;
-    const tax = Math.round(base * 0.18 * 100) / 100;
-    const total = Math.round((base + tax) * 100) / 100;
+    const total = Math.round(base * 100) / 100;
 
     const fmt = n => '₹' + new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 
     if (currentActivationMode === 'trial' && isSelectedTenantTrialEligible) {
         document.getElementById('summaryBasePrice').textContent = fmt(base) + ` (Trial for ${planData.trialDays}d)`;
-        document.getElementById('summaryTaxPrice').textContent = "₹0.00";
         document.getElementById('summaryTotalPrice').textContent = "₹0.00 (Due Today)";
         document.getElementById('summaryCycleLabel').textContent = `${planData.trialDays}-day free trial, then ${currentCycle === 'yearly' ? 'billed annually' : 'billed monthly'}`;
         if (btnText) btnText.textContent = `Start ${planData.trialDays}-Day Free Trial (₹0 Due Now)`;
     } else {
         document.getElementById('summaryBasePrice').textContent = fmt(base);
-        document.getElementById('summaryTaxPrice').textContent = fmt(tax);
         document.getElementById('summaryTotalPrice').textContent = fmt(total);
         document.getElementById('summaryCycleLabel').textContent = currentCycle === 'yearly' ? 'Billed annually' : 'Billed monthly';
         if (btnText) btnText.textContent = `Proceed to Payment (${fmt(total)})`;

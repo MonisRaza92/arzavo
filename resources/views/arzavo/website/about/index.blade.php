@@ -163,48 +163,7 @@
     </div>
 </section>
 
-{{-- Team --}}
-<section id="team" class="relative py-20 overflow-hidden"
-         style="background: linear-gradient(180deg, #fff 0%, #fffbf8 60%, #fff 100%);">
-    <div class="container">
-        <div class="mb-14">
-            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Leadership</p>
-            <h2 class="text-4xl md:text-5xl font-semibold text-dark mb-5 leading-tight tracking-tight">Meet the minds behind Arzavo.</h2>
-            <p class="text-dark/70 leading-relaxed text-lg max-w-3xl">
-                A team of visionary educators, software architects, and design purists obsessed with building the future of education.
-            </p>
-        </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            @php $team = [
-                ['name' => 'Rajesh Kumar', 'role' => 'Founder & CEO', 'initials' => 'RK', 'color' => '#920000', 'bio' => '15+ years engineering scalable systems. Former lead architect at enterprise tech giants. Obsessed with democratizing institutional software.'],
-                ['name' => 'Priya Sharma', 'role' => 'Co-Founder & CTO', 'initials' => 'PS', 'color' => '#c58400', 'bio' => 'Full-stack polyglot and cloud infrastructure expert. Designed high-availability systems managing millions of concurrent connections.'],
-                ['name' => 'Dr. Amit Patel', 'role' => 'VP of Pedagogy', 'initials' => 'AP', 'color' => '#333', 'bio' => 'Ph.D. in Cognitive Science & EdTech. 20+ years researching how technology interplays with human learning capacity. Former university dean.'],
-            ]; @endphp
-            @foreach($team as $member)
-            <div class="rounded-lg border border-gray-200 bg-white p-7">
-                <div class="flex items-center gap-4 mb-5">
-                    <div class="w-12 h-12 rounded-full text-white flex items-center justify-center text-sm font-semibold"
-                         style="background: {{ $member['color'] }};">{{ $member['initials'] }}</div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-dark">{{ $member['name'] }}</h3>
-                        <p class="text-xs text-accent font-medium">{{ $member['role'] }}</p>
-                    </div>
-                </div>
-                <p class="text-sm text-dark/60 leading-relaxed mb-5">{{ $member['bio'] }}</p>
-                <div class="flex gap-2">
-                    <a href="#" class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-dark/30 hover:text-accent hover:border-accent/30 transition-colors">
-                        <i class="fa-brands fa-linkedin-in text-xs"></i>
-                    </a>
-                    <a href="#" class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-dark/30 hover:text-accent hover:border-accent/30 transition-colors">
-                        <i class="fa-brands fa-x-twitter text-xs"></i>
-                    </a>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
 
 {{-- CTA --}}
 <section class="relative py-20 overflow-hidden"

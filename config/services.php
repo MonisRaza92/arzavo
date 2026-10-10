@@ -47,4 +47,12 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'arzaq' => [
+        'auth_url'      => env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com'),
+        'client_id'     => env('ARZAQ_CLIENT_ID'),
+        'client_secret' => env('ARZAQ_CLIENT_SECRET'),
+        'redirect_uri'  => env('ARZAQ_REDIRECT_URI', 'http://arzavo.com/auth/callback'),
+        'userinfo_url'  => env('ARZAQ_OIDC_USERINFO', 'https://auth.arzaqinsights.com/oauth/userinfo'),
+    ],
+
 ];

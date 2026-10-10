@@ -33,6 +33,7 @@ class User extends Authenticatable
         'status',
         'last_login',
         'email_verified_at',
+        'arzaq_user_id',
     ];
 
     protected $hidden = [

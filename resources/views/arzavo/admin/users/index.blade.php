@@ -1,4 +1,4 @@
-@extends('layouts.arzavo')
+@extends('layouts.arzavo.admin')
 @section('title', 'Users Managment')
 
 @section('content')

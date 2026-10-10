@@ -35,8 +35,12 @@
 
             {{-- CTA --}}
             <div class="hidden lg:flex items-center gap-2">
-                <x-button url="{{ route('login.form') }}">Log In <i class="fa-solid fa-right-to-bracket"></i></x-button>
-                <x-button url="{{ route('register.form') }}" variant="accent">Get Started <i class="fa-solid fa-arrow-right -rotate-45"></i></x-button>
+                @if (auth('web')->check())
+                    <x-button url="{{ route('tenants.index') }}" variant="accent">Dashboard <i class="fa-solid fa-gauge"></i></x-button>
+                @else
+                    <x-button url="{{ route('arzaq.redirect') }}">Log In <i class="fa-solid fa-right-to-bracket"></i></x-button>
+                    <x-button url="{{ route('arzaq.redirect') }}" variant="accent">Get Started <i class="fa-solid fa-arrow-right -rotate-45"></i></x-button>
+                @endif
             </div>
 
             {{-- MOBILE BUTTON --}}
@@ -67,8 +71,12 @@
             </a>
             @endforeach
             <div class="pt-3 border-t border-gray-100 space-y-2">
-                <a href="{{ route('login.form') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-lg transition-colors">Log in</a>
-                <a href="{{ route('register.form') }}" class="block px-3 py-2 bg-accent text-white text-sm font-semibold rounded-lg text-center hover:opacity-90 transition-opacity">Get Started Free</a>
+                @if (auth('web')->check())
+                    <a href="{{ route('tenants.index') }}" class="block px-3 py-2 bg-accent text-white text-sm font-semibold rounded-lg text-center hover:opacity-90 transition-opacity">Dashboard</a>
+                @else
+                    <a href="{{ route('arzaq.redirect') }}" class="block px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-lg transition-colors">Log in</a>
+                    <a href="{{ route('arzaq.redirect') }}" class="block px-3 py-2 bg-accent text-white text-sm font-semibold rounded-lg text-center hover:opacity-90 transition-opacity">Get Started Free</a>
+                @endif
             </div>
         </div>
     </div>

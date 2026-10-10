@@ -1,4 +1,4 @@
-@extends('layouts.arzavo')
+@extends('layouts.arzavo.admin')
 
 @section('title', 'Plans Management')
 
@@ -144,7 +144,8 @@
                         @csrf
                         @method('DELETE')
 
-                        <button type="submit" class="w-full bg-invert text-invert border-rounded px-3 py-2 text-sm hover-primary cursor-pointer">
+                        <button type="submit"
+                            class="w-full bg-invert text-invert border-rounded px-3 py-2 text-sm hover-primary cursor-pointer">
                             Delete
                         </button>
                     </form>
@@ -157,7 +158,8 @@
                 <i class="fa-solid fa-credit-card text-4xl mb-3 block"></i>
                 <h3 class="text-base font-semibold text-primary">No plans created yet</h3>
                 <p class="text-xs text-tertiary mt-1 mb-4">Click below to create your first pricing tier</p>
-                <button type="button" onclick="openCreatePlanModal()" class="px-4 py-2 text-sm bg-invert text-invert border-rounded cursor-pointer">
+                <button type="button" onclick="openCreatePlanModal()"
+                    class="px-4 py-2 text-sm bg-invert text-invert border-rounded cursor-pointer">
                     + Add New Plan
                 </button>
             </div>

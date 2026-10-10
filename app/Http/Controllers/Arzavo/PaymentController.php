@@ -89,8 +89,8 @@ class PaymentController
             }
 
             $baseAmount = ($billingCycle === 'yearly' && $plan->yearly_price) ? $plan->yearly_price : $plan->monthly_price;
-            $taxAmount = round($baseAmount * 0.18, 2);
-            $totalAmount = round($baseAmount + $taxAmount, 2);
+            $taxAmount = 0;
+            $totalAmount = round($baseAmount, 2);
 
             // Clean up any older uncompleted pending invoices for this tenant
             Invoice::where('tenant_id', $tenant->id)

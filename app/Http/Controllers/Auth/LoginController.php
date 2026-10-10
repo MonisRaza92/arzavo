@@ -17,7 +17,7 @@ class LoginController extends Controller
         if (Auth::guard('web')->check()) {
             return redirect()->to($this->redirectTo());
         }
-        return view('arzavo.auth.login');
+        return redirect()->route('arzaq.redirect');
     }
 
     public function loginHandle(Request $request)
@@ -97,7 +97,7 @@ class LoginController extends Controller
         if (Auth::guard('web')->check()) {
             return redirect()->to($this->redirectTo());
         }
-        return view('arzavo.auth.register');
+        return redirect()->route('arzaq.redirect');
     }
     public function registerHandle(Request $request)
     {

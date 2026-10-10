@@ -13,7 +13,7 @@
     {{-- Alerts --}}
     <x-alert />
     {{-- Main content --}}
-    <main class="main-admin-content relative lg:ml-[260px]! p-4">
+    <main class="main-admin-content relative lg:ml-65! p-4">
         @yield('content')
     </main>
 </body>

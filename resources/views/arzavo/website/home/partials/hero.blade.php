@@ -40,10 +40,10 @@
                 communication, and daily operations from a single, easy-to-use platform. Arzavo helps educational
                 institutions save time, reduce manual work, and stay organized as they grow.</p>
             <div class="flex flex-col md:flex-row items-center gap-4">
-                <x-button url="{{ route('register.form') }}" class="w-full! md:w-auto!" padding="px-6 py-3">Get Started
+                <x-button url="{{ route('arzaq.redirect') }}" class="w-full! md:w-auto!" padding="px-6 py-3">Get Started
                     <i class="fa-solid fa-arrow-right -rotate-45"></i></x-button>
-                <x-button url="{{ route('login.form') }}" class="w-full! md:w-auto!" padding="px-6 py-3"
-                    variant="accent">Request For Demo <i class="fa-solid fa-right-to-bracket"></i></x-button>
+                <x-button url="{{ route('arzaq.redirect') }}" class="w-full! md:w-auto!" padding="px-6 py-3"
+                    variant="accent">Log In <i class="fa-solid fa-right-to-bracket"></i></x-button>
             </div>
 
             <div class="stats grid grid-cols-2 md:grid-cols-4 items-center gap-6 mt-5">

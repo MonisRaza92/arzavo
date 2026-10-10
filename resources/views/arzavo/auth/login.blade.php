@@ -43,15 +43,19 @@
                             Register</a>
                     </div>
                 </form>
-                {{-- Google Login (Commented out for now)
-                <div class="mt-6 text-center w-full">
-                    <div class="h-0.5 w-full bg-tertiary border-rounded my-8 flex items-center justify-center"><span
-                            class="text-primary bg-primary text-xs py-1 px-2">OR CONTINUE WITH</span></div>
-                    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
-                        data-text="continue_with" data-shape="rounded">
+
+                {{-- ARZAQ Central SSO Login --}}
+                <div class="mt-5 text-center w-full">
+                    <div class="h-0.5 w-full bg-tertiary border-rounded my-4 flex items-center justify-center">
+                        <span class="text-primary bg-primary text-xs py-1 px-2 uppercase tracking-wider font-semibold">Or continue with</span>
                     </div>
+                    
+                    <a href="{{ route('arzaq.redirect') }}" 
+                       class="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm transition shadow-sm">
+                        <i class="fa-solid fa-shield-halved text-base"></i>
+                        <span>Continue with ARZAQ SSO</span>
+                    </a>
                 </div>
-                --}}
             </div>
         </div>
     </div>

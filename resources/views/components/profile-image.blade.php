@@ -2,7 +2,7 @@
     'user' => null,
 ])
 @php
-    $user = $user ?? auth('web')->user() ?? auth('tenant')->user();
+    $user = $user ?? auth('web')->user() ?? auth('tenant')->user();     
     $fname = $user->fname ?? 'U';
 @endphp
 @if ($user && !empty($user->profile_picture)) 
