@@ -31,6 +31,33 @@
         </div>
     </div>
 
+    @php
+        $isSubActive = $subscription && $subscription->isActive();
+        $isSubExpired = $subscription ? !$subscription->isActive() : true;
+    @endphp
+
+    @if($isSubExpired)
+        <div class="mb-4 p-4 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center justify-between flex-wrap gap-4 shadow-sm">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 rounded-full bg-rose-500/20 text-rose-600 flex items-center justify-center shrink-0 border border-rose-500/30 text-lg">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-rose-600 flex items-center gap-2">
+                        <span>Subscription Expired</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-rose-600 text-white uppercase tracking-wider font-extrabold">Action Required</span>
+                    </h4>
+                    <p class="text-xs text-secondary mt-0.5">
+                        Your workspace plan expired {{ $subscription && $subscription->ends_at ? 'on ' . $subscription->ends_at->format('d M Y') : 'recently' }}. Student and staff public access to your portal is temporarily suspended until renewed.
+                    </p>
+                </div>
+            </div>
+            <a href="{{ route('checkout', $plan ? $plan->slug : 'pro') }}" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded transition flex items-center gap-2 shadow-xs shrink-0">
+                <i class="fa-solid fa-rotate-right text-xs"></i> Renew Subscription Now
+            </a>
+        </div>
+    @endif
+
     <!-- COCKPIT CARDS GRID -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
 
@@ -83,39 +110,71 @@
         </div>
 
         <!-- CARD 2: SUBSCRIPTION & PLAN -->
-        <div id="billing" class="p-5 border-rounded bg-primary border-primary space-y-4  flex flex-col justify-between">
+        <div id="billing" class="p-5 border-rounded bg-primary border-primary space-y-4 flex flex-col justify-between {{ $isSubExpired ? 'ring-1 ring-rose-500/30 bg-rose-500/[0.02]' : '' }}">
             <div class="space-y-4">
                 <div class="flex items-center justify-between">
                     <h3 class="text-sm font-bold text-primary flex items-center gap-2">
                         <i class="fa-solid fa-credit-card text-purple-500"></i> Plan & Subscription
                     </h3>
-                    <span
-                        class="px-2 py-0.5 rounded text-[10px] bg-indigo-500/10 text-indigo-600 font-bold border border-indigo-500/20">
-                        {{ $plan ? $plan->name : ($tenant->isTrialActive() ? 'Trial' : 'Active') }}
-                    </span>
+                    @if($isSubExpired)
+                        <span class="px-2 py-0.5 rounded text-[10px] bg-rose-500/10 text-rose-600 font-bold border border-rose-500/20 inline-flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span> Expired
+                        </span>
+                    @elseif($tenant->isTrialActive())
+                        <span class="px-2 py-0.5 rounded text-[10px] bg-blue-500/10 text-blue-600 font-bold border border-blue-500/20 inline-flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span> Trial
+                        </span>
+                    @else
+                        <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-600 font-bold border border-emerald-500/20 inline-flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Active
+                        </span>
+                    @endif
                 </div>
 
                 <div class="space-y-3 text-xs">
                     <div>
                         <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">CURRENT PLAN</span>
-                        <span
-                            class="font-semibold text-primary block mt-0.5">{{ $plan ? $plan->name : 'Growth (Trial)' }}</span>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="font-semibold text-primary block">{{ $plan ? $plan->name : 'Growth (Trial)' }}</span>
+                            @if($isSubExpired)
+                                <span class="text-[10px] text-rose-600 font-bold bg-rose-500/10 px-1.5 py-0.2 rounded border border-rose-500/20">Inactive</span>
+                            @endif
+                        </div>
                     </div>
 
                     <div>
-                        <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">RENEWAL /
-                            EXPIRATION</span>
-                        <span class="font-mono text-primary font-medium block mt-0.5">
-                            {{ $subscription && $subscription->ends_at ? $subscription->ends_at->format('d M Y') : ($tenant->isTrialActive() ? 'Trial (' . $tenant->trialDaysLeft() . ' days left)' : 'Lifetime / Active') }}
-                        </span>
+                        <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">RENEWAL / EXPIRATION</span>
+                        @if($isSubExpired)
+                            <span class="font-mono text-rose-600 font-bold block mt-0.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-xmark text-rose-500 text-xs"></i>
+                                Expired ({{ $subscription && $subscription->ends_at ? $subscription->ends_at->format('d M Y') : 'Past' }})
+                            </span>
+                        @elseif($subscription && $subscription->ends_at)
+                            <span class="font-mono text-primary font-medium block mt-0.5">
+                                {{ $subscription->ends_at->format('d M Y') }}
+                            </span>
+                        @elseif($tenant->isTrialActive())
+                            <span class="font-mono text-primary font-medium block mt-0.5">
+                                Trial ({{ $tenant->trialDaysLeft() }} days left)
+                            </span>
+                        @else
+                            <span class="font-mono text-primary font-medium block mt-0.5">Lifetime / Active</span>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            <a href="{{ route('pricing') }}"
-                class="w-full py-2.5 px-3 bg-hover-secondary text-primary border-primary border-rounded font-bold text-xs hover-primary transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-arrow-up-right-dots text-[11px]"></i> Upgrade / Change Plan
-            </a>
+            @if($isSubExpired)
+                <a href="{{ route('checkout', $plan ? $plan->slug : 'pro') }}"
+                    class="w-full py-2.5 px-3 bg-rose-600 hover:bg-rose-700 text-white border-rounded font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-xs">
+                    <i class="fa-solid fa-rotate-right text-[11px]"></i> Renew Subscription Now
+                </a>
+            @else
+                <a href="{{ route('pricing') }}"
+                    class="w-full py-2.5 px-3 bg-hover-secondary text-primary border-primary border-rounded font-bold text-xs hover-primary transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-arrow-up-right-dots text-[11px]"></i> Upgrade / Change Plan
+                </a>
+            @endif
         </div>
 
         <!-- CARD 3: ACCOUNT OWNER & CREDENTIALS -->

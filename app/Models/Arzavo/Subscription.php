@@ -89,6 +89,11 @@ class Subscription extends Model
         return false;
     }
 
+    public function isExpired()
+    {
+        return !$this->isActive();
+    }
+
     public function isInGracePeriod()
     {
         return $this->status === 'canceled' && $this->ends_at && now()->lessThan($this->ends_at);

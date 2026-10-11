@@ -47,23 +47,27 @@
                     $ownerUser = $tenant->admin ?: Auth::guard('web')->user();
                     $ownerName = $ownerUser ? trim($ownerUser->fname . ' ' . $ownerUser->lname) : 'System Admin';
 
-                    // Status Badge Mapping
-                    $statusDotClass = 'bg-emerald-500 animate-pulse';
-                    $statusBadgeClass = 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
-                    $statusLabel = 'Active';
+                    // Subscription active & expired state
+                    $isSubActive = $subscription && $subscription->isActive();
+                    $isSubExpired = $subscription ? !$subscription->isActive() : true;
 
+                    // Status Badge Mapping
                     if ($tenant->status === 'suspended' || $tenant->status === 'inactive') {
                         $statusDotClass = 'bg-rose-500';
                         $statusBadgeClass = 'bg-rose-500/10 text-rose-600 border-rose-500/20';
                         $statusLabel = ucfirst($tenant->status);
+                    } elseif ($isSubExpired || $tenant->status === 'expired') {
+                        $statusDotClass = 'bg-rose-500';
+                        $statusBadgeClass = 'bg-rose-500/10 text-rose-600 border-rose-500/20';
+                        $statusLabel = 'Expired';
                     } elseif ($tenant->isTrialActive()) {
                         $statusDotClass = 'bg-blue-500 animate-pulse';
                         $statusBadgeClass = 'bg-blue-500/10 text-blue-600 border-blue-500/20';
                         $statusLabel = 'Trial';
-                    } elseif (!$tenant->status || $tenant->status === 'expired') {
-                        $statusDotClass = 'bg-amber-500';
-                        $statusBadgeClass = 'bg-amber-500/10 text-amber-600 border-amber-500/20';
-                        $statusLabel = 'Expired';
+                    } else {
+                        $statusDotClass = 'bg-emerald-500 animate-pulse';
+                        $statusBadgeClass = 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+                        $statusLabel = 'Active';
                     }
 
                     // REAL Tenant Stats directly queried from Tenant Database
@@ -82,12 +86,14 @@
                     $planName = $plan ? $plan->name : ($tenant->isTrialActive() ? 'Free Trial' : 'Basic Plan');
 
                     // Renewal Date (100% Real)
-                    if ($subscription && $subscription->ends_at) {
+                    if ($isSubExpired) {
+                        $renewalDate = 'Expired (' . ($subscription && $subscription->ends_at ? $subscription->ends_at->format('d M Y') : 'Past') . ')';
+                    } elseif ($subscription && $subscription->ends_at) {
                         $renewalDate = $subscription->ends_at->format('d M Y');
                     } elseif ($tenant->isTrialActive()) {
                         $renewalDate = 'Trial (' . $tenant->trialDaysLeft() . 'd left)';
                     } else {
-                        $renewalDate = 'N/A';
+                        $renewalDate = 'Lifetime';
                     }
 
                     // Last login (100% Real)
@@ -167,6 +173,12 @@
                                         class="flex items-center gap-2 px-3 py-2 text-secondary hover-primary">
                                         <i class="fa-solid fa-sliders text-indigo-500 w-4"></i> Workspace Cockpit
                                     </a>
+                                    @if($isSubExpired)
+                                        <a href="{{ route('checkout', $plan ? $plan->slug : 'pro') }}"
+                                            class="flex items-center gap-2 px-3 py-2 text-rose-600 hover-primary font-bold">
+                                            <i class="fa-solid fa-rotate-right text-rose-600 w-4"></i> Renew Plan
+                                        </a>
+                                    @endif
                                     <button
                                         @click="menuOpen = false; document.getElementById('connectDomainPopup-{{ $tenant->id }}').classList.remove('hidden')"
                                         class="w-full text-left flex items-center gap-2 px-3 py-2 text-secondary hover-primary">
@@ -243,9 +255,9 @@
                             @endif
                         </div>
 
-                        <div class="border-dashed p-4 rounded">
+                        <div class="border-dashed p-4 rounded {{ $isSubExpired ? 'bg-rose-500/5 border-rose-500/20' : '' }}">
                             <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">RENEWAL</span>
-                            <span class="font-medium text-primary block mt-0.5 truncate">{{ $renewalDate }}</span>
+                            <span class="font-medium block mt-0.5 truncate {{ $isSubExpired ? 'text-rose-600 font-bold' : 'text-primary' }}">{{ $renewalDate }}</span>
                         </div>
                         <div class="border-dashed p-4 rounded">
                             <span class="text-tertiary text-[10px] font-bold uppercase tracking-wider block">USERS</span>

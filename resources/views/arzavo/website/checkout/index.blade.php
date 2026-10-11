@@ -27,9 +27,26 @@
                 </a>
             </div>
 
-            <div class="flex items-center gap-2 text-xs font-medium text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200/60">
-                <i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i>
-                <span>256-bit Secure Checkout</span>
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center gap-2 text-xs font-medium text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200/60">
+                    <i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i>
+                    <span>256-bit Secure Checkout</span>
+                </div>
+
+                <!-- Arzaq Ecosystem Profile & App Grid -->
+                <div id="arzaq-ecosystem-bar"
+                    data-auth-url="{{ config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')) }}"
+                    data-logout-url="{{ route('logout') }}" data-csrf="{{ csrf_token() }}"
+                    data-user-name="{{ $user?->fname ? trim($user->fname . ' ' . $user->lname) : ($user?->name ?? 'User') }}"
+                    data-user-email="{{ $user?->email }}"
+                    data-user-avatar="{{ $user?->avatar }}"
+                    data-theme="light"
+                    data-theme-toggle="false">
+                </div>
+                <!-- 2. Universal Ecosystem SDK Script (Auto-initializes UI & Session Sync) -->
+        <script
+            src="{{ rtrim(config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')), '/') }}/sdk/nav.js"
+            defer></script>
             </div>
         </div>
     </header>
@@ -87,17 +104,18 @@
                                 <div class="space-y-2.5 max-h-64 overflow-y-auto pr-1" id="tenantsListContainer">
                                     @foreach($tenants as $t)
                                         @php
-                                            $isActiveOnThisPlan = $t->subscription && $t->subscription->plan_id == $plan->id && $t->subscription->status === 'active';
+                                            $isPlanActive = $t->subscription && $t->subscription->plan_id == $plan->id && $t->subscription->isActive();
+                                            $isPlanExpired = $t->subscription && $t->subscription->plan_id == $plan->id && !$t->subscription->isActive();
                                             $hasUsedTrial = (bool) $t->has_used_trial;
                                             $isEligibleForTrial = !$hasUsedTrial && ($plan->trial_days ?? 0) > 0;
                                         @endphp
-                                        <div class="tenant-item border rounded-lg p-3.5 flex items-center justify-between transition cursor-pointer {{ $isActiveOnThisPlan ? 'bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed' : 'hover:border-dark border-gray-200 bg-white' }}"
+                                        <div class="tenant-item border rounded-lg p-3.5 flex items-center justify-between transition cursor-pointer {{ $isPlanActive ? 'bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed' : 'hover:border-dark border-gray-200 bg-white' }}"
                                              data-id="{{ $t->id }}"
                                              data-name="{{ $t->name }}"
                                              data-has-used-trial="{{ $hasUsedTrial ? 'true' : 'false' }}"
-                                             data-disabled="{{ $isActiveOnThisPlan ? 'true' : 'false' }}"
+                                             data-disabled="{{ $isPlanActive ? 'true' : 'false' }}"
                                              data-search="{{ strtolower($t->name . ' ' . $t->subdomain . ' ' . $t->url) }}"
-                                             @if(!$isActiveOnThisPlan) onclick="selectTenantItem({{ $t->id }}, '{{ addslashes($t->name) }}', {{ $hasUsedTrial ? 'true' : 'false' }})" @endif>
+                                             @if(!$isPlanActive) onclick="selectTenantItem({{ $t->id }}, '{{ addslashes($t->name) }}', {{ $hasUsedTrial ? 'true' : 'false' }})" @endif>
                                             
                                             <div class="flex items-center gap-3 min-w-0">
                                                 <div class="w-10 h-10 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center font-bold text-dark text-sm shrink-0">
@@ -106,7 +124,9 @@
                                                 <div class="min-w-0">
                                                     <div class="flex items-center gap-2">
                                                         <p class="text-xs font-bold text-dark truncate">{{ $t->name }}</p>
-                                                        @if($isEligibleForTrial)
+                                                        @if($isPlanExpired)
+                                                            <span class="text-[9px] font-bold bg-rose-100 text-rose-800 px-1.5 py-0.2 rounded">Expired (Renew)</span>
+                                                        @elseif($isEligibleForTrial)
                                                             <span class="text-[9px] font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">Trial Eligible</span>
                                                         @elseif($hasUsedTrial && ($plan->trial_days ?? 0) > 0)
                                                             <span class="text-[9px] font-semibold bg-gray-100 text-gray-600 px-1.5 py-0.2 rounded">Trial Used</span>
@@ -117,8 +137,8 @@
                                             </div>
 
                                             <div class="flex items-center gap-2 shrink-0">
-                                                @if($isActiveOnThisPlan)
-                                                    <span class="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Active Plan</span>
+                                                @if($isPlanActive)
+                                                    <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Active Plan</span>
                                                 @else
                                                     <div class="tenant-radio w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center">
                                                         <div class="tenant-radio-dot w-2 h-2 rounded-full bg-dark hidden"></div>
@@ -191,7 +211,7 @@
                                             </div>
                                         </div>
                                         <p class="text-lg font-extrabold text-dark" id="directCardPriceLabel">₹{{ number_format($monthlyPrice, 2) }} / mo</p>
-                                        <p class="text-xs text-dark/60 mt-1">Skip trial and activate regular billing cycle immediately via PayU hosted payment gateway.</p>
+                                        <p class="text-xs text-dark/60 mt-1">Skip trial and activate regular billing cycle immediately via Arzaq Universal Checkout (UPI, Cards, NetBanking, Ecosystem Wallet).</p>
                                     </div>
 
                                     <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold text-dark/60">
@@ -422,6 +442,8 @@
 
 </div>
 
+<!-- Universal Ecosystem SDK Script (Auto-initializes UI & Session Sync) -->
+<script src="{{ rtrim(config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')), '/') }}/sdk/nav.js" defer></script>
 <script>
 const planData = {
     name: "{{ addslashes($plan->name) }}",
@@ -658,8 +680,8 @@ async function processCheckout() {
             return;
         }
 
-        // Direct Paid Plan PayU Checkout
-        const res = await fetch("{{ route('payment.payu.init', $plan->id) }}", {
+        // Direct Paid Plan Arzaq Universal Checkout
+        const res = await fetch("{{ route('payment.session.init', $plan->id) }}", {
             method: "POST",
             headers: {
                 "X-CSRF-TOKEN": "{{ csrf_token() }}",
@@ -670,26 +692,12 @@ async function processCheckout() {
 
         const data = await res.json();
 
-        if (!res.ok || !data.success || !data.action || !data.params) {
-            throw new Error(data.error || data.message || "PayU payment initialization failed.");
+        if (!res.ok || !data.success || !data.checkout_url) {
+            throw new Error(data.message || data.error || "Arzaq payment session initialization failed.");
         }
 
-        // Dynamically create & submit PayU form
-        const payuForm = document.createElement('form');
-        payuForm.method = 'POST';
-        payuForm.action = data.action;
-
-        for (const [key, value] of Object.entries(data.params)) {
-            const hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = key;
-            hiddenField.value = value;
-            payuForm.appendChild(hiddenField);
-        }
-
-        document.body.appendChild(payuForm);
-        btnText.textContent = "Redirecting to PayU...";
-        payuForm.submit();
+        btnText.textContent = "Redirecting to Arzaq Checkout...";
+        window.location.href = data.checkout_url;
 
     } catch (err) {
         console.error(err);

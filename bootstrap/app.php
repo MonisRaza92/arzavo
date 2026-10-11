@@ -24,13 +24,14 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->validateCsrfTokens(except: [
+            'webhooks/arzaq-payment',
+            'webhooks/*',
+            'api/webhooks/*',
+            'api/v1/payments/webhook*',
             'cashfree/webhook',
             'payment/payu/success',
             'payment/payu/failure',
             'payment/payu/webhook',
-            'api/payu/webhook',
-            'payu/webhook',
-            'api/v1/payments/webhook*',
             'checkout/payu/*',
             'checkout/paytm/*',
             'checkout/cashfree/*',

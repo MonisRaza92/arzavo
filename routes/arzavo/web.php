@@ -57,14 +57,10 @@ Route::domain(config('app.domain'))->group(function () {
     });
 
     Route::get('/pay', [PaymentController::class, 'index']);
-    Route::get('/pay/{tenant}', [PaymentController::class, 'pay']);
-    Route::get('/billing/checkout', [PaymentController::class, 'checkout'])->name('billing.checkout');
-    Route::post('/tenant/payment/session/{plan}', [PaymentController::class, 'planSession'])->name('payment.session');
-    Route::post('/tenant/payment/payu/{plan}', [PaymentController::class, 'payuInit'])->name('payment.payu.init');
-    Route::match(['get', 'post'], '/payment/payu/success', [PaymentController::class, 'payuSuccess'])->name('payment.payu.success');
-    Route::match(['get', 'post'], '/payment/payu/failure', [PaymentController::class, 'payuFailure'])->name('payment.payu.failure');
-    Route::match(['get', 'post'], '/payment/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('payment.payu.webhook');
-    Route::match(['get', 'post'], '/api/payu/webhook', [PaymentController::class, 'payuWebhook'])->name('arzavo.api.payu.webhook');
+    Route::post('/tenant/payment/session/{plan}', [PaymentController::class, 'initArzaqSession'])->name('payment.session.init');
+    Route::get('/billing/success', [PaymentController::class, 'billingSuccess'])->name('billing.success');
+    Route::get('/billing/cancel', [PaymentController::class, 'billingCancel'])->name('billing.cancel');
+    Route::post('/webhooks/arzaq-payment', [\App\Http\Controllers\Api\ArzaqWebhookController::class, 'handle'])->name('arzavo.webhooks.arzaq_payment');
 
     // User Dashboard & Tenant Management Routes
     Route::middleware('arzaq.auth')->group(function () {

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Models\Arzavo\User;
@@ -18,7 +19,8 @@ class ArzaqAuthController extends Controller
      */
     public function redirect(Request $request)
     {
-        if (Auth::guard('web')->check()) {
+        // Only short-circuit to dashboard if already logged in AND not a switch/prompt request
+        if (Auth::guard('web')->check() && !$request->has('switch') && !$request->has('prompt') && !$request->has('force')) {
             $user = Auth::guard('web')->user();
             if ($user->role === 'super_admin' || $user->role === 'admin') {
                 return redirect()->route('arzavo.admin.dashboard');
@@ -44,7 +46,7 @@ class ArzaqAuthController extends Controller
         $clientId = config('services.arzaq.client_id', env('ARZAQ_CLIENT_ID', 'arzavo'));
         $redirectUri = config('services.arzaq.redirect_uri', env('ARZAQ_REDIRECT_URI', 'https://arzavo.test/auth/callback'));
 
-        $query = http_build_query([
+        $queryParams = [
             'client_id'             => $clientId,
             'redirect_uri'          => $redirectUri,
             'response_type'         => 'code',
@@ -52,7 +54,13 @@ class ArzaqAuthController extends Controller
             'code_challenge'        => $codeChallenge,
             'code_challenge_method' => 'S256',
             'state'                 => $state,
-        ]);
+        ];
+
+        if ($request->filled('prompt')) {
+            $queryParams['prompt'] = $request->input('prompt');
+        }
+
+        $query = http_build_query($queryParams);
 
         return redirect($authUrl . '/oauth/authorize?' . $query)
             ->withCookie(cookie('oauth_code_verifier', $codeVerifier, 15))
@@ -60,20 +68,22 @@ class ArzaqAuthController extends Controller
     }
 
     /**
-     * 2. Handle Callback from ARZAQ Central Auth
+     * 2. Handle Callback from ARZAQ Central Auth (Logins & Account Switches)
      */
     public function callback(Request $request)
     {
-        if (Auth::guard('web')->check()) {
-            $user = Auth::guard('web')->user();
-            if ($user->role === 'super_admin' || $user->role === 'admin') {
-                return redirect()->route('arzavo.admin.dashboard');
-            }
-            return redirect()->route('tenants.index');
-        }
-
         $code = $request->input('code');
+
+        // If no code, only return dashboard if already authenticated locally
         if (!$code) {
+            if (Auth::guard('web')->check()) {
+                $user = Auth::guard('web')->user();
+                if ($user->role === 'super_admin' || $user->role === 'admin') {
+                    return redirect()->route('arzavo.admin.dashboard');
+                }
+                return redirect()->route('tenants.index');
+            }
+
             return response('Login was cancelled or denied by ARZAQ: ' . $request->input('error_description', $request->input('error', 'No authorization code')), 400);
         }
 
@@ -86,14 +96,19 @@ class ArzaqAuthController extends Controller
         $userinfoUrl = config('services.arzaq.userinfo_url', env('ARZAQ_OIDC_USERINFO', $authUrl . '/oauth/userinfo'));
 
         // Token Exchange
-        $response = Http::withoutVerifying()->asForm()->post($authUrl . '/oauth/token', [
+        $tokenPayload = [
             'grant_type'    => 'authorization_code',
             'client_id'     => $clientId,
             'client_secret' => $clientSecret,
             'redirect_uri'  => $redirectUri,
             'code'          => $code,
-            'code_verifier' => $codeVerifier,
-        ]);
+        ];
+
+        if (!empty($codeVerifier)) {
+            $tokenPayload['code_verifier'] = $codeVerifier;
+        }
+
+        $response = Http::withoutVerifying()->asForm()->post($authUrl . '/oauth/token', $tokenPayload);
 
         if ($response->failed()) {
             Log::error('Arzaq OAuth Token Exchange Failed', [
@@ -122,47 +137,62 @@ class ArzaqAuthController extends Controller
         }
 
         $userInfo = $userInfoResponse->json();
-        $arzaqUserId = $userInfo['sub'] ?? null;
+        $arzaqUserId = $userInfo['sub'] ?? ($userInfo['arzaq_user_id'] ?? null);
         $email = $userInfo['email'] ?? null;
 
         if (!$arzaqUserId || !$email) {
             return response('Incomplete profile data received from ARZAQ.', 400);
         }
 
-        // Split name into fname & lname
+        // Extract and format names
+        $fullName = trim($userInfo['name'] ?? '');
         $fname = $userInfo['given_name'] ?? null;
         $lname = $userInfo['family_name'] ?? null;
-        if (!$fname && !empty($userInfo['name'])) {
-            $parts = explode(' ', $userInfo['name'], 2);
-            $fname = $parts[0];
+        if (!$fname && $fullName !== '') {
+            $parts = explode(' ', $fullName, 2);
+            $fname = $parts[0] ?? '';
             $lname = $parts[1] ?? '';
         }
+        if (!$fname && !empty($userInfo['username'])) {
+            $fname = $userInfo['username'];
+        }
+        if (!$fname) {
+            $parts = explode('@', $email);
+            $fname = $parts[0] ?? 'User';
+        }
+        $lname = $lname ?? '';
+        $avatar = $userInfo['picture'] ?? ($userInfo['avatar'] ?? null);
+        $phone = $userInfo['phone'] ?? ($userInfo['phone_number'] ?? null);
 
         // Find user by arzaq_user_id or email
-        $user = User::where('arzaq_user_id', $arzaqUserId)
+        $user = User::where('arzaq_user_id', (string) $arzaqUserId)
             ->orWhere('email', $email)
             ->first();
 
         if (!$user) {
+            // Account does not exist in arzavo - CREATE IMMEDIATELY
             $user = User::create([
-                'arzaq_user_id'    => $arzaqUserId,
-                'fname'             => $fname ?? 'User',
-                'lname'             => $lname ?? '',
-                'username'          => $this->generateUniqueUsername($fname ?? 'user', $lname ?? ''),
+                'arzaq_user_id'    => (string) $arzaqUserId,
+                'fname'             => $fname ?: 'User',
+                'lname'             => $lname ?: '',
+                'username'          => $this->generateUniqueUsername($fname ?: 'user', $lname ?: '', $userInfo['username'] ?? null),
                 'email'             => $email,
-                'profile_picture'   => $userInfo['picture'] ?? null,
-                'number'            => $userInfo['phone_number'] ?? null,
+                'profile_picture'   => $avatar,
+                'number'            => $phone,
+                'password'          => bcrypt(Str::random(32)),
                 'role'              => 'user',
                 'status'            => 'active',
                 'email_verified_at' => now(),
                 'last_login'        => now(),
             ]);
         } else {
+            // Existing user - update sync data
             $user->update([
-                'arzaq_user_id'    => $arzaqUserId,
-                'fname'            => $user->fname ?: ($fname ?? 'User'),
-                'lname'            => $user->lname ?: ($lname ?? ''),
-                'profile_picture'  => $userInfo['picture'] ?? $user->profile_picture,
+                'arzaq_user_id'    => (string) $arzaqUserId,
+                'fname'            => $user->fname ?: ($fname ?: 'User'),
+                'lname'            => ($user->lname !== null && $user->lname !== '') ? $user->lname : ($lname ?: ''),
+                'profile_picture'  => $avatar ?: $user->profile_picture,
+                'number'           => $phone ?: $user->number,
                 'last_login'       => now(),
                 'status'           => $user->status === 'suspended' ? 'suspended' : 'active',
             ]);
@@ -172,16 +202,32 @@ class ArzaqAuthController extends Controller
             return response('Your account is suspended. Please contact support.', 403);
         }
 
+        // If previously logged in as a different user, clean up previous session cache and logout
+        if (Auth::guard('web')->check()) {
+            $prevUser = Auth::guard('web')->user();
+            if ($prevUser && $prevUser->email) {
+                Cache::forget('arzaq_session_active_' . md5($prevUser->email));
+            }
+            Auth::guard('web')->logout();
+        }
+
         // Login session start (Remember = true)
         Auth::guard('web')->login($user, true);
         $request->session()->regenerate();
         $request->session()->save();
 
+        // Clear active session cache for target user
+        Cache::forget('arzaq_session_active_' . md5($user->email));
+
+        // Clear temporary OAuth cookies
+        Cookie::queue(Cookie::forget('oauth_code_verifier'));
+        Cookie::queue(Cookie::forget('oauth_state'));
+
         if ($user->role === 'super_admin' || $user->role === 'admin') {
-            return redirect()->intended(route('arzavo.admin.dashboard'));
+            return redirect()->route('arzavo.admin.dashboard');
         }
 
-        return redirect()->intended(route('tenants.index'));
+        return redirect()->route('tenants.index');
     }
 
     /**
@@ -189,10 +235,16 @@ class ArzaqAuthController extends Controller
      */
     public function logout(Request $request)
     {
+        $user = Auth::guard('web')->user();
+        if ($user && $user->email) {
+            Cache::forget('arzaq_session_active_' . md5($user->email));
+        }
+
         Auth::guard('web')->logout();
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
+
         $returnUrl = $request->input('redirect_uri') ?: $request->query('redirect_uri', '/');
         return redirect()->away($returnUrl);
     }
@@ -200,11 +252,17 @@ class ArzaqAuthController extends Controller
     /**
      * Generate unique username helper
      */
-    private function generateUniqueUsername($fname, $lname)
+    private function generateUniqueUsername($fname, $lname, $preferred = null)
     {
-        $cleanFname = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', (string)$fname));
-        $cleanLname = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', (string)$lname));
-        $baseUsername = ($cleanFname . $cleanLname) ?: 'user';
+        if (!empty($preferred)) {
+            $baseUsername = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', (string)$preferred));
+        } else {
+            $cleanFname = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', (string)$fname));
+            $cleanLname = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', (string)$lname));
+            $baseUsername = ($cleanFname . $cleanLname) ?: 'user';
+        }
+
+        $baseUsername = $baseUsername ?: 'user';
         $username = $baseUsername;
         $counter = 1;
 
