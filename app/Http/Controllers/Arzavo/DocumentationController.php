@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Arzavo;
 
+use Illuminate\Http\Request;
+
 class DocumentationController
 {
     public function index()
@@ -16,5 +18,11 @@ class DocumentationController
             return view($viewPath, compact('slug'));
         }
         abort(404);
+    }
+
+    public function search(Request $request)
+    {
+        $query = trim($request->input('q', ''));
+        return redirect()->route('docs.index', ['search' => $query]);
     }
 }

@@ -82,10 +82,10 @@
             <div class="lg:col-span-2">
                 <h4 class="text-xs font-semibold uppercase tracking-wider text-theme-text mb-4">Platform</h4>
                 <ul class="space-y-2.5 text-xs">
-                    <li><a href="{{ route('features') }}" class="text-theme-text-muted hover:text-theme-text transition font-normal block">Features</a></li>
+                    <li><a href="{{ route('home') }}#features" class="text-theme-text-muted hover:text-theme-text transition font-normal block">Features</a></li>
                     <li><a href="{{ route('pricing') }}" class="text-theme-text-muted hover:text-theme-text transition font-normal block">Pricing</a></li>
                     <li><a href="{{ route('contact') }}" class="text-theme-text-muted hover:text-theme-text transition font-normal block">Contact Support</a></li>
-                    <li><a href="{{ route('documentation.index') }}" class="text-theme-text-muted hover:text-theme-text transition font-normal block">Documentation</a></li>
+                    <li><a href="{{ (request()->secure() ? 'https://' : 'http://') . 'docs.' . config('app.domain') }}" class="text-theme-text-muted hover:text-theme-text transition font-normal block">Documentation</a></li>
                     <li><a href="{{ route('trust') }}" class="text-theme-text-muted hover:text-theme-text transition font-normal block">Trust Center</a></li>
                 </ul>
             </div>

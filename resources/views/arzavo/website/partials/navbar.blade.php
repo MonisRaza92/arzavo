@@ -1,17 +1,16 @@
 {{-- Website Navbar (TENANTS_DESIGN_SYSTEM Compliant) --}}
 @php
+    $docsUrl = (request()->secure() ? 'https://' : 'http://') . 'docs.' . config('app.domain');
     $links = [
-        ['name' => 'Home', 'route' => 'home'],
-        ['name' => 'Features', 'route' => 'features'],
-        ['name' => 'Pricing', 'route' => 'pricing'],
-        ['name' => 'Docs', 'route' => 'documentation.index'],
-        ['name' => 'About', 'route' => 'about'],
-        ['name' => 'Contact', 'route' => 'contact'],
+        ['name' => 'Home', 'url' => route('home'), 'active' => request()->routeIs('home')],
+        ['name' => 'Features', 'url' => route('home') . '#features', 'active' => false],
+        ['name' => 'Pricing', 'url' => route('pricing'), 'active' => request()->routeIs('pricing')],
+        ['name' => 'Docs', 'url' => $docsUrl, 'active' => false],
+        ['name' => 'Contact', 'url' => route('contact'), 'active' => request()->routeIs('contact*')],
     ];
 @endphp
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-primary transition-colors"
-    x-data="{ mobileOpen: false }">
+<header class="fixed top-0 left-0 right-0 z-50 bg-primary transition-colors" x-data="{ mobileOpen: false }">
     <div class="container">
         <div class="flex items-center justify-between h-18">
 
@@ -26,9 +25,8 @@
             {{-- Desktop Nav Links --}}
             <nav class="hidden lg:flex items-center gap-8 rounded-full">
                 @foreach ($links as $link)
-                    @php $isActive = request()->routeIs($link['route']) || (request()->is(ltrim(route($link['route'], [], false), '/') . '*')); @endphp
-                    <a href="{{ route($link['route']) }}"
-                        class="rounded-full text-base transition {{ $isActive ? 'text-brand ' : '  text-theme-text-muted hover:text-theme-text ' }}">
+                    <a href="{{ $link['url'] }}"
+                        class="rounded-full text-base transition {{ $link['active'] ? 'text-brand font-medium' : 'text-theme-text-muted hover:text-theme-text' }}">
                         {{ $link['name'] }}
                     </a>
                 @endforeach
@@ -58,28 +56,17 @@
         class="lg:hidden bg-primary px-4 pt-2 pb-6 space-y-3" style="display: none;">
         <div class="space-y-1">
             @foreach ($links as $link)
-                <a href="{{ route($link['route']) }}"
-                    class="block px-4 py-2.5 rounded-full text-xs text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal transition">
+                <a href="{{ $link['url'] }}"
+                    class="block px-4 py-2.5 rounded-full text-xs font-normal transition {{ $link['active'] ? 'text-brand bg-secondary font-medium' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
                     {{ $link['name'] }}
                 </a>
             @endforeach
         </div>
         <div class="pt-2 flex flex-col gap-2">
-            @if (auth('web')->check())
-                <a href="{{ route('tenants.index') }}"
-                    class="w-full text-center px-4 py-3 bg-brand text-primary rounded-full font-normal text-xs">
-                    Dashboard
-                </a>
-            @else
-                <a href="{{ route('arzaq.redirect') }}"
-                    class="w-full text-center px-4 py-3 bg-secondary text-theme-text rounded-full font-normal text-xs hover:bg-subtle">
-                    Log In
-                </a>
-                <a href="{{ route('arzaq.redirect') }}"
-                    class="w-full text-center px-4 py-3 bg-brand text-primary rounded-full font-normal text-xs">
-                    Get Started Free
-                </a>
-            @endif
+            <a href="{{ route('arzaq.redirect') }}"
+                class="w-full text-center px-4 py-3 bg-brand text-primary rounded-full font-normal text-xs">
+                Get Started
+            </a>
         </div>
     </div>
 </header>

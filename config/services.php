@@ -48,13 +48,13 @@ return [
     ],
 
     'arzaq' => [
-        'auth_url'        => env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.test'),
-        'payment_url'     => env('ARZAQ_PAYMENT_URL', 'https://payments.arzaqinsights.test'),
-        'client_id'       => env('ARZAQ_CLIENT_ID'),
-        'client_secret'   => env('ARZAQ_CLIENT_SECRET'),
-        'payment_secret'  => env('ARZAQ_PAYMENT_SECRET', env('ARZAQ_CLIENT_SECRET')),
-        'redirect_uri'    => env('ARZAQ_REDIRECT_URI', 'https://arzavo.test/auth/callback'),
-        'userinfo_url'    => env('ARZAQ_OIDC_USERINFO', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.test') . '/oauth/userinfo'),
+        'auth_url'      => env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com'),
+        'client_id'     => env('ARZAQ_CLIENT_ID'),
+        'client_secret' => env('ARZAQ_CLIENT_SECRET'),
+        'redirect_uri'  => env('ARZAQ_REDIRECT_URI'),
+        'userinfo_url'  => env('ARZAQ_OIDC_USERINFO', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com') . '/oauth/userinfo'),
+        'payment_url'   => env('ARZAQ_PAYMENT_URL', 'https://payments.arzaqinsights.test'),
+        'payment_secret'=> env('ARZAQ_PAYMENT_SECRET', env('ARZAQ_CLIENT_SECRET')),
     ],
 
 ];

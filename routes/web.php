@@ -7,7 +7,8 @@ Route::view('/offline', 'offline');
 Route::post('/webhooks/arzaq-payment', [\App\Http\Controllers\Api\ArzaqWebhookController::class, 'handle'])->name('webhooks.arzaq_payment');
 
 
-// Arzavo Main Website, Auth & Arzavo Admin Routes
+// Arzavo Main Website, Auth, Docs & Arzavo Admin Routes
+require __DIR__ . '/arzavo/docs.php';
 require __DIR__ . '/arzavo/web.php';
 require __DIR__ . '/arzavo/auth.php';
 require __DIR__ . '/arzavo/admin.php';

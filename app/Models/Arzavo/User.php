@@ -13,6 +13,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
+        'name',
         'banner',
         'profile_picture',
         'fname',
@@ -35,6 +36,28 @@ class User extends Authenticatable
         'email_verified_at',
         'arzaq_user_id',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            if (empty($user->fname) && empty($user->lname)) {
+                $parts = explode(' ', trim($user->name ?? 'User'), 2);
+                $user->fname = $parts[0] ?: 'User';
+                $user->lname = $parts[1] ?? '';
+            }
+            if (empty($user->username)) {
+                $base = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', ($user->fname . $user->lname) ?: 'user'));
+                $user->username = ($base ?: 'user') . '_' . rand(1000, 9999);
+            }
+        });
+    }
+
+    public function setNameAttribute($value)
+    {
+        $parts = explode(' ', trim($value ?? ''), 2);
+        $this->attributes['fname'] = $parts[0] ?: 'User';
+        $this->attributes['lname'] = $parts[1] ?? '';
+    }
 
     protected $hidden = [
         'password',

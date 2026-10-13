@@ -32,14 +32,17 @@
         <!-- 1. Arzaq Ecosystem Mount Container (Renders Profile, App Grid & Wallet) -->
         <div id="arzaq-ecosystem-bar"
             data-auth-url="{{ config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')) }}"
-            data-logout-url="{{ route('logout') }}" data-csrf="{{ csrf_token() }}"
-            data-user-name="{{ $user?->name }}" data-user-email="{{ $user?->email }}"
-            data-user-avatar="{{ $user?->avatar }}" data-theme="light" data-theme-toggle="false">
+            data-logout-url="/logout"
+            data-csrf="{{ csrf_token() }}"
+            data-user-name="{{ Auth::user()?->name }}"
+            data-user-email="{{ Auth::user()?->email }}"
+            data-user-avatar="{{ Auth::user()?->avatar }}"
+            data-device-id="{{ request()->cookie('arzaq_device_id') }}">
         </div>
 
         <!-- 2. Universal Ecosystem SDK Script (Auto-initializes UI & Session Sync) -->
         <script
-            src="{{ rtrim(config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')), '/') }}/sdk/nav.js"
+            src="{{ config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')) }}/sdk/nav.js"
             defer></script>
 
     </div>

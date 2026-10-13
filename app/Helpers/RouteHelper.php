@@ -157,7 +157,7 @@ if (!function_exists('isSystemDomain')) {
         $hostWithoutWww = str_starts_with($host, 'www.') ? substr($host, 4) : $host;
         $baseWithoutWww = str_starts_with($baseDomain, 'www.') ? substr($baseDomain, 4) : $baseDomain;
 
-        $systemPrefixes = ['', 'admin.', 'super.', 'login.', 'register.'];
+        $systemPrefixes = ['', 'admin.', 'super.', 'login.', 'register.', 'docs.', 'contact.'];
 
         foreach ($systemPrefixes as $prefix) {
             if ($hostWithoutWww === $prefix . $baseWithoutWww) {

@@ -29,8 +29,8 @@
         <p class="relative z-10 !mb-5">
             Dive right in by learning about the core building block of our platform: The Tenant.
         </p>
-        <a href="{{ route('documentation.show', 'what-is-tenant') }}" class="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity relative z-10">
-            Read: What is a Tenant? <i class="fa-solid fa-arrow-right"></i>
+        <a href="{{ route('docs.show', 'what-is-tenant') }}" class="inline-flex items-center gap-2 bg-brand text-primary px-6 py-3 rounded-full text-xs font-semibold hover:opacity-90 transition relative z-10">
+            <span>Read: What is a Tenant?</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </a>
     </div>
 @endsection

@@ -27,8 +27,35 @@
     <link rel="shortcut icon" href="{{ url(media('images/logo/icon-dark.png')) }}">
     <title>@yield('title', 'Arzavo by Arzaq Insights — Smarter School & Coaching Management Software')</title>
     <x-variables :customizes="$customizes" />
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <!-- Anti-Theme-Flicker: Execute immediately before first paint -->
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('arzaq_theme') || 'system';
+                if (theme === 'black' || theme === 'obsidian') theme = 'dark';
+                if (theme === 'white' || theme === 'snow') theme = 'light';
+                if (theme === 'emerald') theme = 'aurora';
+
+                var effective = theme;
+                if (theme === 'system') {
+                    var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    effective = isDark ? 'dark' : 'light';
+                }
+
+                document.documentElement.setAttribute('data-theme', effective);
+
+                var isLight = ['light', 'snow', 'ivory', 'frost', 'sage', 'white'].indexOf(effective) !== -1;
+                if (isLight) {
+                    document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                }
+            } catch (e) {}
+        })();
+    </script>
+
     @vite(['resources/css/app.css', 'resources/css/theme.css', 'resources/js/app.js'])
 
     <!-- fontAwesome -->

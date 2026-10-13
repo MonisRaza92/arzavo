@@ -33,12 +33,12 @@
                 <!-- All Institutes Link -->
                 <li>
                     <a href="{{ route('tenants.index') }}"
-                       class="flex items-center justify-between px-3.5 py-2.5 rounded-full text-xs transition duration-150 {{ $isIndexActive ? 'bg-brand text-primary font-semibold' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal' }}">
+                       class="flex items-center justify-between px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isIndexActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
                         <span class="flex items-center gap-3">
-                            <i class="fa-solid fa-graduation-cap text-xs w-4 text-center"></i>
+                            <i class="fa-solid fa-graduation-cap text-sm w-4 text-center"></i>
                             <span>All Institutes</span>
                         </span>
-                        <span class="text-[10px] px-2 py-0.5 rounded-full {{ $isIndexActive ? 'bg-primary/20 text-primary' : 'bg-secondary text-theme-text-muted' }}">
+                        <span class="text-xs px-2 py-0.5 rounded-full {{ $isIndexActive ? 'bg-primary text-brand' : 'bg-secondary text-theme-text-muted' }}">
                             {{ $userTenants->count() }}
                         </span>
                     </a>
@@ -59,12 +59,12 @@
                                 @endphp
                                 <a href="{{ route('tenants.show', $t->subdomain) }}"
                                    title="{{ $t->name }} ({{ $t->subdomain }})"
-                                   class="flex items-center justify-between px-3 py-2 rounded-full text-[11px] transition duration-150 {{ $isThisActive ? 'bg-brand text-primary font-semibold' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal' }}">
+                                   class="flex items-center justify-between px-3 py-2 rounded-full text-sm font-normal transition duration-150 {{ $isThisActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
                                     <span class="truncate flex items-center gap-2">
-                                        <span class="w-1.5 h-1.5 rounded-full {{ $isThisActive ? 'bg-primary' : $dotColor }} shrink-0"></span>
+                                        <span class="w-1.5 h-1.5 rounded-full {{ $dotColor }} shrink-0"></span>
                                         <span class="truncate">{{ $t->name }}</span>
                                     </span>
-                                    <i class="fa-solid fa-chevron-right text-[8px] {{ $isThisActive ? 'text-primary opacity-80' : 'opacity-40' }}"></i>
+                                    <i class="fa-solid fa-chevron-right text-xs {{ $isThisActive ? 'text-brand opacity-80' : 'opacity-40' }}"></i>
                                 </a>
                             @endforeach
                         </div>
@@ -74,8 +74,8 @@
                 <!-- Create Institute CTA -->
                 <li class="pt-1">
                     <a href="{{ route('tenants.create') }}"
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs transition duration-150 {{ $isCreateActive ? 'bg-brand text-primary font-semibold' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal' }}">
-                        <i class="fa-solid fa-plus text-xs w-4 text-center"></i>
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isCreateActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <i class="fa-solid fa-plus text-sm w-4 text-center"></i>
                         <span>Add Institute</span>
                     </a>
                 </li>
@@ -91,8 +91,8 @@
                 <!-- Domains Hub -->
                 <li>
                     <a href="{{ route('tenants.domains') }}"
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs transition duration-150 {{ $isDomainsActive ? 'bg-brand text-primary font-semibold' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal' }}">
-                        <i class="fa-solid fa-globe text-xs w-4 text-center"></i>
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isDomainsActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <i class="fa-solid fa-globe text-sm w-4 text-center"></i>
                         <span>Domains & DNS</span>
                     </a>
                 </li>
@@ -100,8 +100,8 @@
                 <!-- Unified Billing & Invoices -->
                 <li>
                     <a href="{{ route('tenants.billing') }}"
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs transition duration-150 {{ $isBillingActive ? 'bg-brand text-primary font-semibold' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal' }}">
-                        <i class="fa-solid fa-credit-card text-xs w-4 text-center"></i>
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isBillingActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <i class="fa-solid fa-credit-card text-sm w-4 text-center"></i>
                         <span>Plans & Invoices</span>
                     </a>
                 </li>
@@ -109,8 +109,8 @@
                 <!-- Storage & Quotas -->
                 <li>
                     <a href="{{ route('tenants.storage') }}"
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs transition duration-150 {{ $isStorageActive ? 'bg-brand text-primary font-semibold' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal' }}">
-                        <i class="fa-solid fa-server text-xs w-4 text-center"></i>
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isStorageActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <i class="fa-solid fa-server text-sm w-4 text-center"></i>
                         <span>Storage & Quotas</span>
                     </a>
                 </li>
@@ -118,8 +118,8 @@
                 <!-- Database Backups Vault -->
                 <li>
                     <a href="{{ route('tenants.backups') }}"
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs transition duration-150 {{ $isBackupsActive ? 'bg-brand text-primary font-semibold' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal' }}">
-                        <i class="fa-solid fa-database text-xs w-4 text-center"></i>
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isBackupsActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <i class="fa-solid fa-database text-sm w-4 text-center"></i>
                         <span>Database Backups</span>
                     </a>
                 </li>
@@ -127,8 +127,8 @@
                 <!-- Security & Audit Logs -->
                 <li>
                     <a href="{{ route('tenants.security') }}"
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs transition duration-150 {{ $isSecurityActive ? 'bg-brand text-primary font-semibold' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary font-normal' }}">
-                        <i class="fa-solid fa-shield-halved text-xs w-4 text-center"></i>
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isSecurityActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <i class="fa-solid fa-shield-halved text-sm w-4 text-center"></i>
                         <span>Security & Logs</span>
                     </a>
                 </li>
@@ -143,15 +143,15 @@
             <ul class="space-y-1">
                 <li>
                     <a href="https://docs.arzavo.com" target="_blank"
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs text-theme-text-muted hover:text-theme-text hover:bg-secondary transition duration-150 font-normal">
-                        <i class="fa-solid fa-book-open text-xs w-4 text-center"></i>
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal text-theme-text-muted hover:text-theme-text hover:bg-secondary transition duration-150">
+                        <i class="fa-solid fa-book-open text-sm w-4 text-center"></i>
                         <span>Setup Documentation</span>
                     </a>
                 </li>
                 <li>
                     <a href="mailto:support@arzavo.com"
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs text-theme-text-muted hover:text-theme-text hover:bg-secondary transition duration-150 font-normal">
-                        <i class="fa-solid fa-headset text-xs w-4 text-center"></i>
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal text-theme-text-muted hover:text-theme-text hover:bg-secondary transition duration-150">
+                        <i class="fa-solid fa-headset text-sm w-4 text-center"></i>
                         <span>Help Desk</span>
                     </a>
                 </li>

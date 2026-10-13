@@ -11,16 +11,24 @@ use App\Http\Controllers\Arzavo;
 
 Route::domain(config('app.domain'))->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/about', [HomeController::class, 'about'])->name('about');
-    Route::prefix('documentation')->as('documentation.')->group(function () {
-        Route::get('/', [DocumentationController::class, 'index'])->name('index');
-        Route::get('/{slug}', [DocumentationController::class, 'show'])->name('show');
-    });
+
+    // Subdomain Redirects for Documentation
     Route::get('/docs', function () {
-        return redirect()->route('documentation.index');
+        $scheme = request()->secure() ? 'https' : 'http';
+        return redirect()->away($scheme . '://docs.' . config('app.domain'));
     })->name('docs');
+
+    Route::get('/documentation', function () {
+        $scheme = request()->secure() ? 'https' : 'http';
+        return redirect()->away($scheme . '://docs.' . config('app.domain'));
+    })->name('documentation.index');
+
+    Route::get('/documentation/{slug}', function ($slug) {
+        $scheme = request()->secure() ? 'https' : 'http';
+        return redirect()->away($scheme . '://docs.' . config('app.domain') . '/' . $slug);
+    })->name('documentation.show');
+
     Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
-    Route::get('/features', [HomeController::class, 'features'])->name('features');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::post('/contact', [HomeController::class, 'contactSubmit'])->name('contact.submit');
     Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');

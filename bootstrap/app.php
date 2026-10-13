@@ -17,6 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => (auth('web')->user()?->role === 'super_admin' || auth('web')->user()?->role === 'admin') ? route('arzavo.admin.dashboard') : route('tenants.index'));
 
+        $middleware->encryptCookies(except: [
+            'arzaq_device_id',
+            'oauth_code_verifier',
+            'oauth_state',
+        ]);
+
         $middleware->web(prepend: [
             \App\Http\Middleware\TenantMiddleware::class,
         ], append: [

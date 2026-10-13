@@ -36,12 +36,12 @@
                 <!-- Arzaq Ecosystem Profile & App Grid -->
                 <div id="arzaq-ecosystem-bar"
                     data-auth-url="{{ config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')) }}"
-                    data-logout-url="{{ route('logout') }}" data-csrf="{{ csrf_token() }}"
+                    data-logout-url="{{ route('logout') }}"
+                    data-login-url="{{ route('arzaq.redirect', ['switch' => 1]) }}"
+                    data-csrf="{{ csrf_token() }}"
                     data-user-name="{{ $user?->fname ? trim($user->fname . ' ' . $user->lname) : ($user?->name ?? 'User') }}"
                     data-user-email="{{ $user?->email }}"
-                    data-user-avatar="{{ $user?->avatar }}"
-                    data-theme="light"
-                    data-theme-toggle="false">
+                    data-user-avatar="{{ $user?->avatar }}">
                 </div>
                 <!-- 2. Universal Ecosystem SDK Script (Auto-initializes UI & Session Sync) -->
         <script

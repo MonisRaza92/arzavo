@@ -18,11 +18,6 @@ class HomeController
         return view('arzavo.website.home.index', compact('plans'));
     }
 
-    public function about()
-    {
-        return view('arzavo.website.about.index');
-    }
-
     public function pricing()
     {
         $plans = Plan::where('is_active', true)
@@ -31,11 +26,6 @@ class HomeController
             ->orderBy('monthly_price')
             ->get();
         return view('arzavo.website.pricing.index', compact('plans'));
-    }
-
-    public function features()
-    {
-        return view('arzavo.website.features.index');
     }
 
     public function contact()
