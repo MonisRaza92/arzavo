@@ -28,46 +28,59 @@ class ValidateArzaqSession
             $email = $user?->email;
 
             if ($email) {
-                // Performance Cache: 15 seconds cache to reduce network overhead
-                $cacheKey = 'arzaq_session_active_' . md5($email);
+                $deviceId = $request->cookie('arzaq_device_id') ?: session('arzaq_device_id');
+                // Performance Cache: 10 seconds cache to reduce network overhead
+                $cacheKey = 'arzaq_session_active_' . md5($email . '_' . ($deviceId ?? 'nodev'));
 
-                $isActive = Cache::remember($cacheKey, 15, function () use ($email) {
+                $checkResult = Cache::remember($cacheKey, 10, function () use ($email, $deviceId) {
                     try {
                         $authUrl = rtrim(config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.test')), '/');
+                        $params = ['email' => $email];
+                        if ($deviceId) {
+                            $params['device_id'] = $deviceId;
+                        }
+
                         $response = Http::timeout(2)
                             ->withoutVerifying()
-                            ->get($authUrl . '/api/v1/ecosystem/session-check', [
-                                'email' => $email,
-                            ]);
+                            ->get($authUrl . '/api/v1/ecosystem/session-check', $params);
 
                         if ($response->successful()) {
-                            $json = $response->json();
-                            if (isset($json['reason']) && $json['reason'] === 'user_not_found_or_blocked') {
-                                return false;
-                            }
-                            if (isset($json['status']) && in_array($json['status'], ['inactive', 'suspended', 'blocked'])) {
-                                return false;
-                            }
-                            return true;
+                            return $response->json();
                         }
                     } catch (\Throwable $e) {
                         // In case Central Auth is unreachable, do not disrupt local session
-                        return true;
+                        return ['active' => true];
                     }
-                    return true;
+                    return ['active' => true];
                 });
 
-                // If session is terminated centrally
+                $isActive = $checkResult['active'] ?? true;
+                $reason = $checkResult['reason'] ?? '';
+                $status = $checkResult['status'] ?? '';
+
+                if (isset($checkResult['reason']) && $checkResult['reason'] === 'user_not_found_or_blocked') {
+                    $isActive = false;
+                }
+                if (isset($checkResult['status']) && in_array($checkResult['status'], ['inactive', 'suspended', 'blocked', 'mismatch', 'logged_out'])) {
+                    $isActive = false;
+                }
+
+                // If session is terminated centrally or mismatched with active central account
                 if (!$isActive) {
                     Cache::forget($cacheKey);
 
-                    // 1. Destroy local session
+                    // 1. Destroy local stale session
                     Auth::guard('web')->logout();
                     Auth::logout();
                     $request->session()->invalidate();
                     $request->session()->regenerateToken();
 
-                    // 2. Redirect to Central OAuth Login
+                    // 2. If it is a session mismatch, redirect to Central Auth to seamlessly switch to the active central user
+                    if ($reason === 'user_mismatch' || $reason === 'device_user_mismatch' || $status === 'mismatch') {
+                        return redirect()->route('arzaq.redirect', ['switch' => 1]);
+                    }
+
+                    // 3. Otherwise redirect to Central OAuth Login
                     return redirect()->route('login');
                 }
             }

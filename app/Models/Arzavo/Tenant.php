@@ -28,6 +28,7 @@ class Tenant extends Model
         'country',
         'pincode',
         'status',
+        'scheduled_delete_at',
         'has_used_trial',
         'trial_used_at',
         'db_name',
@@ -42,7 +43,21 @@ class Tenant extends Model
         'domain_verified' => 'boolean',
         'has_used_trial' => 'boolean',
         'trial_used_at' => 'datetime',
+        'scheduled_delete_at' => 'datetime',
     ];
+
+    public function isPendingDeletion()
+    {
+        return !is_null($this->scheduled_delete_at);
+    }
+
+    public function deletionHoursLeft()
+    {
+        if (!$this->scheduled_delete_at) {
+            return 0;
+        }
+        return max(0, (int) now()->diffInHours($this->scheduled_delete_at, false));
+    }
 
     /**
      * Tenant Admin User Relation

@@ -19,15 +19,6 @@ class ArzaqAuthController extends Controller
      */
     public function redirect(Request $request)
     {
-        // Only short-circuit to dashboard if already logged in AND not a switch/prompt request
-        if (Auth::guard('web')->check() && !$request->has('switch') && !$request->has('prompt') && !$request->has('force')) {
-            $user = Auth::guard('web')->user();
-            if ($user->role === 'super_admin' || $user->role === 'admin') {
-                return redirect()->route('arzavo.admin.dashboard');
-            }
-            return redirect()->route('tenants.index');
-        }
-
         // Generate PKCE code verifier & challenge
         $codeVerifier = Str::random(64);
         $codeChallenge = rtrim(strtr(base64_encode(hash('sha256', $codeVerifier, true)), '+/', '-_'), '=');
@@ -216,8 +207,16 @@ class ArzaqAuthController extends Controller
         $request->session()->regenerate();
         $request->session()->save();
 
+        // Capture and persist device_id from Central Auth callback
+        $deviceId = $request->input('device_id') ?: $request->cookie('arzaq_device_id');
+        if ($deviceId) {
+            session(['arzaq_device_id' => $deviceId]);
+            Cookie::queue('arzaq_device_id', $deviceId, 525600, '/', null, false, false, false, 'lax');
+        }
+
         // Clear active session cache for target user
         Cache::forget('arzaq_session_active_' . md5($user->email));
+        Cache::forget('arzaq_session_active_' . md5($user->email . '_' . ($deviceId ?? 'nodev')));
 
         // Clear temporary OAuth cookies
         Cookie::queue(Cookie::forget('oauth_code_verifier'));
@@ -236,8 +235,10 @@ class ArzaqAuthController extends Controller
     public function logout(Request $request)
     {
         $user = Auth::guard('web')->user();
+        $deviceId = $request->cookie('arzaq_device_id') ?: session('arzaq_device_id');
         if ($user && $user->email) {
             Cache::forget('arzaq_session_active_' . md5($user->email));
+            Cache::forget('arzaq_session_active_' . md5($user->email . '_' . ($deviceId ?? 'nodev')));
         }
 
         Auth::guard('web')->logout();

@@ -1,131 +1,167 @@
-{{-- Documentation Section --}}
-<section id="docs" class="relative py-20 overflow-hidden"
-         style="background: linear-gradient(180deg, #ffffff 0%, #fff 100%);">
+{{-- Documentation & Resource Section (TENANTS_DESIGN_SYSTEM Compliant) --}}
+<section id="docs" class="py-20 bg-secondary overflow-hidden">
+    <div class="container">
 
-    <div class="container relative z-10">
+        {{-- Section Header (Split Layout: Title Left, Description Right) --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12">
 
-        {{-- Header --}}
-        <div class="mb-14">
-            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Resource Center</p>
-            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-                <h2 class="text-4xl md:text-5xl font-semibold text-dark leading-tight tracking-tight">
-                    Everything you need to succeed.
+            {{-- Left: Main Heading --}}
+            <div class="lg:col-span-7">
+                <h2 class="text-4xl lg:text-4xl xl:text-5xl font-semibold text-theme-text leading-tight">
+                    Everything You Need to <br class="hidden sm:inline">
+                    <span class="text-brand">Launch and Scale</span>.
                 </h2>
-                <p class="text-dark/60 leading-relaxed max-w-md lg:text-right text-sm">
-                    Comprehensive guides, dashboard walkthroughs, and settings references to help you set up Arzavo.
+            </div>
+
+            {{-- Right: Subtitle --}}
+            <div class="lg:col-span-5 flex flex-col justify-end">
+                <p class="text-sm xl:text-base text-theme-text-muted font-normal leading-relaxed">
+                    Access step-by-step developer guides, DNS CNAME configuration walkthroughs, and tenant architecture documentation to transition your institute to the cloud with confidence.
                 </p>
             </div>
+
         </div>
 
-        {{-- Doc Cards --}}
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        {{-- 3 Doc Cards Grid (bg-primary rounded-lg flat) --}}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
 
-            {{-- Quick Start --}}
-            <div class="rounded-lg border border-gray-200 bg-white p-8 hover:-translate-y-1 transition-transform duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-5">
-                    <i class="fa-solid fa-rocket text-lg"></i>
-                </div>
-                <h4 class="text-lg font-semibold text-dark mb-4">Quick Start Guide</h4>
-                <div class="space-y-2.5 mb-6 text-sm text-dark/70">
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Account Provisioning
-                    </p>
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> Domain Mapping Setup
-                    </p>
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> Visual Theme Customization
-                    </p>
-                </div>
-                <a href="{{ route('documentation.index') }}" class="text-sm font-semibold text-accent flex items-center gap-1.5 hover:gap-2.5 transition-all duration-300">
-                    Explore Guide <i class="fa-solid fa-arrow-right text-xs"></i>
-                </a>
-            </div>
-
-            {{-- Governance --}}
-            <div class="rounded-lg border border-gray-200 bg-white p-8 hover:-translate-y-1 transition-transform duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-5">
-                    <i class="fa-solid fa-users-gear text-lg"></i>
-                </div>
-                <h4 class="text-lg font-semibold text-dark mb-4">Portal Governance</h4>
-                <div class="space-y-2.5 mb-6 text-sm text-dark/70">
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Staff Roles & Settings
-                    </p>
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> Batch Allocation Flow
-                    </p>
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> Student Lifecycle Roster
-                    </p>
-                </div>
-                <a href="{{ route('documentation.index') }}" class="text-sm font-semibold text-accent flex items-center gap-1.5 hover:gap-2.5 transition-all duration-300">
-                    Explore Guide <i class="fa-solid fa-arrow-right text-xs"></i>
-                </a>
-            </div>
-
-            {{-- LMS & Academics --}}
-            <div class="rounded-lg border border-gray-200 bg-white p-8 hover:-translate-y-1 transition-transform duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-5">
-                    <i class="fa-solid fa-book-bookmark text-lg"></i>
-                </div>
-                <h4 class="text-lg font-semibold text-dark mb-4">LMS & Academics</h4>
-                <div class="space-y-2.5 mb-6 text-sm text-dark/70">
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span> Publishing Course Material
-                    </p>
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> Creating Digital Exams
-                    </p>
-                    <p class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span> Generating Report Cards
-                    </p>
-                </div>
-                <a href="{{ route('documentation.index') }}" class="text-sm font-semibold text-accent flex items-center gap-1.5 hover:gap-2.5 transition-all duration-300">
-                    Explore Guide <i class="fa-solid fa-arrow-right text-xs"></i>
-                </a>
-            </div>
-        </div>
-
-        {{-- Help Banner --}}
-        <div class="rounded-lg p-8 flex flex-col md:flex-row items-center justify-between gap-6 border">
-            <div class="flex gap-4 items-center">
-                <div class="w-12 h-12 rounded-lg bg-dark flex items-center justify-center text-white shrink-0">
-                    <i class="fa-solid fa-headset text-lg"></i>
-                </div>
+            {{-- Card 1: Quick Start --}}
+            <div class="bg-primary rounded-lg p-6 flex flex-col justify-between">
                 <div>
-                    <h4 class="font-semibold text-dark mb-1">Need help setting up?</h4>
-                    <p class="text-sm text-dark/70">Our dedicated support managers are available around the clock to help you onboard.</p>
+                    <div class="w-8 h-8 rounded-full bg-secondary text-theme-text flex items-center justify-center text-xs mb-4 font-semibold">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-theme-text mb-3">Quick Start Architecture</h3>
+                    <div class="space-y-2 mb-6 text-xs text-theme-text-muted font-normal">
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-success"></span> Workspace & Subdomain Creation
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-theme-text-muted/40"></span> Custom CNAME & TXT DNS Mapping
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-theme-text-muted/40"></span> White-Label Color System
+                        </p>
+                    </div>
                 </div>
+                <a href="{{ route('documentation.index') }}"
+                   class="text-xs font-normal text-theme-text flex items-center gap-2 hover:gap-3 transition-all pt-3">
+                    <span>Read Architecture Guide</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
             </div>
-            <x-button url="{{ route('contact') }}" padding="px-6 py-3">
-                Contact Support
-            </x-button>
-        </div>
-        <div class="rounded-lg p-8 flex mt-6 flex-col md:flex-row items-center justify-between gap-6 border">
-            <div class="flex gap-4 items-center">
-                <div class="w-12 h-12 rounded-lg bg-accent flex items-center justify-center text-white shrink-0">
-                    <i class="fa-solid fa-gift text-lg"></i>
-                </div>
+
+            {{-- Card 2: Staff & Governance --}}
+            <div class="bg-primary rounded-lg p-6 flex flex-col justify-between">
                 <div>
-                    <h4 class="font-semibold text-dark mb-1">Ready to get started?</h4>
-                    <p class="text-sm text-dark/70">Experience the full Arzavo platform with a free 14-day trial. No credit card required.</p>
+                    <div class="w-8 h-8 rounded-full bg-secondary text-theme-text flex items-center justify-center text-xs mb-4 font-semibold">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-theme-text mb-3">Governance & Permissions</h3>
+                    <div class="space-y-2 mb-6 text-xs text-theme-text-muted font-normal">
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-success"></span> Custom Staff Role Definitions
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-theme-text-muted/40"></span> Batch Allocation & Schedule Matrix
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-theme-text-muted/40"></span> Activity Logs & Security Auditing
+                        </p>
+                    </div>
                 </div>
+                <a href="{{ route('documentation.index') }}"
+                   class="text-xs font-normal text-theme-text flex items-center gap-2 hover:gap-3 transition-all pt-3">
+                    <span>Explore Security Roles</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
             </div>
-            <x-button url="{{ route('pricing') }}" variant="accent" padding="px-6 py-3">
-                Start Free Trial <i class="fa-solid fa-arrow-right -rotate-45"></i>
-            </x-button>
+
+            {{-- Card 3: Webhooks & Automations --}}
+            <div class="bg-primary rounded-lg p-6 flex flex-col justify-between">
+                <div>
+                    <div class="w-8 h-8 rounded-full bg-secondary text-theme-text flex items-center justify-center text-xs mb-4 font-semibold">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-theme-text mb-3">API & Payment Webhooks</h3>
+                    <div class="space-y-2 mb-6 text-xs text-theme-text-muted font-normal">
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-success"></span> WhatsApp Notification Gateway
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-theme-text-muted/40"></span> Real-Time Payment Reconciliation
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-theme-text-muted/40"></span> Biometric Hardware Sync API
+                        </p>
+                    </div>
+                </div>
+                <a href="{{ route('documentation.index') }}"
+                   class="text-xs font-normal text-theme-text flex items-center gap-2 hover:gap-3 transition-all pt-3">
+                    <span>API Reference Docs</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
+
         </div>
+
+        {{-- Final High-Impact CTA Banner with Educational Classroom Visual --}}
+        <div class="bg-primary rounded-lg p-6 sm:p-10 lg:p-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+                {{-- Left Text & Actions --}}
+                <div class="lg:col-span-7 flex flex-col items-start">
+                    <span class="px-3 py-1 rounded-full bg-secondary text-theme-text text-[11px] font-normal mb-4">
+                        Zero Risk · 14-Day Free Evaluation
+                    </span>
+
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-theme-text leading-tight mb-5">
+                        Ready to Digitize Your <span class="text-brand">Institute</span>?
+                    </h2>
+
+                    <p class="text-xs sm:text-sm md:text-base text-theme-text-muted font-normal leading-relaxed mb-8 max-w-xl">
+                        Join hundreds of schools, coaching centers, and modern academies already using Arzavo to eliminate manual fee chasing, streamline attendance, and empower learners with branded online education.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
+                        <a href="{{ route('arzaq.redirect') }}"
+                           class="px-7 py-3.5 bg-brand text-primary rounded-full font-normal text-xs transition hover:opacity-90 inline-flex items-center gap-2">
+                            <span>Get Started Free</span>
+                            <i class="fa-solid fa-arrow-right -rotate-45 text-xs"></i>
+                        </a>
+
+                        <a href="{{ route('contact') }}"
+                           class="px-7 py-3.5 bg-secondary text-theme-text rounded-full font-normal text-xs hover:bg-subtle transition inline-flex items-center gap-2">
+                            <span>Talk to an Expert</span>
+                            <i class="fa-solid fa-headset text-xs text-theme-text-muted"></i>
+                        </a>
+                    </div>
+
+                    <p class="text-[11px] text-theme-text-muted font-normal">
+                        No credit card required · Instant tenant provisioning · White-glove data migration
+                    </p>
+                </div>
+
+                {{-- Right Visual: Students & Classroom Showcase --}}
+                <div class="lg:col-span-5 h-full">
+                    <div class="relative bg-secondary rounded-lg overflow-hidden h-full min-h-[240px] sm:min-h-[300px] flex items-center justify-center">
+                        <img
+                            src="{{ asset('images/website/hero-showcase.jpg') }}"
+                            onerror="this.onerror=null;this.src='{{ asset('images/website/dashboard.png') }}'"
+                            alt="Arzavo Education Operating System Showcase"
+                            class="w-full h-full object-cover rounded-lg"
+                            loading="lazy"
+                        >
+
+                        <div class="absolute bottom-4 left-4 right-4 sm:right-auto inline-flex items-center gap-2.5 bg-primary/95 backdrop-blur-sm px-3.5 py-2 rounded-full">
+                            <span class="w-2 h-2 rounded-full bg-success"></span>
+                            <span class="text-xs font-normal text-theme-text">Unified Educational OS</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </section>
-
-<style>
-.{ opacity:0; transform:translateY(15px); transition:opacity .5s ease,transform .5s ease; transition-delay:var(--reveal-delay,0s); }
-..visible { opacity:1; transform:translateY(0); }
-</style>
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.05});
-    document.querySelectorAll('.').forEach(el=>obs.observe(el));
-});
-</script>

@@ -1,7 +1,7 @@
 @extends('arzavo.website.documentation.layout')
 
 @section('doc_content')
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-4 text-accent text-xs font-bold uppercase tracking-widest">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-4 text-accent text-xs font-semibold uppercase tracking-widest">
         Core Concept
     </div>
 
@@ -33,8 +33,8 @@
     <div class="mt-12 flex justify-between border-t border-white/10 pt-8">
         <div></div> <!-- Previous spacer -->
         <a href="{{ route('documentation.show', 'create-tenant') }}" class="inline-flex flex-col items-end text-right group">
-            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 group-hover:text-slate-400 transition-colors">Next</span>
-            <span class="text-lg font-bold text-accent group-hover:text-accent-secondary transition-colors flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1 group-hover:text-slate-400 transition-colors">Next</span>
+            <span class="text-lg font-semibold text-accent group-hover:text-accent-secondary transition-colors flex items-center gap-2">
                 How to Create a Tenant <i class="fa-solid fa-arrow-right"></i>
             </span>
         </a>

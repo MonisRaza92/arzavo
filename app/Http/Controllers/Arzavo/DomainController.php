@@ -29,24 +29,60 @@ class DomainController
         }
 
         // --------------------------
-        // 2. Detect server IP
+        // 2. Detect target host & IP
         // --------------------------
-        $serverIp = env('SERVER_IP') ?: trim(shell_exec("curl -s http://checkip.amazonaws.com")) ?: '13.234.98.38';
-
-        $dns = @dns_get_record($domain, DNS_A);
-        if (empty($dns)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => "No A-record found for $domain. Add A → $serverIp"
-            ]);
+        $targetHost = env('CUSTOM_DOMAIN_TARGET', 'domain.arzavo.com');
+        $targetIp = gethostbyname($targetHost);
+        if ($targetIp === $targetHost) {
+            $targetIp = env('SERVER_IP', '13.234.98.38');
         }
 
-        $points = collect($dns)->contains(fn($r) => ($r['ip'] ?? null) === $serverIp);
+        $isPointing = false;
 
-        if (! $points) {
+        // Check CNAME records for apex domain and www
+        $cnameRecords = array_merge(
+            @dns_get_record($domain, DNS_CNAME) ?: [],
+            @dns_get_record('www.' . $domain, DNS_CNAME) ?: []
+        );
+
+        foreach ($cnameRecords as $rec) {
+            if (isset($rec['target']) && (
+                strcasecmp(rtrim($rec['target'], '.'), rtrim($targetHost, '.')) === 0 ||
+                str_contains(strtolower($rec['target']), 'domain.arzavo')
+            )) {
+                $isPointing = true;
+                break;
+            }
+        }
+
+        // Check resolved A / IP records (handles ALIAS / ANAME / CNAME Flattening & A records)
+        if (! $isPointing) {
+            $resolvedIp = gethostbyname($domain);
+            $resolvedWwwIp = gethostbyname('www.' . $domain);
+            if ($resolvedIp === $targetIp || $resolvedWwwIp === $targetIp) {
+                $isPointing = true;
+            }
+        }
+
+        // Check TXT ownership verification (verify.arzavo.com)
+        $verifyHost = env('VERIFY_DOMAIN_TARGET', 'verify.arzavo.com');
+        $txtRecords = array_merge(
+            @dns_get_record($domain, DNS_TXT) ?: [],
+            @dns_get_record('verify.' . $domain, DNS_TXT) ?: []
+        );
+        $hasTxtOwnership = false;
+        foreach ($txtRecords as $rec) {
+            $val = $rec['txt'] ?? (isset($rec['entries']) ? implode(' ', $rec['entries']) : '');
+            if (str_contains(strtolower($val), 'verify.arzavo') || strcasecmp(trim($val), $verifyHost) === 0) {
+                $hasTxtOwnership = true;
+                break;
+            }
+        }
+
+        if (! $isPointing && ! $hasTxtOwnership) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Domain not pointing. Add:<br>A → $serverIp"
+                'message' => "Domain is not pointing to <b>$targetHost</b>.<br>Please add: CNAME <b>@ → $targetHost</b> or TXT Record <b>@ → $verifyHost</b> in your domain DNS."
             ]);
         }
 

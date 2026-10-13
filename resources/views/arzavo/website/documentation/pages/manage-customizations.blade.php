@@ -1,7 +1,7 @@
 @extends('arzavo.website.documentation.layout')
 
 @section('doc_content')
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-4 text-accent text-xs font-bold uppercase tracking-widest">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-4 text-accent text-xs font-semibold uppercase tracking-widest">
         Storefront & Builder
     </div>
 

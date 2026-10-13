@@ -13,6 +13,8 @@ class TenantController
 {
     public function index()
     {
+        $this->purgeExpiredTenants();
+
         $tenants = Auth::guard('web')->user()->tenants;
 
         $tenantIds = $tenants->pluck('id');
@@ -32,6 +34,66 @@ class TenantController
         }
 
         return view('arzavo.tenants.index', compact('tenants', 'pendingAmount', 'invoices', 'tenantStats'));
+    }
+
+    public function domains()
+    {
+        $this->purgeExpiredTenants();
+        $tenants = Auth::guard('web')->user()->tenants;
+        $cnameTarget = env('CUSTOM_DOMAIN_TARGET', 'domain.arzavo.com');
+
+        return view('arzavo.tenants.fleet.domains', compact('tenants', 'cnameTarget'));
+    }
+
+    public function billing()
+    {
+        $this->purgeExpiredTenants();
+        $tenants = Auth::guard('web')->user()->tenants;
+        $tenantIds = $tenants->pluck('id');
+
+        $invoices = \App\Models\Arzavo\Invoice::whereIn('tenant_id', $tenantIds)
+            ->with('tenant')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pendingAmount = $invoices->where('status', 'pending')->sum('total_amount');
+        $paidAmount = $invoices->where('status', 'paid')->sum('total_amount');
+
+        return view('arzavo.tenants.fleet.billing', compact('tenants', 'invoices', 'pendingAmount', 'paidAmount'));
+    }
+
+    public function storage()
+    {
+        $this->purgeExpiredTenants();
+        $tenants = Auth::guard('web')->user()->tenants;
+        $tenantStats = [];
+        $totalStorageUsed = 0;
+        $totalStorageLimit = 0;
+
+        foreach ($tenants as $tenant) {
+            $stats = $this->getTenantStats($tenant);
+            $tenantStats[$tenant->id] = $stats;
+            $totalStorageUsed += (int) ($stats['storage_used'] ?? 0);
+            $totalStorageLimit += (int) ($stats['storage_limit'] ?? 0);
+        }
+
+        return view('arzavo.tenants.fleet.storage', compact('tenants', 'tenantStats', 'totalStorageUsed', 'totalStorageLimit'));
+    }
+
+    public function backups()
+    {
+        $this->purgeExpiredTenants();
+        $tenants = Auth::guard('web')->user()->tenants;
+
+        return view('arzavo.tenants.fleet.backups', compact('tenants'));
+    }
+
+    public function security()
+    {
+        $this->purgeExpiredTenants();
+        $tenants = Auth::guard('web')->user()->tenants;
+
+        return view('arzavo.tenants.fleet.security', compact('tenants'));
     }
 
     protected function getTenantStats($tenant)
@@ -57,7 +119,7 @@ class TenantController
             DB::purge('tenant');
             DB::reconnect('tenant');
 
-            $usersCount = DB::connection('tenant')->table('users')->count();
+            $usersCount = DB::connection('tenant')->table('users')->where('role', 'student')->count();
 
             $storageUsed = 0;
             if (DB::connection('tenant')->getSchemaBuilder()->hasTable('contents')) {
@@ -133,7 +195,21 @@ class TenantController
                     'max:50',
                     Rule::unique('tenants', 'custom_domain')
                 ],
-
+                'admin_password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
+                    function ($attribute, $value, $fail) {
+                        $commonWeak = ['12345678', '123456789', 'password', 'password1', 'password123', 'admin123', 'qwerty123', '11111111'];
+                        if (in_array(strtolower($value), $commonWeak) || preg_match('/^(.)\1+$/', $value)) {
+                            $fail('Password is too common or weak. Please choose a stronger password.');
+                        }
+                    }
+                ],
+            ], [
+                'admin_password.min' => 'Admin password must be at least 8 characters long.',
+                'admin_password.regex' => 'Admin password must contain both letters and numbers for security.',
             ]);
 
             $user = Auth::guard('web')->user();
@@ -155,17 +231,14 @@ class TenantController
             $this->createTenantDatabase($tenant);
 
             // Run Tenant Migrations & Create Admin
-            $this->initializeTenant($tenant, $user);
+            $this->initializeTenant($tenant, $user, $request->admin_password);
             ping_google();
 
-            $scheme = request()->getScheme();
-            $tenantUrl = $tenant->custom_domain && $tenant->domain_verified
-                ? $scheme . '://' . $tenant->custom_domain . '/admin/dashboard'
-                : $scheme . '://' . $tenant->subdomain . '/admin/dashboard';
+            session()->flash('success', "Educational institute '{$tenant->name}' has been created successfully!");
 
             return response()->json([
                 'success' => true,
-                'redirect' => $tenantUrl
+                'redirect' => route('tenants.index')
             ]);
         } catch (\Throwable $e) {
             if (isset($tenant) && $tenant->exists) {
@@ -207,7 +280,7 @@ class TenantController
 
 
     // Run tenant migrations & create admin user in tenant DB
-    protected function initializeTenant($tenant, $mainUser)
+    protected function initializeTenant($tenant, $mainUser, $adminPassword = null)
     {
         // 1. Set tenant DB connection
         config([
@@ -244,10 +317,11 @@ class TenantController
                     'fname' => $mainUser->fname,
                     'lname' => $mainUser->lname,
                     'email' => $mainUser->email,
-                    'number' => $mainUser->number,
-                    'username' => $mainUser->username,
-                    'password' => $mainUser->password,
+                    'number' => $mainUser->number ?: '0000000000',
+                    'username' => $mainUser->username ?: Str::slug($mainUser->fname . '-' . rand(100, 999)),
+                    'password' => $adminPassword ? \Hash::make($adminPassword) : $mainUser->password,
                     'role' => 'admin',
+                    'status' => 'active',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -262,6 +336,8 @@ class TenantController
 
     public function show($identifier)
     {
+        $this->purgeExpiredTenants();
+
         $tenant = Tenant::where('subdomain', $identifier)
             ->orWhere('id', $identifier)
             ->firstOrFail();
@@ -272,13 +348,210 @@ class TenantController
         $pendingAmount = $invoices->where('status', 'pending')->sum('total_amount');
         $stats = $this->getTenantStats($tenant);
 
-        return view('arzavo.tenants.show', compact('tenant', 'subscription', 'plan', 'invoices', 'pendingAmount', 'stats'));
+        // Fetch Tenant Administrators from isolated tenant DB
+        $tenantAdmins = collect();
+        try {
+            if ($tenant->db_name) {
+                config([
+                    'database.connections.tenant' => [
+                        'driver' => 'mysql',
+                        'host' => config('database.connections.mysql.host'),
+                        'port' => config('database.connections.mysql.port'),
+                        'database' => $tenant->db_name,
+                        'username' => $tenant->db_username,
+                        'password' => $tenant->db_password,
+                        'charset' => 'utf8mb4',
+                        'collation' => 'utf8mb4_unicode_ci',
+                    ]
+                ]);
+                DB::purge('tenant');
+                DB::reconnect('tenant');
+                $tenantAdmins = DB::connection('tenant')->table('users')
+                    ->where('role', 'admin')
+                    ->orderBy('id', 'asc')
+                    ->get();
+                DB::disconnect('tenant');
+            }
+        } catch (\Throwable $e) {
+            \Log::warning("Could not fetch tenant admins for {$tenant->id}: " . $e->getMessage());
+            DB::disconnect('tenant');
+        }
+
+        // Calculate admin seat limits based on subscription plan
+        $adminLimit = 1;
+        if ($plan) {
+            if (isset($plan->limits['admins'])) {
+                $adminLimit = (int) $plan->limits['admins'];
+            } elseif ($plan->slug === 'pro') {
+                $adminLimit = 3;
+            } elseif ($plan->slug === 'enterprise') {
+                $adminLimit = 999;
+            }
+        }
+
+        return view('arzavo.tenants.show', compact('tenant', 'subscription', 'plan', 'invoices', 'pendingAmount', 'stats', 'tenantAdmins', 'adminLimit'));
+    }
+
+    public function storeAdmin(Request $request, $identifier)
+    {
+        $request->validate([
+            'fname' => 'required|string|max:100',
+            'lname' => 'required|string|max:100',
+            'email' => 'required|email|max:255',
+            'number' => 'nullable|string|max:20',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
+                function ($attribute, $value, $fail) {
+                    $commonWeak = ['12345678', '123456789', 'password', 'password1', 'password123', 'admin123', 'qwerty123', '11111111'];
+                    if (in_array(strtolower($value), $commonWeak) || preg_match('/^(.)\1+$/', $value)) {
+                        $fail('Password is too common or weak. Please choose a stronger password.');
+                    }
+                }
+            ],
+        ], [
+            'password.min' => 'Admin password must be at least 8 characters long.',
+            'password.regex' => 'Admin password must contain both letters and numbers for security.',
+        ]);
+
+        $tenant = Tenant::where('subdomain', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+
+        if (!$tenant->db_name) {
+            return back()->with('error', 'Tenant database is not configured.');
+        }
+
+        $subscription = $tenant->subscription;
+        $plan = $subscription ? $subscription->plan : null;
+        $adminLimit = 1;
+        if ($plan) {
+            if (isset($plan->limits['admins'])) {
+                $adminLimit = (int) $plan->limits['admins'];
+            } elseif ($plan->slug === 'pro') {
+                $adminLimit = 3;
+            } elseif ($plan->slug === 'enterprise') {
+                $adminLimit = 999;
+            }
+        }
+
+        try {
+            config([
+                'database.connections.tenant' => [
+                    'driver' => 'mysql',
+                    'host' => config('database.connections.mysql.host'),
+                    'port' => config('database.connections.mysql.port'),
+                    'database' => $tenant->db_name,
+                    'username' => $tenant->db_username,
+                    'password' => $tenant->db_password,
+                    'charset' => 'utf8mb4',
+                    'collation' => 'utf8mb4_unicode_ci',
+                ]
+            ]);
+            DB::purge('tenant');
+            DB::reconnect('tenant');
+
+            $currentAdminCount = DB::connection('tenant')->table('users')->where('role', 'admin')->count();
+            if ($currentAdminCount >= $adminLimit) {
+                DB::disconnect('tenant');
+                return back()->with('error', "Admin seat limit reached ({$adminLimit} max on current plan). Please upgrade to add more administrators.");
+            }
+
+            $emailExists = DB::connection('tenant')->table('users')->where('email', $request->email)->exists();
+            if ($emailExists) {
+                DB::disconnect('tenant');
+                return back()->with('error', "A user with email '{$request->email}' already exists in this institute.");
+            }
+
+            DB::connection('tenant')->table('users')->insert([
+                'fname' => $request->fname,
+                'lname' => $request->lname,
+                'email' => $request->email,
+                'number' => $request->number ?: '0000000000',
+                'username' => Str::slug($request->fname . '-' . $request->lname . '-' . rand(100, 999)),
+                'password' => \Hash::make($request->password),
+                'role' => 'admin',
+                'status' => 'active',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::disconnect('tenant');
+            return back()->with('success', 'Tenant administrator added successfully!');
+        } catch (\Throwable $e) {
+            DB::disconnect('tenant');
+            return back()->with('error', 'Failed to create tenant admin: ' . $e->getMessage());
+        }
+    }
+
+    public function destroyAdmin(Request $request, $identifier, $adminId)
+    {
+        $tenant = Tenant::where('subdomain', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+
+        if (!$tenant->db_name) {
+            return back()->with('error', 'Tenant database is not configured.');
+        }
+
+        try {
+            config([
+                'database.connections.tenant' => [
+                    'driver' => 'mysql',
+                    'host' => config('database.connections.mysql.host'),
+                    'port' => config('database.connections.mysql.port'),
+                    'database' => $tenant->db_name,
+                    'username' => $tenant->db_username,
+                    'password' => $tenant->db_password,
+                    'charset' => 'utf8mb4',
+                    'collation' => 'utf8mb4_unicode_ci',
+                ]
+            ]);
+            DB::purge('tenant');
+            DB::reconnect('tenant');
+
+            $adminCount = DB::connection('tenant')->table('users')->where('role', 'admin')->count();
+            if ($adminCount <= 1) {
+                DB::disconnect('tenant');
+                return back()->with('error', 'You cannot delete the primary administrator of this institute.');
+            }
+
+            DB::connection('tenant')->table('users')
+                ->where('id', $adminId)
+                ->where('role', 'admin')
+                ->delete();
+
+            DB::disconnect('tenant');
+            return back()->with('success', 'Tenant administrator removed successfully!');
+        } catch (\Throwable $e) {
+            DB::disconnect('tenant');
+            return back()->with('error', 'Failed to remove tenant admin: ' . $e->getMessage());
+        }
     }
 
     public function resetAdminPassword(Request $request, $identifier)
     {
         $request->validate([
-            'password' => 'required|string|min:6|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/',
+                function ($attribute, $value, $fail) {
+                    $commonWeak = ['12345678', '123456789', 'password', 'password1', 'password123', 'admin123', 'qwerty123', '11111111'];
+                    if (in_array(strtolower($value), $commonWeak) || preg_match('/^(.)\1+$/', $value)) {
+                        $fail('Password is too common or weak. Please choose a stronger password.');
+                    }
+                }
+            ],
+            'admin_id' => 'nullable|integer',
+        ], [
+            'password.min' => 'Admin password must be at least 8 characters long.',
+            'password.regex' => 'Admin password must contain both letters and numbers for security.',
         ]);
 
         $tenant = Tenant::where('subdomain', $identifier)
@@ -306,12 +579,15 @@ class TenantController
             DB::purge('tenant');
             DB::reconnect('tenant');
 
-            DB::connection('tenant')->table('users')
-                ->where('role', 'admin')
-                ->update([
-                    'password' => \Hash::make($request->password),
-                    'updated_at' => now(),
-                ]);
+            $query = DB::connection('tenant')->table('users')->where('role', 'admin');
+            if ($request->filled('admin_id')) {
+                $query->where('id', $request->admin_id);
+            }
+
+            $query->update([
+                'password' => \Hash::make($request->password),
+                'updated_at' => now(),
+            ]);
 
             DB::disconnect('tenant');
 
@@ -335,29 +611,75 @@ class TenantController
     public function destroy(Request $request, $identifier)
     {
         $request->validate([
-            'confirm_password' => 'required|string',
+            'confirm_subdomain' => 'required|string',
         ]);
 
         $user = Auth::guard('web')->user();
 
-        if (!\Hash::check($request->confirm_password, $user->password)) {
-            return back()->with('error', 'Incorrect password! Workspace deletion failed.');
+        $tenant = Tenant::where(function ($q) use ($identifier) {
+            $q->where('subdomain', $identifier)->orWhere('id', $identifier);
+        })->where('admin_id', $user->id)->firstOrFail();
+
+        $expectedSubdomain = strtolower(trim($tenant->subdomain));
+        $typedSubdomain = strtolower(trim($request->confirm_subdomain));
+
+        if ($typedSubdomain !== $expectedSubdomain) {
+            return back()->with('error', "Confirmation failed! Please type the exact subdomain '{$tenant->subdomain}' to schedule deletion.");
         }
 
-        $tenant = Tenant::where('subdomain', $identifier)
-            ->orWhere('id', $identifier)
-            ->firstOrFail();
+        // Schedule deletion for 24 hours from now and immediately freeze all services
+        $tenant->scheduled_delete_at = now()->addHours(24);
+        $tenant->status = 'suspended';
+        $tenant->save();
 
-        if ($tenant->db_name) {
-            try {
-                DB::statement("DROP DATABASE IF EXISTS `{$tenant->db_name}`");
-            } catch (\Throwable $e) {
-                // Ignore DB drop error if already removed
+        return redirect()->route('tenants.index')->with('success', "Workspace '{$tenant->name}' has been scheduled for deletion. All services are frozen immediately. You have 24 hours to restore it from your console.");
+    }
+
+    public function restore(Request $request, $identifier)
+    {
+        $user = Auth::guard('web')->user();
+
+        $tenant = Tenant::where(function ($q) use ($identifier) {
+            $q->where('subdomain', $identifier)->orWhere('id', $identifier);
+        })->where('admin_id', $user->id)->firstOrFail();
+
+        if (empty($tenant->scheduled_delete_at)) {
+            return back()->with('info', "Workspace '{$tenant->name}' is not scheduled for deletion.");
+        }
+
+        // Cancel scheduled deletion and reactivate
+        $tenant->scheduled_delete_at = null;
+        $tenant->status = 'active';
+        $tenant->save();
+
+        return back()->with('success', "Workspace '{$tenant->name}' has been restored successfully! All services and access have been reactivated.");
+    }
+
+    public function purgeExpiredTenants()
+    {
+        $expiredTenants = Tenant::whereNotNull('scheduled_delete_at')
+            ->where('scheduled_delete_at', '<=', now())
+            ->get();
+
+        foreach ($expiredTenants as $tenant) {
+            if ($tenant->db_name) {
+                try {
+                    DB::statement("DROP DATABASE IF EXISTS `{$tenant->db_name}`");
+                } catch (\Throwable $e) {
+                    // Ignore DB drop error if already removed
+                }
             }
+
+            $tenantDir = storage_path('app/public/tenants/' . $tenant->id);
+            if (file_exists($tenantDir)) {
+                try {
+                    \Illuminate\Support\Facades\File::deleteDirectory($tenantDir);
+                } catch (\Throwable $e) {
+                    // Ignore directory deletion error
+                }
+            }
+
+            $tenant->delete();
         }
-
-        $tenant->delete();
-
-        return redirect()->route('tenants.index')->with('success', 'Workspace deleted successfully!');
     }
 }

@@ -1,7 +1,7 @@
 @extends('arzavo.website.documentation.layout')
 
 @section('doc_content')
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4 text-blue-400 text-xs font-bold uppercase tracking-widest">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4 text-blue-400 text-xs font-semibold uppercase tracking-widest">
         User Management
     </div>
 

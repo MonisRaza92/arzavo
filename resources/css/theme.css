@@ -5,13 +5,13 @@
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
 
-    --color-primary: #ffffff;
-    --color-secondary: #f0f4f9;
-    --color-subtle: #e1e7f0;
-    --color-theme-border: #e1e7f0;
-    --color-brand: #0b57d0;
-    --color-theme-text: #1f1f1f;
-    --color-theme-text-muted: #444746;
+    --color-primary: #0e0e0e;
+    --color-secondary: #1e1f20;
+    --color-subtle: #313233;
+    --color-theme-border: #1e1f20;
+    --color-brand: #ffffff;
+    --color-theme-text: #ffffff;
+    --color-theme-text-muted: #a1a1aa;
 
     /* Semantic Status Tokens (Success, Warning, Danger, Info) */
     --color-success: #10b981;
@@ -24,34 +24,31 @@
     --color-info-bg: rgba(56, 189, 248, 0.12);
 }
 
-/* Device System Preference: Light Mode */
-@media (prefers-color-scheme: light) {
-    :root:not(.dark) {
-        --color-primary: #ffffff;
-        --color-secondary: #f0f4f9;
-        --color-subtle: #e1e7f0;
-        --color-theme-border: #e1e7f0;
-        --color-brand: #0b57d0;
-        --color-theme-text: #1f1f1f;
-        --color-theme-text-muted: #444746;
+/* ==========================================================================
+   ARZAQ ECOSYSTEM THEMES
+   Core Themes (System, Dark, Light) + 6 Curated Extra Themes
+   ========================================================================== */
 
-        --color-success: #137333;
-        --color-success-bg: #e6f4ea;
-        --color-warning: #b06000;
-        --color-warning-bg: #fef7e0;
-        --color-danger: #ce4e4c;
-        --color-danger-bg: #fce8e6;
-        --color-info: #0b57d0;
-        --color-info-bg: #e8f0fe;
-    }
+/* --- 1. CORE THEMES: Dark & Light --- */
 
-    :root:not(.dark) .theme-logo {
-        filter: invert(1);
-    }
+/* Dark (Default Pure Black & Crisp White) */
+:root,
+[data-theme="dark"],
+[data-theme="obsidian"],
+[data-theme="black"] {
+    --color-primary: #0e0e0e;
+    --color-secondary: #1a1a1c;
+    --color-subtle: #27272a;
+    --color-theme-border: #27272a;
+    --color-brand: #ffffff;
+    --color-theme-text: #ffffff;
+    --color-theme-text-muted: #a1a1aa;
 }
 
-/* Explicit Light Mode Override */
-:root.light, .light {
+/* Light (Clean Studio White & Crisp Slate) */
+[data-theme="light"],
+[data-theme="snow"],
+[data-theme="white"] {
     --color-primary: #ffffff;
     --color-secondary: #f0f4f9;
     --color-subtle: #e1e7f0;
@@ -59,36 +56,138 @@
     --color-brand: #0b57d0;
     --color-theme-text: #1f1f1f;
     --color-theme-text-muted: #444746;
-
-    --color-success: #137333;
-    --color-success-bg: #e6f4ea;
-    --color-warning: #b06000;
-    --color-warning-bg: #fef7e0;
-    --color-danger: #ce4e4c;
-    --color-danger-bg: #fce8e6;
-    --color-info: #0b57d0;
-    --color-info-bg: #e8f0fe;
-}
-:root.light .theme-logo, .light .theme-logo {
-    filter: invert(1);
 }
 
-/* Explicit Dark Mode Override */
-:root.dark, .dark {
-    --color-primary: #0e0e0e;
-    --color-secondary: #1e1f20;
-    --color-subtle: #313233;
-    --color-theme-border: #1e1f20;
-    --color-brand: #ffffff;
+/* --- 2. EXTRA CURATED THEMES (6) --- */
+
+/* Extra Dark 1: Midnight (Deep Slate Navy & Icy Sky Blue) */
+[data-theme="midnight"] {
+    --color-primary: #0b0f17;
+    --color-secondary: #121824;
+    --color-subtle: #1e2638;
+    --color-theme-border: #1e2638;
+    --color-brand: #38bdf8;
+    --color-theme-text: #ffffff;
+    --color-theme-text-muted: #94a3b8;
+}
+
+/* Extra Dark 2: Aurora (Deep Graphite Forest & Mint Emerald) */
+[data-theme="aurora"],
+[data-theme="emerald"] {
+    --color-primary: #0a110e;
+    --color-secondary: #121a15;
+    --color-subtle: #1a2620;
+    --color-theme-border: #1a2620;
+    --color-brand: #10b981;
     --color-theme-text: #ffffff;
     --color-theme-text-muted: #a1a1aa;
-
-    --color-success: #10b981;
-    --color-success-bg: rgba(16, 185, 129, 0.12);
-    --color-warning: #f59e0b;
-    --color-warning-bg: rgba(245, 158, 11, 0.12);
-    --color-danger: #ce4e4c;
-    --color-danger-bg: rgba(244, 63, 94, 0.12);
-    --color-info: #38bdf8;
-    --color-info-bg: rgba(56, 189, 248, 0.12);
 }
+
+/* Extra Dark 3: Amethyst (Obsidian Plum & Amethyst Violet) */
+[data-theme="amethyst"] {
+    --color-primary: #0f0d14;
+    --color-secondary: #171320;
+    --color-subtle: #231d30;
+    --color-theme-border: #231d30;
+    --color-brand: #a855f7;
+    --color-theme-text: #ffffff;
+    --color-theme-text-muted: #a1a1aa;
+}
+
+/* Extra Light 1: Ivory (Warm Paper Linen & Amber Terracotta) */
+[data-theme="ivory"] {
+    --color-primary: #ffffff;
+    --color-secondary: #f9f7f4;
+    --color-subtle: #ede8e1;
+    --color-theme-border: #ede8e1;
+    --color-brand: #c2410c;
+    --color-theme-text: #0f172a;
+    --color-theme-text-muted: #64748b;
+}
+
+/* Extra Light 2: Frost (Cool Arctic Gray & Tech Azure) */
+[data-theme="frost"] {
+    --color-primary: #ffffff;
+    --color-secondary: #f1f5f9;
+    --color-subtle: #e2e8f0;
+    --color-theme-border: #e2e8f0;
+    --color-brand: #0284c7;
+    --color-theme-text: #0f172a;
+    --color-theme-text-muted: #64748b;
+}
+
+/* Extra Light 3: Sage (Fresh Herbal Meadow & Pine Leaf) */
+[data-theme="sage"] {
+    --color-primary: #ffffff;
+    --color-secondary: #f2f6f3;
+    --color-subtle: #e1eae2;
+    --color-theme-border: #e1eae2;
+    --color-brand: #16a34a;
+    --color-theme-text: #0f172a;
+    --color-theme-text-muted: #64748b;
+}
+
+/* Logo Inversion for all Light Themes */
+[data-theme="dark"] .theme-light-logo,
+[data-theme="obsidian"] .theme-light-logo,
+[data-theme="black"] .theme-light-logo,
+[data-theme="midnight"] .theme-light-logo,
+[data-theme="aurora"] .theme-light-logo,
+[data-theme="amethyst"] .theme-light-logo {
+    display: none !important;
+}
+
+[data-theme="light"] .theme-dark-logo,
+[data-theme="snow"] .theme-dark-logo,
+[data-theme="white"] .theme-dark-logo,
+[data-theme="ivory"] .theme-dark-logo,
+[data-theme="frost"] .theme-dark-logo,
+[data-theme="sage"] .theme-dark-logo {
+    display: none !important;
+}
+
+/* ==========================================================================
+   CONTAINER SPECIFICATION: 1600px Max-Width Standard
+   ========================================================================== */
+.container,
+.site-container {
+    width: 100%;
+    max-width: 1600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+
+@media (min-width: 1024px) {
+    .container,
+    .site-container {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+    }
+}
+
+/* ==========================================================================
+   SMOOTH MARQUEE TICKER ANIMATION
+   ========================================================================== */
+@keyframes scrollX {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-scroll-x {
+    display: flex;
+    width: max-content;
+    animation: scrollX 35s linear infinite;
+}
+
+.animate-scroll-x:hover {
+    animation-play-state: paused;
+}
+
+
+

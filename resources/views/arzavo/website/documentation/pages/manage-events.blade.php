@@ -1,7 +1,7 @@
 @extends('arzavo.website.documentation.layout')
 
 @section('doc_content')
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-4 text-emerald-400 text-xs font-bold uppercase tracking-widest">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-4 text-emerald-400 text-xs font-semibold uppercase tracking-widest">
         Content Hub
     </div>
 

@@ -45,14 +45,14 @@
 
     <div class="mt-12 flex justify-between border-t border-white/10 pt-8">
         <a href="{{ route('documentation.show', 'what-is-tenant') }}" class="inline-flex flex-col items-start text-left group">
-            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 group-hover:text-slate-400 transition-colors">Previous</span>
-            <span class="text-lg font-bold text-white group-hover:text-slate-300 transition-colors flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1 group-hover:text-slate-400 transition-colors">Previous</span>
+            <span class="text-lg font-semibold text-white group-hover:text-slate-300 transition-colors flex items-center gap-2">
                 <i class="fa-solid fa-arrow-left"></i> What is a Tenant?
             </span>
         </a>
         <a href="{{ route('documentation.show', 'choose-plan') }}" class="inline-flex flex-col items-end text-right group">
-            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 group-hover:text-slate-400 transition-colors">Next</span>
-            <span class="text-lg font-bold text-accent group-hover:text-accent-secondary transition-colors flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1 group-hover:text-slate-400 transition-colors">Next</span>
+            <span class="text-lg font-semibold text-accent group-hover:text-accent-secondary transition-colors flex items-center gap-2">
                 How to Choose a Plan <i class="fa-solid fa-arrow-right"></i>
             </span>
         </a>

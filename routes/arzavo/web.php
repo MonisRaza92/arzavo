@@ -67,9 +67,19 @@ Route::domain(config('app.domain'))->group(function () {
         // Dashboard
         Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
+        // Fleet Management Routes (Dedicated Pages)
+        Route::get('tenants/domains', [TenantController::class, 'domains'])->name('tenants.domains');
+        Route::get('tenants/billing', [TenantController::class, 'billing'])->name('tenants.billing');
+        Route::get('tenants/storage', [TenantController::class, 'storage'])->name('tenants.storage');
+        Route::get('tenants/backups', [TenantController::class, 'backups'])->name('tenants.backups');
+        Route::get('tenants/security', [TenantController::class, 'security'])->name('tenants.security');
+
         // Admin Tenant Routes
         Route::resource('tenants', TenantController::class);
+        Route::post('tenants/{tenant}/restore', [TenantController::class, 'restore'])->name('tenants.restore');
         Route::post('tenants/{tenant}/reset-password', [TenantController::class, 'resetAdminPassword'])->name('tenants.reset-password');
+        Route::post('tenants/{tenant}/admins', [TenantController::class, 'storeAdmin'])->name('tenants.admins.store');
+        Route::delete('tenants/{tenant}/admins/{adminId}', [TenantController::class, 'destroyAdmin'])->name('tenants.admins.destroy');
         Route::get('/checkout/plan/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout');
         Route::get('/checkout/process/{slug}', [Arzavo\PlanController::class, 'checkout'])->name('checkout.process');
         Route::post('/plans/{slug}/subscribe', [Arzavo\PlanController::class, 'subscribe'])->name('subscribe');

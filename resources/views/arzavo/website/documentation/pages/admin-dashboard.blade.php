@@ -1,7 +1,7 @@
 @extends('arzavo.website.documentation.layout')
 
 @section('doc_content')
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4 text-blue-400 text-xs font-bold uppercase tracking-widest">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4 text-blue-400 text-xs font-semibold uppercase tracking-widest">
         Dashboard
     </div>
 
@@ -25,19 +25,19 @@
     
     <div class="grid md:grid-cols-2 gap-6 !mt-6">
         <div class="glass-box !p-5 !mb-0">
-            <h4 class="!mt-0 font-bold text-white"><i class="fa-solid fa-users text-accent"></i> Users</h4>
+            <h4 class="!mt-0 font-semibold text-white"><i class="fa-solid fa-users text-accent"></i> Users</h4>
             <p class="text-sm">Manage student profiles, approve registrations, track fee transactions, and oversee teachers and staff permissions.</p>
         </div>
         <div class="glass-box !p-5 !mb-0">
-            <h4 class="!mt-0 font-bold text-white"><i class="fa-solid fa-graduation-cap text-accent"></i> Academics</h4>
+            <h4 class="!mt-0 font-semibold text-white"><i class="fa-solid fa-graduation-cap text-accent"></i> Academics</h4>
             <p class="text-sm">Structure your school by defining Classes (grades/tiers), Subjects, and assigning teachers to specific subjects.</p>
         </div>
         <div class="glass-box !p-5 !mb-0">
-            <h4 class="!mt-0 font-bold text-white"><i class="fa-solid fa-video text-accent"></i> Courses (LMS)</h4>
+            <h4 class="!mt-0 font-semibold text-white"><i class="fa-solid fa-video text-accent"></i> Courses (LMS)</h4>
             <p class="text-sm">The core builder for video courses, modular curriculum delivery, and drip content pacing.</p>
         </div>
         <div class="glass-box !p-5 !mb-0">
-            <h4 class="!mt-0 font-bold text-white"><i class="fa-solid fa-paint-roller text-accent"></i> Website Builder</h4>
+            <h4 class="!mt-0 font-semibold text-white"><i class="fa-solid fa-paint-roller text-accent"></i> Website Builder</h4>
             <p class="text-sm">Your visual storefront tools. Switch themes, open the drag-and-drop page builder, and customize your menus.</p>
         </div>
     </div>

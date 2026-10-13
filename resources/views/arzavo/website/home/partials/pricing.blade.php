@@ -1,129 +1,147 @@
-{{-- Pricing Section --}}
-<section id="pricing" class="relative py-20 overflow-hidden"
-         style="background: linear-gradient(180deg, #ffffff 0%, #fffbf8 50%, #ffffff 100%);">
+{{-- Pricing Section (TENANTS_DESIGN_SYSTEM Compliant) --}}
+<section id="pricing" class="py-20 bg-secondary overflow-hidden">
+    <div class="container">
 
-    <div class="container relative z-10">
+        {{-- Section Header (Split Layout: Title Left, Description Right) --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12">
 
-        {{-- Header --}}
-        <div class="mb-16">
-            <p class="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Investment</p>
-            <h2 class="text-4xl md:text-5xl font-semibold text-dark mb-5 leading-tight tracking-tight">
-                Simple, transparent pricing.
-            </h2>
-            <p class="text-dark/70 leading-relaxed text-lg max-w-3xl">
-                Choose the plan that fits your growth stage. No lock-ins, no hidden fees, cancel anytime.
-            </p>
+            {{-- Left: Main Heading --}}
+            <div class="lg:col-span-7">
+                <h2 class="text-4xl lg:text-4xl xl:text-5xl font-semibold text-theme-text leading-tight">
+                    Simple, Transparent <br class="hidden sm:inline">
+                    <span class="text-brand">Investment Tiers</span>.
+                </h2>
+            </div>
+
+            {{-- Right: Subtitle --}}
+            <div class="lg:col-span-5 flex flex-col justify-end">
+                <p class="text-sm xl:text-base text-theme-text-muted font-normal leading-relaxed">
+                    Choose the multi-tenant plan that matches your current enrollment volume. Upgrade or downgrade
+                    anytime as your institute expands, with zero hidden setup fees and 100% of your student fee
+                    collections staying with you.
+                </p>
+            </div>
+
         </div>
 
-        {{-- Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" x-data="{ annual: false }">
             @foreach($plans as $plan)
-            @php
-                $isFree = $plan->monthly_price == 0;
-            @endphp
-            <div class="relative rounded-lg border flex flex-col transition-all duration-300 bg-white shadow-xs hover:shadow-md
-                 {{ $plan->is_popular ? 'border-accent! ring-1 ring-accent' : 'border-gray-200' }}">
+                @php
+                    $isFree = $plan->monthly_price == 0;
+                @endphp
+                <div class="bg-primary rounded-lg p-6 flex flex-col justify-between relative">
 
-                {{-- Badges --}}
-                @if($plan->is_coming_soon)
-                <div class="absolute top-4 right-4 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded shadow-xs">
-                    ⏳ Coming Soon
-                </div>
-                @elseif($plan->is_limited_time)
-                <div class="absolute top-4 right-4 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded shadow-xs animate-pulse">
-                    🔥 Limited Time Offer
-                </div>
-                @elseif($plan->is_popular)
-                <div class="absolute top-4 right-4 bg-accent text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded shadow-xs">
-                    ★ Most Popular
-                </div>
-                @endif
-
-                <div class="p-8 flex flex-col flex-1">
-                    <h3 class="text-xs font-bold uppercase tracking-widest mb-3 {{ $plan->is_popular ? 'text-accent' : 'text-dark/50' }}">
-                        {{ $plan->name }}
-                    </h3>
-
-                    <div class="flex items-baseline gap-1 mb-2">
-                        <span class="text-4xl font-bold text-dark">
-                            {{ $isFree ? 'Free' : '₹' . number_format($plan->monthly_price, 0) }}
+                    {{-- Status & Name Header --}}
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-theme-text">
+                            {{ $plan->name }}
                         </span>
-                        @if(!$isFree)
-                            <span class="text-sm text-dark/50 font-normal">/month</span>
+
+                        @if($plan->is_coming_soon)
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-normal bg-info-bg text-info">
+                                Coming Soon
+                            </span>
+                        @elseif($plan->is_limited_time)
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-normal bg-warning-bg text-warning">
+                                Limited Offer
+                            </span>
+                        @elseif($plan->is_popular)
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-normal bg-brand text-primary">
+                                Most Popular
+                            </span>
                         @endif
                     </div>
 
-                    @if($plan->yearly_price && !$isFree)
-                        <p class="text-xs text-dark/50 mb-2">
-                            ₹{{ number_format($plan->yearly_price, 0) }} / year (billed annually)
+                    {{-- Price Display --}}
+                    <div class="mb-5">
+                        @if($isFree)
+                            <div class="text-3xl md:text-4xl font-semibold text-theme-text">Free</div>
+                        @else
+                            <div class="flex items-baseline gap-1.5">
+                                <span class="text-3xl md:text-4xl font-semibold text-theme-text"
+                                    x-text="annual && {{ $plan->yearly_price ? 'true' : 'false' }} ? '₹{{ number_format($plan->yearly_price ?? ($plan->monthly_price * 12), 0) }}' : '₹{{ number_format($plan->monthly_price, 0) }}'">
+                                    ₹{{ number_format($plan->monthly_price, 0) }}
+                                </span>
+                                <span class="text-xs text-theme-text-muted font-normal"
+                                    x-text="annual && {{ $plan->yearly_price ? 'true' : 'false' }} ? '/year' : '/month'">
+                                    /month
+                                </span>
+                            </div>
+
+                            @if($plan->yearly_price)
+                                <p class="text-[11px] text-theme-text-muted font-normal mt-1" x-show="!annual">
+                                    ₹{{ number_format($plan->yearly_price, 0) }} / year (billed annually)
+                                </p>
+                            @endif
+                        @endif
+
+                        @if($plan->trial_days)
+                            <p class="text-xs text-success font-normal mt-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-gift text-[11px]"></i> {{ $plan->trial_days }} Days Free Trial
+                                Included
+                            </p>
+                        @endif
+
+                        <p class="text-xs text-theme-text-muted font-normal mt-3 leading-relaxed">
+                            {{ $plan->short_description ?? 'Designed for modern educational institutions' }}
                         </p>
-                    @endif
+                    </div>
 
-                    @if($plan->trial_days)
-                        <p class="text-xs text-emerald-600 font-semibold mb-3 flex items-center gap-1.5">
-                            <i class="fa-solid fa-gift"></i> {{ $plan->trial_days }} Days Free Trial
-                        </p>
-                    @endif
-
-                    <p class="text-sm text-dark/60 pb-5 mb-5 border-b border-gray-100">
-                        {{ $plan->short_description ?? 'Full-featured tier designed for institutions' }}
-                    </p>
-
-                    {{-- Features List (Enabled + Disabled with Cross) --}}
-                    <div class="mb-6 flex-grow space-y-4">
-                        <div>
-                            <p class="text-[11px] font-bold uppercase tracking-wider text-dark/40 mb-3">Platform Features</p>
-                            <ul class="space-y-2.5">
-                                @foreach(config('plan.features') as $key => $label)
-                                    @php
-                                        $enabled = $plan->features[$key] ?? false;
-                                    @endphp
-                                    <li class="flex items-center gap-2.5 text-sm">
-                                        @if($enabled)
-                                            <i class="fa-solid fa-check text-emerald-600 text-xs shrink-0"></i>
-                                            <span class="text-dark/80 font-medium">{{ $label }}</span>
-                                        @else
-                                            <i class="fa-solid fa-xmark text-red-400 text-xs shrink-0"></i>
-                                            <span class="text-dark/35 line-through">{{ $label }}</span>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            </ul>
+                    {{-- Feature Matrix --}}
+                    <div class="space-y-4 mb-6 flex-1">
+                        <div class="bg-secondary rounded-lg p-3.5 space-y-2">
+                            <p class="text-[10px] font-semibold uppercase tracking-wider text-theme-text-muted mb-2">
+                                Included Modules</p>
+                            @foreach(config('plan.features') as $key => $label)
+                                @php
+                                    $enabled = $plan->features[$key] ?? false;
+                                @endphp
+                                <div class="flex items-center gap-2 text-xs">
+                                    @if($enabled)
+                                        <i class="fa-solid fa-check text-success text-[10px] shrink-0"></i>
+                                        <span class="text-theme-text font-normal">{{ $label }}</span>
+                                    @else
+                                        <i class="fa-solid fa-xmark text-theme-text-muted/40 text-[10px] shrink-0"></i>
+                                        <span class="text-theme-text-muted/50 font-normal line-through">{{ $label }}</span>
+                                    @endif
+                                </div>
+                            @endforeach
                         </div>
 
-                        {{-- Resource Limits --}}
-                        <div class="pt-4 border-t border-gray-100">
-                            <p class="text-[11px] font-bold uppercase tracking-wider text-dark/40 mb-3">Resource Limits</p>
-                            <ul class="space-y-2 text-xs">
-                                @foreach(config('plan.limits') as $key => $label)
-                                    @php
-                                        $val = $plan->limits[$key] ?? null;
-                                    @endphp
-                                    <li class="flex justify-between items-center text-dark/70">
-                                        <span>{{ $label }}</span>
-                                        <strong class="text-dark font-semibold">
-                                            {{ ($val === null || $val === '') ? 'Unlimited' : $val }}
-                                        </strong>
-                                    </li>
-                                @endforeach
-                            </ul>
+                        {{-- Quotas --}}
+                        <div class="bg-secondary rounded-lg p-3.5 space-y-2">
+                            <p class="text-[10px] font-semibold uppercase tracking-wider text-theme-text-muted mb-2">
+                                Usage Quotas</p>
+                            @foreach(config('plan.limits') as $key => $label)
+                                @php
+                                    $val = $plan->limits[$key] ?? null;
+                                @endphp
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-theme-text-muted font-normal">{{ $label }}</span>
+                                    <span class="text-theme-text font-semibold">
+                                        {{ ($val === null || $val === '') ? 'Unlimited' : $val }}
+                                    </span>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
 
                     {{-- CTA Button --}}
-                    @if($plan->is_coming_soon)
-                        <button disabled
-                           class="w-full py-3 text-center text-sm font-semibold rounded bg-gray-100 text-dark/40 cursor-not-allowed block">
-                            ⏳ Coming Soon
-                        </button>
-                    @else
-                        <a href="{{ route('checkout', ['slug' => $plan->slug]) }}"
-                           class="w-full py-3 text-center text-sm font-semibold rounded transition-all duration-200 block shadow-xs {{ $plan->is_popular ? 'bg-accent text-white hover:opacity-90' : 'bg-dark text-white hover:bg-dark/90' }}">
-                            {{ $isFree ? 'Get Started Free' : 'Choose ' . $plan->name }}
-                        </a>
-                    @endif
+                    <div>
+                        @if($plan->is_coming_soon)
+                            <button disabled
+                                class="w-full py-3 text-center text-xs font-normal rounded-full bg-secondary text-theme-text-muted cursor-not-allowed">
+                                Coming Soon
+                            </button>
+                        @else
+                            <a href="{{ route('checkout', ['slug' => $plan->slug]) }}"
+                                class="w-full py-3 text-center text-xs font-normal rounded-full transition-opacity block hover:opacity-90 {{ $plan->is_popular ? 'bg-brand text-primary' : 'bg-secondary text-theme-text hover:bg-subtle' }}">
+                                {{ $isFree ? 'Start Free Workspace' : 'Select ' . $plan->name }}
+                            </a>
+                        @endif
+                    </div>
+
                 </div>
-            </div>
             @endforeach
         </div>
     </div>

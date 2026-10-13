@@ -62,6 +62,10 @@ class TenantMiddleware
     {
         $status = strtolower(trim((string) $tenant->status));
 
+        if (!empty($tenant->scheduled_delete_at)) {
+            abort(403, $tenant->name . ' is currently pending scheduled deletion and is locked. Restore workspace from your Arzavo console to reactivate.');
+        }
+
         if ($status === 'suspended') {
             abort(403, $tenant->name . ' is currently suspended.');
         }

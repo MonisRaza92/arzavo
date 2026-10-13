@@ -1,130 +1,135 @@
 <!-- 🔐 Connect Domain Popup -->
 <div id="connectDomainPopup-{{ $tenant->id }}"
-    class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[999]">
+    class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[999] p-4">
 
-    <div class="bg-primary border-rounded w-full max-w-4xl p-6 md:h-auto h-dvh relative overflow-auto scrollbar animate-fadeIn shadow-xl border-primary">
+    <!-- Modal Block (bg-primary, rounded-lg, shadow-2xl) -->
+    <div class="bg-primary rounded-lg w-full max-w-xl p-6 md:h-auto max-h-[90vh] relative overflow-y-auto shadow-2xl">
 
         <!-- Close Button -->
         <button id="closeDomainPopup-{{ $tenant->id }}"
-            class="absolute right-4 top-6 text-secondary hover:text-primary text-2xl transition">
+            class="absolute right-4 top-4 w-8 h-8 rounded-full bg-secondary text-theme-text-muted hover:text-theme-text flex items-center justify-center text-sm transition">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
         <!-- HEADER -->
-        <div class="flex items-center gap-4 mb-6">
-            <div class="w-14 h-14 flex items-center justify-center bg-invert text-invert border-rounded text-2xl">
+        <div class="flex items-center gap-3.5 mb-5">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-secondary text-theme-text text-base shrink-0">
                 <i class="fa-solid fa-globe"></i>
             </div>
             <div>
-                <h2 class="text-2xl font-bold text-primary">Connect Your Domain</h2>
-                <p class="text-sm text-secondary">Make your website live on your own custom domain.</p>
+                <h2 class="text-base font-semibold text-theme-text">Connect Custom Domain</h2>
+                <p class="text-xs text-theme-text-muted font-normal mt-0.5">Add these records to your domain DNS settings (no IP address required).</p>
             </div>
         </div>
 
-        <!-- Steps Box -->
-        <div class="bg9-secondary border-primary border-rounded p-5 mb-6">
+        @php
+            $targetDomain = env('CUSTOM_DOMAIN_TARGET', 'domain.arzavo.com');
+            $verifyDomain = env('VERIFY_DOMAIN_TARGET', 'verify.arzavo.com');
+        @endphp
 
-            <h3 class="text-primary font-semibold text-sm mb-3">How to connect your domain</h3>
+        <!-- Simple DNS Records Guide -->
+        <div class="space-y-3 mb-5">
+            <!-- Step 1: Open Registrar -->
+            <div class="bg-secondary rounded-lg p-3.5">
+                <p class="font-semibold text-theme-text text-xs mb-1">Step 1: Open Domain DNS Settings</p>
+                <p class="text-xs text-theme-text-muted font-normal leading-relaxed">
+                    Log in to your domain registrar (GoDaddy, Namecheap, Hostinger, or Cloudflare) and open the <span class="text-theme-text font-medium">DNS Management</span> page.
+                </p>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Step 2: Add 3 Records -->
+            <div class="bg-secondary rounded-lg p-3.5">
+                <p class="font-semibold text-theme-text text-xs mb-2.5">Step 2: Add These 3 DNS Records</p>
 
-                <!-- Step 1 -->
-                <div class="bg-primary border-primary border-rounded p-4">
-                    <p class="font-bold text-primary text-sm mb-2">1. Open your domain provider</p>
+                <div class="space-y-2 text-xs">
+                    <!-- Record 1: Root Domain CNAME / ALIAS -->
+                    <div class="bg-primary rounded-lg p-3 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded-full bg-brand text-primary text-[10px] font-normal">CNAME / ALIAS</span>
+                                <span class="text-theme-text-muted text-[11px] font-normal">Host: <strong class="text-theme-text font-mono font-normal">@</strong></span>
+                            </div>
+                            <div class="text-xs font-mono text-theme-text mt-1.5 truncate">
+                                Points to: <span class="font-semibold text-theme-text">{{ $targetDomain }}</span>
+                            </div>
+                        </div>
+                        <button type="button"
+                                onclick="navigator.clipboard.writeText('{{ $targetDomain }}'); this.innerHTML = '<i class=\'fa-solid fa-check text-success\'></i>'; setTimeout(() => this.innerHTML = '<i class=\'fa-regular fa-copy\'></i> Copy', 2000)"
+                                class="px-3 py-1.5 bg-secondary text-theme-text-muted hover:text-theme-text rounded-full text-xs font-normal transition shrink-0 inline-flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Copy</span>
+                        </button>
+                    </div>
 
-                    <ul class="text-xs text-secondary list-disc pl-4 space-y-1 mb-3">
-                        <li>GoDaddy</li>
-                        <li>Namecheap</li>
-                        <li>Hostinger</li>
-                        <li>or whichever provider you use</li>
-                    </ul>
+                    <!-- Record 2: WWW CNAME -->
+                    <div class="bg-primary rounded-lg p-3 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded-full bg-secondary text-theme-text-muted text-[10px] font-normal">CNAME</span>
+                                <span class="text-theme-text-muted text-[11px] font-normal">Host: <strong class="text-theme-text font-mono font-normal">www</strong></span>
+                            </div>
+                            <div class="text-xs font-mono text-theme-text mt-1.5 truncate">
+                                Points to: <span class="font-semibold text-theme-text">{{ $targetDomain }}</span>
+                            </div>
+                        </div>
+                        <button type="button"
+                                onclick="navigator.clipboard.writeText('{{ $targetDomain }}'); this.innerHTML = '<i class=\'fa-solid fa-check text-success\'></i>'; setTimeout(() => this.innerHTML = '<i class=\'fa-regular fa-copy\'></i> Copy', 2000)"
+                                class="px-3 py-1.5 bg-secondary text-theme-text-muted hover:text-theme-text rounded-full text-xs font-normal transition shrink-0 inline-flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Copy</span>
+                        </button>
+                    </div>
 
-                    <div class="text-xs text-secondary space-y-1">
-                        <p class="font-semibold text-primary">Inside your provider panel:</p>
-
-                        <p>• Go to <b>DNS Management</b> or <b>DNS Zone Editor</b></p>
-                        <p>• Sometimes it appears under:
-                            <span class="text-primary">
-                                <b>Domain Settings → Manage DNS</b>
-                            </span>
-                        </p>
-
-                        <p>• Look for buttons like:
-                            <span class="text-primary">
-                                <b>Add Record</b> / <b>Create New DNS Record</b>
-                            </span>
-                        </p>
+                    <!-- Record 3: Verify TXT Record -->
+                    <div class="bg-primary rounded-lg p-3 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded-full bg-secondary text-theme-text-muted text-[10px] font-normal">TXT Record</span>
+                                <span class="text-theme-text-muted text-[11px] font-normal">Host: <strong class="text-theme-text font-mono font-normal">@</strong> <span class="text-[10px] text-theme-text-muted">(or verify)</span></span>
+                            </div>
+                            <div class="text-xs font-mono text-theme-text mt-1.5 truncate">
+                                Value: <span class="font-semibold text-theme-text">{{ $verifyDomain }}</span>
+                            </div>
+                        </div>
+                        <button type="button"
+                                onclick="navigator.clipboard.writeText('{{ $verifyDomain }}'); this.innerHTML = '<i class=\'fa-solid fa-check text-success\'></i>'; setTimeout(() => this.innerHTML = '<i class=\'fa-regular fa-copy\'></i> Copy', 2000)"
+                                class="px-3 py-1.5 bg-secondary text-theme-text-muted hover:text-theme-text rounded-full text-xs font-normal transition shrink-0 inline-flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Copy</span>
+                        </button>
                     </div>
                 </div>
 
-
-                <!-- Step 2 -->
-                <div class="bg-primary border-primary border-rounded p-4">
-                    <p class="font-bold text-primary text-sm mb-1">2. Add these DNS Records</p>
-
-                    <div class="space-y-2">
-
-                        <div class="bg-hover-secondary border-primary border-rounded p-2 text-xs">
-                            <strong class="text-primary">A Record:</strong><br>
-                            <span class="text-secondary">@ → <code class="font-mono text-primary">{{ env('SERVER_IP', '13.234.98.38') }}</code></span>
-                        </div>
-
-                        <div class="bg-hover-secondary border-primary border-rounded p-2 text-xs">
-                            <strong class="text-primary">CNAME:</strong><br>
-                            <span class="text-secondary">verify → <code class="font-mono text-primary">verify.{{ config('app.domain') }}</code></span>
-                        </div>
-
-                        <div class="bg-hover-secondary border-primary border-rounded p-2 text-xs">
-                            <strong class="text-primary">A Record (www):</strong><br>
-                            <span class="text-secondary">www → <code class="font-mono text-primary">{{ env('SERVER_IP', '13.234.98.38') }}</code></span>
-                        </div>
-
-                    </div>
-                </div>
-
+                <p class="text-[11px] text-theme-text-muted font-normal mt-2.5">
+                    <i class="fa-solid fa-shield-halved text-[10px] text-success mr-1"></i>
+                    After adding these records, click "Verify Domain & Issue SSL". A dedicated SSL certificate will be automatically issued.
+                </p>
             </div>
         </div>
 
         <!-- Domain Input -->
-        <span class="text-sm text-primary font-semibold">Your Domain to verify</span>
+        <label class="text-xs text-theme-text font-normal block mb-1.5">Your Custom Domain</label>
         <input
             type="text"
             id="newCustomDomain-{{ $tenant->id }}"
             value="{{ $tenant->custom_domain }}"
-            class="w-full text-primary mt-2 border-rounded p-3 mb-4 border-primary bg-primary"
-            placeholder="e.g. academy.yourdomain.com"
-            />
+            class="w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs px-4 py-3 rounded-full mb-4 focus:outline-none"
+            placeholder="e.g. youracademy.com or lms.youracademy.com"
+        />
         <input type="hidden" value="{{ $tenant->id }}" name="id">
 
         <!-- Status Box -->
-        <div id="statusBox-{{ $tenant->id }}" class="hidden p-3 border-rounded mb-4 text-sm"></div>
+        <div id="statusBox-{{ $tenant->id }}" class="hidden p-3 rounded-lg mb-4 text-xs font-normal"></div>
 
         <!-- Verify Button -->
         <button id="verifyNewDomainBtn-{{ $tenant->id }}"
-            class="w-full bg-invert text-invert font-semibold py-3 border-rounded transition flex justify-center items-center gap-2">
-            <span id="verifyBtnText-{{ $tenant->id }}">Verify Domain</span>
-            <span id="verifySpinner-{{ $tenant->id }}" class="hidden loader"></span>
+            class="w-full bg-brand text-primary font-normal py-3 px-6 rounded-full text-xs transition flex justify-center items-center gap-2 hover:opacity-90">
+            <span id="verifyBtnText-{{ $tenant->id }}">Verify Domain & Issue SSL</span>
+            <span id="verifySpinner-{{ $tenant->id }}" class="hidden w-3.5 h-3.5 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></span>
         </button>
 
     </div>
 </div>
-
-<style>
-    .loader {
-        border: 3px solid rgba(255,255,255,0.3);
-        border-top: 3px solid currentColor;
-        border-radius: 50%;
-        width: 14px;
-        height: 14px;
-        animation: spin 0.7s linear infinite;
-    }
-
-    @keyframes spin {
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
 
 <script>
     (function() {
@@ -143,14 +148,14 @@
 
         function showStatus(type, message) {
             statusBox.classList.remove("hidden");
-            statusBox.className = "p-3 border-rounded mb-4 text-sm";
+            statusBox.className = "p-3 rounded-lg mb-4 text-xs font-normal";
 
             if (type === "success") {
-                statusBox.classList.add("border", "border-green-500", "bg-green-50", "text-green-700");
+                statusBox.classList.add("bg-success-bg", "text-success");
             } else if (type === "error") {
-                statusBox.classList.add("border", "border-red-500", "bg-red-50", "text-red-700");
+                statusBox.classList.add("bg-danger-bg", "text-danger");
             } else if (type === "wait") {
-                statusBox.classList.add("border", "border-yellow-500", "bg-yellow-50", "text-yellow-700");
+                statusBox.classList.add("bg-warning-bg", "text-warning");
             }
 
             statusBox.innerHTML = message;
@@ -160,11 +165,11 @@
             if (isLoading) {
                 verifyBtn.disabled = true;
                 spinner.classList.remove("hidden");
-                btnText.textContent = "Verifying...";
+                btnText.textContent = "Verifying DNS & SSL...";
             } else {
                 verifyBtn.disabled = false;
                 spinner.classList.add("hidden");
-                btnText.textContent = "Verify Domain";
+                btnText.textContent = "Verify Domain & Issue SSL";
             }
         }
 
@@ -179,7 +184,6 @@
             document.body.style.overflow = "";
         });
 
-        // Close on backdrop click
         popup.addEventListener("click", (e) => {
             if (e.target === popup) {
                 popup.classList.add("hidden");
@@ -191,50 +195,30 @@
             const domain = domainInput.value.trim();
             if (!domain) return;
 
-            showStatus("wait", "⏳ Checking DNS & SSL... Please wait...");
+            showStatus("wait", "Checking DNS records & generating SSL certificate... Please wait...");
             setLoading(true);
 
             fetch(`{{ route('domain.verify', $tenant->id) }}?domain=${domain}`)
                 .then(res => res.json())
                 .then(data => {
-
-                    // --- RATE LIMIT ---
                     if (data.status === "rate_limited") {
-                        showStatus(
-                            "error",
-                            `⚠️ Too many SSL attempts.<br>Retry after: <b>${data.retry_ist}</b>`
-                        );
-                    }
-
-                    // --- SUCCESS ---
-                    else if (data.status === "success") {
+                        showStatus("error", `Too many SSL attempts. Retry after: ${data.retry_ist}`);
+                    } else if (data.status === "success") {
                         showStatus("success", data.message);
                         setTimeout(() => location.reload(), 1500);
-                    }
-
-                    // --- ANY OTHER ERROR (SHOW RAW OUTPUT ALSO) ---
-                    else {
-                        let msg = data.message ?? "❌ SSL generation failed.";
-
+                    } else {
+                        let msg = data.message ?? "SSL generation failed.";
                         if (data.raw_output) {
-                            msg += `
-                    <br><br>
-                    <pre class="text-xs bg-gray-100 p-2 border rounded-md whitespace-pre-wrap">
-${data.raw_output}
-                    </pre>
-                `;
+                            msg += `<pre class="text-[11px] bg-secondary p-2 rounded-lg mt-2 whitespace-pre-wrap">${data.raw_output}</pre>`;
                         }
-
                         showStatus("error", msg);
                     }
-
                     setLoading(false);
                 })
                 .catch((err) => {
-                    showStatus("error", "❌ Something went wrong. Please retry.");
+                    showStatus("error", "Something went wrong. Please check DNS and retry.");
                     setLoading(false);
                 });
-
         });
     })();
 </script>

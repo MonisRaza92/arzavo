@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('title', 'Welcome to Arzavo - Educational Management Platform')
+@extends('layouts.arzavo.website')
+@section('title', 'Arzavo — Multi-Tenant Educational Operating System & ERP LMS')
 @section('content')
 @include('arzavo.website.partials.navbar')
 @include('arzavo.website.home.partials.hero')

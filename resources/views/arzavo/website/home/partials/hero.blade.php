@@ -1,226 +1,139 @@
-{{-- Hero Section --}}
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
-    style="background: linear-gradient(135deg, #fff 0%, #fff8f8 40%, #fffdf5 70%, #fff 100%);">
 
-    {{-- Background gradient blobs --}}
-    <div class="absolute inset-0 pointer-events-none overflow-hidden">
-        <div class="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full opacity-30"
-            style="background: radial-gradient(circle, rgba(146,0,0,0.12) 0%, transparent 70%);"></div>
-        <div class="absolute -bottom-20 -left-20 w-[500px] h-[500px] rounded-full opacity-25"
-            style="background: radial-gradient(circle, rgba(197,132,0,0.12) 0%, transparent 70%);"></div>
+{{-- Arzavo Hero: Modern Split Layout with Showcase & Feature Strip (TENANTS_DESIGN_SYSTEM Compliant) --}}
+<section class="bg-secondary pt-24 md:pt-28 pb-10 md:pb-16 overflow-hidden">
+    <div class="container">
 
-        {{-- Floating elements --}}
-        <div class="absolute top-28 right-[18%] w-5 h-5 rounded-full bg-accent opacity-15 animate-float"></div>
-        <div class="absolute top-52 left-[12%] w-3 h-3 bg-amber-400 opacity-20 rotate-45 animate-float"
-            style="animation-delay:0.8s;"></div>
-        <div class="absolute bottom-40 right-[22%] w-4 h-4 rounded-full bg-accent opacity-10 animate-float"
-            style="animation-delay:1.3s;"></div>
-        <div class="absolute bottom-28 left-[28%] w-2.5 h-2.5 bg-amber-500 opacity-15 rounded animate-float"
-            style="animation-delay:0.4s;"></div>
-    </div>
+            {{-- Top Split: Hero Content & Showcase Visual --}}
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-    <div class="container grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10 py-20">
-        <div class="left-content flex flex-col gap-6">
-            <h1 class="text-[48px] md:text-[64px] lg:text-[78px] leading-none text-dark font-semibold">Run Your Entire
-                <span class="relative inline-flex h-12 lg:h-16 overflow-hidden bg-accent/10">
-                    <span id="heading-titles" class="flex flex-col gap-2 font-mono lg:gap-4 pl-1 pr-3 text-accent italic animate-slide-up">
-                        <span class="h-12 lg:h-16 text-[44px] md:text-[60px] lg:text-[70px] flex items-center">INSTITUTE</span>
-                        <span class="h-12 lg:h-16 text-[44px] md:text-[60px] lg:text-[70px] flex items-center">ACADEMY</span>
-                        <span class="h-12 lg:h-16 text-[44px] md:text-[60px] lg:text-[70px] flex items-center">SCHOOL</span>
-                        <span class="h-12 lg:h-16 text-[44px] md:text-[60px] lg:text-[70px] flex items-center">COLLEGE</span>
-                        <span class="h-12 lg:h-16 text-[44px] md:text-[60px] lg:text-[70px] flex items-center">COACHING</span>
+                {{-- Left Column: Typography & CTAs --}}
+                <div class="lg:col-span-6 xl:col-span-6 flex flex-col items-start">
+<!-- 
+                    {{-- Status / Ecosystem Pill --}}
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary mb-6 sm:mb-8">
+                        <span class="w-2 h-2 rounded-full bg-success"></span>
+                        <span class="text-xs text-theme-text font-normal">
+                            One Platform. Every Educational Need.
+                        </span>
+                    </div> -->
 
-                        <!-- Duplicate first item for seamless loop -->
-                        <span class="h-12 lg:h-16 text-[44px] md:text-[60px] lg:text-[70px] flex items-center">INSTITUTE</span>
-                    </span>
-                </span>
-                From<br> One Platform
-            </h1>
-            <p class="text-dark/90 font-light text-lg">Manage admissions, students, teachers, attendance, fees, exams,
-                communication, and daily operations from a single, easy-to-use platform. Arzavo helps educational
-                institutions save time, reduce manual work, and stay organized as they grow.</p>
-            <div class="flex flex-col md:flex-row items-center gap-4">
-                <x-button url="{{ route('arzaq.redirect') }}" class="w-full! md:w-auto!" padding="px-6 py-3">Get Started
-                    <i class="fa-solid fa-arrow-right -rotate-45"></i></x-button>
-                <x-button url="{{ route('arzaq.redirect') }}" class="w-full! md:w-auto!" padding="px-6 py-3"
-                    variant="accent">Log In <i class="fa-solid fa-right-to-bracket"></i></x-button>
+                    {{-- Main Headline --}}
+                    <h1 class="text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight text-theme-text leading-[1.12] mb-5 sm:mb-6">
+                        Everything Your <br class="hidden sm:inline">
+                        <span class="text-brand">Institute</span> Needs. <br>
+                        All in One Place.
+                    </h1>
+
+                    {{-- Subtitle --}}
+                    <p class="text-xs sm:text-sm md:text-base text-theme-text-muted font-normal leading-relaxed mb-8">
+                        From student admissions and fee management to exams, payroll, and interactive learning, manage your entire educational institution from one unified, cloud-native platform.
+                    </p>
+
+                    {{-- Action Buttons --}}
+                    <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                        <a href="{{ route('arzaq.redirect') }}"
+                           class="px-6 py-3.5 bg-brand text-primary rounded-full font-normal text-xs transition hover:opacity-90 inline-flex items-center gap-2.5">
+                            <span>Get Started Free</span>
+                            <i class="fa-solid fa-arrow-right -rotate-45 text-xs"></i>
+                        </a>
+
+                        <a href="#why-arzavo"
+                           class="px-6 py-3.5 bg-primary text-theme-text rounded-full font-normal text-xs hover:bg-subtle transition inline-flex items-center gap-2">
+                            <span>Explore Platform</span>
+                            <i class="fa-solid fa-play text-[9px] text-theme-text-muted"></i>
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Right Column: Showcase Visual --}}
+                <div class="lg:col-span-6 xl:col-span-6 h-full">
+                    <div class="relative bg-secondary rounded-lg h-full overflow-hidden flex items-center justify-center">
+                        <img
+                            src="{{ asset('images/website/hero-showcase.jpg') }}"
+                            onerror="this.onerror=null;this.src='{{ asset('images/website/dashboard.png') }}'"
+                            alt="Arzavo education management platform dashboard"
+                            class="w-full h-full object-cover rounded-lg"
+                            loading="eager"
+                            fetchpriority="high"
+                        >
+
+                        {{-- Floating Verified Pill Overlay --}}
+                        <!-- <div class="absolute bottom-4 left-4 right-4 sm:right-auto inline-flex items-center gap-2.5 bg-primary/95 backdrop-blur-sm px-3.5 py-2 rounded-full">
+                            <span class="w-2 h-2 rounded-full bg-success"></span>
+                            <span class="text-xs font-normal text-theme-text">Unified Multi-Campus Core</span>
+                            <span class="text-[11px] font-normal text-theme-text-muted hidden sm:inline">· 100% White-Label</span>
+                        </div> -->
+                    </div>
+                </div>
+
             </div>
 
-            <div class="stats grid grid-cols-2 md:grid-cols-4 items-center gap-6 mt-5">
-                <div class="stat flex items-center justify-center md:justify-start">
+            {{-- Bottom Split: 4 Features in 2 Cards + Action Arrow Block --}}
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-8 lg:mt-12">
+
+                {{-- Feature Card 1 (2 Sub-Items) --}}
+                <div class="md:col-span-5 bg-primary rounded-lg p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                     <div>
-                        <div class="text-5xl font-bold text-black">100+</div>
-                        <div class="text-dark/80 text-sm">INSTITUTES</div>
+                        <div class="w-8 h-8 rounded-full bg-secondary text-theme-text flex items-center justify-center text-xs mb-3 font-semibold">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-xs font-semibold text-theme-text mb-1">
+                            Admissions & SIS
+                        </h3>
+                        <p class="text-[11px] text-theme-text-muted font-normal leading-relaxed">
+                            Digital inquiries, batch enrollments and complete student lifecycle records.
+                        </p>
+                    </div>
+
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-secondary text-theme-text flex items-center justify-center text-xs mb-3 font-semibold">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <h3 class="text-xs font-semibold text-theme-text mb-1">
+                            Fee & Finance
+                        </h3>
+                        <p class="text-[11px] text-theme-text-muted font-normal leading-relaxed">
+                            Automated receipts, online payment gateways, and installment dues tracking.
+                        </p>
                     </div>
                 </div>
-                <div class="stat flex items-center justify-center md:justify-start">
+
+                {{-- Feature Card 2 (2 Sub-Items) --}}
+                <div class="md:col-span-5 bg-primary rounded-lg p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                     <div>
-                        <div class="text-5xl font-bold text-black">10K+</div>
-                        <div class="text-dark/80 text-sm">ACTIVE USERS</div>
+                        <div class="w-8 h-8 rounded-full bg-secondary text-theme-text flex items-center justify-center text-xs mb-3 font-semibold">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-xs font-semibold text-theme-text mb-1">
+                            Interactive LMS
+                        </h3>
+                        <p class="text-[11px] text-theme-text-muted font-normal leading-relaxed">
+                            Live lecture portals, syllabus management, online exams, and gradebooks.
+                        </p>
+                    </div>
+
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-secondary text-theme-text flex items-center justify-center text-xs mb-3 font-semibold">
+                            <i class="fa-solid fa-id-card-clip"></i>
+                        </div>
+                        <h3 class="text-xs font-semibold text-theme-text mb-1">
+                            Staff & Biometrics
+                        </h3>
+                        <p class="text-[11px] text-theme-text-muted font-normal leading-relaxed">
+                            Automated punch logs, faculty schedules, leaves, and payroll disbursements.
+                        </p>
                     </div>
                 </div>
-                <div class="stat flex items-center justify-center md:justify-start">
-                    <div>
-                        <div class="text-5xl font-bold text-black">99.8%</div>
-                        <div class="text-dark/80 text-sm">SERVER UPTIME</div>
-                    </div>
-                </div>
-                <div class="stat flex items-center justify-center md:justify-start">
-                    <div>
-                        <div class="text-5xl font-bold text-black">24/7</div>
-                        <div class="text-dark/80 text-sm">LIVE SUPPORT</div>
-                    </div>
-                </div>
+
+                {{-- Action / Arrow Block --}}
+                <a href="#why-arzavo"
+                   class="md:col-span-2 bg-brand text-primary rounded-lg p-5 sm:p-6 flex items-center justify-between md:justify-center transition hover:opacity-90 group min-h-[88px]"
+                   aria-label="Explore Platform Features">
+                    <span class="text-xs font-semibold md:hidden">Explore Platform Overview</span>
+                    <i class="fa-solid fa-arrow-right -rotate-45 text-2xl md:text-3xl transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                </a>
+
             </div>
-        </div>
-        <div class="right-content">
-            <div class="grid grid-cols-2 gap-4 h-full">
-                <div class="flex flex-col gap-4">
-                    <img src="{{ asset('images/website/2151696436.jpg') }}" alt="" class="w-full object-cover rounded-lg">
-                    <img src="{{ asset('images/website/20006.jpg') }}" alt="" class="w-full h-30 object-cover rounded-lg">
-                </div>
-                <div class="flex flex-col gap-4">
-                    <img src="{{ asset('images/website/20006.jpg') }}" alt="" class="w-full h-30 object-cover rounded-lg">
-                    <img src="{{ asset('images/website/2151737340.jpg') }}" alt="" class="w-full object-cover rounded-lg">
-                </div>
-            </div>
-        </div>
+
     </div>
 </section>
-
-<style>
-    /* Global accent vars */
-    .bg-accent {
-        background-color: #920000 !important;
-    }
-
-    .text-accent {
-        color: #920000 !important;
-    }
-
-    .hover\:text-accent:hover {
-        color: #920000 !important;
-    }
-
-    .bg-amber-400 {
-        background-color: #FBBF24;
-    }
-
-    /* Animations */
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-
-    @keyframes fade-in-down {
-        from {
-            opacity: 0;
-            transform: translateY(-12px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes fade-in-up {
-        from {
-            opacity: 0;
-            transform: translateY(18px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .animate-float {
-        animation: float 5s ease-in-out infinite;
-    }
-
-    .animate-fade-in-down {
-        animation: fade-in-down 0.6s ease-out both;
-    }
-
-    .animate-fade-in-up {
-        animation: fade-in-up 0.6s ease-out both;
-    }
-
-    /* Mobile / Tablet slide-up animation (Height: 48px + Gap: 8px = 56px steps) */
-    @keyframes slide-up {
-        0%, 15% {
-            transform: translateY(0);
-        }
-        20%, 35% {
-            transform: translateY(-52px);
-        }
-        40%, 55% {
-            transform: translateY(-104px);
-        }
-        60%, 75% {
-            transform: translateY(-156px);
-        }
-        80%, 95% {
-            transform: translateY(-208px);
-        }
-        98%, 100% {
-            transform: translateY(-260px);
-        }
-    }
-
-    /* Desktop slide-up animation (Height: 64px + Gap: 16px = 80px steps) */
-    @media (min-width: 1024px) {
-        @keyframes slide-up {
-            0%, 15% {
-                transform: translateY(0);
-            }
-            20%, 35% {
-                transform: translateY(-80px);
-            }
-            40%, 55% {
-                transform: translateY(-160px);
-            }
-            60%, 75% {
-                transform: translateY(-240px);
-            }
-            80%, 95% {
-                transform: translateY(-320px);
-            }
-            98%, 100% {
-                transform: translateY(-400px);
-            }
-        }
-    }
-
-    .animate-slide-up {
-        animation: slide-up 10s infinite;
-    }
-</style>
-
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('typewriter', () => ({
-            text: '',
-            words: ['Run Everything.', 'Scale Faster.', 'Automate Daily.', 'Grow Enrollments.'],
-            wordIndex: 0, isDeleting: false,
-            init() { this.type(); },
-            type() {
-                const w = this.words[this.wordIndex];
-                this.text = this.isDeleting ? w.substring(0, this.text.length - 1) : w.substring(0, this.text.length + 1);
-                let speed = this.isDeleting ? 50 : 100;
-                if (!this.isDeleting && this.text === w) { speed = 2000; this.isDeleting = true; }
-                else if (this.isDeleting && this.text === '') { this.isDeleting = false; this.wordIndex = (this.wordIndex + 1) % this.words.length; speed = 500; }
-                setTimeout(() => this.type(), speed);
-            }
-        }))
-    });
-</script>
