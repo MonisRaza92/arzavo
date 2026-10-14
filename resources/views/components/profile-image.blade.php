@@ -2,11 +2,11 @@
     'user' => null,
 ])
 @php
-    $user = $user ?? auth('web')->user() ?? auth('tenant')->user();     
-    $fname = $user->fname ?? $user->name ?? 'U';
+    $resolvedUser = $user ?? auth('web')->user() ?? auth('tenant')->user();     
+    $fname = $resolvedUser->fname ?? $resolvedUser->name ?? 'U';
 @endphp
-@if ($user && !empty($user->profile_picture ?? $user->avatar)) 
-<img src="{{ media($user->profile_picture ?? $user->avatar) }}" class="border-rounded logo aspect-square object-cover w-full" alt="{{ $fname }}"> 
+@if ($resolvedUser && !empty($resolvedUser->profile_picture ?? $resolvedUser->avatar)) 
+<img src="{{ media($resolvedUser->profile_picture ?? $resolvedUser->avatar) }}" {{ $attributes->merge(['class' => 'rounded-full aspect-square object-cover']) }} alt="{{ $fname }}"> 
 @else 
-<h2 class="font-bold border-rounded text-xl flex justify-center items-center logo aspect-square bg-invert text-invert">{{ strtoupper(substr($fname, 0, 1)) }}</h2> 
+<span {{ $attributes->merge(['class' => 'rounded-full aspect-square flex items-center justify-center font-semibold bg-brand text-primary']) }}>{{ strtoupper(substr($fname, 0, 1)) }}</span> 
 @endif

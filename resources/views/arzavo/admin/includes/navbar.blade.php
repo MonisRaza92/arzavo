@@ -1,34 +1,56 @@
 @php
-    $user = $user ?? auth('web')->user();
+    $user = Auth::guard('web')->user();
 @endphp
-<div
-    class="admin-navbar w-full sticky top-0 right-0 z-99 flex gap-8 items-center justify-between px-4 py-3 bg-primary border-bottom">
-    <a href="{{ route('home') }}" class="shrink-0">
-        <img id="logo" src="{{ media('images/logo/arzavo-dark.png') }}" alt="Logo" class="logo">
-    </a>
-    <div class="search-bar relative hidden md:block text-sm grow">
-        <input type="text" placeholder="Search..."
-            class="search-input w-full border-rounded px-3 py-2.25 bg-primary border-primary">
-        <button
-            class="search-button absolute right-0 top-0 mt-1.5 mr-1.5 bg-secondary text-xs border-primary py-1.25 px-2 border-rounded text-tertiary">Ctrl
-            + k</button>
+<header class="w-full sticky top-0 z-[99] flex gap-3 md:gap-6 items-center justify-between py-4 mb-4 bg-secondary">
+
+    <!-- Mobile Menu Toggle -->
+    <button type="button"
+        onclick="document.getElementById('arzavoAdminSidebar')?.classList.toggle('-translate-x-full')"
+        class="lg:hidden text-theme-text p-2.5 rounded-full hover:bg-subtle transition shrink-0 flex items-center justify-center text-base cursor-pointer"
+        title="Toggle Menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Global Reactive Search Bar (Drives Alpine live filtering across admin views) -->
+    <div class="relative grow max-w-2xl">
+        <i class="fa-solid fa-magnifying-glass absolute left-4.5 top-1/2 -translate-y-1/2 text-theme-text-muted text-xs pointer-events-none"></i>
+        <input type="text"
+            x-model="search"
+            placeholder="Search institutes, users, plans, subscriptions..."
+            class="w-full bg-primary text-theme-text placeholder:text-theme-text-muted pl-11 pr-10 py-3.5 text-xs rounded-full focus:outline-none focus:bg-subtle transition">
+        <button x-show="search && search.length > 0"
+            @click="search = ''"
+            type="button"
+            title="Clear search"
+            class="absolute right-3.5 top-1/2 -translate-y-1/2 text-theme-text-muted hover:text-theme-text text-xs p-1 transition cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
     </div>
+
+    <!-- Actions & Ecosystem Bar -->
     <div class="flex items-center gap-4">
+        <!-- Quick Switch to Tenants -->
+        <a href="{{ route('tenants.index') }}"
+           class="hidden sm:inline-flex items-center gap-2 px-4 py-3.5 rounded-full bg-primary text-theme-text text-xs font-normal hover:bg-subtle transition"
+           title="Switch to Tenant Cockpit">
+            <i class="fa-solid fa-graduation-cap text-xs"></i>
+            <span>Tenants Cockpit</span>
+        </a>
 
         <!-- Help -->
-        <button title="Help" class="text-2xl text-secondary">
+        <a href="https://docs.arzavo.com" target="_blank" title="Platform Docs & Help"
+           class="text-theme-text hover:text-theme-text hover:bg-subtle flex items-center justify-center text-xl transition hidden md:flex p-2 rounded-full">
             <i class="fa-regular fa-circle-question"></i>
-        </button>
+        </a>
 
         <!-- Notifications -->
-        <button class="relative text-2xl text-secondary">
+        <button title="Platform Notifications" class="relative text-theme-text hover:text-theme-text hover:bg-subtle flex items-center justify-center text-xl transition p-2 rounded-full cursor-pointer">
             <i class="fa-regular fa-bell"></i>
-            <span class="absolute -top-1 -right-1 text-[10px] bg-accent text-invert px-1 border-rounded">
-                2
+            <span class="absolute 1 top-1 right-1 text-[9px] bg-danger text-white w-4 h-4 rounded-full flex items-center justify-center font-normal">
+                1
             </span>
         </button>
 
-        <!-- USER Profile Dropdown -->
         <!-- 1. Arzaq Ecosystem Mount Container (Renders Profile, App Grid & Wallet) -->
         <div id="arzaq-ecosystem-bar"
             data-auth-url="{{ config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')) }}"
@@ -41,9 +63,6 @@
         </div>
 
         <!-- 2. Universal Ecosystem SDK Script (Auto-initializes UI & Session Sync) -->
-        <script
-            src="{{ config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')) }}/sdk/nav.js"
-            defer></script>
-
+        <script src="{{ config('services.arzaq.auth_url', env('ARZAQ_AUTH_URL', 'https://auth.arzaqinsights.com')) }}/sdk/nav.js" defer></script>
     </div>
-</div>
+</header>

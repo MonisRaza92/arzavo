@@ -9,7 +9,7 @@
 <main class="pt-24 min-h-screen bg-secondary">
 
     {{-- Contact Hero Header --}}
-    <section class="py-16 md:py-20 bg-primary border-b border-secondary">
+    <section class="py-16 md:py-20 border-b border-secondary">
         <div class="container text-center max-w-3xl mx-auto">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-semibold mb-6">
                 <i class="fa-solid fa-headset text-[10px]"></i>

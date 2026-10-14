@@ -10,26 +10,77 @@ class UserController
 {
     public function index()
     {
-        $users = User::latest()->get();
+        $users = User::withCount('tenants')->latest()->get();
 
         return view('arzavo.admin.users.index', compact('users'));
     }
 
-    // 🔥 STATUS TOGGLE
-    public function update($id)
+    // ➕ CREATE USER
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:6',
+            'role' => 'required|in:user,admin,super_admin',
+            'status' => 'required|in:active,suspended',
+        ]);
+
+        User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'role' => $data['role'],
+            'status' => $data['status'],
+        ]);
+
+        return back()->with('success', 'User created successfully.');
+    }
+
+    // 🔥 STATUS TOGGLE OR FULL EDIT
+    public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
-        // ❗ khud ko suspend mat karne dena
-        if ($user->id === Auth::guard('web')->user()->id) {
-            return back()->with('error', 'You cannot change your own status');
+        // Simple Toggle
+        if ($request->has('toggle_status')) {
+            if ($user->id === Auth::guard('web')->user()->id) {
+                return back()->with('error', 'You cannot change your own status');
+            }
+
+            $user->status = $user->status === 'active' ? 'suspended' : 'active';
+            $user->save();
+
+            return back()->with('success', 'User status updated successfully');
         }
 
-        // toggle
-        $user->status = $user->status === 'active' ? 'suspended' : 'active';
-        $user->save();
+        // Full Edit
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|in:user,admin,super_admin',
+            'status' => 'required|in:active,suspended',
+            'password' => 'nullable|string|min:6',
+        ]);
 
-        return back()->with('success', 'User status updated successfully');
+        if ($user->id === Auth::guard('web')->user()->id && $data['role'] !== $user->role) {
+            return back()->with('error', 'You cannot change your own role');
+        }
+
+        $updateData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'role' => $data['role'],
+            'status' => $data['status'],
+        ];
+
+        if (!empty($data['password'])) {
+            $updateData['password'] = bcrypt($data['password']);
+        }
+
+        $user->update($updateData);
+
+        return back()->with('success', 'User details updated successfully.');
     }
 
     // 🔥 DELETE USER
@@ -42,9 +93,9 @@ class UserController
             return back()->with('error', 'You cannot delete yourself');
         }
 
-        // ❗ optional: admin protect
-        if ($user->role === 'admin') {
-            return back()->with('error', 'Admin cannot be deleted');
+        // ❗ optional: super_admin protect
+        if ($user->role === 'super_admin') {
+            return back()->with('error', 'Super Admin accounts cannot be deleted');
         }
 
         $user->delete();

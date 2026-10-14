@@ -27,7 +27,7 @@ class TenantController extends Controller
     // 🔥 STATUS TOGGLE
     public function update($id)
     {
-        $tenant = Tenant::findOrFail($id);
+        $tenant = $id instanceof Tenant ? $id : Tenant::findOrFail($id);
 
         $tenant->status = $tenant->status === 'active' ? 'suspended' : 'active';
         $tenant->save();
@@ -38,7 +38,7 @@ class TenantController extends Controller
     // 🔥 MANUAL PLAN ASSIGNMENT
     public function assignPlan(Request $request, $id)
     {
-        $tenant = Tenant::findOrFail($id);
+        $tenant = $id instanceof Tenant ? $id : Tenant::findOrFail($id);
 
         $request->validate([
             'plan_id' => 'required|exists:plans,id',

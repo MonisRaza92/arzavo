@@ -1,128 +1,116 @@
-<div id="arzavoAdminSidebar" class="admin-sidebar -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out
-    w-[260px] h-full fixed top-16 left-0 overflow-y-auto p-4 pt-6 pb-10 z-40
-    scrollbar bg-primary border-r border-primary">
+@php
+    $user = Auth::guard('web')->user();
+    $isDashboardActive = request()->routeIs('arzavo.admin.dashboard');
+    $isTenantsActive = request()->routeIs('arzavo.admin.tenants.*');
+    $isUsersActive = request()->routeIs('arzavo.admin.users.*');
+    $isPlansActive = request()->routeIs('arzavo.admin.plans.*');
+@endphp
 
-    {{-- =======================
-    HEADER
-    ======================== --}}
-    @php
-        $user = $user ?? auth('web')->user();
-    @endphp
-    <div class="mb-6 flex items-center gap-2">
-        <x-profile-image :user="$user" />
-        <div class="info">
-            <h2 class="text-base font-semibold text-secondary">
-                {{ $user->fname ?? 'Super' }} {{ $user->lname ?? 'Admin' }}
-            </h2>
-            <p class="text-[11px] text-tertiary">
-                {{ $user->email ?? 'admin@arzavo.com' }}
+<aside id="arzavoAdminSidebar"
+    class="fixed top-0 left-0 w-[260px] h-dvh bg-primary overflow-y-auto p-4 pb-8 z-40 -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out">
+
+    <!-- Brand Logo -->
+    <a href="{{ route('arzavo.admin.dashboard') }}" class="shrink-0 flex items-center gap-2 mb-4">
+        <img class="theme-light-logo h-10 mb-3 w-auto object-contain" src="{{ media('images/logo/arzavo-dark.png') }}" alt="Logo">
+        <img class="theme-dark-logo -mt-3 h-16 w-auto object-contain" src="{{ media('images/logo/arzavo-white.png') }}" alt="Logo">
+    </a>
+    <!-- Navigation List -->
+    <nav class="space-y-5">
+        <!-- 1. OVERVIEW -->
+        <div>
+            <p class="text-[10px] font-normal tracking-wider text-theme-text-muted uppercase px-3 mb-1.5">
+                Overview
             </p>
-        </div>
-    </div>
-
-    {{-- =======================
-    NAVIGATION
-    ======================== --}}
-    @php
-        $sidebar = [
-            [
-                'section' => 'Overview',
-                'items' => [
-                    [
-                        'text' => 'Dashboard',
-                        'icon' => 'fa-chart-line',
-                        'route' => 'arzavo.admin.dashboard',
-                        'active' => 'dashboard'
-                    ],
-                ]
-            ],
-            [
-                'section' => 'Management',
-                'items' => [
-                    [
-                        'text' => 'Users',
-                        'icon' => 'fa-users',
-                        'route' => 'arzavo.admin.users.index',
-                        'active' => 'admin/users*'
-                    ],
-                    [
-                        'text' => 'Tenants',
-                        'icon' => 'fa-building-columns',
-                        'route' => 'arzavo.admin.tenants.index',
-                        'active' => 'admin/tenants*'
-                    ],
-                ]
-            ],
-            [
-                'section' => 'Billing',
-                'items' => [
-                    [
-                        'text' => 'Plans',
-                        'icon' => 'fa-credit-card',
-                        'route' => 'arzavo.admin.plans.index',
-                        'active' => 'admin/plans*'
-                    ],
-                    [
-                        'text' => 'Subscriptions',
-                        'icon' => 'fa-box',
-                        'active' => 'admin/subscriptions*'
-                    ],
-                    [
-                        'text' => 'Invoices',
-                        'icon' => 'fa-file-invoice',
-                        'active' => 'admin/invoices*'
-                    ],
-                    [
-                        'text' => 'Payments',
-                        'icon' => 'fa-money-bill',
-                        'active' => 'admin/payments*'
-                    ],
-                ]
-            ],
-            [
-                'section' => 'System',
-                'items' => [
-                    [
-                        'text' => 'Addons',
-                        'icon' => 'fa-puzzle-piece',
-                        'active' => 'admin/addons*'
-                    ],
-                    [
-                        'text' => 'Settings',
-                        'icon' => 'fa-gear',
-                        'active' => 'admin/settings*'
-                    ],
-                ]
-            ],
-        ];
-    @endphp
-    <ul class="flex flex-col gap-1 arzavo-nav">
-
-        @foreach($sidebar as $section)
-
-            {{-- 🔹 SECTION TITLE --}}
-            <li class="section-title text-[10px] my-2 text-tertiary flex items-center gap-1 uppercase">
-                {{ $section['section'] }}
-                <div class="h-0.5 bg-tertiary w-full"></div>
-            </li>
-
-            {{-- 🔹 ITEMS --}}
-            @foreach($section['items'] as $item)
-
+            <ul class="space-y-1">
                 <li>
-                    <a href="{{ isset($item['route']) ? route($item['route']) : '#' }}"
-                        class=" text-secondary text-hover-invert bg-hover-invert p-2 border-rounded text-sm block w-full {{ (isset($item['route']) && request()->routeIs($item['route'].'*')) || (isset($item['active']) && (request()->is($item['active']) || request()->is(ltrim(str_replace('admin', '', $item['active']), '/')))) ? 'bg-invert text-invert' : '' }}">
+                    <a href="{{ route('arzavo.admin.dashboard') }}"
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isDashboardActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <i class="fa-solid fa-chart-line text-sm w-4 text-center"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-                        <i class="fa-solid {{ $item['icon'] }} mr-2"></i>
-                        {{ $item['text'] }}
-
+        <!-- 2. ECOSYSTEM MANAGEMENT -->
+        <div>
+            <p class="text-[10px] font-normal tracking-wider text-theme-text-muted uppercase px-3 mb-1.5">
+                Management
+            </p>
+            <ul class="space-y-1">
+                <!-- Tenants / Institutes -->
+                <li>
+                    <a href="{{ route('arzavo.admin.tenants.index') }}"
+                       class="flex items-center justify-between px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isTenantsActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-building-columns text-sm w-4 text-center"></i>
+                            <span>Tenants</span>
+                        </span>
+                        <span class="text-xs px-2 py-0.5 rounded-full {{ $isTenantsActive ? 'bg-primary text-brand' : 'bg-secondary text-theme-text-muted' }}">
+                            {{ \App\Models\Arzavo\Tenant::count() }}
+                        </span>
                     </a>
                 </li>
 
-            @endforeach
+                <!-- Platform Users -->
+                <li>
+                    <a href="{{ route('arzavo.admin.users.index') }}"
+                       class="flex items-center justify-between px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isUsersActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-users text-sm w-4 text-center"></i>
+                            <span>Users</span>
+                        </span>
+                        <span class="text-xs px-2 py-0.5 rounded-full {{ $isUsersActive ? 'bg-primary text-brand' : 'bg-secondary text-theme-text-muted' }}">
+                            {{ \App\Models\Arzavo\User::count() }}
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-        @endforeach
+        <!-- 3. BILLING & REVENUE -->
+        <div>
+            <p class="text-[10px] font-normal tracking-wider text-theme-text-muted uppercase px-3 mb-1.5">
+                Billing & Growth
+            </p>
+            <ul class="space-y-1">
+                <!-- Subscription Plans -->
+                <li>
+                    <a href="{{ route('arzavo.admin.plans.index') }}"
+                       class="flex items-center justify-between px-3.5 py-2.5 rounded-full text-sm font-normal transition duration-150 {{ $isPlansActive ? 'bg-secondary text-brand' : 'text-theme-text-muted hover:text-theme-text hover:bg-secondary' }}">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-credit-card text-sm w-4 text-center"></i>
+                            <span>Pricing Plans</span>
+                        </span>
+                        <span class="text-xs px-2 py-0.5 rounded-full {{ $isPlansActive ? 'bg-primary text-brand' : 'bg-secondary text-theme-text-muted' }}">
+                            {{ \App\Models\Arzavo\Plan::count() }}
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-    </ul>
-
-</div>
+        <!-- 4. QUICK SWITCH PORTALS -->
+        <div>
+            <p class="text-[10px] font-normal tracking-wider text-theme-text-muted uppercase px-3 mb-1.5">
+                Quick Navigation
+            </p>
+            <ul class="space-y-1">
+                <li>
+                    <a href="{{ route('tenants.index') }}"
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal text-theme-text-muted hover:text-theme-text hover:bg-secondary transition duration-150">
+                        <i class="fa-solid fa-graduation-cap text-sm w-4 text-center"></i>
+                        <span>Tenant Cockpit</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('home') }}" target="_blank"
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm font-normal text-theme-text-muted hover:text-theme-text hover:bg-secondary transition duration-150">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-sm w-4 text-center"></i>
+                        <span>Live Website</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</aside>
