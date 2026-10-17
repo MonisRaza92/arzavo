@@ -22,18 +22,424 @@ class StudentsController extends Controller
     public function adminStudents()
     {
         $students = User::where('role', 'student')
-            ->with(['academicCategory', 'class', 'subject', 'feePlans', 'feePayments', 'orders.items', 'entitlements', 'enrolledCourses'])
+            ->with([
+                'academicCategory',
+                'class.classTeacher',
+                'subject.teacher',
+                'directSubjects.teacher',
+                'batch.teacher',
+                'batch.batchSubjects.subject',
+                'batch.batchSubjects.teacher',
+                'feePlans',
+                'feePayments',
+                'attendances',
+                'orders.items',
+                'entitlements',
+                'enrolledCourses'
+            ])
             ->latest()
             ->get();
 
-        $totalFees = FeePlans::sum('amount');
-        $collectedFees = FeePayments::where('status', 'paid')->sum('amount_paid');
-        $pendingFees = max(0, $totalFees - $collectedFees);
-        $collectionRatio = ($totalFees > 0) ? round(($collectedFees / $totalFees) * 100, 1) : 0;
+        $feeSummary = \App\Services\Tenant\StudentFeeService::getInstituteFeeSummary();
+        $totalFees = $feeSummary['total_fees'];
+        $collectedFees = $feeSummary['collected_fees'];
+        $pendingFees = $feeSummary['pending_fees'];
+        $collectionRatio = $feeSummary['collection_ratio'];
+
+        $categories = AcademicCategory::where('status', true)
+            ->with([
+                'classCourses.classTeacher',
+                'classCourses.subjects.teacher',
+                'classCourses.batches.teacher',
+                'classCourses.batches.batchSubjects.subject',
+            ])
+            ->orderBy('order')
+            ->get();
+
+        $studentsData = $students->map(function ($s) {
+            $studentFee = \App\Services\Tenant\StudentFeeService::calculateStudentFee($s);
+            $plan = $s->feePlans->sortByDesc('id')->first();
+
+            $attendTotal = $s->attendances->count();
+            $attendPresent = $s->attendances->whereIn('status', ['present', 'p'])->count();
+            $attendanceRate = $attendTotal > 0 ? round(($attendPresent / $attendTotal) * 100, 1) : null;
+
+            // Batch Periods Schedule
+            $batchPeriods = [];
+            if ($s->batch && $s->batch->batchSubjects) {
+                foreach ($s->batch->batchSubjects as $bs) {
+                    $tName = $bs->effective_teacher ? ($bs->effective_teacher->fname . ' ' . ($bs->effective_teacher->lname ?? '')) : null;
+                    $timing = ($bs->effective_start_time && $bs->effective_end_time)
+                        ? (\Carbon\Carbon::parse($bs->effective_start_time)->format('h:i A') . ' - ' . \Carbon\Carbon::parse($bs->effective_end_time)->format('h:i A'))
+                        : null;
+                    $batchPeriods[] = [
+                        'subject_name' => $bs->subject?->name,
+                        'teacher_name' => $tName,
+                        'timing' => $timing,
+                        'days' => $bs->effective_days,
+                        'room' => $bs->room_number,
+                    ];
+                }
+            }
+
+            // Direct Multiple Subjects Schedule (Coaching Mode)
+            $directSubjects = [];
+            if ($s->directSubjects && $s->directSubjects->isNotEmpty()) {
+                foreach ($s->directSubjects as $dSub) {
+                    $tName = $dSub->teacher ? ($dSub->teacher->fname . ' ' . ($dSub->teacher->lname ?? '')) : null;
+                    $timing = ($dSub->start_time && $dSub->end_time)
+                        ? (\Carbon\Carbon::parse($dSub->start_time)->format('h:i A') . ' - ' . \Carbon\Carbon::parse($dSub->end_time)->format('h:i A'))
+                        : null;
+                    $directSubjects[] = [
+                        'id' => $dSub->id,
+                        'subject_name' => $dSub->name,
+                        'teacher_name' => $tName,
+                        'timing' => $timing,
+                        'days' => $dSub->days,
+                    ];
+                }
+            } elseif ($s->subject) {
+                $tName = $s->subject->teacher ? ($s->subject->teacher->fname . ' ' . ($s->subject->teacher->lname ?? '')) : null;
+                $timing = ($s->subject->start_time && $s->subject->end_time)
+                    ? (\Carbon\Carbon::parse($s->subject->start_time)->format('h:i A') . ' - ' . \Carbon\Carbon::parse($s->subject->end_time)->format('h:i A'))
+                    : null;
+                $directSubjects[] = [
+                    'id' => $s->subject->id,
+                    'subject_name' => $s->subject->name,
+                    'teacher_name' => $tName,
+                    'timing' => $timing,
+                    'days' => $s->subject->days,
+                ];
+            }
+
+            return [
+                'id' => $s->id,
+                'fname' => $s->fname,
+                'lname' => $s->lname,
+                'username' => $s->username,
+                'email' => $s->email,
+                'number' => $s->number,
+                'roll_number' => $s->roll_number,
+                'father_name' => $s->father_name,
+                'mother_name' => $s->mother_name,
+                'parent_phone' => $s->parent_phone,
+                'emergency_contact' => $s->emergency_contact,
+                'blood_group' => $s->blood_group,
+                'aadhaar_number' => $s->aadhaar_number,
+                'status' => $s->status,
+                'profile_picture' => $s->profile_picture,
+                'academic_category_id' => $s->academic_category_id,
+                'class_id' => $s->class_id,
+                'subject_id' => $s->subject_id,
+                'batch_id' => $s->batch_id,
+                'category_name' => $s->academicCategory ? $s->academicCategory->name : null,
+                'class_name' => $s->class ? $s->class->name : null,
+                'class_teacher_name' => ($s->class && $s->class->classTeacher) ? ($s->class->classTeacher->fname . ' ' . ($s->class->classTeacher->lname ?? '')) : null,
+                'subject_name' => $s->subject ? $s->subject->name : null,
+                'batch_name' => $s->batch ? $s->batch->name : null,
+                'batch_code' => $s->batch ? $s->batch->code : null,
+                'teacher_name' => ($s->batch && $s->batch->teacher) ? $s->batch->teacher->fname : null,
+                'batch_timings' => $s->batch ? ($s->batch->start_time ? (\Carbon\Carbon::parse($s->batch->start_time)->format('h:i A') . ' - ' . \Carbon\Carbon::parse($s->batch->end_time)->format('h:i A')) : 'Flexible') : null,
+                'batch_duration' => $s->batch ? $s->batch->formatted_duration : null,
+                'batch_periods' => $batchPeriods,
+                'direct_subjects' => $directSubjects,
+                'direct_subject_ids' => array_column($directSubjects, 'id'),
+                'plan_type' => $plan ? $plan->plan_type : ($studentFee['plan_type'] ?? 'monthly'),
+                'fee_amount' => ($plan && $plan->is_override) ? (float) $plan->amount : '',
+                'fee_due_day' => $plan ? (int) $plan->due_day : ($studentFee['due_day'] ?? 10),
+                'fee_start_date' => $plan ? $plan->start_date : ($s->created_at ? $s->created_at->format('Y-m-d') : null),
+                'is_override' => $plan ? (bool) $plan->is_override : false,
+                'override_reason' => $plan ? $plan->override_reason : null,
+                'total_fee' => (float) $studentFee['total_accrued'],
+                'paid_fee' => (float) $studentFee['total_paid'],
+                'due_fee' => (float) $studentFee['total_due'],
+                'cycles_count' => $studentFee['cycles_count'],
+                'attendance_rate' => $attendanceRate,
+                'joined_date' => $s->created_at ? $s->created_at->format('d M, Y') : 'N/A',
+            ];
+        });
 
         return view('tenant.admin.students.students', compact(
-            'students', 'totalFees', 'collectedFees', 'pendingFees', 'collectionRatio'
+            'students', 'studentsData', 'totalFees', 'collectedFees', 'pendingFees', 'collectionRatio', 'categories'
         ));
+    }
+
+    public function updateStudentDetails(Request $request, $id)
+    {
+        $student = User::findOrFail($id);
+        $section = $request->input('form_section', 'all');
+
+        // 1. BIO & PERSONAL DOSSIER
+        if ($section === 'bio') {
+            $validated = $request->validate([
+                'fname' => 'required|string|max:255',
+                'lname' => 'nullable|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $student->id,
+                'number' => 'nullable|string|max:25',
+                'roll_number' => 'nullable|string|max:50',
+                'blood_group' => 'nullable|string|max:10',
+                'dob' => 'nullable|date',
+                'previous_school' => 'nullable|string|max:255',
+                'aadhaar_number' => 'nullable|string|max:50',
+                'address' => 'nullable|string|max:255',
+                'city' => 'nullable|string|max:100',
+                'state' => 'nullable|string|max:100',
+                'pincode' => 'nullable|string|max:20',
+                'status' => 'required|in:active,suspended',
+            ]);
+
+            $updateData = [
+                'fname' => $validated['fname'],
+                'lname' => $request->input('lname') ?: null,
+                'email' => $validated['email'],
+                'number' => $request->input('number') ?: null,
+                'roll_number' => $request->input('roll_number') ?: null,
+                'blood_group' => $request->input('blood_group') ?: null,
+                'dob' => $request->input('dob') ?: null,
+                'previous_school' => $request->input('previous_school') ?: null,
+                'aadhaar_number' => $request->input('aadhaar_number') ?: null,
+                'address' => $request->input('address') ?: null,
+                'city' => $request->input('city') ?: null,
+                'state' => $request->input('state') ?: null,
+                'pincode' => $request->input('pincode') ?: null,
+                'status' => $validated['status'],
+            ];
+
+            if ($request->hasFile('aadhaar_front')) {
+                $updateData['aadhaar_front'] = $request->file('aadhaar_front')->store('students/documents', 'public');
+            }
+            if ($request->hasFile('aadhaar_back')) {
+                $updateData['aadhaar_back'] = $request->file('aadhaar_back')->store('students/documents', 'public');
+            }
+            if ($request->hasFile('previous_marksheet')) {
+                $updateData['previous_marksheet'] = $request->file('previous_marksheet')->store('students/documents', 'public');
+            }
+
+            $student->update($updateData);
+
+            return redirect()->back()->with('success', 'Student personal profile updated successfully.');
+        }
+
+        // 1.5. KYC & ADMISSION DOCUMENTS
+        if ($section === 'kyc') {
+            $validated = $request->validate([
+                'aadhaar_number' => 'nullable|string|max:30',
+                'previous_school' => 'nullable|string|max:255',
+                'aadhaar_front' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
+                'aadhaar_back' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
+                'previous_marksheet' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
+            ]);
+
+            $updateData = [
+                'aadhaar_number' => $request->input('aadhaar_number') ?: null,
+                'previous_school' => $request->input('previous_school') ?: null,
+            ];
+
+            if ($request->hasFile('aadhaar_front')) {
+                $updateData['aadhaar_front'] = $request->file('aadhaar_front')->store('students/documents', 'public');
+            }
+
+            if ($request->hasFile('aadhaar_back')) {
+                $updateData['aadhaar_back'] = $request->file('aadhaar_back')->store('students/documents', 'public');
+            }
+
+            if ($request->hasFile('previous_marksheet')) {
+                $updateData['previous_marksheet'] = $request->file('previous_marksheet')->store('students/documents', 'public');
+            }
+
+            $student->update($updateData);
+
+            return redirect()->back()->with('success', 'KYC and admission documents updated successfully.');
+        }
+
+        // 2. PARENTS & GUARDIAN DOSSIER
+        if ($section === 'parents') {
+            $validated = $request->validate([
+                'father_name' => 'nullable|string|max:255',
+                'mother_name' => 'nullable|string|max:255',
+                'parent_phone' => 'nullable|string|max:30',
+                'emergency_contact' => 'nullable|string|max:30',
+            ]);
+
+            $student->update([
+                'father_name' => $request->input('father_name') ?: null,
+                'mother_name' => $request->input('mother_name') ?: null,
+                'parent_phone' => $request->input('parent_phone') ?: null,
+                'emergency_contact' => $request->input('emergency_contact') ?: null,
+            ]);
+
+            return redirect()->back()->with('success', 'Parent & guardian information updated successfully.');
+        }
+
+        // 3. ACADEMIC & BATCH PLACEMENT
+        if ($section === 'academic') {
+            $validated = $request->validate([
+                'academic_category_id' => 'nullable|integer',
+                'class_id' => 'nullable|integer',
+                'subject_id' => 'nullable|integer',
+                'subject_ids' => 'nullable|array',
+                'batch_id' => 'nullable|integer',
+                'roll_number' => 'nullable|string|max:50',
+                'admission_status' => 'nullable|string|max:50',
+            ]);
+
+            $updateData = [
+                'academic_category_id' => $request->input('academic_category_id') ?: null,
+                'class_id' => $request->input('class_id') ?: null,
+            ];
+
+            if ($request->filled('batch_id')) {
+                // School / Group Batch Mode: Student follows batch schedule
+                $updateData['batch_id'] = $request->input('batch_id');
+                $updateData['subject_id'] = null;
+                $student->directSubjects()->detach();
+            } else {
+                // Coaching / Individual Subjects Mode: Student chooses multiple subjects
+                $subjectIds = $request->input('subject_ids', []);
+                if ($request->filled('subject_id') && !in_array($request->input('subject_id'), $subjectIds)) {
+                    $subjectIds[] = (int) $request->input('subject_id');
+                }
+                $updateData['batch_id'] = null;
+                $updateData['subject_id'] = !empty($subjectIds) ? $subjectIds[0] : null;
+                $student->directSubjects()->sync($subjectIds);
+            }
+
+            if ($request->has('roll_number')) {
+                $updateData['roll_number'] = $request->input('roll_number') ?: null;
+            }
+            if ($request->has('admission_status')) {
+                $updateData['admission_status'] = $request->input('admission_status') ?: null;
+            }
+
+            $student->update($updateData);
+
+            return redirect()->back()->with('success', 'Academic curriculum and batch placement updated successfully.');
+        }
+
+        // 4. TUITION & FEE PLAN CONFIGURATION
+        if ($section === 'fee_plan') {
+            if ($request->input('fee_action') === 'reset') {
+                $existing = FeePlans::where('student_id', $student->id)->first();
+                if ($existing) {
+                    $existing->delete();
+                }
+                return redirect()->back()->with('success', 'Student fee plan reset to inherit from hierarchy automatically.');
+            }
+
+            $validated = $request->validate([
+                'fee_plan_type' => 'required|string|in:monthly,quarterly,yearly,onetime',
+                'fee_amount' => 'required|numeric|min:0',
+                'fee_due_day' => 'required|integer|between:1,31',
+                'fee_start_date' => 'required|date',
+                'is_override' => 'nullable|boolean',
+                'override_reason' => 'nullable|string|max:255',
+            ]);
+
+            FeePlans::updateOrCreate(
+                ['student_id' => $student->id],
+                [
+                    'plan_type' => $validated['fee_plan_type'],
+                    'amount' => (float) $validated['fee_amount'],
+                    'due_day' => (int) $validated['fee_due_day'],
+                    'start_date' => $validated['fee_start_date'],
+                    'is_override' => $request->has('is_override') ? (bool) $request->is_override : true,
+                    'override_reason' => $request->override_reason ?: 'Custom Student Override',
+                ]
+            );
+
+            return redirect()->back()->with('success', 'Tuition fee plan updated successfully.');
+        }
+
+        // 5. FALLBACK COMPREHENSIVE UPDATE
+        $validated = $request->validate([
+            'fname' => 'required|string|max:255',
+            'lname' => 'nullable|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $student->id,
+            'number' => 'nullable|string|max:25',
+            'roll_number' => 'nullable|string|max:50',
+            'father_name' => 'nullable|string|max:255',
+            'mother_name' => 'nullable|string|max:255',
+            'parent_phone' => 'nullable|string|max:30',
+            'emergency_contact' => 'nullable|string|max:30',
+            'blood_group' => 'nullable|string|max:10',
+            'aadhaar_number' => 'nullable|string|max:50',
+            'status' => 'required|in:active,suspended',
+            'academic_category_id' => 'nullable|integer',
+            'class_id' => 'nullable|integer',
+            'subject_id' => 'nullable|integer',
+            'batch_id' => 'nullable|integer',
+            'fee_plan_type' => 'nullable|string|in:monthly,quarterly,yearly,onetime',
+            'fee_amount' => 'nullable|numeric|min:0',
+            'fee_due_day' => 'nullable|integer|between:1,31',
+            'fee_start_date' => 'nullable|date',
+        ]);
+
+        $academicData = [
+            'academic_category_id' => $request->input('academic_category_id') ?: null,
+            'class_id' => $request->input('class_id') ?: null,
+        ];
+
+        if ($request->filled('batch_id')) {
+            $academicData['batch_id'] = $request->input('batch_id');
+            $academicData['subject_id'] = null;
+            $student->directSubjects()->detach();
+        } else {
+            $subjectIds = $request->input('subject_ids', []);
+            if ($request->filled('subject_id') && !in_array($request->input('subject_id'), $subjectIds)) {
+                $subjectIds[] = (int) $request->input('subject_id');
+            }
+            $academicData['batch_id'] = null;
+            $academicData['subject_id'] = !empty($subjectIds) ? $subjectIds[0] : null;
+            $student->directSubjects()->sync($subjectIds);
+        }
+
+        $student->update(array_merge([
+            'fname' => $validated['fname'],
+            'lname' => $request->input('lname') ?: null,
+            'email' => $validated['email'],
+            'number' => $request->input('number') ?: null,
+            'roll_number' => $request->input('roll_number') ?: null,
+            'father_name' => $request->input('father_name') ?: null,
+            'mother_name' => $request->input('mother_name') ?: null,
+            'parent_phone' => $request->input('parent_phone') ?: null,
+            'emergency_contact' => $request->input('emergency_contact') ?: null,
+            'blood_group' => $request->input('blood_group') ?: null,
+            'aadhaar_number' => $request->input('aadhaar_number') ?: null,
+            'status' => $validated['status'],
+        ], $academicData));
+
+        if ($request->filled('fee_amount') && (float) $request->input('fee_amount') > 0) {
+            FeePlans::updateOrCreate(
+                ['student_id' => $student->id],
+                [
+                    'plan_type' => $request->input('fee_plan_type') ?: 'monthly',
+                    'amount' => (float) $request->input('fee_amount'),
+                    'due_day' => (int) ($request->input('fee_due_day') ?: 10),
+                    'start_date' => $request->input('fee_start_date') ?: now()->toDateString(),
+                    'is_override' => true,
+                    'override_reason' => $request->input('override_reason') ?: 'Direct Student Override',
+                ]
+            );
+        } elseif ($request->has('fee_amount') && ($request->input('fee_amount') === null || $request->input('fee_amount') === '')) {
+            FeePlans::where('student_id', $student->id)->delete();
+        }
+
+        return redirect()->back()->with('success', 'Student details and academic assignment updated successfully.');
+    }
+
+    public function resetStudentPassword(Request $request, $id)
+    {
+        $student = User::findOrFail($id);
+
+        $request->validate([
+            'password' => 'required|string|min:6',
+        ]);
+
+        $student->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->back()->with('success', "Password for student {$student->fname} was reset successfully.");
     }
 
     public function updateStudentRole(Request $request)
@@ -66,29 +472,69 @@ class StudentsController extends Controller
 
     public function adminStudentProfile($username)
     {
-        $categories = AcademicCategory::where('status', true)->orderBy('order')->get();
-        $classes = Classes::where('status', true)->orderBy('order')->get();
-        $subjects = Subjects::where('status', true)->orderBy('order')->get();
+        $categories = AcademicCategory::where('status', true)
+            ->with([
+                'classCourses.classTeacher',
+                'classCourses.subjects.teacher',
+                'classCourses.batches.teacher',
+                'classCourses.batches.batchSubjects.subject',
+            ])
+            ->orderBy('order')
+            ->get();
 
         $studentProfile = User::where('username', $username)
-            ->with(['academicCategory', 'class', 'subject', 'feePlans', 'feePayments' => function ($q) {
-                $q->latest();
-            }, 'orders' => function ($q) {
-                $q->with('items')->latest();
-            }, 'entitlements.entitable', 'enrolledCourses', 'attendances' => function ($q) {
-                $q->latest()->take(30);
-            }, 'admissions' => function ($q) {
-                $q->latest();
-            }])
+            ->with([
+                'academicCategory',
+                'class.classTeacher',
+                'subject.teacher',
+                'directSubjects.teacher',
+                'batch.teacher',
+                'batch.batchSubjects.subject.teacher',
+                'batch.batchSubjects.teacher',
+                'feePlans',
+                'feePayments' => function ($q) {
+                    $q->latest();
+                },
+                'orders' => function ($q) {
+                    $q->with('items')->latest();
+                },
+                'entitlements.entitable',
+                'enrolledCourses',
+                'attendances' => function ($q) {
+                    $q->latest();
+                },
+                'admissions' => function ($q) {
+                    $q->latest();
+                }
+            ])
             ->firstOrFail();
 
-        $feePlan = FeePlans::where('student_id', $studentProfile->id)->latest()->first();
+        $feeSummary = \App\Services\Tenant\StudentFeeService::calculateStudentFee($studentProfile);
+        $feePlan = $studentProfile->feePlans->sortByDesc('id')->first();
+
+        $attendances = $studentProfile->attendances;
+        $totalAttendance = $attendances->count();
+        $presentAttendance = $attendances->whereIn('status', ['present', 'p'])->count();
+        $absentAttendance = $attendances->whereIn('status', ['absent', 'a'])->count();
+        $lateAttendance = $attendances->whereIn('status', ['late', 'l'])->count();
+        $attendanceRate = $totalAttendance > 0 ? round(($presentAttendance / $totalAttendance) * 100, 1) : null;
 
         $paidOrders = $studentProfile->orders->where('payment_status', 'paid');
         $totalDigitalSpend = $paidOrders->sum('grand_total');
 
         return view('tenant.admin.students.student_profile', compact(
-            'studentProfile', 'categories', 'classes', 'subjects', 'feePlan', 'paidOrders', 'totalDigitalSpend'
+            'studentProfile',
+            'categories',
+            'feeSummary',
+            'feePlan',
+            'attendances',
+            'totalAttendance',
+            'presentAttendance',
+            'absentAttendance',
+            'lateAttendance',
+            'attendanceRate',
+            'paidOrders',
+            'totalDigitalSpend'
         ));
     }
 
@@ -104,6 +550,12 @@ class StudentsController extends Controller
             'number' => 'required|string|max:20',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'dob' => 'nullable|date',
+            'roll_number' => 'nullable|string|max:50',
+            'father_name' => 'nullable|string|max:255',
+            'mother_name' => 'nullable|string|max:255',
+            'parent_phone' => 'nullable|string|max:30',
+            'emergency_contact' => 'nullable|string|max:30',
+            'blood_group' => 'nullable|string|max:10',
             'academic_category_id' => 'nullable|exists:academic_categories,id',
             'class_id' => 'nullable|exists:class_courses,id',
             'subject_id' => 'nullable|exists:subjects,id',
@@ -158,6 +610,8 @@ class StudentsController extends Controller
                 'start_date' => $validated['start_date'],
                 'due_day' => $validated['due_day'],
                 'end_date' => $validated['end_date'] ?? null,
+                'is_override' => true,
+                'override_reason' => $request->input('override_reason') ?: 'Direct Student Override',
             ]
         );
 
@@ -194,18 +648,40 @@ class StudentsController extends Controller
      */
     public function admissions(Request $request)
     {
-        $query = Admission::with(['user', 'academicCategory', 'classCourse', 'subject'])->latest();
+        $query = Admission::with([
+            'user.academicCategory',
+            'user.class.classTeacher',
+            'user.batch.teacher',
+            'user.batch.batchSubjects.subject',
+            'user.directSubjects.teacher',
+            'user.subject.teacher',
+            'academicCategory',
+            'classCourse',
+            'subject'
+        ])->latest();
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
         if ($request->filled('category_id')) {
-            $query->where('academic_category_id', $request->category_id);
+            $catId = $request->category_id;
+            $query->where(function ($q) use ($catId) {
+                $q->where('academic_category_id', $catId)
+                  ->orWhereHas('user', function ($uq) use ($catId) {
+                      $uq->where('academic_category_id', $catId);
+                  });
+            });
         }
 
         if ($request->filled('class_id')) {
-            $query->where('class_id', $request->class_id);
+            $cId = $request->class_id;
+            $query->where(function ($q) use ($cId) {
+                $q->where('class_id', $cId)
+                  ->orWhereHas('user', function ($uq) use ($cId) {
+                      $uq->where('class_id', $cId);
+                  });
+            });
         }
 
         if ($request->filled('search')) {
@@ -216,14 +692,26 @@ class StudentsController extends Controller
                       $uq->where('fname', 'like', "%{$s}%")
                          ->orWhere('lname', 'like', "%{$s}%")
                          ->orWhere('email', 'like', "%{$s}%")
-                         ->orWhere('number', 'like', "%{$s}%");
+                         ->orWhere('number', 'like', "%{$s}%")
+                         ->orWhere('roll_number', 'like', "%{$s}%")
+                         ->orWhere('parent_phone', 'like', "%{$s}%");
                   });
             });
         }
 
         $admissions = $query->paginate(20)->withQueryString();
 
-        $categories = AcademicCategory::where('status', true)->orderBy('order')->get();
+        $categories = AcademicCategory::where('status', true)
+            ->with([
+                'classCourses.classTeacher',
+                'classCourses.subjects.teacher',
+                'classCourses.batches.teacher',
+                'classCourses.batches.batchSubjects.subject',
+                'classCourses.batches.batchSubjects.teacher',
+            ])
+            ->orderBy('order')
+            ->get();
+
         $classes = Classes::where('status', true)->orderBy('order')->get();
         $subjects = Subjects::where('status', true)->orderBy('order')->get();
 
@@ -250,8 +738,19 @@ class StudentsController extends Controller
             'number' => 'required|string|max:20',
             'password' => 'required|string|min:6',
             'dob' => 'nullable|date',
+            'gender' => 'nullable|string|in:male,female,other',
+            'blood_group' => 'nullable|string|max:10',
+            'roll_number' => 'nullable|string|max:50',
+            'father_name' => 'nullable|string|max:255',
+            'mother_name' => 'nullable|string|max:255',
+            'parent_phone' => 'nullable|string|max:20',
+            'emergency_contact' => 'nullable|string|max:20',
             'academic_category_id' => 'nullable|exists:academic_categories,id',
             'class_id' => 'nullable|exists:class_courses,id',
+            'enrollment_type' => 'nullable|string|in:batch,subjects',
+            'batch_id' => 'nullable|exists:batches,id',
+            'subject_ids' => 'nullable|array',
+            'subject_ids.*' => 'exists:subjects,id',
             'subject_id' => 'nullable|exists:subjects,id',
             'aadhaar_number' => 'nullable|string|max:30',
             'previous_school' => 'nullable|string|max:255',
@@ -274,6 +773,10 @@ class StudentsController extends Controller
         $aadhaarBackPath = $request->hasFile('aadhaar_back') ? $request->file('aadhaar_back')->store('students/documents', 'public') : null;
         $marksheetPath = $request->hasFile('previous_marksheet') ? $request->file('previous_marksheet')->store('students/documents', 'public') : null;
 
+        $batchId = ($request->enrollment_type === 'batch') ? $request->batch_id : null;
+        $subjectIds = ($request->enrollment_type === 'subjects') ? (array) $request->subject_ids : [];
+        $primarySubjectId = !empty($subjectIds) ? $subjectIds[0] : $request->subject_id;
+
         // Create student user
         $student = User::create([
             'fname' => $validated['fname'],
@@ -283,9 +786,17 @@ class StudentsController extends Controller
             'number' => $validated['number'],
             'password' => Hash::make($validated['password']),
             'dob' => $validated['dob'] ?? null,
+            'gender' => $request->gender ?? null,
+            'blood_group' => $request->blood_group ?? null,
+            'roll_number' => $request->roll_number ?? null,
+            'father_name' => $request->father_name ?? null,
+            'mother_name' => $request->mother_name ?? null,
+            'parent_phone' => $request->parent_phone ?? null,
+            'emergency_contact' => $request->emergency_contact ?? null,
             'academic_category_id' => $validated['academic_category_id'] ?? null,
             'class_id' => $validated['class_id'] ?? null,
-            'subject_id' => $validated['subject_id'] ?? null,
+            'batch_id' => $batchId,
+            'subject_id' => $primarySubjectId,
             'aadhaar_number' => $validated['aadhaar_number'] ?? null,
             'aadhaar_front' => $aadhaarFrontPath,
             'aadhaar_back' => $aadhaarBackPath,
@@ -298,14 +809,19 @@ class StudentsController extends Controller
             'role' => 'student',
             'status' => 'active',
             'admission_status' => 'approved',
+            'enrolled_at' => now(),
         ]);
+
+        if (!empty($subjectIds) && method_exists($student, 'directSubjects')) {
+            $student->directSubjects()->sync($subjectIds);
+        }
 
         // Create approved admission record
         Admission::create([
             'user_id' => $student->id,
             'academic_category_id' => $validated['academic_category_id'] ?? null,
             'class_id' => $validated['class_id'] ?? null,
-            'subject_id' => $validated['subject_id'] ?? null,
+            'subject_id' => $primarySubjectId,
             'aadhaar_number' => $validated['aadhaar_number'] ?? null,
             'aadhaar_front' => $aadhaarFrontPath,
             'aadhaar_back' => $aadhaarBackPath,
@@ -314,6 +830,7 @@ class StudentsController extends Controller
             'status' => 'approved',
             'applied_at' => now(),
             'approved_at' => now(),
+            'admin_remarks' => 'Direct Admission by Admin',
         ]);
 
         // If fee amount provided, setup initial plan
@@ -324,6 +841,8 @@ class StudentsController extends Controller
                 'amount' => $validated['fee_amount'],
                 'start_date' => now()->toDateString(),
                 'due_day' => $validated['fee_due_day'] ?? 10,
+                'is_override' => true,
+                'override_reason' => 'Direct Admission Fee Override',
             ]);
         }
 
@@ -346,6 +865,7 @@ class StudentsController extends Controller
             $admission->user->update([
                 'role' => 'student',
                 'admission_status' => 'approved',
+                'enrolled_at' => $admission->user->enrolled_at ?: now(),
                 'academic_category_id' => $admission->academic_category_id ?: $admission->user->academic_category_id,
                 'class_id' => $admission->class_id ?: $admission->user->class_id,
                 'subject_id' => $admission->subject_id ?: $admission->user->subject_id,
@@ -437,28 +957,6 @@ class StudentsController extends Controller
         ));
     }
 
-    public function performance()
-    {
-        $students = User::where('role', 'student')
-            ->with(['academicCategory', 'class', 'subject', 'enrolledCourses', 'entitlements', 'feePlans', 'feePayments', 'attendances'])
-            ->latest()
-            ->get();
-
-        foreach ($students as $student) {
-            $sTotal = $student->attendances->count();
-            $sPresent = $student->attendances->whereIn('status', ['present', 'p'])->count();
-            $student->total_days = $sTotal;
-            $student->present_days = $sPresent;
-            $student->attendance_rate = $sTotal > 0 ? round(($sPresent / $sTotal) * 100, 1) : 0;
-
-            $totalFee = $student->feePlans->sum('amount');
-            $paidFee = $student->feePayments->where('status', 'paid')->sum('amount_paid');
-            $student->due_fee = max(0, $totalFee - $paidFee);
-        }
-
-        return view('tenant.admin.students.performance', compact('students'));
-    }
-
     public function fees()
     {
         $students = User::where('role', 'student')
@@ -483,13 +981,39 @@ class StudentsController extends Controller
         return view('tenant.admin.students.feedback', compact('feedbacks', 'inquiries'));
     }
 
-    public function idCard()
+    public function idCard(Request $request)
     {
-        $students = User::where('role', 'student')
-            ->with(['academicCategory', 'class', 'subject'])
-            ->latest()
+        $query = User::where('role', 'student')
+            ->with(['academicCategory', 'class', 'subject', 'batch']);
+
+        if ($request->filled('category_id')) {
+            $query->where('academic_category_id', $request->category_id);
+        }
+
+        if ($request->filled('class_id')) {
+            $query->where('class_id', $request->class_id);
+        }
+
+        if ($request->filled('search')) {
+            $s = trim($request->search);
+            $query->where(function ($q) use ($s) {
+                $q->where('fname', 'like', "%{$s}%")
+                  ->orWhere('lname', 'like', "%{$s}%")
+                  ->orWhere('username', 'like', "%{$s}%")
+                  ->orWhere('roll_number', 'like', "%{$s}%")
+                  ->orWhere('number', 'like', "%{$s}%");
+            });
+        }
+
+        $students = $query->orderByRaw('CAST(roll_number AS UNSIGNED) ASC')->orderBy('fname')->get();
+
+        $categories = AcademicCategory::active()
+            ->with(['classCourses' => function($q) {
+                $q->active()->orderBy('order');
+            }])
+            ->orderBy('order')
             ->get();
 
-        return view('tenant.admin.students.id_card', compact('students'));
+        return view('tenant.admin.students.id_card', compact('students', 'categories'));
     }
 }

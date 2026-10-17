@@ -6,13 +6,16 @@
     'optionLabel' => null,
     'optionValue' => null,
     'class' => '',
+    'hint' => null,
+    'required' => false
 ])
 
-<x-input.wrapper :label="$label">
+<x-input.wrapper :label="$label" :hint="$hint" :required="$required">
 
     <select name="{{ $name }}" id="{{ Str::slug($name) . '-' . uniqid() }}"
+        @required($required)
         {{ $attributes->merge([
-            'class' => "w-full p-2 border-rounded text-xs border-primary bg-transparent $class",
+            'class' => "w-full bg-secondary text-theme-text text-xs px-4 py-2.5 rounded-full focus:outline-none focus:ring-1 focus:ring-brand font-normal cursor-pointer transition $class",
         ]) }}>
 
         <option value="">Select Value</option>

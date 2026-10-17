@@ -107,10 +107,9 @@ class TenantLoginController
             'email' => 'required|string|email|max:255|unique:users',
             'number' => 'required|string|max:15|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'string',
         ]);
 
-        // Create a new user
+        // Create a new user - strictly 'user' role for tenant public registrations
         $user = User::create([
             'fname' => $request->fname,
             'lname' => $request->lname,
@@ -118,8 +117,8 @@ class TenantLoginController
             'email' => $request->email,
             'number' => $request->number,
             'password' => bcrypt($request->password),
-            'role' => $request->role ?? 'user', // Default role
-            'status' => 'active', // Default status
+            'role' => 'user',
+            'status' => 'active',
         ]);
 
         // ✅ TENANT GUARD MEIN LOGIN KARO

@@ -1,44 +1,43 @@
-<div class="breadcrumb mb-4 flex justify-between items-center p-4 border-rounded bg-primary border-primary">
+<div class="breadcrumb mb-6 flex justify-between items-center p-6 rounded-lg bg-primary">
     <div>
-        <h1 class="text-3xl font-bold tracking-tight flex items-center gap-2 text-primary">
-            <i class="fa-solid fa-layer-group text-xl"></i>
+        <h1 class="text-xl sm:text-2xl font-semibold tracking-tight flex items-center gap-2.5 text-theme-text">
+            <i class="fa-solid fa-layer-group text-brand text-xl"></i>
             Welcome Back
         </h1>
-        <p class="text-sm mt-1 pl-0.5 font-medium text-secondary">
+        <p class="text-xs sm:text-sm mt-1 pl-0.5 font-normal text-theme-text-muted">
             Empower learning. Manage with ease. Lead with insight.
         </p>
-        <div class="links flex flex-wrap items-center gap-1 text-sm font-medium mt-6 text-secondary">
-            <a href="{{ route('home') }}" class="hover:text-primary transition-all duration-200 flex items-center gap-1">
-                <i class="fas fa-home"></i> Home
+        <div class="links flex flex-wrap items-center gap-1.5 text-xs font-normal mt-5 text-theme-text-muted">
+            <a href="{{ route('tenant.home') }}" class="hover:text-theme-text transition flex items-center gap-1">
+                <i class="fa-solid fa-house text-[11px]"></i> Home
             </a>
-            <i class="fas fa-angle-right text-xs opacity-70"></i>
-            <a href="{{ route('admin.dashboard.index') }}" class="hover:text-primary transition-all duration-200">Admin</a>
-            <i class="fas fa-angle-right text-xs opacity-70"></i>
-            <span class="capitalize">{{ request()->segment(count(request()->segments())) }}</span>
+            <i class="fa-solid fa-chevron-right text-[9px] opacity-60"></i>
+            <a href="{{ route('admin.dashboard.index') }}" class="hover:text-theme-text transition">Admin</a>
+            <i class="fa-solid fa-chevron-right text-[9px] opacity-60"></i>
+            <span class="text-brand font-medium capitalize">{{ request()->segment(count(request()->segments())) }}</span>
         </div>
     </div>
-    <!-- <img src="{{ asset("images/pngs/admin.webp") }}" alt="" class="w-20 h-20 object-contain"> -->
+
     <div class="right hidden md:block">
         <div class="flex items-baseline justify-end">
-            <span id="clock" class="text-5xl font-bold text-right text-primary">00:00:00</span>
+            <span id="clock" class="text-4xl font-semibold text-right text-theme-text font-mono tracking-tight">00:00:00</span>
         </div>
-        <div class="mt-2 text-right">
-            <div id="date" class="text-md font-medium text-tertiary">Loading date…</div>
+        <div class="mt-1.5 text-right">
+            <div id="date" class="text-xs sm:text-sm font-normal text-theme-text-muted">Loading date…</div>
         </div>
-        <p id="greeting-text" class="text-primary text-xl font-bold mt-1 flex items-center justify-end gap-2">
-            <i class="fas fa-smile text-yellow-400"></i>
+        <p id="greeting-text" class="text-theme-text text-lg font-semibold mt-1.5 flex items-center justify-end gap-2">
+            <i class="fas fa-smile text-amber-400"></i>
             <span>Good Morning!</span>
         </p>
     </div>
 </div>
-<script>
-    (function() {
 
+<script>
+    (function () {
         const clockEl = document.getElementById("clock");
         const dateEl = document.getElementById("date");
         const greetingEl = document.getElementById("greeting-text");
 
-        // 🚨 Agar clock layout hi nahi hai, to JS run hi mat karo
         if (!clockEl || !dateEl || !greetingEl) return;
 
         function updateClock() {
@@ -66,26 +65,25 @@
 
             if (hours >= 5 && hours < 12) {
                 greeting = "Good Morning!";
-                icon = "fa-sun";
+                icon = "fa-sun text-amber-400";
             } else if (hours >= 12 && hours < 17) {
                 greeting = "Good Afternoon!";
-                icon = "fa-cloud-sun";
+                icon = "fa-cloud-sun text-amber-400";
             } else if (hours >= 17 && hours < 21) {
                 greeting = "Good Evening!";
-                icon = "fa-moon";
+                icon = "fa-moon text-indigo-400";
             } else {
                 greeting = "Good Night!";
-                icon = "fa-star";
+                icon = "fa-star text-indigo-400";
             }
 
             greetingEl.innerHTML = `
-            <i class="fas ${icon} text-yellow-400"></i>
-            <span>${greeting}</span>
-        `;
+                <i class="fas ${icon}"></i>
+                <span>${greeting}</span>
+            `;
         }
 
         updateClock();
         setInterval(updateClock, 1000);
-
     })();
 </script>

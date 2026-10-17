@@ -13,6 +13,7 @@ class ClassCourse extends Model
 
     protected $fillable = [
         'academic_category_id',
+        'class_teacher_id',
         'image',
         'name',
         'slug',
@@ -34,11 +35,24 @@ class ClassCourse extends Model
     }
 
     /**
+     * Class Teacher / Mentor assigned to this class
+     */
+    public function classTeacher()
+    {
+        return $this->belongsTo(User::class, 'class_teacher_id');
+    }
+
+    /**
      * A Class/Course has many subjects
      */
     public function subjects()
     {
         return $this->hasMany(Subject::class, 'class_courses_id')->orderBy('order');
+    }
+
+    public function batches()
+    {
+        return $this->hasMany(Batch::class, 'class_course_id');
     }
     public function attendances()
     {

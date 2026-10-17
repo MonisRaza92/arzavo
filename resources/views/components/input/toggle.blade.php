@@ -1,20 +1,18 @@
 @props([
-'name',
-'label' => '',
-'value' => false,
-'disabled' => false,
-'hint' => null
+    'name',
+    'label' => '',
+    'value' => false,
+    'disabled' => false,
+    'hint' => null
 ])
 
-<div class="flex justify-between items-center p-3 rounded border border-primary">
-
+<div class="flex justify-between items-center p-3 rounded-lg bg-secondary">
     <div>
-        <label class="text-sm font-medium text-gray-700">
+        <label class="text-xs font-semibold text-theme-text block">
             {{ $label }}
         </label>
-
         @if ($hint)
-        <p class="text-xs mt-1 text-gray-500">{{ $hint }}</p>
+        <p class="text-[10px] text-theme-text-muted mt-0.5">{{ $hint }}</p>
         @endif
     </div>
 
@@ -26,24 +24,14 @@
         <input
             type="checkbox"
             name="{{ $name }}"
-            id="{{ $name }}"
+            id="{{ $attributes->get('id') ?? $name }}"
             value="1"
             @checked($value)
             @disabled($disabled)
+            {{ $attributes->except(['id', 'class']) }}
             class="sr-only peer">
 
-        {{-- Track --}}
-        <div class="w-11 h-6 bg-gray-300 rounded-full
-                    peer-checked:bg-black
-                    peer-disabled:bg-gray-200
-                    transition-colors duration-200">
-        </div>
-
-        {{-- Thumb --}}
-        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full
-                    transition-transform duration-200
-                    peer-checked:translate-x-5">
-        </div>
+        {{-- Track & Thumb with Brand colors --}}
+        <div class="w-9 h-5 bg-primary peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand cursor-pointer"></div>
     </label>
-
-</div>
+</div>

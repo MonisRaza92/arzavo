@@ -1,27 +1,28 @@
-<div id="contentPickerModal" class="fixed inset-0 bg-black/70 hidden z-199 flex justify-center items-start pt-20">
+<div id="contentPickerModal" class="fixed inset-0 bg-black/75 hidden z-[200] flex justify-center items-start pt-16 px-4">
 
     <div
-        class="bg-primary border-primary border-rounded w-11/12 md:w-3/4 lg:w-1/2 max-h-[80vh] overflow-y-auto scrollbar">
+        class="bg-primary rounded-lg shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto scrollbar relative"
+        onclick="event.stopPropagation()">
 
         {{-- Header --}}
-        <div class="flex justify-between items-center z-200 p-4 border-bottom sticky top-0 bg-primary">
-            <h3 class="text-lg font-bold text-primary" id="contentPickerTitle">
-                <i class="fa-solid fa-folder-open"></i> <span>Select Content</span>
+        <div class="flex justify-between items-center z-10 p-4 border-b border-subtle sticky top-0 bg-primary">
+            <h3 class="text-sm font-semibold text-theme-text flex items-center gap-2" id="contentPickerTitle">
+                <i class="fa-solid fa-folder-open text-brand"></i> <span>Select Content</span>
             </h3>
-            <button onclick="closeContentPicker()" class="text-xl text-primary">
+            <button onclick="closeContentPicker()" class="w-7 h-7 rounded-full bg-secondary text-theme-text-muted hover:text-theme-text flex items-center justify-center text-xs transition">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
 
-        {{-- Content Grid --}}
-        <div class="p-4 columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4" id="contentGrid">
+        {{-- Content Grid: Natural Real Dimensions with Auto Adjust --}}
+        <div class="p-4 columns-2 sm:columns-3 md:columns-4 gap-3 space-y-3" id="contentGrid">
             @foreach ($contents as $content)
-                <div class="content-item group border-primary border-rounded overflow-hidden cursor-pointer bg-primary hover-primary transition"
+                <div class="content-item group break-inside-avoid rounded-lg overflow-hidden cursor-pointer bg-secondary hover:ring-2 hover:ring-brand transition mb-3"
                     data-type="{{ $content->type }}"
                     onclick="selectContent('{{ $content->filepath }}', '{{ $content->type }}')">
 
                     {{-- Preview --}}
-                    <div class="relative bg-secondary overflow-hidden" title="{{ $content->filename }}">
+                    <div class="relative bg-subtle overflow-hidden flex items-center justify-center" title="{{ $content->filename }}">
 
                         @if ($content->type === 'image')
                             <img src="{{ media($content->filepath) }}"
@@ -32,43 +33,38 @@
                                 onmouseleave="this.pause(); this.currentTime = 0;">
                             </video>
                         @else
-                            <div class="w-full h-full flex flex-col items-center justify-center text-tertiary">
+                            <div class="w-full h-24 flex flex-col items-center justify-center text-theme-text-muted">
                                 <i class="fa-solid fa-file text-2xl mb-1"></i>
                                 <span class="text-xs uppercase">{{ $content->type }}</span>
                             </div>
                         @endif
-
-                        {{-- Type Badge --}}
-                        <!-- <span class="absolute top-1 left-1 text-[10px] uppercase px-2 py-0.5 rounded-full
-                    bg-invert text-invert">
-                        {{ $content->type }}
-                    </span> -->
                     </div>
 
                     {{-- Meta --}}
-                    <p class="text-xs font-medium text-primary truncate p-2" title="{{ $content->filename }}">
+                    <p class="text-[11px] font-normal text-theme-text truncate p-2" title="{{ $content->filename }}">
                         {{ $content->filename }}
                     </p>
                 </div>
             @endforeach
         </div>
+
         {{-- Footer --}}
-        <div class="sticky bottom-0 bg-primary border-top p-4 flex justify-between gap-3">
+        <div class="sticky bottom-0 bg-primary border-t border-subtle p-3 flex justify-between items-center gap-3">
 
             {{-- Manage Content --}}
             <a href="{{ route('admin.contents.index') }}"
-                class="px-4 py-2 text-sm border-rounded bg-hover-tertiary border-primary transition text-primary flex items-center gap-2">
-                <i class="fa-solid fa-gears"></i>
+                class="px-3 py-1.5 rounded-full text-xs bg-secondary text-theme-text hover:bg-subtle transition flex items-center gap-1.5 font-normal">
+                <i class="fa-solid fa-gears text-[11px]"></i>
                 Manage Content
             </a>
 
-            <div class="flex gap-2">
-                <button class="px-4 py-2 text-sm border-rounded border-primary bg-hover-tertiary"
+            <div class="flex items-center gap-2">
+                <button type="button" class="px-4 py-2 rounded-full text-xs bg-secondary text-theme-text hover:bg-subtle transition font-normal"
                     onclick="closeContentPicker()">Close</button>
                 {{-- Upload New --}}
                 <button type="button" id="uploadNewBtn" onclick="openUploadPicker()"
-                    class="px-4 py-2 text-sm border-rounded bg-invert text-invert hover:opacity-80 transition flex items-center gap-2">
-                    <i class="fa-solid fa-upload"></i>
+                    class="px-4 py-2 rounded-full text-xs bg-brand text-primary hover:opacity-90 transition flex items-center gap-1.5 font-normal shadow-sm">
+                    <i class="fa-solid fa-upload text-[11px]"></i>
                     <span>Upload New</span>
                 </button>
             </div>
@@ -88,6 +84,10 @@
 <script>
     window.currentTargetInput ??= null;
     window.currentAllowedType ??= null;
+    window.isContentPickerActive = function() {
+        const modal = document.getElementById('contentPickerModal');
+        return modal && !modal.classList.contains('hidden');
+    };
     window.mediaUrl = function(path) {
         if (!path) return '';
         return "{{ rtrim(Storage::url(''), '/') }}/" + path.replace(/^\/+/, '');
@@ -326,7 +326,7 @@
 
         const div = document.createElement('div');
         div.className =
-            'content-item group border-primary border-rounded overflow-hidden cursor-pointer bg-primary hover-primary transition';
+            'content-item group break-inside-avoid rounded-lg overflow-hidden cursor-pointer bg-secondary hover:ring-2 hover:ring-brand transition mb-3';
 
         div.dataset.type = content.type;
 
@@ -337,34 +337,32 @@
         let previewHTML = '';
 
         if (content.type === 'image') {
-            previewHTML = `<img src="${mediaUrl(content.filepath)}" class="w-full h-auto object-contain">`;
+            previewHTML = `<img src="${mediaUrl(content.filepath)}" class="w-full h-auto object-contain transition group-hover:scale-105">`;
         } else if (content.type === 'video') {
             previewHTML = `
         <video src="${mediaUrl(content.filepath)}"
             muted preload="metadata"
-            class="w-full h-auto object-cover"></video>`;
+            class="w-full h-auto object-cover" onmouseenter="this.play()"
+            onmouseleave="this.pause(); this.currentTime = 0;"></video>`;
         } else {
             previewHTML = `
-        <div class="w-full h-full flex flex-col items-center justify-center text-tertiary py-16">
+        <div class="w-full h-24 flex flex-col items-center justify-center text-theme-text-muted">
             <i class="fa-solid fa-file text-2xl mb-1"></i>
             <span class="text-xs uppercase">${content.type}</span>
         </div>`;
         }
 
         div.innerHTML = `
-        <div class="relative bg-secondary overflow-hidden">
+        <div class="relative bg-subtle overflow-hidden flex items-center justify-center" title="${content.filename}">
             ${previewHTML}
-            <span class="absolute top-1 left-1 text-[10px] uppercase px-2 py-0.5 rounded-full bg-invert text-invert">
-                ${content.type}
-            </span>
         </div>
-        <p class="text-xs font-medium text-primary truncate p-2">
+        <p class="text-[11px] font-normal text-theme-text truncate p-2" title="${content.filename}">
             ${content.filename}
         </p>
     `;
 
         // 🔥 add to top
-        grid.append(div);
+        grid.prepend(div);
     }
 
     function isValidFileType(file, type) {

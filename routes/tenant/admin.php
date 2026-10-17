@@ -27,8 +27,13 @@ use App\Http\Controllers\Tenant\Admin\BookController;
 use App\Http\Controllers\Tenant\Admin\BookCategoryController;
 use App\Http\Controllers\Tenant\Admin\CommunicationController;
 use App\Http\Controllers\Tenant\Admin\AcademicCategoryController;
+use App\Http\Controllers\Tenant\Admin\CurriculumBoardController;
+use App\Http\Controllers\Tenant\Admin\BatchController;
 use App\Http\Controllers\Tenant\Admin\FinanceController;
 use App\Http\Controllers\Tenant\Admin\PaymentSettingsController;
+use App\Http\Controllers\Tenant\Admin\FeePlansController;
+use App\Http\Controllers\Tenant\Admin\TeacherController;
+use App\Http\Controllers\Tenant\Admin\HolidayController;
 
 Route::middleware('auth:tenant')->group(function () {
     Route::prefix('admin')->middleware('role:admin')->as('admin.')->group(function () {
@@ -40,7 +45,7 @@ Route::middleware('auth:tenant')->group(function () {
         Route::resource('dashboard', AdminController::class);
 
         // Admin Students Routes
-        Route::get('/students', [AdminStudentsController::class, 'adminStudents'])->name('admin-students');
+        Route::get('/students', [AdminStudentsController::class, 'adminStudents'])->name('students');
         Route::get('/students/admissions', [AdminStudentsController::class, 'admissions'])->name('students.admissions');
         Route::post('/students/admissions/store', [AdminStudentsController::class, 'admissionsStore'])->name('students.admissions.store');
         Route::post('/students/admissions/{id}/approve', [AdminStudentsController::class, 'admissionsApprove'])->name('students.admissions.approve');
@@ -50,41 +55,101 @@ Route::middleware('auth:tenant')->group(function () {
         Route::get('/students/attendance', [AttendanceController::class, 'index'])->name('students.attendance');
         Route::get('/students/attendance/mark', [AttendanceController::class, 'markForm'])->name('students.attendance.mark');
         Route::post('/students/attendance/save', [AttendanceController::class, 'save'])->name('students.attendance.save');
-        Route::get('/students/performance', [AdminStudentsController::class, 'performance'])->name('students.performance');
-        Route::get('/students/fees', [AdminStudentsController::class, 'fees'])->name('students.fees');
+        Route::post('/students/attendance/quick-mark', [AttendanceController::class, 'quickMark'])->name('students.attendance.quick-mark');
+        Route::get('/students/fees', [FeePlansController::class, 'index'])->name('students.fees');
+        Route::post('/students/fee-plans/store', [FeePlansController::class, 'storePlan'])->name('students.fee-plans.store');
+        Route::post('/students/fee-plans/update/{id}', [FeePlansController::class, 'updatePlan'])->name('students.fee-plans.update');
+        Route::delete('/students/fee-plans/delete/{id}', [FeePlansController::class, 'deletePlan'])->name('students.fee-plans.delete');
+        Route::post('/students/fee-plans/override/{studentId}', [FeePlansController::class, 'saveStudentOverride'])->name('students.fee-plans.override');
         Route::get('/students/feedback', [AdminStudentsController::class, 'feedback'])->name('students.feedback');
         Route::get('/students/id-card', [AdminStudentsController::class, 'idCard'])->name('students.id-card');
         Route::post('/update/student/role', [AdminStudentsController::class, 'updateStudentRole'])->name('update-student-role');
         Route::post('/update/student/status', [AdminStudentsController::class, 'updateStudentStatus'])->name('update-student-status');
+        Route::post('/student/update/{id}', [AdminStudentsController::class, 'updateStudentDetails'])->name('admin-student-update');
+        Route::post('/student/reset-password/{id}', [AdminStudentsController::class, 'resetStudentPassword'])->name('admin-student-reset-password');
         Route::get('/student/profile/{username}', [AdminStudentsController::class, 'adminStudentProfile'])->name('admin-student-profile');
         Route::post('/student/profile/info/update/{id}', [AdminStudentsController::class, 'studentProfileInfoUpdate'])->name('admin-student-profile-info-update');
         Route::post('/student/fee/update/{id}', [AdminStudentsController::class, 'studentFeeUpdate'])->name('admin-student-fee-update');
         Route::post('/student/fee/payment/{id}', [AdminStudentsController::class, 'studentFeePaymentStore'])->name('admin-student-fee-payment');
 
         // Admin Users Routes
-        Route::get('/users', [AdminUsersController::class, 'adminUsers'])->name('admin-users');
+        Route::get('/users', [AdminUsersController::class, 'adminUsers'])->name('users');
         Route::post('/update/user/role', [AdminUsersController::class, 'updateUserRole'])->name('update-user-role');
+        Route::post('/users/promote', [AdminUsersController::class, 'promoteToStudent'])->name('users.promote');
         Route::post('/update/user/status', [AdminUsersController::class, 'updateUserStatus'])->name('update-user-status');
 
-        Route::get('/teachers', [AdminController::class, 'teachers'])->name('admin-teachers');
-        Route::get('/staffs', [AdminController::class, 'staffs'])->name('admin-staffs');
-        Route::get('/classes', [AdminController::class, 'classes'])->name('admin-classes');
+        // Admin Teachers & Staff Management Routes
+        Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers');
+        Route::post('/teachers/store', [TeacherController::class, 'store'])->name('teachers.store');
+        Route::post('/teachers/update/{id}', [TeacherController::class, 'update'])->name('teachers.update');
+        Route::post('/teachers/toggle-status/{id}', [TeacherController::class, 'toggleStatus'])->name('teachers.toggle-status');
+        Route::post('/teachers/reset-password/{id}', [TeacherController::class, 'resetPassword'])->name('teachers.reset-password');
+        // Unified Class & Subject Allocations
+        Route::get('/teachers/allocations', [TeacherController::class, 'allocations'])->name('teachers.allocations');
+        Route::post('/teachers/allocations/assign', [TeacherController::class, 'saveAllocation'])->name('teachers.allocations.assign');
+        Route::post('/teachers/allocations/bulk-assign', [TeacherController::class, 'bulkAssignTeacherSubjects'])->name('teachers.allocations.bulk-assign');
 
-        // Admin Subjects Routes
-        Route::get('/classes/courses', [ClassCourseController::class, 'index'])->name('classes.courses.index');
-        Route::post('/classes/courses', [ClassCourseController::class, 'store'])->name('classes.courses.store');
-        Route::get('/classes/courses/{id}/get', [ClassCourseController::class, 'get'])->name('classes.courses.get');
-        Route::put('/classes/courses/{id}/update', [ClassCourseController::class, 'update'])->name('classes.courses.update');
-        Route::delete('/classes/courses/{id}/delete', [ClassCourseController::class, 'destroy'])->name('classes.courses.destroy');
-        Route::get('/academic-categories', [AcademicCategoryController::class, 'index'])->name('academic-categories.index');
+
+        Route::get('/teachers/attendance', [TeacherController::class, 'attendance'])->name('teachers.attendance');
+        Route::post('/teachers/attendance/quick-mark', [TeacherController::class, 'attendanceQuickMark'])->name('teachers.attendance.quick-mark');
+        Route::get('/teachers/payroll', [TeacherController::class, 'payroll'])->name('teachers.payroll');
+        Route::post('/teachers/payroll/save-component', [TeacherController::class, 'savePayrollComponent'])->name('teachers.payroll.save-component');
+        Route::post('/teachers/payroll/mark-paid', [TeacherController::class, 'markPayrollPaid'])->name('teachers.payroll.mark-paid');
+        Route::post('/teachers/update-salary/{id}', [TeacherController::class, 'updateSalary'])->name('teachers.update-salary');
+        Route::get('/teachers/profile/{username}', [TeacherController::class, 'profile'])->name('teachers.profile');
+        Route::post('/teachers/profile/update/{id}', [TeacherController::class, 'updateProfile'])->name('teachers.profile.update');
+        Route::get('/staffs', [AdminController::class, 'staffs'])->name('admin-staffs');
+
+        // =========================================================================
+        // Unified Curriculum Architecture Board & Academic Tiers
+        // =========================================================================
+        Route::get('/curriculum', [CurriculumBoardController::class, 'index'])->name('curriculum.board');
+        Route::post('/curriculum/reorder', [CurriculumBoardController::class, 'reorder'])->name('curriculum.reorder');
+
+        // Academic Categories
         Route::post('/academic-categories', [AcademicCategoryController::class, 'store'])->name('academic-categories.store');
         Route::get('/academic-categories/{id}/get', [AcademicCategoryController::class, 'get'])->name('academic-categories.get');
         Route::put('/academic-categories/{id}/update', [AcademicCategoryController::class, 'update'])->name('academic-categories.update');
         Route::delete('/academic-categories/{id}/delete', [AcademicCategoryController::class, 'destroy'])->name('academic-categories.destroy');
 
-        Route::resource('subjects', SubjectController::class);
+        // Classes & Courses
+        Route::post('/classes/courses', [ClassCourseController::class, 'store'])->name('classes.courses.store');
+        Route::get('/classes/courses/{id}/get', [ClassCourseController::class, 'get'])->name('classes.courses.get');
+        Route::put('/classes/courses/{id}/update', [ClassCourseController::class, 'update'])->name('classes.courses.update');
+        Route::delete('/classes/courses/{id}/delete', [ClassCourseController::class, 'destroy'])->name('classes.courses.destroy');
+
+        // Subjects
+        Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
         Route::get('/subjects/{id}/get', [SubjectController::class, 'get'])->name('subjects.get');
-        Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update_custom');
+        Route::put('/subjects/{id}/update', [SubjectController::class, 'update'])->name('subjects.update');
+        Route::delete('/subjects/{id}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+        Route::delete('/subjects/{id}/delete', [SubjectController::class, 'destroy']);
+
+        // Batches Management
+        Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
+        Route::get('/batches/create', [BatchController::class, 'create'])->name('batches.create');
+        Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+        Route::get('/batches/{id}/edit', [BatchController::class, 'edit'])->name('batches.edit');
+        Route::get('/batches/{id}/get', [BatchController::class, 'get'])->name('batches.get');
+        Route::get('/batches/{id}/students', [BatchController::class, 'students'])->name('batches.students');
+        Route::put('/batches/{id}/update', [BatchController::class, 'update'])->name('batches.update');
+        Route::delete('/batches/{id}/delete', [BatchController::class, 'destroy'])->name('batches.destroy');
+
+        // Holiday & Academic Calendar Routes
+        Route::get('/holidays', [HolidayController::class, 'index'])->name('holidays.index');
+        Route::post('/holidays', [HolidayController::class, 'store'])->name('holidays.store');
+        Route::put('/holidays/{id}', [HolidayController::class, 'update'])->name('holidays.update');
+        Route::delete('/holidays/{id}', [HolidayController::class, 'destroy'])->name('holidays.destroy');
+        Route::post('/holidays/{id}/toggle-status', [HolidayController::class, 'toggleStatus'])->name('holidays.toggle-status');
+        Route::post('/holidays/sync-defaults', [HolidayController::class, 'syncDefaults'])->name('holidays.sync-defaults');
+        Route::post('/holidays/bulk-sundays', [HolidayController::class, 'bulkToggleSundays'])->name('holidays.bulk-sundays');
+        Route::post('/holidays/manage-weekly-offs', [HolidayController::class, 'manageWeeklyOffs'])->name('holidays.manage-weekly-offs');
+        Route::post('/holidays/quick-declare', [HolidayController::class, 'quickDeclare'])->name('holidays.quick-declare');
+
+        // Legacy Academic URL Redirects -> Curriculum Board
+        Route::get('/academic-categories', [AcademicCategoryController::class, 'index'])->name('academic-categories.index');
+        Route::get('/classes/courses', [ClassCourseController::class, 'index'])->name('classes.courses.index');
+        Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
 
         // Admin Contents Routes
         Route::resource('contents', ContentController::class);

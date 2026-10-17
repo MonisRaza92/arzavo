@@ -27,12 +27,24 @@ class User extends Authenticatable
         'lname',
         'username',
         'headline',
+        'designation',
+        'qualification',
+        'joining_date',
+        'base_salary',
+        'salary_type',
         'number',
         'email',
         'dob',
+        'roll_number',
+        'father_name',
+        'mother_name',
+        'parent_phone',
+        'emergency_contact',
+        'blood_group',
         'academic_category_id',
         'class_id',
         'subject_id',
+        'batch_id',
         'aadhaar_number',
         'aadhaar_front',
         'aadhaar_back',
@@ -48,6 +60,7 @@ class User extends Authenticatable
         'role',
         'status',
         'admission_status',
+        'enrolled_at',
         'pending_profile_updates',
         'last_login',
         'email_verified_at',
@@ -73,8 +86,26 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'enrolled_at' => 'datetime',
+            'joining_date' => 'date',
+            'base_salary' => 'decimal:2',
             'password' => 'hashed',
         ];
+    }
+
+    public function staffAttendances()
+    {
+        return $this->hasMany(StaffAttendance::class, 'user_id');
+    }
+
+    public function payrolls()
+    {
+        return $this->hasMany(StaffPayroll::class, 'user_id');
+    }
+
+    public function salaryStructure()
+    {
+        return $this->hasOne(StaffSalaryStructure::class, 'user_id');
     }
 
     public function isStudent()
@@ -128,9 +159,34 @@ class User extends Authenticatable
         return $this->belongsTo(Subject::class, 'subject_id');
     }
 
+    public function directSubjects()
+    {
+        return $this->belongsToMany(Subject::class, 'student_subjects', 'student_id', 'subject_id')->withTimestamps();
+    }
+
     public function class()
     { // "class" reserved word hai
         return $this->belongsTo(ClassCourse::class, 'class_id');
+    }
+
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class, 'batch_id');
+    }
+
+    public function assignedBatches()
+    {
+        return $this->hasMany(Batch::class, 'teacher_id');
+    }
+
+    public function managedClasses()
+    {
+        return $this->hasMany(ClassCourse::class, 'class_teacher_id');
+    }
+
+    public function assignedSubjects()
+    {
+        return $this->hasMany(Subject::class, 'teacher_id');
     }
     public function globalUser()
     {

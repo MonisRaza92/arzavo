@@ -24,14 +24,15 @@
 
         @foreach ($toasts as $message)
             <div
-                class="arz-toast relative border-rounded bg-black/80 text-gray-200 px-4 py-3 text-sm backdrop-blur-md flex items-center justify-between">
+                class="arz-toast relative rounded-lg bg-primary text-theme-text border border-brand/20 shadow-xl px-4 py-3 text-xs flex items-center justify-between gap-3">
 
-                <div class="arz-toast-body pr-6">
-                    {{ $message }}
+                <div class="arz-toast-body pr-4 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-brand shrink-0"></span>
+                    <span>{{ $message }}</span>
                 </div>
 
                 {{-- ❌ CLOSE BUTTON --}}
-                <button onclick="removeToast(this.parentElement)" class="text-gray-200 hover:text-white text-sm">
+                <button onclick="removeToast(this.parentElement)" class="w-6 h-6 rounded-full hover:bg-secondary text-theme-text-muted hover:text-theme-text flex items-center justify-center text-xs transition shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
 
@@ -91,11 +92,14 @@
         const container = document.getElementById('toast-container');
 
         const toast = document.createElement('div');
-        toast.className = "arz-toast relative border-rounded bg-black/80 text-gray-200 px-4 py-3 text-sm backdrop-blur-md flex items-center justify-between";
+        toast.className = "arz-toast relative rounded-lg bg-primary text-theme-text border border-brand/20 shadow-xl px-4 py-3 text-xs flex items-center justify-between gap-3";
 
         toast.innerHTML = `
-        <div class="arz-toast-body pr-6">${message}</div>
-        <button onclick="removeToast(this.parentElement)" class="absolute top-2 right-2 text-gray-400 hover:text-white text-xs">
+        <div class="arz-toast-body pr-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-brand shrink-0"></span>
+            <span>${message}</span>
+        </div>
+        <button onclick="removeToast(this.parentElement)" class="w-6 h-6 rounded-full hover:bg-secondary text-theme-text-muted hover:text-theme-text flex items-center justify-center text-xs transition shrink-0">
             <i class="fa-solid fa-xmark"></i>
         </button>
     `;

@@ -7,6 +7,7 @@
     'hint' => null,
     'rich' => false,
     'placeholder' => '',
+    'required' => false,
     'toolbar' => 'full'
 ])
 
@@ -23,22 +24,14 @@
     @php
         $cleanValue = is_string($value) ? htmlspecialchars_decode(htmlspecialchars_decode($value, ENT_QUOTES), ENT_QUOTES) : $value;
     @endphp
-    <x-input.wrapper :label="$label" :hint="$hint">
+    <x-input.wrapper :label="$label" :hint="$hint" :required="$required ?? false">
         <textarea
             name="{{ $name }}"
-            id="{{ $name }}"
+            id="{{ $attributes->get('id') ?? $name }}"
             rows="{{ $rows }}"
             placeholder="{{ $placeholder }}"
-            x-data="{
-                resize() {
-                    $el.style.height = 'auto';
-                    $el.style.height = Math.max($el.scrollHeight, 60) + 'px';
-                }
-            }"
-            x-init="$nextTick(() => resize())"
-            @input="resize()"
-            {{ $attributes->merge([
-                'class' => "w-full p-2.5 rounded border border-primary bg-primary text-primary text-sm focus:outline-none focus:ring-2 focus:ring-accent overflow-hidden resize-none transition-all $class"
+            {{ $attributes->except(['id', 'class'])->merge([
+                'class' => "w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs px-4 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand font-normal resize-none transition $class"
             ]) }}>{{ $cleanValue }}</textarea>
     </x-input.wrapper>
 @endif

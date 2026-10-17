@@ -12,7 +12,6 @@
                     </p>
                 @endif
             </div>
-
             <form action="{{ route_to('login.submit') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>

@@ -10,27 +10,13 @@ class ClassCourseController
 {
     public function index(Request $request)
     {
-        $categories = \App\Models\Tenant\AcademicCategory::orderBy('order')->get();
-        if ($categories->isEmpty()) {
-            return redirect()->route('admin.academic-categories.index')->with('error', 'Please add a category before managing classes/courses.');
-        }
-
-        $name = $request->get('category_filter');
-        $categoryId = \App\Models\Tenant\AcademicCategory::where('name', $name)->value('id');
-
-        $classCourses = ClassCourse::with('academicCategory')
-            ->when($categoryId, function ($query) use ($categoryId) {
-                return $query->where('academic_category_id', $categoryId);
-            })
-            ->orderBy('order')
-            ->get();
-
-        return view('tenant.admin.classes_courses.index', compact('classCourses', 'categories'));
+        return redirect()->route('admin.curriculum.board');
     }
     public function store(Request $request)
     {
         $data = $request->validate([
             'academic_category_id' => 'required|exists:academic_categories,id',
+            'class_teacher_id' => 'nullable|exists:users,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|string',
@@ -45,6 +31,7 @@ class ClassCourseController
             $count++;
         }
         $data['slug'] = $slug;
+        $data['order'] = (ClassCourse::where('academic_category_id', $data['academic_category_id'])->max('order') ?? 0) + 1;
 
         ClassCourse::create($data);
 
@@ -52,7 +39,7 @@ class ClassCourseController
     }
     public function get($id)
     {
-        $classCourse = ClassCourse::findOrFail($id);
+        $classCourse = ClassCourse::with('classTeacher')->findOrFail($id);
 
         return response()->json($classCourse);
     }
@@ -61,11 +48,13 @@ class ClassCourseController
         $classCourse = ClassCourse::findOrFail($id);
 
         $data = $request->validate([
-            'academic_category_id' => 'required|exists:academic_categories,id',
+            'academic_category_id' => 'nullable|exists:academic_categories,id',
+            'class_teacher_id' => 'nullable',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'image' => 'nullable|string',
             'updateimage' => 'nullable|string',
-            'status' => 'boolean',
+            'status' => 'nullable|boolean',
         ]);
 
         $originalSlug = Str::slug($data['name']);
@@ -76,15 +65,31 @@ class ClassCourseController
             $count++;
         }
         $data['slug'] = $slug;
-        $data['image'] = $data['updateimage'] ?? $classCourse->image;
+        $data['academic_category_id'] = $request->input('academic_category_id') ?? $classCourse->academic_category_id;
+        $data['class_teacher_id'] = $request->filled('class_teacher_id') ? $request->input('class_teacher_id') : null;
+        $data['image'] = $request->input('image') ?? $request->input('updateimage') ?? $classCourse->image;
+        $data['status'] = $request->has('status') ? (bool) $request->status : true;
+        unset($data['updateimage']);
 
         $classCourse->update($data);
 
         return back()->with('success', 'Class / Course updated successfully');
     }
+
     public function destroy($id)
     {
-        $classCourse = ClassCourse::findOrFail($id);
+        $classCourse = ClassCourse::with('batches')->findOrFail($id);
+        $name = $classCourse->name;
+
+        $batchIds = $classCourse->batches->pluck('id')->toArray();
+        $enrolledCount = \App\Models\Tenant\User::where('role', 'student')->where(function ($q) use ($id, $batchIds) {
+            $q->where('class_id', $id)->orWhereIn('batch_id', $batchIds);
+        })->count();
+
+        if ($enrolledCount > 0) {
+            return back()->with('error', "Deletion Blocked: Class '{$name}' has {$enrolledCount} active enrolled student(s). Please reassign or remove all students before deleting.");
+        }
+
         $classCourse->delete();
 
         return back()->with('success', 'Class / Course deleted successfully');

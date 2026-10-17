@@ -10,6 +10,8 @@ class Blog extends Model
 {
     use SoftDeletes;
 
+    protected $connection = 'tenant';
+
     protected $fillable = [
         'title',
         'slug',

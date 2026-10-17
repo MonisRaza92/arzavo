@@ -12,10 +12,14 @@ class Subject extends Model
 
     protected $fillable = [
         'class_courses_id',
+        'teacher_id',
         'image',
         'name',
         'slug',
         'description',
+        'start_time',
+        'end_time',
+        'days',
         'order',
         'status',
     ];
@@ -31,6 +35,25 @@ class Subject extends Model
     {
         return $this->belongsTo(ClassCourse::class, 'class_courses_id');
     }
+
+    /**
+     * Assigned Subject Teacher / Faculty
+     */
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    public function batches()
+    {
+        return $this->hasMany(Batch::class, 'subject_id');
+    }
+
+    public function batchSubjects()
+    {
+        return $this->hasMany(BatchSubject::class, 'subject_id');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', true);

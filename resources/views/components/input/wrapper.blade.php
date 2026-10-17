@@ -1,19 +1,26 @@
 @props([
-'label' => '',
-'hint' => null,
-'containerClass' => ''
+    'label' => '',
+    'hint' => null,
+    'containerClass' => '',
+    'required' => false
 ])
 
 <div {{ $attributes->merge(['class' => "w-full $containerClass"]) }}>
     @if($label)
-    <label class="block text-sm font-medium mb-2 text-secondary">
-        {{ $label }}
+    <label class="text-xs font-normal text-theme-text-muted mb-1.5 flex items-center justify-between">
+        <span>
+            {{ $label }}
+            @if($required)
+                <span class="text-danger ml-0.5">*</span>
+            @endif
+        </span>
     </label>
     @endif
 
     {{ $slot }}
 
     @if($hint)
-    <p class="text-xs mt-2 text-gray-500">{{ $hint }}</p>
+    <p class="text-[11px] mt-1 text-theme-text-muted font-normal">{{ $hint }}</p>
     @endif
 </div>
+

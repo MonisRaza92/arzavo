@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+
+    --color-primary: #ffffff;
+    --color-secondary: #f0f4f9;
+    --color-subtle: #e1e7f0;
+    --color-theme-border: #e1e7f0;
+    --color-brand: #0b57d0;
+    --color-theme-text: #1f1f1f;
+    --color-theme-text-muted: #444746;
+
+    /* Semantic Status Tokens (Success, Warning, Danger, Info) */
+    --color-success: #10b981;
+    --color-success-bg: rgba(16, 185, 129, 0.12);
+    --color-warning: #f59e0b;
+    --color-warning-bg: rgba(245, 158, 11, 0.12);
+    --color-danger: #f43f5e;
+    --color-danger-bg: rgba(244, 63, 94, 0.12);
+    --color-info: #38bdf8;
+    --color-info-bg: rgba(56, 189, 248, 0.12);
+}
+
+/* ==========================================================================
+   TENANT ADMIN THEMES (Only Light and Dark)
+   ========================================================================== */
+
+/* Dark Theme */
+:root,
+.dark,
+[data-theme="dark"] {
+    --color-primary: #0e0e0e;
+    --color-secondary: #1a1a1c;
+    --color-subtle: #27272a;
+    --color-theme-border: #27272a;
+    --color-brand: #ffffff;
+    --color-theme-text: #ffffff;
+    --color-theme-text-muted: #a1a1aa;
+}
+
+/* Light Theme */
+.light,
+[data-theme="light"] {
+    --color-primary: #ffffff;
+    --color-secondary: #f0f4f9;
+    --color-subtle: #e1e7f0;
+    --color-theme-border: #e1e7f0;
+    --color-brand: #0b57d0;
+    --color-theme-text: #1f1f1f;
+    --color-theme-text-muted: #444746;
+}
+
+/* Logo toggling */
+.dark .theme-light-logo,
+[data-theme="dark"] .theme-light-logo {
+    display: none !important;
+}
+
+.light .theme-dark-logo,
+[data-theme="light"] .theme-dark-logo {
+    display: none !important;
+}
+
+/* ==========================================================================
+   CONTAINER SPECIFICATION: 1600px Max-Width Standard
+   ========================================================================== */
+.container,
+.site-container {
+    width: 100%;
+    max-width: 1600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+
+@media (min-width: 1024px) {
+    .container,
+    .site-container {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+    }
+}
+
+/* ==========================================================================
+   SMOOTH MARQUEE TICKER ANIMATION & SCROLLBARS
+   ========================================================================== */
+@keyframes scrollX {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-scroll-x {
+    display: flex;
+    width: max-content;
+    animation: scrollX 35s linear infinite;
+}
+
+.animate-scroll-x:hover {
+    animation-play-state: paused;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-brand);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand);
+}
