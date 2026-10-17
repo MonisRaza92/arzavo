@@ -60,7 +60,7 @@ return [
                 'icon' => 'fa-photo-film',
                 'text' => 'Contents',
                 'route' => 'admin.contents.index',
-                'active' => 'admin/contents',
+                'active' => 'admin/contents*',
             ],
             [
                 'type' => 'link',
@@ -68,7 +68,7 @@ return [
                 'icon' => 'fa-blog',
                 'text' => 'Blogs & Stories',
                 'route' => 'admin.blog.index',
-                'active' => 'admin/blog',
+                'active' => 'admin/blog*',
             ],
         ],
     ],

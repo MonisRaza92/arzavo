@@ -90,7 +90,7 @@ class TeacherController extends Controller
             'fname' => 'required|string|max:100',
             'lname' => 'required|string|max:100',
             'email' => 'required|email|max:255|unique:users,email',
-            'number' => 'required|string|max:20',
+            'number' => 'required|string|max:20|unique:users,number',
             'password' => 'required|string|min:6',
             'designation' => 'nullable|string|max:150',
             'qualification' => 'nullable|string|max:150',
@@ -104,6 +104,9 @@ class TeacherController extends Controller
             'state' => 'nullable|string|max:100',
             'pincode' => 'nullable|string|max:20',
             'profile_picture' => 'nullable|image|max:2048',
+        ], [
+            'number.unique' => 'This phone number is already registered for another user in the academy.',
+            'email.unique' => 'This email address is already registered for another user.',
         ]);
 
         // Auto-generate clean unique username
@@ -120,28 +123,38 @@ class TeacherController extends Controller
             $photoPath = $request->file('profile_picture')->store('teachers/photos', 'public');
         }
 
-        $teacher = User::create([
-            'fname' => $validated['fname'],
-            'lname' => $validated['lname'],
-            'username' => $username,
-            'email' => $validated['email'],
-            'number' => $validated['number'],
-            'password' => Hash::make($validated['password']),
-            'designation' => $validated['designation'] ?? 'Faculty Member',
-            'qualification' => $validated['qualification'] ?? null,
-            'joining_date' => $validated['joining_date'] ?? now()->toDateString(),
-            'base_salary' => $validated['base_salary'] ?? 0.00,
-            'salary_type' => $validated['salary_type'] ?? 'monthly',
-            'gender' => $request->gender ?? null,
-            'blood_group' => $request->blood_group ?? null,
-            'address' => $validated['address'] ?? null,
-            'city' => $validated['city'] ?? null,
-            'state' => $validated['state'] ?? null,
-            'pincode' => $validated['pincode'] ?? null,
-            'profile_picture' => $photoPath,
-            'role' => 'teacher',
-            'status' => 'active',
-        ]);
+        try {
+            $teacher = User::create([
+                'fname' => $validated['fname'],
+                'lname' => $validated['lname'],
+                'username' => $username,
+                'email' => $validated['email'],
+                'number' => $validated['number'],
+                'password' => Hash::make($validated['password']),
+                'designation' => $validated['designation'] ?? 'Faculty Member',
+                'qualification' => $validated['qualification'] ?? null,
+                'joining_date' => $validated['joining_date'] ?? now()->toDateString(),
+                'base_salary' => $validated['base_salary'] ?? 0.00,
+                'salary_type' => $validated['salary_type'] ?? 'monthly',
+                'gender' => $request->gender ?? null,
+                'blood_group' => $request->blood_group ?? null,
+                'address' => $validated['address'] ?? null,
+                'city' => $validated['city'] ?? null,
+                'state' => $validated['state'] ?? null,
+                'pincode' => $validated['pincode'] ?? null,
+                'profile_picture' => $photoPath,
+                'role' => 'teacher',
+                'status' => 'active',
+            ]);
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['number' => 'This phone number or email is already registered in the system.']);
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['number' => 'Could not register faculty member: ' . $e->getMessage()]);
+        }
 
         return redirect()->route('admin.teachers')->with('success', "Teacher {$teacher->fname} {$teacher->lname} registered successfully!");
     }
@@ -157,7 +170,7 @@ class TeacherController extends Controller
             'fname' => 'required|string|max:100',
             'lname' => 'required|string|max:100',
             'email' => "required|email|max:255|unique:users,email,{$id}",
-            'number' => 'required|string|max:20',
+            'number' => "required|string|max:20|unique:users,number,{$id}",
             'designation' => 'nullable|string|max:150',
             'qualification' => 'nullable|string|max:150',
             'joining_date' => 'nullable|date',
@@ -169,13 +182,22 @@ class TeacherController extends Controller
             'state' => 'nullable|string|max:100',
             'pincode' => 'nullable|string|max:20',
             'profile_picture' => 'nullable|image|max:2048',
+        ], [
+            'number.unique' => 'This phone number is already registered for another user in the academy.',
+            'email.unique' => 'This email address is already registered for another user.',
         ]);
 
         if ($request->hasFile('profile_picture')) {
             $validated['profile_picture'] = $request->file('profile_picture')->store('teachers/photos', 'public');
         }
 
-        $teacher->update($validated);
+        try {
+            $teacher->update($validated);
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['number' => 'This phone number or email is already registered in the system.']);
+        }
 
         return redirect()->route('admin.teachers')->with('success', "Teacher details updated successfully.");
     }

@@ -50,7 +50,7 @@
             statusFilter: 'all',
 
             // Modal states
-            isAddModalOpen: false,
+            isAddModalOpen: {{ $errors->any() ? 'true' : 'false' }},
             isEditModalOpen: false,
             isPasswordModalOpen: false,
             isSalaryModalOpen: false,
@@ -736,13 +736,19 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">First Name *</label>
-                            <input type="text" name="fname" required placeholder="e.g. Rahul"
+                            <input type="text" name="fname" value="{{ old('fname') }}" required placeholder="e.g. Rahul"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
+                            @error('fname')
+                                <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Last Name *</label>
-                            <input type="text" name="lname" required placeholder="e.g. Verma"
+                            <input type="text" name="lname" value="{{ old('lname') }}" required placeholder="e.g. Verma"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
+                            @error('lname')
+                                <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -750,18 +756,27 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Email Address *</label>
-                            <input type="email" name="email" required placeholder="teacher@academy.com"
+                            <input type="email" name="email" value="{{ old('email') }}" required placeholder="teacher@academy.com"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
+                            @error('email')
+                                <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Phone Number *</label>
-                            <input type="text" name="number" required placeholder="+91 9876543210"
+                            <input type="text" name="number" value="{{ old('number') }}" required placeholder="+91 9876543210"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
+                            @error('number')
+                                <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Login Password *</label>
                             <input type="password" name="password" required minlength="6" placeholder="Min. 6 characters"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
+                            @error('password')
+                                <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -769,17 +784,17 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Designation</label>
-                            <input type="text" name="designation" placeholder="e.g. Senior Physics Faculty"
+                            <input type="text" name="designation" value="{{ old('designation') }}" placeholder="e.g. Senior Physics Faculty"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Qualification</label>
-                            <input type="text" name="qualification" placeholder="e.g. M.Sc, B.Ed"
+                            <input type="text" name="qualification" value="{{ old('qualification') }}" placeholder="e.g. M.Sc, B.Ed"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Joining Date</label>
-                            <input type="date" name="joining_date" value="{{ date('Y-m-d') }}"
+                            <input type="date" name="joining_date" value="{{ old('joining_date', date('Y-m-d')) }}"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
                         </div>
                     </div>
@@ -788,23 +803,23 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Base Salary (₹)</label>
-                            <input type="number" step="0.01" name="base_salary" placeholder="e.g. 35000"
+                            <input type="number" step="0.01" name="base_salary" value="{{ old('base_salary') }}" placeholder="e.g. 35000"
                                    class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Salary Type</label>
                             <select name="salary_type" class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none cursor-pointer">
-                                <option value="monthly">Monthly Fixed</option>
-                                <option value="per_session">Per-Session / Lecture</option>
-                                <option value="hourly">Hourly Rate</option>
+                                <option value="monthly" {{ old('salary_type') === 'monthly' ? 'selected' : '' }}>Monthly Fixed</option>
+                                <option value="per_session" {{ old('salary_type') === 'per_session' ? 'selected' : '' }}>Per-Session / Lecture</option>
+                                <option value="hourly" {{ old('salary_type') === 'hourly' ? 'selected' : '' }}>Hourly Rate</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-xs font-normal text-theme-text mb-1.5">Gender</label>
                             <select name="gender" class="w-full bg-secondary text-theme-text text-xs px-4 py-3 rounded-full focus:outline-none cursor-pointer">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
+                                <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>Male</option>
+                                <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female</option>
+                                <option value="other" {{ old('gender') === 'other' ? 'selected' : '' }}>Other</option>
                             </select>
                         </div>
                     </div>
@@ -813,7 +828,10 @@
                     <div>
                         <label class="block text-xs font-normal text-theme-text mb-1.5">Profile Photo (Optional)</label>
                         <input type="file" name="profile_picture" accept="image/*"
-                               class="w-full bg-secondary text-theme-text text-xs px-4 py-2.5 rounded-full focus:outline-none">
+                                class="w-full bg-secondary text-theme-text text-xs px-4 py-2.5 rounded-full focus:outline-none">
+                        @error('profile_picture')
+                            <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Actions -->

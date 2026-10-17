@@ -1,42 +1,58 @@
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-primary mt-2 border-top border-bottom p-4 gap-4">
-    <div class="card border-rounded border-primary p-4 flex justify-between items-center">
-        <div class="content">
-            <h3 class="text-secondary font-semibold">Total Files</h3>
-            <p class="text-3xl font-bold text-primary">{{ $contents->count() }}</p>
-            <p class="text-xs text-tertiary mt-1">All uploaded media assets</p>
+{{-- Top KPI Metrics Bar --}}
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Total Files -->
+    <div class="rounded-lg bg-primary p-4 space-y-1">
+        <span class="text-[11px] text-theme-text-muted font-normal block">Total Media Files</span>
+        <div class="flex items-center justify-between">
+            <span class="text-xl font-semibold text-theme-text" x-text="stats.total">
+                {{ number_format($contents->count()) }}
+            </span>
+            <span class="w-7 h-7 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs">
+                <i class="fa-solid fa-photo-film"></i>
+            </span>
         </div>
-        <div class="icon bg-invert text-invert border-rounded p-4">
-            <i class="fa-solid fa-photo-film text-3xl"></i>
-        </div>
+        <span class="text-[10px] text-theme-text-muted">All uploaded media assets</span>
     </div>
-    <div class="card border-rounded border-primary p-4 flex justify-between items-center">
-        <div class="content">
-            <h3 class="text-secondary font-semibold">Videos</h3>
-            <p class="text-3xl font-bold text-primary">{{ $contents->where('type' , 'video')->count() }}</p>
-            <p class="text-xs text-tertiary mt-1">Lectures, Lessons & intro videos</p>
+
+    <!-- Video Lectures -->
+    <div class="rounded-lg bg-primary p-4 space-y-1">
+        <span class="text-[11px] text-theme-text-muted font-normal block">Video Lectures</span>
+        <div class="flex items-center justify-between">
+            <span class="text-xl font-semibold text-theme-text" x-text="stats.videos">
+                {{ number_format($contents->where('type', 'video')->count()) }}
+            </span>
+            <span class="w-7 h-7 rounded-full bg-info-bg text-info flex items-center justify-center text-xs">
+                <i class="fa-solid fa-video"></i>
+            </span>
         </div>
-        <div class="icon bg-invert text-invert border-rounded p-4">
-            <i class="fa-solid fa-video text-3xl"></i>
-        </div>
+        <span class="text-[10px] text-theme-text-muted">Lessons &amp; video tutorials</span>
     </div>
-    <div class="card border-rounded border-primary p-4 flex justify-between items-center">
-        <div class="content">
-            <h3 class="text-secondary font-semibold">Books & Notes</h3>
-            <p class="text-3xl font-bold text-primary">{{ $contents->where('type' , 'pdf')->count() }}</p>
-            <p class="text-xs text-tertiary mt-1">PDFs, notes & documents</p>
+
+    <!-- Documents & PDFs -->
+    <div class="rounded-lg bg-primary p-4 space-y-1">
+        <span class="text-[11px] text-theme-text-muted font-normal block">Books &amp; Notes (PDF)</span>
+        <div class="flex items-center justify-between">
+            <span class="text-xl font-semibold text-theme-text" x-text="stats.pdfs">
+                {{ number_format($contents->where('type', 'pdf')->count()) }}
+            </span>
+            <span class="w-7 h-7 rounded-full bg-danger-bg text-danger flex items-center justify-center text-xs">
+                <i class="fa-solid fa-file-pdf"></i>
+            </span>
         </div>
-        <div class="icon bg-invert text-invert border-rounded p-4">
-            <i class="fa-solid fa-file-pdf text-3xl"></i>
-        </div>
+        <span class="text-[10px] text-theme-text-muted">E-books, syllabi &amp; slides</span>
     </div>
-    <div class="card border-rounded border-primary p-4 flex justify-between items-center">
-        <div class="content">
-            <h3 class="text-secondary font-semibold">Storage Used</h3>
-            <p class="text-3xl font-bold text-primary">{{ formatSize($storageUsed) }}</p>
-            <p class="text-xs text-tertiary mt-1">Out of allocated storage</p>
+
+    <!-- Storage Used -->
+    <div class="rounded-lg bg-primary p-4 space-y-1">
+        <span class="text-[11px] text-theme-text-muted font-normal block">Storage Consumed</span>
+        <div class="flex items-center justify-between">
+            <span class="text-xl font-semibold text-theme-text" x-text="stats.storageFormatted">
+                {{ formatSize($storageUsed) }}
+            </span>
+            <span class="w-7 h-7 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs">
+                <i class="fa-solid fa-hard-drive"></i>
+            </span>
         </div>
-        <div class="icon bg-invert text-invert border-rounded p-4">
-            <i class="fa-solid fa-hard-drive text-3xl"></i>
-        </div>
+        <span class="text-[10px] text-theme-text-muted">Tenant cloud disk usage</span>
     </div>
 </div>

@@ -1,137 +1,233 @@
 @extends('layouts.admin')
-@section('title', 'Create Blog Post')
+@section('title', 'Write New Article')
 
 @section('content')
-{{-- Header --}}
-<div class="flex justify-between items-center py-3 px-4 bg-primary border-rounded border-primary mb-6">
-    <div>
-        <h2 class="text-lg font-bold text-primary mb-1 flex items-center gap-1"><i class="fa fa-plus mr-1 text-base"></i>
-            Create Blog Post
-        </h2>
-        <p class="text-sm text-secondary hidden sm:block">Write and publish articles for your website</p>
-    </div>
+<div class="space-y-6">
 
-    <a href="{{ route('admin.blog.index') }}"
-        class="px-3 py-2 text-sm bg-secondary text-secondary bg-hover-tertiary border-primary border-rounded flex items-center gap-1">
-        <i class="fa fa-arrow-left"></i>
-        Back to List
-    </a>
-</div>
-
-{{-- Create Form --}}
-<form action="{{ route('admin.blog.store') }}" method="POST">
-    @csrf
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-        {{-- LEFT COLUMN: Content details --}}
-        <div class="lg:col-span-2 space-y-4">
-            
-            {{-- Basic Info Card --}}
-            <div class="bg-primary border-primary border-rounded p-5">
-                <h3 class="text-base font-bold text-primary mb-4 border-bottom pb-2">Article Details</h3>
-                
-                <div class="space-y-4">
-                    {{-- Title --}}
-                    <div>
-                        <label class="block text-tertiary text-xs font-semibold mb-1">Blog Title <span class="text-accent">*</span></label>
-                        <input type="text" name="title" required placeholder="Enter blog title..."
-                            class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
-                    </div>
-
-                    {{-- Heading --}}
-                    <div>
-                        <label class="block text-tertiary text-xs font-semibold mb-1">Heading (optional)</label>
-                        <input type="text" name="heading" placeholder="Main header inside article..."
-                            class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
-                    </div>
-
-                    {{-- Category --}}
-                    <div>
-                        <label class="block text-tertiary text-xs font-semibold mb-1">Category (optional)</label>
-                        <input type="text" name="category" placeholder="e.g. Technology, Education, Announcement..."
-                            class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
-                    </div>
-
-                    {{-- Short Description --}}
-                    <div>
-                        <x-input.textarea name="short_description" label="Short Description (for cards summary)" rows="3" placeholder="Write a short summary to show on blog listing cards..." />
-                    </div>
-                </div>
+    {{-- Page Header Banner (Curriculum Architecture Standard) --}}
+    <div class="rounded-lg bg-primary p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-full bg-brand/10 text-brand flex items-center justify-center text-lg shrink-0 mt-0.5">
+                <i class="fa-solid fa-feather-pointed"></i>
             </div>
-
-            {{-- Rich Text Content Card --}}
-            <div class="bg-primary border-primary border-rounded p-5">
-                <h3 class="text-base font-bold text-primary mb-4 border-bottom pb-2">Full Content</h3>
-                <x-input.rich-text name="content" label="" placeholder="Write your full article content here..." />
+            <div>
+                <h1 class="text-base font-semibold text-theme-text leading-tight">
+                    Compose New Article
+                </h1>
+                <p class="text-xs text-theme-text-muted mt-1 leading-relaxed max-w-3xl">
+                    Draft stories, student highlights, and institute announcements with rich media formatting and automated search engine optimization.
+                </p>
             </div>
         </div>
 
-        {{-- RIGHT COLUMN: Publish Options & Image --}}
-        <div class="space-y-6">
-            
-            {{-- Featured Image Card --}}
-            <div class="bg-primary border-primary border-rounded p-5">
-                <h3 class="text-base font-bold text-primary mb-4 border-bottom pb-2">Featured Image</h3>
-                <div class="space-y-4">
-                    <x-input.image name="featured_image" />
-                    <div>
-                        <label class="block text-tertiary text-xs font-semibold mb-1">Image Alt Text (optional)</label>
-                        <input type="text" name="image_alt" placeholder="Describe the image for screen readers..."
-                            class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
+        <div class="flex items-center gap-2.5 flex-wrap self-stretch md:self-auto shrink-0">
+            <a href="{{ route('admin.blog.index') }}"
+               class="px-5 py-3 bg-secondary text-theme-text rounded-full font-normal text-xs hover:bg-subtle transition inline-flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left text-[11px] text-brand"></i>
+                <span>Back to Articles</span>
+            </a>
+        </div>
+    </div>
+
+    {{-- Create Form --}}
+    <form action="{{ route('admin.blog.store') }}" method="POST">
+        @csrf
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+            {{-- LEFT COLUMN: Main Article Details & Rich Content --}}
+            <div class="lg:col-span-2 space-y-5">
+
+                {{-- Article Essentials Card --}}
+                <div class="rounded-lg bg-primary p-5 space-y-4">
+                    <div class="flex items-center gap-2.5 border-b border-subtle/50 pb-3">
+                        <div class="w-7 h-7 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-theme-text">Article Essentials</h3>
                     </div>
-                </div>
-            </div>
 
-            {{-- Publishing Status --}}
-            <div class="bg-primary border-primary border-rounded p-5">
-                <h3 class="text-base font-bold text-primary mb-4 border-bottom pb-2">Publishing settings</h3>
-                
-                <div class="space-y-4">
-                    {{-- Status Switch --}}
-                    <div class="border-primary border-rounded p-3 bg-secondary">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <label class="block text-primary text-sm font-semibold mb-1">Publish Status</label>
-                                <span class="text-tertiary text-xs">Enable to make it public</span>
-                            </div>
-
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" name="status" value="published" checked class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                    <div class="space-y-4">
+                        {{-- Title --}}
+                        <div>
+                            <label class="block text-xs text-theme-text-muted font-normal mb-1.5">
+                                Article Title <span class="text-brand">*</span>
                             </label>
+                            <input type="text"
+                                   name="title"
+                                   value="{{ old('title') }}"
+                                   required
+                                   placeholder="e.g. Annual Sports Meet 2026 Celebrations &amp; Highlights"
+                                   class="w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs px-4 py-3 rounded-full focus:outline-none">
+                            @error('title')
+                                <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Secondary Heading --}}
+                        <div>
+                            <label class="block text-xs text-theme-text-muted font-normal mb-1.5">
+                                Subheading / Tagline <span class="text-[11px] text-theme-text-muted">(Optional)</span>
+                            </label>
+                            <input type="text"
+                                   name="heading"
+                                   value="{{ old('heading') }}"
+                                   placeholder="e.g. Over 500 students participated across 24 sports events"
+                                   class="w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs px-4 py-3 rounded-full focus:outline-none">
+                        </div>
+
+                        {{-- Category --}}
+                        <div>
+                            <label class="block text-xs text-theme-text-muted font-normal mb-1.5">
+                                Category Tag <span class="text-[11px] text-theme-text-muted">(Optional)</span>
+                            </label>
+                            <input type="text"
+                                   name="category"
+                                   value="{{ old('category') }}"
+                                   placeholder="e.g. Academic News, Campus Life, Sports, Achievements"
+                                   class="w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs px-4 py-3 rounded-full focus:outline-none">
+                        </div>
+
+                        {{-- Short Description / Excerpt --}}
+                        <div>
+                            <label class="block text-xs text-theme-text-muted font-normal mb-1.5">
+                                Short Summary / Card Excerpt <span class="text-[11px] text-theme-text-muted">(Displayed on blog cards and search listings)</span>
+                            </label>
+                            <textarea name="short_description"
+                                      rows="3"
+                                      placeholder="Brief 1-2 sentence preview for this story..."
+                                      class="w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs p-3.5 rounded-lg focus:outline-none leading-relaxed">{{ old('short_description') }}</textarea>
+                            @error('short_description')
+                                <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
-            </div>
 
-
-            {{-- SEO Metadata --}}
-            <div class="bg-primary border-primary border-rounded p-5">
-                <h3 class="text-base font-bold text-primary mb-4 border-bottom pb-2">SEO Configurations</h3>
-                
-                <div class="space-y-4">
-                    {{-- Meta Title --}}
-                    <div>
-                        <label class="block text-tertiary text-xs font-semibold mb-1">Meta Title</label>
-                        <input type="text" name="meta_title" placeholder="SEO title..."
-                            class="w-full p-2 bg-primary border-primary border-rounded input-focus text-sm">
+                {{-- Full Story Rich Text Content Card --}}
+                <div class="rounded-lg bg-primary p-5 space-y-3">
+                    <div class="flex items-center gap-2.5 border-b border-subtle/50 pb-3">
+                        <div class="w-7 h-7 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-align-left"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-theme-text">Full Article Body</h3>
                     </div>
 
-                    {{-- Meta Description --}}
                     <div>
-                        <x-input.textarea name="meta_description" label="Meta Description" rows="2" placeholder="SEO meta description..." />
+                        <x-input.rich-text name="content" label="" :value="old('content')" placeholder="Write your full story or article content here..." />
+                        @error('content')
+                            <span class="text-[11px] text-danger mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
+
             </div>
 
-            {{-- Form Submit --}}
-            <div class="bg-primary border-primary border-rounded p-4 flex gap-3">
-                <button type="submit" class="w-full py-2.5 px-4 text-sm font-semibold bg-invert text-invert border-rounded hover-invert text-center transition-all duration-300">
-                    Create Article
-                </button>
+            {{-- RIGHT COLUMN: Publishing Controls, Image & SEO --}}
+            <div class="space-y-5">
+
+                {{-- Publishing Status Card --}}
+                <div class="rounded-lg bg-primary p-5 space-y-4">
+                    <div class="flex items-center gap-2.5 border-b border-subtle/50 pb-3">
+                        <div class="w-7 h-7 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-theme-text">Publishing Settings</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        {{-- Status Switch --}}
+                        <div class="rounded-lg bg-secondary p-4 flex items-center justify-between">
+                            <div>
+                                <label class="block text-xs font-semibold text-theme-text">Live Visibility</label>
+                                <span class="text-[11px] text-theme-text-muted">Publish immediately on portal</span>
+                            </div>
+
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="hidden" name="status" value="draft">
+                                <input type="checkbox"
+                                       name="status"
+                                       value="published"
+                                       checked
+                                       class="sr-only peer">
+                                <div class="w-11 h-6 bg-subtle peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-primary after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand"></div>
+                            </label>
+                        </div>
+
+                        {{-- Submit Button --}}
+                        <button type="submit"
+                                class="w-full py-3 bg-brand text-primary rounded-full font-normal text-xs transition hover:opacity-90 inline-flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                            <i class="fa-solid fa-paper-plane text-[11px]"></i>
+                            <span>Publish Article</span>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Featured Image Card --}}
+                <div class="rounded-lg bg-primary p-5 space-y-4">
+                    <div class="flex items-center gap-2.5 border-b border-subtle/50 pb-3">
+                        <div class="w-7 h-7 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-theme-text">Featured Image</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <x-input.image name="featured_image" label="Cover Image" :value="old('featured_image')" />
+
+                        <div>
+                            <label class="block text-xs text-theme-text-muted font-normal mb-1.5">
+                                Image Alt Text <span class="text-[11px] text-theme-text-muted">(Accessibility &amp; SEO)</span>
+                            </label>
+                            <input type="text"
+                                   name="image_alt"
+                                   value="{{ old('image_alt') }}"
+                                   placeholder="Describe the image content..."
+                                   class="w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs px-4 py-3 rounded-full focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                {{-- SEO Metadata Card --}}
+                <div class="rounded-lg bg-primary p-5 space-y-4">
+                    <div class="flex items-center gap-2.5 border-b border-subtle/50 pb-3">
+                        <div class="w-7 h-7 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-theme-text">SEO Configurations</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        {{-- Meta Title --}}
+                        <div>
+                            <label class="block text-xs text-theme-text-muted font-normal mb-1.5">
+                                Meta Search Title <span class="text-[11px] text-theme-text-muted">(Optional)</span>
+                            </label>
+                            <input type="text"
+                                   name="meta_title"
+                                   value="{{ old('meta_title') }}"
+                                   placeholder="Custom title for Google search results..."
+                                   class="w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs px-4 py-3 rounded-full focus:outline-none">
+                        </div>
+
+                        {{-- Meta Description --}}
+                        <div>
+                            <label class="block text-xs text-theme-text-muted font-normal mb-1.5">
+                                Meta Description <span class="text-[11px] text-theme-text-muted">(Optional)</span>
+                            </label>
+                            <textarea name="meta_description"
+                                      rows="3"
+                                      placeholder="Brief snippet displayed under title on search engines..."
+                                      class="w-full bg-secondary text-theme-text placeholder:text-theme-text-muted text-xs p-3.5 rounded-lg focus:outline-none leading-relaxed">{{ old('meta_description') }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
         </div>
-    </div>
-</form>
+
+    </form>
+
+</div>
 @endsection

@@ -12,7 +12,7 @@ class ContentController extends Controller
 {
     public function index()
     {
-        $contents = Content::all();
+        $contents = Content::latest()->get();
         $storageUsed = Content::sum('size');
         return view('tenant.admin.contents.index', compact('contents', 'storageUsed'));
     }
